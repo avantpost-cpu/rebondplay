@@ -6,223 +6,221 @@
 
 <title>Diplôme Rebond</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
-
 <style>
 *{
+  margin:0;
+  padding:0;
   box-sizing:border-box;
 }
 
 html,
 body{
-  margin:0;
+  width:100%;
   min-height:100%;
-  background:#1b5f6e;
-  font-family:Arial, Helvetica, sans-serif;
-
-  -webkit-print-color-adjust:exact;
-  print-color-adjust:exact;
 }
 
 body{
-  padding:28px;
-}
-
-.page{
-  width:min(1180px, 100%);
-  margin:0 auto;
-}
-
-.actions{
-  display:flex;
-  justify-content:center;
-  gap:12px;
-  margin-bottom:22px;
-}
-
-.actions button{
-  min-height:48px;
-  padding:10px 24px;
-
-  border:0;
-  border-radius:999px;
-
-  background:#edb01a;
+  min-height:100vh;
+  padding:30px 16px 42px;
+  background:#1b5f6e;
+  font-family:Arial, Helvetica, sans-serif;
   color:#044e61;
-
-  font-size:16px;
-  font-weight:bold;
-
-  cursor:pointer;
 }
 
-.actions button:hover{
-  transform:translateY(-1px);
-}
-
+/*
+  À l'écran, le diplôme occupe 75 % de la largeur disponible.
+  Le conteneur et tous les textes diminuent ensemble.
+*/
 .diplome{
   position:relative;
-
-  width:100%;
-  aspect-ratio:818 / 578;
-
-  overflow:hidden;
-
-  background:#ffffff;
+  width:75%;
+  max-width:900px;
+  margin:0 auto;
+  line-height:1;
 }
 
 .fond-diplome{
-  position:absolute;
-  inset:0;
-
-  width:100%;
-  height:100%;
-
   display:block;
-  object-fit:fill;
-
+  width:100%;
+  height:auto;
   user-select:none;
   pointer-events:none;
 }
 
-.texte-variable{
+.texte-variable,
+.date{
   position:absolute;
-
-  left:59.8%;
-  width:27.8%;
-
-  color:#087a78;
-
-  font-family:"Patrick Hand", "Comic Sans MS", cursive;
+  left:50%;
+  width:78%;
+  transform:translateX(-50%);
+  color:#044e61;
   text-align:center;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-
-  transform:translateY(-50%);
+  font-weight:800;
+  line-height:1.1;
+  overflow-wrap:anywhere;
 }
 
 /*
-  Les textes sont placés juste au-dessus
-  des trois lignes imprimées du diplôme.
+  Ces positions sont exprimées en pourcentage du diplôme.
+  Elles restent donc alignées lorsque le diplôme est réduit.
 */
-
 .nom-equipe{
-  top:40.5%;
-  font-size:clamp(18px, 3.1vw, 42px);
-  font-weight:bold;
-  letter-spacing:.4px;
-  text-transform:uppercase;
+  top:43.6%;
+  font-size:clamp(18px,3.2vw,44px);
 }
 
 .classe{
-  top:49.0%;
-  font-size:clamp(16px, 2.4vw, 32px);
+  top:54.4%;
+  font-size:clamp(13px,2vw,28px);
 }
 
 .ecole{
-  top:57.5%;
-  font-size:clamp(15px, 2.2vw, 29px);
+  top:60.2%;
+  font-size:clamp(13px,2vw,28px);
 }
 
 .date{
-  position:absolute;
+  top:79.8%;
+  font-size:clamp(11px,1.55vw,21px);
+  font-weight:700;
+}
 
-  left:59.8%;
-  top:68.2%;
-  width:27.8%;
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:12px;
+  width:75%;
+  max-width:900px;
+  margin:22px auto 0;
+}
 
-  color:#087a78;
+.actions button,
+.actions a{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:48px;
+  padding:12px 25px;
+  border:0;
+  border-radius:999px;
+  outline:none;
+  box-shadow:none;
+  font-size:15px;
+  font-weight:800;
+  text-decoration:none;
+  cursor:pointer;
+}
 
-  font-family:"Patrick Hand", "Comic Sans MS", cursive;
-  font-size:clamp(12px, 1.45vw, 20px);
+#boutonImprimer{
+  background:#edb01a;
+  color:#044e61;
+}
+
+#boutonAccueil{
+  background:#ffffff;
+  color:#044e61;
+}
+
+.actions button:hover,
+.actions button:focus,
+.actions a:hover,
+.actions a:focus{
+  filter:brightness(.97);
+}
+
+.message{
+  width:75%;
+  max-width:900px;
+  min-height:20px;
+  margin:12px auto 0;
+  color:#ffffff;
+  font-size:13px;
+  font-weight:bold;
   text-align:center;
 }
 
-@media screen and (max-width:700px){
-
+@media screen and (max-width:760px){
   body{
-    padding:12px;
+    padding:18px 8px 30px;
+  }
+
+  .diplome,
+  .actions,
+  .message{
+    width:94%;
   }
 
   .actions{
-    margin-bottom:12px;
+    flex-direction:column;
   }
 
+  .actions button,
+  .actions a{
+    width:100%;
+  }
 }
 
+/*
+  À l'impression, le diplôme retrouve sa taille maximale.
+  Les boutons et le fond de page disparaissent.
+*/
 @page{
-  size:A4 landscape;
+  size:auto;
   margin:0;
 }
 
 @media print{
-
   html,
   body{
-    width:297mm;
-    height:210mm;
-
     margin:0;
     padding:0;
-
     background:#ffffff;
-
-    -webkit-print-color-adjust:exact;
-    print-color-adjust:exact;
   }
 
-  .page{
-    width:297mm;
-    height:210mm;
-    margin:0;
-  }
-
-  .actions{
-    display:none !important;
+  body{
+    min-height:auto;
   }
 
   .diplome{
-    width:297mm;
-    height:210mm;
+    width:100%;
+    max-width:none;
+    margin:0;
+  }
 
-    page-break-inside:avoid;
-    break-inside:avoid;
+  .actions,
+  .message{
+    display:none !important;
   }
 
   .fond-diplome{
-    display:block !important;
-    visibility:visible !important;
+    width:100%;
   }
 
-  .texte-variable{
-    overflow:visible;
-    text-overflow:clip;
+  .nom-equipe{
+    font-size:36px;
   }
 
+  .classe,
+  .ecole{
+    font-size:23px;
+  }
+
+  .date{
+    font-size:18px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<main class="page">
-
-  <div class="actions">
-
-    <button
-      id="boutonImprimer"
-      type="button">
-      Télécharger / imprimer le diplôme
-    </button>
-
-  </div>
+<main>
 
   <section
+    id="diplome"
     class="diplome"
-    aria-label="Diplôme Rebond personnalisé">
+    aria-label="Diplôme personnalisé Rebond">
 
     <img
       class="fond-diplome"
@@ -254,180 +252,161 @@ body{
 
   </section>
 
+  <div class="actions">
+
+    <button
+      id="boutonImprimer"
+      type="button">
+      Télécharger / imprimer le diplôme
+    </button>
+
+    <a
+      id="boutonAccueil"
+      href="../index.html">
+      Retour au menu principal
+    </a>
+
+  </div>
+
+  <div
+    id="message"
+    class="message"
+    aria-live="polite">
+  </div>
+
 </main>
 
 <script>
-const nomEquipe =
-  document.getElementById("nomEquipe");
+(function(){
 
-const classe =
-  document.getElementById("classe");
+  const nomEquipe =
+    document.getElementById("nomEquipe");
 
-const ecole =
-  document.getElementById("ecole");
+  const classe =
+    document.getElementById("classe");
 
-const date =
-  document.getElementById("date");
+  const ecole =
+    document.getElementById("ecole");
 
-function lireParametre(nom){
+  const date =
+    document.getElementById("date");
 
-  const parametres =
-    new URLSearchParams(
-      window.location.search
-    );
+  const boutonImprimer =
+    document.getElementById("boutonImprimer");
 
-  return parametres.get(nom);
+  const message =
+    document.getElementById("message");
 
-}
+  function lireEquipeCourante(){
 
-function lireEquipeLocale(){
+    const donnees =
+      localStorage.getItem(
+        "rebondCurrentTeam"
+      );
 
-  const brut =
-    localStorage.getItem(
-      "rebondCurrentTeam"
-    );
-
-  if(!brut){
-    return null;
-  }
-
-  try{
-    return JSON.parse(brut);
-  }
-  catch(error){
-
-    console.error(
-      "Informations locales illisibles :",
-      error
-    );
-
-    return null;
-
-  }
-
-}
-
-function formaterDate(dateBrute){
-
-  if(!dateBrute){
-    return "";
-  }
-
-  const objetDate =
-    new Date(
-      dateBrute + "T12:00:00"
-    );
-
-  if(
-    Number.isNaN(
-      objetDate.getTime()
-    )
-  ){
-    return dateBrute;
-  }
-
-  return objetDate.toLocaleDateString(
-    "fr-FR",
-    {
-      day:"2-digit",
-      month:"long",
-      year:"numeric"
+    if(!donnees){
+      return null;
     }
-  );
 
-}
+    try{
+      return JSON.parse(donnees);
+    }
+    catch(error){
+      console.error(
+        "Impossible de lire les informations de l’équipe.",
+        error
+      );
 
-function remplirDiplome(){
+      return null;
+    }
 
-  const equipeLocale =
-    lireEquipeLocale() || {};
+  }
 
-  const valeurEquipe =
-    lireParametre("equipe") ||
-    equipeLocale.nomEquipe ||
-    equipeLocale.teamName ||
-    "NOM DE L’ÉQUIPE";
+  function afficherDate(dateBrute){
 
-  const valeurClasse =
-    lireParametre("classe") ||
-    equipeLocale.classe ||
-    equipeLocale.className ||
-    "CLASSE";
+    if(!dateBrute){
+      return "";
+    }
 
-  const valeurEcole =
-    lireParametre("ecole") ||
-    equipeLocale.ecole ||
-    equipeLocale.schoolName ||
-    "ÉCOLE OU STRUCTURE";
+    const objetDate =
+      new Date(
+        dateBrute + "T12:00:00"
+      );
 
-  const valeurDate =
-    lireParametre("date") ||
-    equipeLocale.date ||
-    equipeLocale.sessionDate ||
-    "";
+    if(
+      Number.isNaN(
+        objetDate.getTime()
+      )
+    ){
+      return dateBrute;
+    }
 
-  nomEquipe.textContent =
-    valeurEquipe;
-
-  classe.textContent =
-    valeurClasse;
-
-  ecole.textContent =
-    valeurEcole;
-
-  date.textContent =
-    formaterDate(
-      valeurDate
+    return objetDate.toLocaleDateString(
+      "fr-FR",
+      {
+        day:"numeric",
+        month:"long",
+        year:"numeric"
+      }
     );
 
-  document.title =
-    "Diplôme Rebond — " +
-    valeurEquipe;
+  }
 
-}
+  function remplirDiplome(){
 
-document
-  .getElementById("boutonImprimer")
-  .addEventListener(
+    const equipe =
+      lireEquipeCourante();
+
+    if(!equipe){
+
+      message.textContent =
+        "Les informations de l’équipe n’ont pas été trouvées sur cet appareil.";
+
+      return;
+    }
+
+    nomEquipe.textContent =
+      equipe.nomEquipe ||
+      "ÉQUIPE REBOND";
+
+    classe.textContent =
+      equipe.classe ||
+      "";
+
+    ecole.textContent =
+      equipe.ecole ||
+      "";
+
+    date.textContent =
+      afficherDate(
+        equipe.date
+      );
+
+    document.title =
+      "Diplôme Rebond — " +
+      (
+        equipe.nomEquipe ||
+        "Équipe"
+      );
+
+  }
+
+  boutonImprimer.addEventListener(
     "click",
     function(){
 
       /*
-        Petit délai pour s’assurer que l’image et la police
-        sont chargées avant l’ouverture de l’impression.
+        Le navigateur permet ensuite d’imprimer
+        ou d’enregistrer le diplôme au format PDF.
       */
-
-      Promise.all([
-        document.fonts ? document.fonts.ready : Promise.resolve(),
-        new Promise(function(resolve){
-
-          const fond =
-            document.querySelector(".fond-diplome");
-
-          if(fond.complete){
-            resolve();
-          }
-          else{
-            fond.addEventListener(
-              "load",
-              resolve,
-              {
-                once:true
-              }
-            );
-          }
-
-        })
-      ]).then(function(){
-
-        window.print();
-
-      });
+      window.print();
 
     }
   );
 
-remplirDiplome();
+  remplirDiplome();
+
+})();
 </script>
 
 </body>
