@@ -748,7 +748,7 @@ body{
       preload="auto">
 
       <source
-        src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/Intro/intro.mp4"
+        src="intro.mp4"
         type="video/mp4">
 
     </video>
@@ -756,7 +756,7 @@ body{
     <img
       id="boutonGo"
       class="bouton-go"
-      src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/Intro/bouton.png"
+      src="bouton.png"
       alt="Lancer l’introduction"
       role="button"
       tabindex="0"
@@ -887,8 +887,8 @@ body{
   src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
 </script>
 
-<script src="../js/config.js?v=8"></script>
-<script src="../js/supabase.js?v=8"></script>
+<script src="../js/config.js?v=14"></script>
+<script src="../js/supabase.js?v=14"></script>
 
 <script>
 const videoIntro =
@@ -1210,8 +1210,10 @@ formulaireEquipe.addEventListener(
         function(){
 
           window.location.href =
-            window.REBOND_CONFIG
-              .enigme1Url;
+            new URL(
+              "../enigme1.html",
+              window.location.href
+            ).toString();
 
         },
         700
@@ -1352,26 +1354,15 @@ function determinerPageReprise(){
 
 function construireAdresseReprise(page){
 
-  const adresseEnigme1 =
-    new URL(
-      window.REBOND_CONFIG.enigme1Url,
-      window.location.href
-    );
-
-  if(
-    page === "fin/fin.html"
-  ){
-
-    return new URL(
-      "fin/fin.html",
-      adresseEnigme1
-    ).toString();
-
-  }
+  /*
+    intro.html se trouve dans le dossier Intro.
+    On remonte donc d’un niveau pour retrouver
+    la racine du site rebondplay.com.
+  */
 
   return new URL(
-    page,
-    adresseEnigme1
+    "../" + page,
+    window.location.href
   ).toString();
 
 }
