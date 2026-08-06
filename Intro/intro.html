@@ -1,0 +1,1483 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
+<title>Escape Game Rebond - Introduction</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html,
+body{
+  width:100%;
+  min-height:100%;
+
+  background:#1b5f6e;
+
+  font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+  overflow-x:auto;
+}
+
+/* ======================================================
+   CONTENEUR PRINCIPAL
+====================================================== */
+
+.page-intro{
+  min-height:100vh;
+  min-height:100dvh;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+
+  padding:20px;
+}
+
+/* ======================================================
+   RETOUR AU MENU
+====================================================== */
+
+.retour-menu{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  min-height:34px;
+
+  margin-bottom:10px;
+  padding:7px 14px;
+
+  border:0;
+  border-radius:999px;
+
+  outline:none;
+  box-shadow:none;
+
+  background:rgba(255,255,255,.94);
+  color:#044e61;
+
+  font-family:Arial, Helvetica, sans-serif;
+  font-size:12px;
+  font-weight:bold;
+  line-height:1;
+
+  text-decoration:none;
+
+  cursor:pointer;
+
+  -webkit-tap-highlight-color:transparent;
+
+  transition:
+    background-color .2s ease,
+    transform .2s ease;
+}
+
+.retour-menu:hover{
+  background:#ffffff;
+
+  transform:translateY(-1px);
+}
+
+.retour-menu:focus,
+.retour-menu:focus-visible,
+.retour-menu:active{
+  border:0;
+  outline:none;
+  box-shadow:none;
+
+  background:#ffffff;
+}
+
+/* ======================================================
+   BLOC VIDÉO ET FORMULAIRE
+====================================================== */
+
+.bloc-intro{
+  position:relative;
+
+  width:999px;
+  height:716px;
+
+  flex:0 0 auto;
+
+  line-height:0;
+  font-size:0;
+}
+
+/* ======================================================
+   VIDÉO CACHÉE AU DÉPART
+====================================================== */
+
+.video-intro{
+  display:none;
+
+  width:999px;
+  height:716px;
+
+  object-fit:fill;
+
+  border:0;
+  background:#000000;
+}
+
+.video-intro.visible{
+  display:block;
+}
+
+/* ======================================================
+   BOUTON DE LANCEMENT DE LA VIDÉO
+====================================================== */
+
+.bouton-go{
+  position:absolute;
+
+  left:50%;
+  top:50%;
+
+  z-index:100;
+
+  display:block;
+
+  width:260px;
+  height:auto;
+
+  transform:translate(-50%,-50%);
+
+  cursor:pointer;
+
+  user-select:none;
+  -webkit-user-drag:none;
+  -webkit-tap-highlight-color:transparent;
+
+  transition:
+    transform .2s ease,
+    opacity .2s ease;
+}
+
+.bouton-go:hover{
+  transform:
+    translate(-50%,-50%)
+    scale(1.05);
+}
+
+.bouton-go:active{
+  transform:
+    translate(-50%,-50%)
+    scale(.97);
+}
+
+.bouton-go:focus,
+.bouton-go:focus-visible{
+  outline:none;
+}
+
+/* ======================================================
+   ÉCRAN DU FORMULAIRE
+====================================================== */
+
+.inscription-overlay{
+  position:absolute;
+  inset:0;
+
+  z-index:150;
+
+  display:none;
+  align-items:center;
+  justify-content:center;
+
+  background:#1b5f6e;
+
+  line-height:normal;
+  font-size:16px;
+}
+
+.inscription-overlay.visible{
+  display:flex;
+}
+
+/*
+  La nouvelle image valid_1.png
+  mesure 2048 × 1763 px.
+*/
+
+.inscription-carte{
+  position:relative;
+
+  width:760px;
+  max-width:100%;
+
+  aspect-ratio:2048 / 1763;
+
+  overflow:hidden;
+
+  background:
+    transparent
+    url("valid_1.png")
+    center center / 100% 100%
+    no-repeat;
+
+  color:#044e61;
+}
+
+/* ======================================================
+   FORMULAIRES POSITIONNÉS SUR L’IMAGE
+====================================================== */
+
+.formulaire-principal,
+.formulaire-reprise{
+  position:absolute;
+  inset:0;
+
+  margin:0;
+  padding:0;
+
+  pointer-events:none;
+}
+
+/* ======================================================
+   CHAMPS GÉNÉRAUX
+====================================================== */
+
+.champ{
+  position:absolute;
+
+  display:block;
+
+  margin:0;
+  padding:0;
+
+  overflow:hidden;
+
+  pointer-events:auto;
+}
+
+.champ label{
+  position:absolute;
+
+  width:1px;
+  height:1px;
+
+  margin:-1px;
+  padding:0;
+
+  overflow:hidden;
+
+  clip:rect(0,0,0,0);
+  clip-path:inset(50%);
+
+  white-space:nowrap;
+
+  border:0;
+}
+
+.champ input{
+  display:block;
+
+  width:100%;
+  min-width:0;
+  max-width:100%;
+  height:100%;
+
+  margin:0;
+  padding:0 18px;
+
+  border:0;
+  border-radius:14px;
+
+  outline:none;
+  box-shadow:none;
+
+  appearance:none;
+  -webkit-appearance:none;
+
+  background:transparent;
+  color:#044e61;
+
+  font-family:Arial, Helvetica, sans-serif;
+  font-size:clamp(12px,1.55vw,18px);
+  font-weight:bold;
+  line-height:normal;
+
+  text-align:left;
+
+  -webkit-tap-highlight-color:transparent;
+}
+
+.champ input:hover,
+.champ input:focus,
+.champ input:focus-visible,
+.champ input:active{
+  border:0;
+  outline:none;
+  box-shadow:none;
+
+  background:transparent;
+}
+
+.champ input::placeholder{
+  color:#8fa3a7;
+  opacity:1;
+  font-weight:700;
+  letter-spacing:1.5px;
+}
+
+/* ======================================================
+   CHAMP CODE DE SESSION
+====================================================== */
+
+.champ-code{
+  left:23.8%;
+  top:35.55%;
+
+  width:54.2%;
+  height:6.9%;
+}
+
+#codeSession{
+  font-weight:900;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+
+/* ======================================================
+   CHAMP NOM DE L’ÉQUIPE
+====================================================== */
+
+.champ-equipe{
+  left:23.8%;
+  top:49.15%;
+
+  width:54.2%;
+  height:6.9%;
+}
+
+/* ======================================================
+   BOUTON COMMENCER
+====================================================== */
+
+.bouton-commencer{
+  position:absolute;
+
+  left:23.8%;
+  top:59.45%;
+
+  width:54.2%;
+  height:8.05%;
+
+  margin:0;
+  padding:0;
+
+  border:0;
+  border-radius:999px;
+
+  outline:none;
+  box-shadow:none;
+
+  appearance:none;
+  -webkit-appearance:none;
+
+  background:transparent;
+  color:transparent;
+
+  font-size:0;
+
+  cursor:pointer;
+
+  pointer-events:auto;
+
+  -webkit-tap-highlight-color:transparent;
+}
+
+.bouton-commencer:hover,
+.bouton-commencer:focus,
+.bouton-commencer:focus-visible,
+.bouton-commencer:active{
+  border:0;
+  outline:none;
+  box-shadow:none;
+
+  background:transparent;
+
+  transform:none;
+}
+
+.bouton-commencer:disabled{
+  opacity:.55;
+  cursor:wait;
+}
+
+/* ======================================================
+   MESSAGE DU FORMULAIRE PRINCIPAL
+====================================================== */
+
+.message{
+  position:absolute;
+
+  left:50%;
+  top:56.7%;
+
+  z-index:8;
+
+  display:none;
+  align-items:center;
+  justify-content:center;
+
+  width:max-content;
+  max-width:52%;
+  min-height:22px;
+
+  padding:4px 12px;
+
+  border-radius:999px;
+
+  background:rgba(255,255,255,.96);
+  color:#044e61;
+
+  font-size:clamp(8px,1vw,11px);
+  font-weight:bold;
+  line-height:1.2;
+
+  text-align:center;
+  white-space:nowrap;
+
+  transform:translateX(-50%);
+
+  pointer-events:none;
+}
+
+.message:not(:empty){
+  display:flex;
+}
+
+.message.erreur{
+  color:#b53030;
+}
+
+.message.succes{
+  color:#16824a;
+}
+
+/* ======================================================
+   REPRISE D’UNE PARTIE
+====================================================== */
+
+.champ-reprise{
+  left:48.85%;
+  top:78.85%;
+
+  width:21.35%;
+  height:6.25%;
+}
+
+#codeReprise{
+  padding:0 16px;
+
+  font-weight:900;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+
+/* ======================================================
+   BOUTON VALIDER LA REPRISE
+====================================================== */
+
+.bouton-reprise{
+  position:absolute;
+
+  left:72.05%;
+  top:78.85%;
+
+  width:8.65%;
+  height:6.25%;
+
+  margin:0;
+  padding:0;
+
+  border:0;
+  border-radius:999px;
+
+  outline:none;
+  box-shadow:none;
+
+  appearance:none;
+  -webkit-appearance:none;
+
+  background:transparent;
+  color:transparent;
+
+  font-size:0;
+
+  cursor:pointer;
+
+  pointer-events:auto;
+
+  -webkit-tap-highlight-color:transparent;
+}
+
+.bouton-reprise:hover,
+.bouton-reprise:focus,
+.bouton-reprise:focus-visible,
+.bouton-reprise:active{
+  border:0;
+  outline:none;
+  box-shadow:none;
+
+  background:transparent;
+}
+
+.bouton-reprise:disabled{
+  opacity:.55;
+  cursor:wait;
+}
+
+/* ======================================================
+   MESSAGE DE REPRISE
+====================================================== */
+
+.message-reprise{
+  position:absolute;
+
+  left:64.5%;
+  top:86%;
+
+  z-index:8;
+
+  display:none;
+
+  width:max-content;
+  max-width:42%;
+
+  padding:5px 12px;
+
+  border-radius:999px;
+
+  background:rgba(255,255,255,.96);
+  color:#044e61;
+
+  font-size:clamp(8px,1vw,11px);
+  font-weight:bold;
+  line-height:1.2;
+
+  text-align:center;
+  white-space:nowrap;
+
+  transform:translateX(-50%);
+
+  pointer-events:none;
+}
+
+.message-reprise:not(:empty){
+  display:block;
+}
+
+.message-reprise.erreur{
+  color:#b53030;
+}
+
+.message-reprise.succes{
+  color:#16824a;
+}
+
+/* ======================================================
+   TEXTE ACCESSIBLE MAIS INVISIBLE
+====================================================== */
+
+.visuellement-cache{
+  position:absolute;
+
+  width:1px;
+  height:1px;
+
+  margin:-1px;
+  padding:0;
+
+  overflow:hidden;
+
+  clip:rect(0,0,0,0);
+  clip-path:inset(50%);
+
+  white-space:nowrap;
+
+  border:0;
+}
+
+/* ======================================================
+   RESPONSIVE
+====================================================== */
+
+@media screen and (max-width:1080px){
+
+  .page-intro{
+    align-items:center;
+  }
+
+}
+
+@media screen and (max-width:760px){
+
+  .page-intro{
+    justify-content:flex-start;
+
+    padding:12px 4px;
+  }
+
+  .retour-menu{
+    margin-bottom:7px;
+
+    font-size:11px;
+  }
+
+  .bloc-intro{
+    width:100%;
+    height:auto;
+
+    aspect-ratio:999 / 716;
+  }
+
+  .video-intro{
+    width:100%;
+    height:100%;
+  }
+
+  .inscription-carte{
+    width:90%;
+    max-width:760px;
+  }
+
+  .champ input{
+    padding-left:3%;
+    padding-right:3%;
+
+    border-radius:10px;
+
+    font-size:clamp(
+      9px,
+      2.25vw,
+      18px
+    );
+  }
+
+  .message,
+  .message-reprise{
+    padding:2px 6px;
+
+    font-size:clamp(
+      7px,
+      1.4vw,
+      11px
+    );
+  }
+
+}
+
+@media screen and (max-width:520px){
+
+  .page-intro{
+    padding:5px 1px;
+  }
+
+  .retour-menu{
+    min-height:30px;
+
+    margin-bottom:6px;
+    padding:6px 11px;
+
+    font-size:10px;
+  }
+
+  .bouton-go{
+    width:32%;
+    min-width:125px;
+  }
+
+  .inscription-carte{
+    width:100%;
+  }
+
+  .champ input{
+    border-radius:6px;
+  }
+
+  .bouton-commencer,
+  .bouton-reprise{
+    border-radius:24px;
+  }
+
+  .message,
+  .message-reprise{
+    max-width:70%;
+
+    white-space:normal;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="page-intro">
+
+  <a
+    class="retour-menu"
+    href="../index.html"
+    aria-label="Retour au menu principal">
+    ← Retour au menu
+  </a>
+
+  <div class="bloc-intro">
+
+    <video
+      id="videoIntro"
+      class="video-intro"
+      playsinline
+      webkit-playsinline
+      preload="auto">
+
+      <source
+        src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/Intro/intro.mp4"
+        type="video/mp4">
+
+    </video>
+
+    <img
+      id="boutonGo"
+      class="bouton-go"
+      src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/Intro/bouton.png"
+      alt="Lancer l’introduction"
+      role="button"
+      tabindex="0"
+      draggable="false">
+
+    <div
+      id="inscriptionOverlay"
+      class="inscription-overlay">
+
+      <section class="inscription-carte">
+
+        <h1 class="visuellement-cache">
+          Rejoins ou reprends une partie
+        </h1>
+
+        <!-- =============================================
+             REJOINDRE UNE NOUVELLE PARTIE
+        ============================================== -->
+
+        <form
+          id="formulaireEquipe"
+          class="formulaire-principal">
+
+          <div class="champ champ-code">
+
+            <label for="codeSession">
+              Code de session
+            </label>
+
+            <input
+              id="codeSession"
+              name="codeSession"
+              type="text"
+              placeholder="RBD-XXXX"
+              autocomplete="off"
+              autocapitalize="characters"
+              spellcheck="false"
+              maxlength="8"
+              required>
+
+          </div>
+
+          <div class="champ champ-equipe">
+
+            <label for="nomEquipe">
+              Nom de l’équipe ou du participant
+            </label>
+
+            <input
+              id="nomEquipe"
+              name="nomEquipe"
+              type="text"
+              autocomplete="off"
+              spellcheck="false"
+              maxlength="60"
+              required>
+
+          </div>
+
+          <button
+            id="boutonRejoindre"
+            class="bouton-commencer"
+            type="submit"
+            aria-label="Commencer la partie">
+
+            <span class="visuellement-cache">
+              Commencer la partie
+            </span>
+
+          </button>
+
+          <div id="message" class="message" aria-live="polite"></div>
+
+        </form>
+
+        <!-- =============================================
+             REPRENDRE UNE PARTIE
+        ============================================== -->
+
+        <form
+          id="formulaireReprise"
+          class="formulaire-reprise">
+
+          <div class="champ champ-reprise">
+
+            <label for="codeReprise">
+              Code de la partie à reprendre
+            </label>
+
+            <input
+              id="codeReprise"
+              name="codeReprise"
+              type="text"
+              placeholder="RBD-XXXX"
+              autocomplete="off"
+              autocapitalize="characters"
+              spellcheck="false"
+              maxlength="8"
+              required>
+
+          </div>
+
+          <button
+            id="boutonReprise"
+            class="bouton-reprise"
+            type="submit"
+            aria-label="Reprendre la partie">
+
+            <span class="visuellement-cache">
+              Valider
+            </span>
+
+          </button>
+
+          <div id="messageReprise" class="message-reprise" aria-live="polite"></div>
+
+        </form>
+
+      </section>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
+<script src="../js/config.js?v=8"></script>
+<script src="../js/supabase.js?v=8"></script>
+
+<script>
+const videoIntro =
+  document.getElementById(
+    "videoIntro"
+  );
+
+const boutonGo =
+  document.getElementById(
+    "boutonGo"
+  );
+
+const inscriptionOverlay =
+  document.getElementById(
+    "inscriptionOverlay"
+  );
+
+const formulaireEquipe =
+  document.getElementById(
+    "formulaireEquipe"
+  );
+
+const boutonRejoindre =
+  document.getElementById(
+    "boutonRejoindre"
+  );
+
+const message =
+  document.getElementById(
+    "message"
+  );
+
+const champCode =
+  document.getElementById(
+    "codeSession"
+  );
+
+const champEquipe =
+  document.getElementById(
+    "nomEquipe"
+  );
+
+const formulaireReprise =
+  document.getElementById(
+    "formulaireReprise"
+  );
+
+const champCodeReprise =
+  document.getElementById(
+    "codeReprise"
+  );
+
+const boutonReprise =
+  document.getElementById(
+    "boutonReprise"
+  );
+
+const messageReprise =
+  document.getElementById(
+    "messageReprise"
+  );
+
+let introDemarree = false;
+
+/* ======================================================
+   FORMATAGE DES CODES
+====================================================== */
+
+function nettoyerCode(valeur){
+
+  return String(
+    valeur || ""
+  )
+    .trim()
+    .toUpperCase()
+    .replace(
+      /[^A-Z0-9-]/g,
+      ""
+    );
+
+}
+
+champCode.addEventListener(
+  "input",
+  function(){
+
+    champCode.value =
+      nettoyerCode(
+        champCode.value
+      );
+
+  }
+);
+
+champCodeReprise.addEventListener(
+  "input",
+  function(){
+
+    champCodeReprise.value =
+      nettoyerCode(
+        champCodeReprise.value
+      );
+
+  }
+);
+
+/* ======================================================
+   LANCEMENT DE LA VIDÉO
+====================================================== */
+
+function lancerIntroduction(){
+
+  if(introDemarree){
+    return;
+  }
+
+  introDemarree = true;
+
+  boutonGo.style.opacity =
+    "0";
+
+  boutonGo.style.pointerEvents =
+    "none";
+
+  videoIntro.classList.add(
+    "visible"
+  );
+
+  videoIntro.muted =
+    false;
+
+  videoIntro.volume =
+    1;
+
+  videoIntro.currentTime =
+    0;
+
+  const lecture =
+    videoIntro.play();
+
+  if(
+    lecture &&
+    typeof lecture.catch ===
+    "function"
+  ){
+
+    lecture
+      .then(
+        function(){
+
+          window.setTimeout(
+            function(){
+
+              boutonGo.style.display =
+                "none";
+
+            },
+            200
+          );
+
+        }
+      )
+      .catch(
+        function(error){
+
+          console.error(
+            "La vidéo n’a pas pu démarrer.",
+            error
+          );
+
+          introDemarree =
+            false;
+
+          videoIntro.pause();
+
+          videoIntro.classList.remove(
+            "visible"
+          );
+
+          boutonGo.style.display =
+            "block";
+
+          boutonGo.style.opacity =
+            "1";
+
+          boutonGo.style.pointerEvents =
+            "auto";
+
+        }
+      );
+
+  }
+
+}
+
+/* ======================================================
+   ACTIONS DU BOUTON DE LANCEMENT
+====================================================== */
+
+boutonGo.addEventListener(
+  "click",
+  lancerIntroduction
+);
+
+boutonGo.addEventListener(
+  "keydown",
+  function(event){
+
+    if(
+      event.key === "Enter" ||
+      event.key === " "
+    ){
+
+      event.preventDefault();
+
+      lancerIntroduction();
+
+    }
+
+  }
+);
+
+/* ======================================================
+   AFFICHAGE DU FORMULAIRE À LA FIN DE LA VIDÉO
+====================================================== */
+
+videoIntro.addEventListener(
+  "ended",
+  function(){
+
+    videoIntro.pause();
+
+    inscriptionOverlay.classList.add(
+      "visible"
+    );
+
+    window.setTimeout(
+      function(){
+
+        champCode.focus();
+
+      },
+      80
+    );
+
+  }
+);
+
+/* ======================================================
+   REJOINDRE UNE NOUVELLE PARTIE
+====================================================== */
+
+formulaireEquipe.addEventListener(
+  "submit",
+  async function(event){
+
+    event.preventDefault();
+
+    message.textContent =
+      "";
+
+    message.className =
+      "message";
+
+    const code =
+      nettoyerCode(
+        champCode.value
+      );
+
+    const equipe =
+      champEquipe.value
+        .trim();
+
+    if(
+      !code ||
+      !equipe
+    ){
+
+      message.className =
+        "message erreur";
+
+      message.textContent =
+        "Les deux champs sont obligatoires.";
+
+      return;
+
+    }
+
+    boutonRejoindre.disabled =
+      true;
+
+    message.textContent =
+      "Connexion à la session…";
+
+    try{
+
+      await window.REBOND_DB
+        .rejoindreSession({
+          code:code,
+          equipe:equipe
+        });
+
+      localStorage.setItem(
+        "rebondCurrentPage",
+        "enigme1.html"
+      );
+
+      localStorage.removeItem(
+        "motsEscapeRebond"
+      );
+
+      message.className =
+        "message succes";
+
+      message.textContent =
+        "Équipe enregistrée. Ouverture du jeu…";
+
+      window.setTimeout(
+        function(){
+
+          window.location.href =
+            window.REBOND_CONFIG
+              .enigme1Url;
+
+        },
+        700
+      );
+
+    }
+    catch(error){
+
+      console.error(error);
+
+      message.className =
+        "message erreur";
+
+      message.textContent =
+        error.message ||
+        "Impossible de rejoindre cette session.";
+
+      boutonRejoindre.disabled =
+        false;
+
+    }
+
+  }
+);
+
+/* ======================================================
+   DÉTERMINER LA DERNIÈRE ÉNIGME ATTEINTE
+====================================================== */
+
+function determinerPageReprise(){
+
+  const pageEnregistree =
+    localStorage.getItem(
+      "rebondCurrentPage"
+    );
+
+  const pagesAutorisees = [
+    "enigme1.html",
+    "enigme2.html",
+    "enigme3.html",
+    "enigme4.html",
+    "enigme5.html",
+    "fin/fin.html"
+  ];
+
+  if(
+    pageEnregistree &&
+    pagesAutorisees.includes(
+      pageEnregistree
+    )
+  ){
+
+    return pageEnregistree;
+
+  }
+
+  let mots = [];
+
+  try{
+
+    const donnees =
+      JSON.parse(
+        localStorage.getItem(
+          "motsEscapeRebond"
+        )
+      );
+
+    mots =
+      Array.isArray(donnees)
+        ? donnees
+        : [];
+
+  }
+  catch(error){
+
+    mots = [];
+
+  }
+
+  const enigmesTerminees =
+    mots
+      .map(
+        function(item){
+
+          const correspondance =
+            String(
+              item.enigme || ""
+            ).match(
+              /(\d+)/
+            );
+
+          return correspondance
+            ? Number(
+                correspondance[1]
+              )
+            : 0;
+
+        }
+      );
+
+  const derniereEnigme =
+    enigmesTerminees.length
+      ? Math.max(
+          ...enigmesTerminees
+        )
+      : 0;
+
+  if(
+    derniereEnigme >= 5
+  ){
+
+    return "fin/fin.html";
+
+  }
+
+  if(
+    derniereEnigme >= 1
+  ){
+
+    return (
+      "enigme" +
+      Math.min(
+        derniereEnigme + 1,
+        5
+      ) +
+      ".html"
+    );
+
+  }
+
+  return "enigme1.html";
+
+}
+
+/* ======================================================
+   CONSTRUIRE L’ADRESSE DE REPRISE
+====================================================== */
+
+function construireAdresseReprise(page){
+
+  const adresseEnigme1 =
+    new URL(
+      window.REBOND_CONFIG.enigme1Url,
+      window.location.href
+    );
+
+  if(
+    page === "fin/fin.html"
+  ){
+
+    return new URL(
+      "fin/fin.html",
+      adresseEnigme1
+    ).toString();
+
+  }
+
+  return new URL(
+    page,
+    adresseEnigme1
+  ).toString();
+
+}
+
+/* ======================================================
+   REPRENDRE UNE PARTIE
+====================================================== */
+
+formulaireReprise.addEventListener(
+  "submit",
+  function(event){
+
+    event.preventDefault();
+
+    messageReprise.textContent =
+      "";
+
+    messageReprise.className =
+      "message-reprise";
+
+    const codeSaisi =
+      nettoyerCode(
+        champCodeReprise.value
+      );
+
+    if(!codeSaisi){
+
+      messageReprise.className =
+        "message-reprise erreur";
+
+      messageReprise.textContent =
+        "Saisis le code de la partie.";
+
+      return;
+
+    }
+
+    const participation =
+      window.REBOND_DB
+        .lireEquipeCourante();
+
+    if(
+      !participation ||
+      !participation.codeSession
+    ){
+
+      messageReprise.className =
+        "message-reprise erreur";
+
+      messageReprise.textContent =
+        "Aucune partie enregistrée sur cet appareil.";
+
+      return;
+
+    }
+
+    const codeEnregistre =
+      nettoyerCode(
+        participation.codeSession
+      );
+
+    if(
+      codeSaisi !==
+      codeEnregistre
+    ){
+
+      messageReprise.className =
+        "message-reprise erreur";
+
+      messageReprise.textContent =
+        "Ce code ne correspond pas à la partie enregistrée.";
+
+      return;
+
+    }
+
+    boutonReprise.disabled =
+      true;
+
+    messageReprise.className =
+      "message-reprise succes";
+
+    messageReprise.textContent =
+      "Partie retrouvée. Reprise en cours…";
+
+    const page =
+      determinerPageReprise();
+
+    const adresse =
+      construireAdresseReprise(
+        page
+      );
+
+    window.setTimeout(
+      function(){
+
+        window.location.href =
+          adresse;
+
+      },
+      550
+    );
+
+  }
+);
+</script>
+
+</body>
+</html>

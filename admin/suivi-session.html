@@ -1,0 +1,2124 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
+<title>Rebond — Tableau de bord</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html,
+body{
+  width:100%;
+  min-height:100%;
+
+  background:#1b5f6e;
+
+  font-family:Arial, Helvetica, sans-serif;
+  color:#044e61;
+}
+
+body{
+  min-width:999px;
+  min-height:100vh;
+  min-height:100dvh;
+
+  padding:22px 0 30px;
+
+  overflow-x:auto;
+}
+
+/* ======================================================
+   CONTENEUR GÉNÉRAL
+====================================================== */
+
+.page{
+  width:999px;
+  min-width:999px;
+  max-width:none;
+
+  margin:0 auto;
+}
+
+.tableau-bord{
+  position:relative;
+
+  width:100%;
+  aspect-ratio:2048 / 1763;
+
+  background:
+    transparent
+    url("valid_3.png")
+    center center / 100% 100%
+    no-repeat;
+
+  overflow:hidden;
+}
+
+/* ======================================================
+   INFORMATIONS DE SESSION
+====================================================== */
+
+.info-session{
+  position:absolute;
+
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:center;
+
+  overflow:hidden;
+
+  /* Le canevas fait toujours 999 px :
+     on utilise donc des valeurs fixes pour éviter
+     le décalage provoqué par les paddings en %. */
+  padding:0 22px;
+
+  color:#044e61;
+  line-height:1;
+}
+
+.info-label{
+  display:block;
+
+  margin:0;
+
+  color:#688086;
+
+  font-size:11px;
+
+  font-weight:800;
+  line-height:1;
+  text-transform:uppercase;
+
+  white-space:nowrap;
+}
+
+.info-valeur{
+  display:block;
+
+  width:100%;
+  margin-top:5px;
+
+  overflow:hidden;
+
+  color:#044e61;
+
+  font-size:18px;
+
+  font-weight:800;
+  line-height:1;
+
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+/* Première rangée */
+
+.info-structure{
+  left:9.15%;
+  top:35.05%;
+
+  width:27.55%;
+  height:7.45%;
+}
+
+.info-classe{
+  left:37.8%;
+  top:35.05%;
+
+  width:27.55%;
+  height:7.45%;
+}
+
+.info-date{
+  left:66.45%;
+  top:35.05%;
+
+  width:27.5%;
+  height:7.45%;
+}
+
+/* Deuxième rangée */
+
+.info-encadrant{
+  left:9.15%;
+  top:44.55%;
+
+  width:27.55%;
+  height:7.45%;
+}
+
+.info-participants{
+  left:37.8%;
+  top:44.55%;
+
+  width:27.55%;
+  height:7.45%;
+}
+
+/* ======================================================
+   INDICATEURS
+====================================================== */
+
+.indicateur{
+  position:absolute;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+
+  padding-bottom:2px;
+
+  color:#ffffff;
+
+  transform:translateY(-3px);
+
+  text-align:center;
+  line-height:1;
+}
+
+.indicateur-inscrites{
+  left:9.8%;
+  top:54.55%;
+
+  width:26.65%;
+  height:9.6%;
+}
+
+.indicateur-enjeu{
+  left:38.4%;
+  top:54.55%;
+
+  width:26.65%;
+  height:9.6%;
+}
+
+.indicateur-terminees{
+  left:66.95%;
+  top:54.55%;
+
+  width:26.65%;
+  height:9.6%;
+}
+
+.indicateur-nombre{
+  display:block;
+
+  font-size:39px;
+
+  font-weight:900;
+  line-height:1;
+}
+
+.indicateur-label{
+  display:block;
+
+  margin-top:4px;
+
+  font-size:11px;
+
+  font-weight:800;
+
+  line-height:1;
+  text-transform:uppercase;
+  letter-spacing:.25px;
+}
+
+/* ======================================================
+   TABLEAU DYNAMIQUE DES ÉQUIPES
+====================================================== */
+
+.zone-equipes{
+  position:absolute;
+
+  left:8.7%;
+  top:78.55%;
+
+  width:82.8%;
+  height:10.95%;
+
+  overflow:hidden;
+
+  color:#044e61;
+}
+
+/*
+  Les titres ÉQUIPE, DÉBUT,
+  TEMPS ÉCOULÉ et ÉTAT sont déjà
+  inscrits dans valid_3.png.
+*/
+
+.liste-equipes{
+  width:100%;
+  height:100%;
+
+  overflow-y:auto;
+
+  padding-top:0;
+
+  scrollbar-width:thin;
+  scrollbar-color:
+    rgba(4,78,97,.28)
+    transparent;
+}
+
+.liste-equipes::-webkit-scrollbar{
+  width:5px;
+}
+
+.liste-equipes::-webkit-scrollbar-track{
+  background:transparent;
+}
+
+.liste-equipes::-webkit-scrollbar-thumb{
+  border-radius:999px;
+  background:rgba(4,78,97,.25);
+}
+
+/* Une ligne correspond à une équipe */
+
+.ligne-equipe{
+  display:grid;
+
+  grid-template-columns:
+    2.02fr
+    .82fr
+    1.20fr
+    .94fr;
+
+  align-items:center;
+
+  width:100%;
+  min-height:26px;
+
+  padding:
+    3px
+    10px;
+
+  border-bottom:
+    1px solid
+    rgba(4,78,97,.16);
+
+  color:#044e61;
+
+  font-size:13px;
+
+  line-height:1.1;
+
+  animation:
+    apparitionLigne
+    .25s ease;
+}
+
+@keyframes apparitionLigne{
+
+  from{
+    opacity:0;
+    transform:translateY(4px);
+  }
+
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+}
+
+/* ======================================================
+   NOM DE L’ÉQUIPE
+====================================================== */
+
+.nom-equipe{
+  display:flex;
+  align-items:center;
+
+  min-width:0;
+
+  font-weight:700;
+}
+
+.nom-equipe-texte{
+  overflow:hidden;
+
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.puce-statut{
+  flex:0 0 auto;
+
+  width:8px;
+  height:8px;
+
+  margin-right:9px;
+
+  border-radius:50%;
+}
+
+.puce-statut.attente{
+  background:#aebec1;
+}
+
+.puce-statut.encours{
+  background:#4fa4b4;
+}
+
+.puce-statut.terminee{
+  background:#e76f42;
+}
+
+/* ======================================================
+   HEURE ET DURÉE
+====================================================== */
+
+.heure,
+.duree{
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+}
+
+.duree{
+  font-weight:600;
+}
+
+.ligne-equipe.terminee .duree{
+  color:#e76f42;
+}
+
+/* ======================================================
+   BADGES D’ÉTAT
+====================================================== */
+
+.statut{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  justify-self:start;
+
+  min-width:72px;
+
+  padding:3px 9px;
+
+  border:
+    1px solid
+    currentColor;
+
+  border-radius:999px;
+
+  background:rgba(255,255,255,.72);
+
+  font-size:10px;
+
+  font-weight:800;
+
+  line-height:1;
+
+  text-align:center;
+  text-transform:uppercase;
+
+  white-space:nowrap;
+}
+
+.statut.attente{
+  color:#788d91;
+}
+
+.statut.encours{
+  color:#168094;
+}
+
+.statut.terminee{
+  color:#e76f42;
+}
+
+/* ======================================================
+   AUCUNE ÉQUIPE
+====================================================== */
+
+.aucune-equipe{
+  display:none;
+
+  position:absolute;
+  inset:0;
+
+  align-items:center;
+  justify-content:center;
+
+  padding:20px;
+
+  color:#647f85;
+
+  font-size:13px;
+
+  font-weight:bold;
+
+  text-align:center;
+}
+
+.aucune-equipe.visible{
+  display:flex;
+}
+
+/* ======================================================
+   BOUTONS TRANSPARENTS
+====================================================== */
+
+.bouton{
+  position:absolute;
+
+  padding:0;
+
+  border:0;
+  border-radius:999px;
+
+  outline:none;
+  box-shadow:none;
+
+  background:transparent;
+  color:transparent;
+
+  font-size:0;
+
+  cursor:pointer;
+
+  -webkit-tap-highlight-color:transparent;
+}
+
+.bouton:hover,
+.bouton:focus,
+.bouton:focus-visible,
+.bouton:active{
+  border:0;
+  outline:none;
+  box-shadow:none;
+  background:transparent;
+  transform:none;
+}
+
+.bouton:disabled{
+  opacity:.48;
+  cursor:wait;
+}
+
+/* Activer le suivi */
+
+.bouton-suivi{
+  left:7.9%;
+  top:25.65%;
+
+  width:24.75%;
+  height:6.05%;
+}
+
+/* Générer le compte rendu */
+
+.bouton-compte-rendu{
+  left:35.65%;
+  top:25.65%;
+
+  width:26.65%;
+  height:6.05%;
+}
+
+/* Envoyer le compte rendu par e-mail
+   Zone transparente superposée au bouton dessiné
+   directement dans valid_3.png. */
+
+.bouton-email{
+  left:67.9%;
+  top:25.65%;
+
+  width:26.75%;
+  height:6.05%;
+
+  z-index:7;
+
+  background:transparent !important;
+  color:transparent !important;
+  box-shadow:none !important;
+  border:0 !important;
+}
+
+
+.bouton-suivi,
+.bouton-compte-rendu,
+.bouton-email{
+  background:transparent !important;
+  color:transparent !important;
+  border:0 !important;
+  outline:0 !important;
+  box-shadow:none !important;
+  appearance:none;
+  -webkit-appearance:none;
+}
+
+.bouton-suivi:hover,
+.bouton-suivi:focus,
+.bouton-suivi:active,
+.bouton-compte-rendu:hover,
+.bouton-compte-rendu:focus,
+.bouton-compte-rendu:active,
+.bouton-email:hover,
+.bouton-email:focus,
+.bouton-email:active{
+  background:transparent !important;
+  color:transparent !important;
+  border:0 !important;
+  outline:0 !important;
+  box-shadow:none !important;
+}
+
+
+/* Les trois boutons sont dessinés dans valid_3.png.
+   Ces éléments HTML servent uniquement de zones cliquables invisibles. */
+.bouton-suivi,
+.bouton-compte-rendu,
+.bouton-email,
+.bouton-suivi:hover,
+.bouton-suivi:focus,
+.bouton-suivi:focus-visible,
+.bouton-suivi:active,
+.bouton-compte-rendu:hover,
+.bouton-compte-rendu:focus,
+.bouton-compte-rendu:focus-visible,
+.bouton-compte-rendu:active,
+.bouton-email:hover,
+.bouton-email:focus,
+.bouton-email:focus-visible,
+.bouton-email:active{
+  background:transparent !important;
+  color:transparent !important;
+  border:0 !important;
+  outline:0 !important;
+  box-shadow:none !important;
+  appearance:none !important;
+  -webkit-appearance:none !important;
+  font-size:0 !important;
+}
+
+/* ======================================================
+   POINT VERT DU SUIVI
+====================================================== */
+
+.temoin-suivi{
+  position:absolute;
+
+  left:21.55%;
+  top:28.25%;
+
+  z-index:5;
+
+  width:10px;
+  height:10px;
+
+  border-radius:50%;
+
+  background:#8ea3a7;
+
+  opacity:0;
+
+  pointer-events:none;
+
+  transition:
+    opacity .2s ease,
+    background-color .2s ease,
+    box-shadow .2s ease;
+}
+
+.temoin-suivi.actif{
+  opacity:1;
+
+  background:#21dc84;
+
+  box-shadow:
+    0 0 5px rgba(33,220,132,.9),
+    0 0 12px rgba(33,220,132,.75),
+    0 0 20px rgba(33,220,132,.45);
+
+  animation:
+    pulsationTemoin
+    1.5s ease-in-out infinite;
+}
+
+@keyframes pulsationTemoin{
+
+  0%,
+  100%{
+    transform:scale(1);
+    opacity:1;
+  }
+
+  50%{
+    transform:scale(1.18);
+    opacity:.78;
+  }
+
+}
+
+/* ======================================================
+   MESSAGE
+====================================================== */
+
+.message{
+  position:absolute;
+
+  left:29%;
+  top:32.55%;
+
+  z-index:8;
+
+  width:42%;
+  min-height:22px;
+
+  display:none;
+  align-items:center;
+  justify-content:center;
+
+  padding:3px 10px;
+
+  border-radius:999px;
+
+  background:rgba(255,255,255,.96);
+  color:#044e61;
+
+  font-size:10px;
+
+  font-weight:bold;
+  text-align:center;
+
+  pointer-events:none;
+}
+
+.message:not(:empty){
+  display:flex;
+}
+
+.message.erreur{
+  color:#b53030;
+}
+
+.message.succes{
+  color:#16824a;
+}
+
+
+/* ======================================================
+   FENÊTRE D’ENVOI PAR E-MAIL
+====================================================== */
+
+.modale-email{
+  position:fixed;
+  inset:0;
+
+  z-index:10000;
+
+  display:none;
+  align-items:center;
+  justify-content:center;
+
+  padding:20px;
+
+  background:rgba(4,78,97,.78);
+
+  backdrop-filter:blur(4px);
+  -webkit-backdrop-filter:blur(4px);
+}
+
+.modale-email.visible{
+  display:flex;
+}
+
+.modale-email-carte{
+  width:100%;
+  max-width:470px;
+
+  padding:28px;
+
+  border-radius:22px;
+
+  background:#ffffff;
+  color:#044e61;
+
+  box-shadow:
+    0 18px 50px
+    rgba(0,0,0,.28);
+}
+
+.modale-email-carte h2{
+  margin-bottom:9px;
+
+  font-size:24px;
+  line-height:1.15;
+}
+
+.modale-email-carte p{
+  margin-bottom:18px;
+
+  color:#58777e;
+
+  font-size:14px;
+  line-height:1.45;
+}
+
+.champ-email-envoi{
+  width:100%;
+  height:50px;
+
+  padding:0 16px;
+
+  border:2px solid #d6e4e6;
+  border-radius:14px;
+
+  outline:none;
+
+  color:#044e61;
+
+  font-size:15px;
+  font-weight:bold;
+}
+
+.champ-email-envoi:focus{
+  border-color:#edb01a;
+}
+
+.actions-email{
+  display:flex;
+  gap:10px;
+
+  margin-top:16px;
+}
+
+.action-email{
+  flex:1;
+
+  min-height:46px;
+
+  padding:10px 15px;
+
+  border:0;
+  border-radius:999px;
+
+  font-size:14px;
+  font-weight:800;
+
+  cursor:pointer;
+}
+
+.action-email-annuler{
+  background:#e9f0f0;
+  color:#044e61;
+}
+
+.action-email-envoyer{
+  background:#edb01a;
+  color:#044e61;
+}
+
+.message-email{
+  min-height:18px;
+
+  margin-top:12px;
+
+  color:#b53030;
+
+  font-size:12px;
+  font-weight:bold;
+  line-height:1.35;
+}
+
+.message-email.succes{
+  color:#16824a;
+}
+
+@media screen and (max-width:520px){
+
+  .actions-email{
+    flex-direction:column;
+  }
+
+}
+
+/* ======================================================
+   TEXTE ACCESSIBLE
+====================================================== */
+
+.visuellement-cache{
+  position:absolute;
+
+  width:1px;
+  height:1px;
+
+  margin:-1px;
+  padding:0;
+
+  overflow:hidden;
+
+  clip:rect(0,0,0,0);
+  clip-path:inset(50%);
+
+  white-space:nowrap;
+
+  border:0;
+}
+
+/* ======================================================
+   ÉCRANS PLUS PETITS
+====================================================== */
+
+/*
+  Le tableau de bord conserve toujours son canevas de 999 px,
+  comme les pages d’énigmes. Sur un écran plus étroit,
+  la page reste intacte et le navigateur permet simplement
+  un défilement horizontal.
+*/
+
+@media screen and (max-width:999px){
+
+  body{
+    min-width:999px;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<main class="page">
+
+  <section class="tableau-bord">
+
+    <h1 class="visuellement-cache">
+      Tableau de bord de la session
+    </h1>
+
+    <!-- INFORMATIONS DE SESSION -->
+
+    <div class="info-session info-structure">
+
+      <span class="info-label">
+        Nom de la structure
+      </span>
+
+      <span
+        id="nomEcole"
+        class="info-valeur">
+        —
+      </span>
+
+    </div>
+
+    <div class="info-session info-classe">
+
+      <span class="info-label">
+        Classe / Groupe
+      </span>
+
+      <span
+        id="nomClasse"
+        class="info-valeur">
+        —
+      </span>
+
+    </div>
+
+    <div class="info-session info-date">
+
+      <span class="info-label">
+        Date de la session
+      </span>
+
+      <span
+        id="dateSession"
+        class="info-valeur">
+        —
+      </span>
+
+    </div>
+
+    <div class="info-session info-encadrant">
+
+      <span class="info-label">
+        Encadrant
+      </span>
+
+      <span
+        id="nomEnseignant"
+        class="info-valeur">
+        —
+      </span>
+
+    </div>
+
+    <div class="info-session info-participants">
+
+      <span class="info-label">
+        Participants
+      </span>
+
+      <span
+        id="nombreEleves"
+        class="info-valeur">
+        —
+      </span>
+
+    </div>
+
+    <!-- INDICATEURS -->
+
+    <div class="indicateur indicateur-inscrites">
+
+      <strong
+        id="nombreEquipes"
+        class="indicateur-nombre">
+        0
+      </strong>
+
+      <span class="indicateur-label">
+        Équipes inscrites
+      </span>
+
+    </div>
+
+    <div class="indicateur indicateur-enjeu">
+
+      <strong
+        id="nombreEnJeu"
+        class="indicateur-nombre">
+        0
+      </strong>
+
+      <span class="indicateur-label">
+        En jeu
+      </span>
+
+    </div>
+
+    <div class="indicateur indicateur-terminees">
+
+      <strong
+        id="nombreTerminees"
+        class="indicateur-nombre">
+        0
+      </strong>
+
+      <span class="indicateur-label">
+        Terminées
+      </span>
+
+    </div>
+
+    <!-- LISTE DYNAMIQUE DES ÉQUIPES -->
+
+    <section class="zone-equipes">
+
+      <div
+        id="listeEquipes"
+        class="liste-equipes">
+      </div>
+
+      <div
+        id="aucuneEquipe"
+        class="aucune-equipe">
+
+        Aucune équipe n’a encore rejoint cette session.
+
+      </div>
+
+    </section>
+
+    <!-- POINT LUMINEUX DU SUIVI -->
+
+    <span
+      id="temoinSuivi"
+      class="temoin-suivi"
+      aria-hidden="true">
+    </span>
+
+    <!-- BOUTONS -->
+
+    <button
+      id="boutonActualiser"
+      class="bouton bouton-suivi"
+      type="button"
+      aria-label="Activer le suivi en direct">
+
+      <span class="visuellement-cache">
+        Activer le suivi
+      </span>
+
+    </button>
+
+    <a
+      id="boutonCompteRendu"
+      class="bouton bouton-compte-rendu"
+      href="#"
+      aria-label="Générer le compte rendu">
+
+      <span class="visuellement-cache">
+        Générer le compte rendu
+      </span>
+
+    </a>
+
+    <button
+      id="boutonEmail"
+      class="bouton bouton-email"
+      type="button"
+      aria-label="Envoyer le compte rendu par e-mail">
+
+      <span class="visuellement-cache">
+        Envoyer le compte rendu par e-mail
+      </span>
+
+    </button>
+
+    <div
+      id="message"
+      class="message"
+      aria-live="polite"></div>
+
+  </section>
+
+</main>
+
+
+<div
+  id="modaleEmail"
+  class="modale-email"
+  aria-hidden="true">
+
+  <form
+    id="formulaireEmail"
+    class="modale-email-carte">
+
+    <h2>
+      Envoyer le compte rendu
+    </h2>
+
+    <p>
+      Vérifie ou saisis l’adresse e-mail qui recevra
+      le bilan au format PDF.
+    </p>
+
+    <label
+      class="visuellement-cache"
+      for="emailDestinataire">
+      Adresse e-mail
+    </label>
+
+    <input
+      id="emailDestinataire"
+      class="champ-email-envoi"
+      type="email"
+      autocomplete="email"
+      placeholder="nom@etablissement.fr"
+      required>
+
+    <div class="actions-email">
+
+      <button
+        id="annulerEmail"
+        class="action-email action-email-annuler"
+        type="button">
+        Annuler
+      </button>
+
+      <button
+        id="confirmerEmail"
+        class="action-email action-email-envoyer"
+        type="submit">
+        Envoyer le PDF
+      </button>
+
+    </div>
+
+    <div
+      id="messageEmail"
+      class="message-email"
+      aria-live="polite">
+    </div>
+
+  </form>
+
+</div>
+
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
+<script src="../js/config.js?v=12"></script>
+<script src="../js/supabase.js?v=12"></script>
+
+<script>
+const parametres =
+  new URLSearchParams(
+    window.location.search
+  );
+
+const code =
+  parametres.get("code");
+
+const cleGestion =
+  parametres.get("cle");
+
+const listeEquipes =
+  document.getElementById(
+    "listeEquipes"
+  );
+
+const aucuneEquipe =
+  document.getElementById(
+    "aucuneEquipe"
+  );
+
+const boutonActualiser =
+  document.getElementById(
+    "boutonActualiser"
+  );
+
+const boutonCompteRendu =
+  document.getElementById(
+    "boutonCompteRendu"
+  );
+
+const boutonEmail =
+  document.getElementById(
+    "boutonEmail"
+  );
+
+const temoinSuivi =
+  document.getElementById(
+    "temoinSuivi"
+  );
+
+const message =
+  document.getElementById(
+    "message"
+  );
+
+const modaleEmail =
+  document.getElementById(
+    "modaleEmail"
+  );
+
+const formulaireEmail =
+  document.getElementById(
+    "formulaireEmail"
+  );
+
+const emailDestinataire =
+  document.getElementById(
+    "emailDestinataire"
+  );
+
+const annulerEmail =
+  document.getElementById(
+    "annulerEmail"
+  );
+
+const messageEmail =
+  document.getElementById(
+    "messageEmail"
+  );
+
+let suiviAutomatique = false;
+let minuterieSuivi = null;
+let minuterieHorloges = null;
+let equipesCourantes = [];
+let emailEncadrant = "";
+
+/* ======================================================
+   FORMATAGE DE LA DATE
+====================================================== */
+
+function afficherDate(dateBrute){
+
+  if(!dateBrute){
+    return "—";
+  }
+
+  const date =
+    new Date(
+      dateBrute + "T12:00:00"
+    );
+
+  return date.toLocaleDateString(
+    "fr-FR",
+    {
+      day:"2-digit",
+      month:"2-digit",
+      year:"numeric"
+    }
+  );
+
+}
+
+/* ======================================================
+   FORMATAGE DE L’HEURE
+====================================================== */
+
+function afficherHeure(dateBrute){
+
+  if(!dateBrute){
+    return "—";
+  }
+
+  const date =
+    new Date(dateBrute);
+
+  if(Number.isNaN(date.getTime())){
+    return "—";
+  }
+
+  return date.toLocaleTimeString(
+    "fr-FR",
+    {
+      hour:"2-digit",
+      minute:"2-digit"
+    }
+  );
+
+}
+
+/* ======================================================
+   FORMATAGE D’UNE DURÉE
+====================================================== */
+
+function afficherDuree(secondes){
+
+  if(
+    secondes === null ||
+    secondes === undefined ||
+    Number.isNaN(
+      Number(secondes)
+    )
+  ){
+    return "—";
+  }
+
+  const total =
+    Math.max(
+      0,
+      Math.floor(
+        Number(secondes)
+      )
+    );
+
+  const heures =
+    Math.floor(
+      total / 3600
+    );
+
+  const minutes =
+    Math.floor(
+      (total % 3600) / 60
+    );
+
+  const reste =
+    total % 60;
+
+  if(heures > 0){
+
+    return (
+      heures +
+      " h " +
+      String(minutes)
+        .padStart(2,"0") +
+      " min"
+    );
+
+  }
+
+  return (
+    String(minutes)
+      .padStart(2,"0") +
+    " min " +
+    String(reste)
+      .padStart(2,"0") +
+    " s"
+  );
+
+}
+
+/* ======================================================
+   CALCUL DE LA DURÉE EN COURS
+====================================================== */
+
+function calculerDureeEquipe(equipe){
+
+  if(equipe.completed){
+    return equipe.duration_seconds;
+  }
+
+  if(!equipe.started_at){
+    return null;
+  }
+
+  const debut =
+    new Date(
+      equipe.started_at
+    ).getTime();
+
+  if(Number.isNaN(debut)){
+    return null;
+  }
+
+  return Math.max(
+    0,
+    Math.floor(
+      (
+        Date.now() -
+        debut
+      ) / 1000
+    )
+  );
+
+}
+
+/* ======================================================
+   STATUT DE L’ÉQUIPE
+====================================================== */
+
+function obtenirStatut(equipe){
+
+  if(equipe.completed){
+
+    return {
+      classe:"terminee",
+      texte:"Terminée"
+    };
+
+  }
+
+  if(equipe.started_at){
+
+    return {
+      classe:"encours",
+      texte:"En jeu"
+    };
+
+  }
+
+  return {
+    classe:"attente",
+    texte:"En attente"
+  };
+
+}
+
+/* ======================================================
+   LIEN DU COMPTE RENDU
+====================================================== */
+
+function preparerLienCompteRendu(){
+
+  if(
+    !code ||
+    !cleGestion
+  ){
+    return;
+  }
+
+  const adresse =
+    new URL(
+      "compte-rendu.html",
+      window.location.href
+    );
+
+  adresse.searchParams.set(
+    "code",
+    code
+  );
+
+  adresse.searchParams.set(
+    "cle",
+    cleGestion
+  );
+
+  boutonCompteRendu.href =
+    adresse.toString();
+
+}
+
+/* ======================================================
+   CRÉATION D’UNE LIGNE D’ÉQUIPE
+====================================================== */
+
+function creerLigneEquipe(equipe){
+
+  const statut =
+    obtenirStatut(equipe);
+
+  const ligne =
+    document.createElement(
+      "div"
+    );
+
+  ligne.className =
+    "ligne-equipe " +
+    statut.classe;
+
+  const celluleNom =
+    document.createElement(
+      "div"
+    );
+
+  celluleNom.className =
+    "nom-equipe";
+
+  const puce =
+    document.createElement(
+      "span"
+    );
+
+  puce.className =
+    "puce-statut " +
+    statut.classe;
+
+  const nom =
+    document.createElement(
+      "span"
+    );
+
+  nom.className =
+    "nom-equipe-texte";
+
+  nom.textContent =
+    equipe.team_name;
+
+  celluleNom.appendChild(
+    puce
+  );
+
+  celluleNom.appendChild(
+    nom
+  );
+
+  const celluleDebut =
+    document.createElement(
+      "div"
+    );
+
+  celluleDebut.className =
+    "heure";
+
+  celluleDebut.textContent =
+    afficherHeure(
+      equipe.started_at
+    );
+
+  const celluleDuree =
+    document.createElement(
+      "div"
+    );
+
+  celluleDuree.className =
+    "duree";
+
+  celluleDuree.textContent =
+    afficherDuree(
+      calculerDureeEquipe(
+        equipe
+      )
+    );
+
+  const celluleStatut =
+    document.createElement(
+      "div"
+    );
+
+  const badge =
+    document.createElement(
+      "span"
+    );
+
+  badge.className =
+    "statut " +
+    statut.classe;
+
+  badge.textContent =
+    statut.texte;
+
+  celluleStatut.appendChild(
+    badge
+  );
+
+  ligne.appendChild(
+    celluleNom
+  );
+
+  ligne.appendChild(
+    celluleDebut
+  );
+
+  ligne.appendChild(
+    celluleDuree
+  );
+
+  ligne.appendChild(
+    celluleStatut
+  );
+
+  return ligne;
+
+}
+
+/* ======================================================
+   AFFICHAGE DES ÉQUIPES
+====================================================== */
+
+function afficherEquipes(equipes){
+
+  listeEquipes.innerHTML = "";
+
+  equipesCourantes =
+    equipes.slice();
+
+  if(equipes.length === 0){
+
+    aucuneEquipe.classList.add(
+      "visible"
+    );
+
+    return;
+
+  }
+
+  aucuneEquipe.classList.remove(
+    "visible"
+  );
+
+  equipes.forEach(
+    function(equipe){
+
+      listeEquipes.appendChild(
+        creerLigneEquipe(
+          equipe
+        )
+      );
+
+    }
+  );
+
+}
+
+/* ======================================================
+   ACTUALISATION DES CHRONOMÈTRES
+====================================================== */
+
+function actualiserChronometres(){
+
+  const cellules =
+    listeEquipes.querySelectorAll(
+      ".duree"
+    );
+
+  cellules.forEach(
+    function(cellule,index){
+
+      const equipe =
+        equipesCourantes[index];
+
+      if(!equipe){
+        return;
+      }
+
+      cellule.textContent =
+        afficherDuree(
+          calculerDureeEquipe(
+            equipe
+          )
+        );
+
+    }
+  );
+
+}
+
+/* ======================================================
+   CHARGEMENT DE LA SESSION
+====================================================== */
+
+async function chargerSession(
+  afficherConfirmation = true
+){
+
+  if(
+    !code ||
+    !cleGestion
+  ){
+
+    message.className =
+      "message erreur";
+
+    message.textContent =
+      "Le lien de suivi est incomplet.";
+
+    return;
+
+  }
+
+  boutonActualiser.disabled =
+    true;
+
+  try{
+
+    const donnees =
+      await window.REBOND_DB
+        .chargerSuivi({
+          code,
+          cleGestion
+        });
+
+    if(
+      !donnees ||
+      donnees.length === 0
+    ){
+
+      throw new Error(
+        "Aucune donnée de session reçue."
+      );
+
+    }
+
+    const session =
+      donnees[0];
+
+    emailEncadrant =
+      String(
+        session.organizer_email ||
+        session.teacher_email ||
+        session.email ||
+        ""
+      ).trim();
+
+    document
+      .getElementById("nomEcole")
+      .textContent =
+        session.school_name ||
+        "Établissement";
+
+    document
+      .getElementById("nomClasse")
+      .textContent =
+        session.class_name ||
+        "—";
+
+    document
+      .getElementById("nomEnseignant")
+      .textContent =
+        session.teacher_name ||
+        "—";
+
+    document
+      .getElementById("nombreEleves")
+      .textContent =
+        session.student_count ??
+        "—";
+
+    document
+      .getElementById("dateSession")
+      .textContent =
+        afficherDate(
+          session.session_date
+        );
+
+    const equipes =
+      donnees.filter(
+        function(ligne){
+
+          return Boolean(
+            ligne.team_name
+          );
+
+        }
+      );
+
+    const enJeu =
+      equipes.filter(
+        function(equipe){
+
+          return (
+            Boolean(
+              equipe.started_at
+            ) &&
+            equipe.completed !== true
+          );
+
+        }
+      );
+
+    const terminees =
+      equipes.filter(
+        function(equipe){
+
+          return (
+            equipe.completed === true
+          );
+
+        }
+      );
+
+    document
+      .getElementById("nombreEquipes")
+      .textContent =
+        equipes.length;
+
+    document
+      .getElementById("nombreEnJeu")
+      .textContent =
+        enJeu.length;
+
+    document
+      .getElementById("nombreTerminees")
+      .textContent =
+        terminees.length;
+
+    afficherEquipes(
+      equipes
+    );
+
+    if(afficherConfirmation){
+
+      message.className =
+        "message succes";
+
+      message.textContent =
+        "Le suivi a été actualisé.";
+
+      window.setTimeout(
+        function(){
+
+          message.textContent = "";
+
+        },
+        1700
+      );
+
+    }
+
+  }
+  catch(error){
+
+    console.error(error);
+
+    message.className =
+      "message erreur";
+
+    message.textContent =
+      error.message ||
+      "Impossible de charger cette session.";
+
+  }
+  finally{
+
+    boutonActualiser.disabled =
+      false;
+
+  }
+
+}
+
+/* ======================================================
+   ENVOI DU PDF PAR E-MAIL — ÉTAPE 1
+   Cette étape ne génère pas encore le PDF.
+   Elle vérifie uniquement la fenêtre et l’adresse.
+====================================================== */
+
+function ouvrirFenetreEmail(){
+
+  if(
+    !code ||
+    !cleGestion
+  ){
+
+    message.className =
+      "message erreur";
+
+    message.textContent =
+      "Le lien de suivi est incomplet.";
+
+    return;
+
+  }
+
+  messageEmail.className =
+    "message-email";
+
+  messageEmail.textContent =
+    "";
+
+  emailDestinataire.value =
+    emailEncadrant || "";
+
+  modaleEmail.classList.add(
+    "visible"
+  );
+
+  modaleEmail.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+  window.setTimeout(
+    function(){
+
+      emailDestinataire.focus();
+      emailDestinataire.select();
+
+    },
+    80
+  );
+
+}
+
+function fermerFenetreEmail(){
+
+  modaleEmail.classList.remove(
+    "visible"
+  );
+
+  modaleEmail.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+  messageEmail.textContent =
+    "";
+
+}
+
+formulaireEmail.addEventListener(
+  "submit",
+  function(event){
+
+    event.preventDefault();
+
+    const destinataire =
+      emailDestinataire.value
+        .trim()
+        .toLowerCase();
+
+    if(
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        .test(destinataire)
+    ){
+
+      messageEmail.className =
+        "message-email";
+
+      messageEmail.textContent =
+        "Saisis une adresse e-mail valide.";
+
+      return;
+
+    }
+
+    emailEncadrant =
+      destinataire;
+
+    messageEmail.className =
+      "message-email succes";
+
+    messageEmail.textContent =
+      "Adresse validée : " +
+      destinataire;
+
+  }
+);
+
+annulerEmail.addEventListener(
+  "click",
+  fermerFenetreEmail
+);
+
+modaleEmail.addEventListener(
+  "click",
+  function(event){
+
+    if(event.target === modaleEmail){
+      fermerFenetreEmail();
+    }
+
+  }
+);
+
+document.addEventListener(
+  "keydown",
+  function(event){
+
+    if(
+      event.key === "Escape" &&
+      modaleEmail.classList.contains(
+        "visible"
+      )
+    ){
+      fermerFenetreEmail();
+    }
+
+  }
+);
+
+boutonEmail.addEventListener(
+  "click",
+  ouvrirFenetreEmail
+);
+
+/* ======================================================
+   ACTIVATION DU SUIVI EN DIRECT
+====================================================== */
+
+function activerSuivi(){
+
+  suiviAutomatique = true;
+
+  temoinSuivi.classList.add(
+    "actif"
+  );
+
+  boutonActualiser.setAttribute(
+    "aria-label",
+    "Désactiver le suivi en direct"
+  );
+
+  chargerSession(false);
+
+  minuterieSuivi =
+    window.setInterval(
+      function(){
+
+        chargerSession(false);
+
+      },
+      5000
+    );
+
+}
+
+/* ======================================================
+   DÉSACTIVATION DU SUIVI
+====================================================== */
+
+function desactiverSuivi(){
+
+  suiviAutomatique = false;
+
+  temoinSuivi.classList.remove(
+    "actif"
+  );
+
+  boutonActualiser.setAttribute(
+    "aria-label",
+    "Activer le suivi en direct"
+  );
+
+  if(minuterieSuivi){
+
+    window.clearInterval(
+      minuterieSuivi
+    );
+
+    minuterieSuivi = null;
+
+  }
+
+}
+
+/* ======================================================
+   BOUTON DE SUIVI
+====================================================== */
+
+boutonActualiser.addEventListener(
+  "click",
+  function(){
+
+    if(suiviAutomatique){
+
+      desactiverSuivi();
+
+      message.className =
+        "message";
+
+      message.textContent =
+        "Suivi en direct désactivé.";
+
+    }
+    else{
+
+      activerSuivi();
+
+      message.className =
+        "message succes";
+
+      message.textContent =
+        "Suivi en direct activé.";
+
+    }
+
+    window.setTimeout(
+      function(){
+
+        message.textContent = "";
+
+      },
+      1700
+    );
+
+  }
+);
+
+/* ======================================================
+   CHRONOMÈTRES LOCAUX
+====================================================== */
+
+minuterieHorloges =
+  window.setInterval(
+    actualiserChronometres,
+    1000
+  );
+
+/* ======================================================
+   NETTOYAGE À LA FERMETURE
+====================================================== */
+
+window.addEventListener(
+  "beforeunload",
+  function(){
+
+    desactiverSuivi();
+
+    if(minuterieHorloges){
+
+      window.clearInterval(
+        minuterieHorloges
+      );
+
+    }
+
+  }
+);
+
+/* ======================================================
+   DÉMARRAGE
+====================================================== */
+
+preparerLienCompteRendu();
+chargerSession(false);
+</script>
+
+</body>
+</html>

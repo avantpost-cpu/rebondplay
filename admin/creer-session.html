@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
+<title>Rebond — Créer une session</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html,
+body{
+  width:100%;
+  min-height:100%;
+
+  background:#1b5f6e;
+
+  font-family:Arial, Helvetica, sans-serif;
+  color:#044e61;
+}
+
+body{
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+
+  min-height:100vh;
+  min-height:100dvh;
+
+  padding:20px 10px;
+}
+
+/* ======================================================
+   CONTENEUR PRINCIPAL
+
+   La nouvelle image mesure 2048 × 1763 px.
+====================================================== */
+
+.page{
+  width:100%;
+  max-width:900px;
+}
+
+/* ======================================================
+   RETOUR À L’ACCUEIL
+====================================================== */
+
+.retour-accueil{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  min-height:38px;
+
+  margin-left:16%;
+  margin-bottom:10px;
+  padding:8px 17px;
+
+  border:0;
+  border-radius:999px;
+
+  outline:none;
+  box-shadow:none;
+
+  background:#ffffff;
+  color:#044e61;
+
+  font-size:14px;
+  font-weight:bold;
+  line-height:1;
+  text-decoration:none;
+
+  cursor:pointer;
+
+  -webkit-tap-highlight-color:transparent;
+}
+
+.retour-accueil:hover,
+.retour-accueil:focus,
+.retour-accueil:focus-visible,
+.retour-accueil:active{
+  border:0;
+  outline:none;
+  box-shadow:none;
+
+  background:#ffffff;
+  color:#044e61;
+}
+
+/* ======================================================
+   IMAGE GÉNÉRALE
+====================================================== */
+
+.carte-session{
+  position:relative;
+
+  width:100%;
+  aspect-ratio:2048 / 1763;
+
+  background:
+    transparent
+    url("valid_2.png")
+    center center / 100% 100%
+    no-repeat;
+
+  overflow:hidden;
+}
+
+/* ======================================================
+   CHAMPS DU FORMULAIRE DE CRÉATION
+====================================================== */
+
+.champ{
+  position:absolute;
+}
+
+.champ-ecole{
+  left:18.65%;
+  top:28.75%;
+
+  width:59.45%;
+  height:6.65%;
+}
+
+.champ-classe{
+  left:18.85%;
+  top:38.85%;
+
+  width:28.55%;
+  height:6.65%;
+}
+
+.champ-date{
+  left:49.55%;
+  top:38.85%;
+
+  width:28.45%;
+  height:6.65%;
+}
+
+.champ-enseignant{
+  left:18.85%;
+  top:49.35%;
+
+  width:28.55%;
+  height:6.65%;
+}
+
+.champ-eleves{
+  left:49.55%;
+  top:49.35%;
+
+  width:28.45%;
+  height:6.65%;
+}
+
+.champ-email{
+  left:18.85%;
+  top:59.85%;
+
+  width:38.85%;
+  height:6.65%;
+}
+
+/*
+  Les intitulés sont déjà intégrés à l’image.
+*/
+
+.champ label{
+  position:absolute;
+
+  width:1px;
+  height:1px;
+
+  margin:-1px;
+  padding:0;
+
+  overflow:hidden;
+
+  clip:rect(0,0,0,0);
+  clip-path:inset(50%);
+
+  white-space:nowrap;
+
+  border:0;
+}
+
+.champ input{
+  display:block;
+
+  width:100%;
+  height:100%;
+
+  margin:0;
+  padding:0 18px;
+
+  border:0;
+  border-radius:15px;
+
+  outline:none;
+  box-shadow:none;
+
+  background:transparent;
+  color:#044e61;
+
+  font-family:Arial, Helvetica, sans-serif;
+  font-size:clamp(12px, 1.7vw, 18px);
+  font-weight:bold;
+
+  line-height:1;
+
+  -webkit-tap-highlight-color:transparent;
+}
+
+.champ input:hover,
+.champ input:focus,
+.champ input:focus-visible,
+.champ input:active{
+  border:0;
+  outline:none;
+  box-shadow:none;
+
+  background:transparent;
+}
+
+.champ input::placeholder{
+  color:#a5b4b7;
+  opacity:.8;
+}
+
+.champ input[type="date"]{
+  color:#044e61;
+}
+
+.champ input[type="number"]{
+  appearance:textfield;
+  -moz-appearance:textfield;
+}
+
+.champ input[type="number"]::-webkit-inner-spin-button,
+.champ input[type="number"]::-webkit-outer-spin-button{
+  margin:0;
+
+  appearance:none;
+  -webkit-appearance:none;
+}
+
+/* ======================================================
+   BOUTON CRÉER LA SESSION
+====================================================== */
+
+.bouton-creer{
+  position:absolute;
+
+  left:25.3%;
+  top:68.75%;
+
+  width:48.9%;
+  height:6.95%;
+
+  padding:0;
+
+  border:0;
+  border-radius:999px;
+
+  outline:none;
+  box-shadow:none;
+
+  background:transparent;
+  color:transparent;
+
+  font-size:0;
+
+  cursor:pointer;
+
+  -webkit-tap-highlight-color:transparent;
+}
+
+.bouton-creer:hover,
+.bouton-creer:active,
+.bouton-creer:focus,
+.bouton-creer:focus-visible{
+  border:0;
+  outline:none;
+  box-shadow:none;
+
+  background:transparent;
+
+  transform:none;
+}
+
+.bouton-creer:disabled{
+  opacity:.55;
+  cursor:wait;
+}
+
+/* ======================================================
+   MESSAGE DE CRÉATION
+====================================================== */
+
+.message{
+  position:absolute;
+
+  left:27%;
+  top:65.8%;
+
+  z-index:5;
+
+  width:46%;
+  min-height:23px;
+
+  display:none;
+  align-items:center;
+  justify-content:center;
+
+  padding:3px 10px;
+
+  border-radius:999px;
+
+  background:rgba(255,255,255,.96);
+  color:#044e61;
+
+  font-size:clamp(8px, 1.1vw, 11px);
+  line-height:1.25;
+  font-weight:bold;
+
+  text-align:center;
+
+  pointer-events:none;
+}
+
+.message:not(:empty){
+  display:flex;
+}
+
+.message.erreur{
+  color:#b53030;
+}
+
+.message.succes{
+  color:#16824a;
+}
+
+/* ======================================================
+   RETROUVER UNE SESSION
+
+   Le texte, le fond bleu et le bouton orange
+   sont déjà dessinés dans valid_2.png.
+====================================================== */
+
+.formulaire-retrouver{
+  position:absolute;
+  inset:0;
+
+  pointer-events:none;
+}
+
+.code-retrouver{
+  position:absolute;
+
+  left:47.2%;
+  top:84.65%;
+
+  width:20.9%;
+  height:6.15%;
+
+  margin:0;
+  padding:0 17px;
+
+  border:0;
+  border-radius:999px;
+
+  outline:none;
+  box-shadow:none;
+
+  background:transparent;
+  color:#044e61;
+
+  font-family:Arial, Helvetica, sans-serif;
+  font-size:clamp(12px, 1.7vw, 18px);
+  font-weight:bold;
+
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+
+  pointer-events:auto;
+
+  -webkit-tap-highlight-color:transparent;
+}
+
+.code-retrouver:hover,
+.code-retrouver:focus,
+.code-retrouver:focus-visible,
+.code-retrouver:active{
+  border:0;
+  outline:none;
+  box-shadow:none;
+
+  background:transparent;
+}
+
+.code-retrouver::placeholder{
+  color:#9babad;
+  opacity:.8;
+}
+
+.bouton-retrouver{
+  position:absolute;
+
+  left:69.65%;
+  top:84.65%;
+
+  width:8.9%;
+  height:6.15%;
+
+  padding:0;
+
+  border:0;
+  border-radius:999px;
+
+  outline:none;
+  box-shadow:none;
+
+  background:transparent;
+  color:transparent;
+
+  font-size:0;
+
+  cursor:pointer;
+
+  pointer-events:auto;
+
+  -webkit-tap-highlight-color:transparent;
+}
+
+.bouton-retrouver:hover,
+.bouton-retrouver:focus,
+.bouton-retrouver:focus-visible,
+.bouton-retrouver:active{
+  border:0;
+  outline:none;
+  box-shadow:none;
+
+  background:transparent;
+  transform:none;
+}
+
+.bouton-retrouver:disabled{
+  opacity:.55;
+  cursor:wait;
+}
+
+/* ======================================================
+   MESSAGE DE RECHERCHE
+====================================================== */
+
+.message-retrouver{
+  position:absolute;
+
+  left:47%;
+  top:91.2%;
+
+  z-index:8;
+
+  width:31%;
+
+  display:none;
+
+  padding:5px 10px;
+
+  border-radius:999px;
+
+  background:rgba(255,255,255,.96);
+  color:#044e61;
+
+  font-size:clamp(8px, 1vw, 11px);
+  font-weight:bold;
+  line-height:1.25;
+
+  text-align:center;
+
+  pointer-events:none;
+}
+
+.message-retrouver:not(:empty){
+  display:block;
+}
+
+.message-retrouver.erreur{
+  color:#b53030;
+}
+
+.message-retrouver.succes{
+  color:#16824a;
+}
+
+/* ======================================================
+   RÉSULTAT APRÈS CRÉATION
+====================================================== */
+
+.resultat{
+  position:absolute;
+
+  left:15.75%;
+  top:6.4%;
+
+  z-index:20;
+
+  width:66.3%;
+  height:72.6%;
+
+  display:none;
+  align-items:center;
+  justify-content:center;
+
+  padding:7%;
+
+  border-radius:26px;
+
+  background:rgba(27,95,110,.9);
+
+  line-height:normal;
+}
+
+.resultat.visible{
+  display:flex;
+}
+
+.resultat-contenu{
+  width:100%;
+  max-width:430px;
+
+  padding:26px 22px;
+
+  border-radius:20px;
+
+  background:#ffffff;
+
+  text-align:center;
+
+  box-shadow:
+    0 12px 30px
+    rgba(0,0,0,.22);
+}
+
+.resultat h2{
+  margin-bottom:8px;
+
+  color:#044e61;
+
+  font-size:19px;
+  line-height:1.2;
+}
+
+.resultat p{
+  color:#58777e;
+
+  font-size:13px;
+  line-height:1.45;
+}
+
+.code-session{
+  margin:16px 0;
+
+  color:#ed6d43;
+
+  font-size:34px;
+  line-height:1;
+  font-weight:900;
+  letter-spacing:3px;
+}
+
+.lien-suivi{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  width:100%;
+  min-height:46px;
+
+  margin-top:18px;
+  padding:10px 16px;
+
+  border-radius:999px;
+
+  background:#044e61;
+  color:#ffffff;
+
+  outline:none;
+  box-shadow:none;
+
+  font-size:14px;
+  font-weight:bold;
+  text-decoration:none;
+}
+
+.lien-suivi:hover,
+.lien-suivi:focus,
+.lien-suivi:focus-visible,
+.lien-suivi:active{
+  outline:none;
+  box-shadow:none;
+
+  transform:none;
+}
+
+.avertissement{
+  margin-top:13px;
+
+  color:#6c8287 !important;
+
+  font-size:11px !important;
+  line-height:1.4 !important;
+}
+
+/* ======================================================
+   ACCESSIBILITÉ
+====================================================== */
+
+.visuellement-cache{
+  position:absolute;
+
+  width:1px;
+  height:1px;
+
+  margin:-1px;
+  padding:0;
+
+  overflow:hidden;
+
+  clip:rect(0,0,0,0);
+  clip-path:inset(50%);
+
+  white-space:nowrap;
+
+  border:0;
+}
+
+/* ======================================================
+   RESPONSIVE
+====================================================== */
+
+@media screen and (max-width:720px){
+
+  body{
+    padding:8px 2px;
+  }
+
+  .page{
+    width:100%;
+  }
+
+  .retour-accueil{
+    min-height:32px;
+
+    margin-left:16%;
+    margin-bottom:5px;
+    padding:6px 12px;
+
+    font-size:11px;
+  }
+
+  .champ input,
+  .code-retrouver{
+    padding-left:2%;
+    padding-right:2%;
+
+    border-radius:10px;
+  }
+
+  .message,
+  .message-retrouver{
+    padding:2px 6px;
+  }
+
+}
+
+@media screen and (max-width:470px){
+
+  .retour-accueil{
+    font-size:9px;
+  }
+
+  .champ input,
+  .code-retrouver{
+    border-radius:7px;
+  }
+
+  .resultat-contenu{
+    padding:18px 13px;
+  }
+
+  .resultat h2{
+    font-size:15px;
+  }
+
+  .code-session{
+    font-size:25px;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<main class="page">
+
+  <a
+    class="retour-accueil"
+    href="../index.html"
+    aria-label="Retour à l’accueil">
+    ← Retour à l’accueil
+  </a>
+
+  <section class="carte-session">
+
+    <!-- FORMULAIRE DE CRÉATION -->
+
+    <form id="formulaireSession">
+
+      <h1 class="visuellement-cache">
+        Créer une session
+      </h1>
+
+      <div class="champ champ-ecole">
+
+        <label for="ecole">
+          École, club ou structure
+        </label>
+
+        <input
+          id="ecole"
+          name="ecole"
+          type="text"
+          autocomplete="organization"
+          required>
+
+      </div>
+
+      <div class="champ champ-classe">
+
+        <label for="classe">
+          Classe ou groupe
+        </label>
+
+        <input
+          id="classe"
+          name="classe"
+          type="text"
+          autocomplete="off"
+          required>
+
+      </div>
+
+      <div class="champ champ-date">
+
+        <label for="dateSession">
+          Date
+        </label>
+
+        <input
+          id="dateSession"
+          name="dateSession"
+          type="date"
+          required>
+
+      </div>
+
+      <div class="champ champ-enseignant">
+
+        <label for="enseignant">
+          Nom de l’encadrant
+        </label>
+
+        <input
+          id="enseignant"
+          name="enseignant"
+          type="text"
+          autocomplete="name"
+          required>
+
+      </div>
+
+      <div class="champ champ-eleves">
+
+        <label for="nombreEleves">
+          Nombre de participants
+        </label>
+
+        <input
+          id="nombreEleves"
+          name="nombreEleves"
+          type="number"
+          min="1"
+          max="200"
+          step="1"
+          inputmode="numeric"
+          required>
+
+      </div>
+
+      <div class="champ champ-email">
+
+        <label for="email">
+          Adresse e-mail de l’encadrant
+        </label>
+
+        <input
+          id="email"
+          name="email"
+          type="email"
+          autocomplete="email"
+          required>
+
+      </div>
+
+      <button
+        id="boutonCreer"
+        class="bouton-creer"
+        type="submit"
+        aria-label="Créer la session">
+
+        <span class="visuellement-cache">
+          Créer la session
+        </span>
+
+      </button>
+
+      <div
+        id="message"
+        class="message"
+        aria-live="polite"></div>
+
+    </form>
+
+    <!-- RETROUVER UNE SESSION -->
+
+    <form
+      id="formulaireRetrouver"
+      class="formulaire-retrouver">
+
+      <label
+        class="visuellement-cache"
+        for="codeRetrouver">
+        Code de session
+      </label>
+
+      <input
+        id="codeRetrouver"
+        class="code-retrouver"
+        name="codeRetrouver"
+        type="text"
+        placeholder="RBD-XXXX"
+        maxlength="8"
+        autocomplete="off"
+        required>
+
+      <button
+        id="boutonRetrouver"
+        class="bouton-retrouver"
+        type="submit"
+        aria-label="Valider le code et ouvrir le tableau de bord">
+
+        <span class="visuellement-cache">
+          Valider
+        </span>
+
+      </button>
+
+      <div
+        id="messageRetrouver"
+        class="message-retrouver"
+        aria-live="polite"></div>
+
+    </form>
+
+    <!-- RÉSULTAT APRÈS CRÉATION -->
+
+    <section
+      id="resultat"
+      class="resultat">
+
+      <div class="resultat-contenu">
+
+        <h2>
+          Code à transmettre aux participants
+        </h2>
+
+        <div
+          id="codeSession"
+          class="code-session">
+        </div>
+
+        <p>
+          Les participants utiliseront ce code
+          pour rejoindre la partie.
+        </p>
+
+        <a
+          id="lienSuivi"
+          class="lien-suivi"
+          href="#">
+          Ouvrir le suivi de la session
+        </a>
+
+        <p class="avertissement">
+          Conserve ton code pour pouvoir retrouver
+          le tableau de bord ultérieurement.
+        </p>
+
+      </div>
+
+    </section>
+
+  </section>
+
+</main>
+
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
+<script src="../js/config.js?v=3"></script>
+<script src="../js/supabase.js?v=3"></script>
+
+<script>
+const formulaireSession =
+  document.getElementById(
+    "formulaireSession"
+  );
+
+const boutonCreer =
+  document.getElementById(
+    "boutonCreer"
+  );
+
+const message =
+  document.getElementById(
+    "message"
+  );
+
+const resultat =
+  document.getElementById(
+    "resultat"
+  );
+
+const codeSession =
+  document.getElementById(
+    "codeSession"
+  );
+
+const lienSuivi =
+  document.getElementById(
+    "lienSuivi"
+  );
+
+const dateSession =
+  document.getElementById(
+    "dateSession"
+  );
+
+const formulaireRetrouver =
+  document.getElementById(
+    "formulaireRetrouver"
+  );
+
+const codeRetrouver =
+  document.getElementById(
+    "codeRetrouver"
+  );
+
+const boutonRetrouver =
+  document.getElementById(
+    "boutonRetrouver"
+  );
+
+const messageRetrouver =
+  document.getElementById(
+    "messageRetrouver"
+  );
+
+/* ======================================================
+   DATE DU JOUR
+====================================================== */
+
+dateSession.value =
+  new Date()
+    .toISOString()
+    .slice(0,10);
+
+/* ======================================================
+   FORMATAGE DU CODE
+====================================================== */
+
+function nettoyerCode(valeur){
+
+  return String(
+    valeur || ""
+  )
+    .trim()
+    .toUpperCase()
+    .replace(
+      /[^A-Z0-9-]/g,
+      ""
+    );
+
+}
+
+codeRetrouver.addEventListener(
+  "input",
+  function(){
+
+    codeRetrouver.value =
+      nettoyerCode(
+        codeRetrouver.value
+      );
+
+  }
+);
+
+/* ======================================================
+   CRÉATION D’UNE SESSION
+====================================================== */
+
+formulaireSession.addEventListener(
+  "submit",
+  async function(event){
+
+    event.preventDefault();
+
+    message.textContent = "";
+    message.className =
+      "message";
+
+    resultat.classList.remove(
+      "visible"
+    );
+
+    const ecole =
+      document
+        .getElementById("ecole")
+        .value
+        .trim();
+
+    const classe =
+      document
+        .getElementById("classe")
+        .value
+        .trim();
+
+    const enseignant =
+      document
+        .getElementById("enseignant")
+        .value
+        .trim();
+
+    const nombreEleves =
+      Number(
+        document
+          .getElementById("nombreEleves")
+          .value
+      );
+
+    const email =
+      document
+        .getElementById("email")
+        .value
+        .trim();
+
+    const date =
+      dateSession.value;
+
+    if(
+      !ecole ||
+      !classe ||
+      !enseignant ||
+      !email ||
+      !date ||
+      !Number.isInteger(nombreEleves) ||
+      nombreEleves < 1
+    ){
+
+      message.className =
+        "message erreur";
+
+      message.textContent =
+        "Tous les champs sont obligatoires.";
+
+      return;
+
+    }
+
+    boutonCreer.disabled =
+      true;
+
+    message.textContent =
+      "Création de la session…";
+
+    try{
+
+      const session =
+        await window.REBOND_DB
+          .creerSession({
+            ecole,
+            classe,
+            email,
+            date,
+            enseignant,
+            nombreEleves
+          });
+
+      codeSession.textContent =
+        session.code;
+
+      const adresseSuivi =
+        new URL(
+          "suivi-session.html",
+          window.location.href
+        );
+
+      adresseSuivi.searchParams.set(
+        "code",
+        session.code
+      );
+
+      adresseSuivi.searchParams.set(
+        "cle",
+        session.cleGestion
+      );
+
+      lienSuivi.href =
+        adresseSuivi.toString();
+
+      message.textContent = "";
+
+      resultat.classList.add(
+        "visible"
+      );
+
+    }
+    catch(error){
+
+      console.error(error);
+
+      message.className =
+        "message erreur";
+
+      message.textContent =
+        error.message ||
+        "La session n’a pas pu être créée.";
+
+    }
+    finally{
+
+      boutonCreer.disabled =
+        false;
+
+    }
+
+  }
+);
+
+/* ======================================================
+   RETROUVER UNE SESSION
+====================================================== */
+
+formulaireRetrouver.addEventListener(
+  "submit",
+  async function(event){
+
+    event.preventDefault();
+
+    messageRetrouver.textContent = "";
+
+    messageRetrouver.className =
+      "message-retrouver";
+
+    const code =
+      nettoyerCode(
+        codeRetrouver.value
+      );
+
+    if(!code){
+
+      messageRetrouver.className =
+        "message-retrouver erreur";
+
+      messageRetrouver.textContent =
+        "Saisis le code de la session.";
+
+      return;
+
+    }
+
+    boutonRetrouver.disabled =
+      true;
+
+    try{
+
+      const session =
+        await window.REBOND_DB
+          .retrouverSession({
+            code
+          });
+
+      messageRetrouver.className =
+        "message-retrouver succes";
+
+      messageRetrouver.textContent =
+        "Session retrouvée. Ouverture…";
+
+      const adresseSuivi =
+        new URL(
+          "suivi-session.html",
+          window.location.href
+        );
+
+      adresseSuivi.searchParams.set(
+        "code",
+        session.code
+      );
+
+      adresseSuivi.searchParams.set(
+        "cle",
+        session.cleGestion
+      );
+
+      window.setTimeout(
+        function(){
+
+          window.location.href =
+            adresseSuivi.toString();
+
+        },
+        450
+      );
+
+    }
+    catch(error){
+
+      console.error(error);
+
+      messageRetrouver.className =
+        "message-retrouver erreur";
+
+      messageRetrouver.textContent =
+        error.message ||
+        "Impossible de retrouver cette session.";
+
+      boutonRetrouver.disabled =
+        false;
+
+    }
+
+  }
+);
+</script>
+
+</body>
+</html>
