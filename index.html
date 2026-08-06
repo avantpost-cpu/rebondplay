@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
+<title>Escape Game Rebond</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html,
+body{
+  width:100%;
+  min-height:100%;
+}
+
+body{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  min-height:100vh;
+  min-height:100dvh;
+
+  padding:24px;
+
+  background:#1b5f6e;
+}
+
+/*
+  Le conteneur conserve les proportions
+  exactes de l’image : 976 × 835 px.
+*/
+
+.accueil{
+  position:relative;
+
+  width:100%;
+  max-width:976px;
+
+  aspect-ratio:976 / 835;
+}
+
+/*
+  L’image constitue tout le graphisme
+  visible de la page.
+*/
+
+.image-accueil{
+  display:block;
+
+  width:100%;
+  height:100%;
+
+  object-fit:contain;
+
+  user-select:none;
+  -webkit-user-drag:none;
+}
+
+/*
+  Zones cliquables transparentes placées
+  au-dessus des deux blocs de l’image.
+*/
+
+.acces{
+  position:absolute;
+  z-index:2;
+
+  display:block;
+
+  border:0;
+  border-radius:24px;
+
+  outline:none;
+  box-shadow:none;
+
+  background:transparent;
+
+  text-decoration:none;
+
+  cursor:pointer;
+
+  -webkit-tap-highlight-color:transparent;
+
+  transition:
+    transform .18s ease;
+}
+
+/*
+  Bloc bleu : accès encadrant.
+*/
+
+.acces-encadrant{
+  left:9.4%;
+  top:33.2%;
+
+  width:38.1%;
+  height:42.8%;
+}
+
+/*
+  Bloc orange : rejoindre une partie.
+*/
+
+.acces-participant{
+  left:51.8%;
+  top:33.2%;
+
+  width:37.7%;
+  height:43.2%;
+}
+
+/*
+  Léger agrandissement au survol,
+  sans ombre portée.
+*/
+
+.acces:hover{
+  transform:scale(1.012);
+
+  box-shadow:none;
+  background:transparent;
+}
+
+/*
+  Léger effet de pression au clic.
+*/
+
+.acces:active{
+  transform:scale(.994);
+
+  box-shadow:none;
+  background:transparent;
+}
+
+/*
+  Aucun contour supplémentaire au clavier,
+  afin de ne pas décaler le graphisme.
+*/
+
+.acces:focus,
+.acces:focus-visible{
+  outline:none;
+  box-shadow:none;
+  background:transparent;
+}
+
+/*
+  Texte uniquement destiné
+  aux lecteurs d’écran.
+*/
+
+.visuellement-cache{
+  position:absolute;
+
+  width:1px;
+  height:1px;
+
+  padding:0;
+  margin:-1px;
+
+  overflow:hidden;
+
+  clip:rect(0,0,0,0);
+  clip-path:inset(50%);
+
+  white-space:nowrap;
+
+  border:0;
+}
+
+/* ======================================================
+   RESPONSIVE
+====================================================== */
+
+@media screen and (max-width:700px){
+
+  body{
+    align-items:flex-start;
+
+    padding:10px 6px;
+  }
+
+  .acces{
+    border-radius:15px;
+  }
+
+  /*
+    Sur écran tactile, on retire
+    l’agrandissement au survol.
+  */
+
+  .acces:hover{
+    transform:none;
+  }
+
+  .acces:active{
+    transform:scale(.992);
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<main class="accueil">
+
+  <img
+    class="image-accueil"
+    src="ecran_accueil.png"
+    alt="Escape Game Rebond : choisissez entre l’accès encadrant et l’accès pour rejoindre une partie."
+    draggable="false">
+
+  <a
+    class="acces acces-encadrant"
+    href="admin/creer-session.html"
+    aria-label="Accès encadrant : créer une nouvelle session">
+
+    <span class="visuellement-cache">
+      Accès encadrant — Créer une session
+    </span>
+
+  </a>
+
+  <a
+    class="acces acces-participant"
+    href="Intro/intro.html"
+    aria-label="Rejoindre une partie avec un code de session">
+
+    <span class="visuellement-cache">
+      Je rejoins une partie
+    </span>
+
+  </a>
+
+</main>
+
+</body>
+</html>
