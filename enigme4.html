@@ -942,26 +942,86 @@ let offsetY = 0;
 let jeuTermine = false;
 
 /* ======================================================
-   VOIX SYNCHRONISÉE AVEC LA VIDÉO
+   VOIX 4 — DÉMARRE AVEC LA VIDÉO ET VA JUSQU'AU BOUT
 ====================================================== */
 
+let voix4DejaLancee = false;
+
 function lancerVoix4(){
-  if(!videoEnigme4||!voix4)return;
-  try{voix4.currentTime=videoEnigme4.currentTime||0;}catch(e){}
-  voix4.play().catch(function(){});
+
+  if(
+    voix4DejaLancee ||
+    !voix4
+  ){
+    return;
+  }
+
+  voix4DejaLancee = true;
+
+  try{
+    voix4.currentTime = 0;
+  }
+  catch(error){}
+
+  voix4.play().catch(
+    function(){
+
+      voix4DejaLancee = false;
+
+    }
+  );
+
 }
 
-videoEnigme4.addEventListener("play",lancerVoix4);
-videoEnigme4.addEventListener("pause",()=>voix4.pause());
-videoEnigme4.addEventListener("seeking",()=>{try{voix4.currentTime=videoEnigme4.currentTime||0;}catch(e){}});
-videoEnigme4.addEventListener("ended",()=>{voix4.pause();try{voix4.currentTime=0;}catch(e){}});
+if(
+  videoEnigme4 &&
+  voix4
+){
 
-function autoriserVoix4(){
- if(!videoEnigme4.paused) lancerVoix4();
+  videoEnigme4.addEventListener(
+    "play",
+    lancerVoix4,
+    {
+      once:true
+    }
+  );
+
+  function autoriserVoix4(){
+
+    lancerVoix4();
+
+  }
+
+  document.addEventListener(
+    "pointerdown",
+    autoriserVoix4,
+    {
+      once:true
+    }
+  );
+
+  document.addEventListener(
+    "keydown",
+    autoriserVoix4,
+    {
+      once:true
+    }
+  );
+
+  window.addEventListener(
+    "load",
+    function(){
+
+      if(
+        !videoEnigme4.paused
+      ){
+        lancerVoix4();
+      }
+
+    }
+  );
+
 }
-document.addEventListener("pointerdown",autoriserVoix4,{once:true});
-document.addEventListener("keydown",autoriserVoix4,{once:true});
-window.addEventListener("load",()=>{if(!videoEnigme4.paused) lancerVoix4();});
 
 /* ======================================================
    ENREGISTREMENT DE LA PROGRESSION
