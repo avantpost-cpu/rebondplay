@@ -830,6 +830,12 @@ body.debug .debug-zone{
         playsinline>
       </video>
 
+      <audio
+        id="voix3"
+        src="enigme3/voix3.mp3"
+        preload="auto">
+      </audio>
+
       <div
         class="badges-panel"
         id="badgesPanel">
@@ -1033,10 +1039,73 @@ const braviFinal =
     "braviFinal"
   );
 
+const animation3 =
+  document.querySelector(
+    ".animation-3b"
+  );
+
+const voix3 =
+  document.getElementById(
+    "voix3"
+  );
+
 let badgeActif = null;
 let offsetX = 0;
 let offsetY = 0;
 let jeuTermine = false;
+
+/* ======================================================
+   VOIX SYNCHRONISÉE AVEC LA VIDÉO
+====================================================== */
+
+function lancerVoix3(){
+
+  if(!animation3 || !voix3){
+    return;
+  }
+
+  try{
+    voix3.currentTime = animation3.currentTime || 0;
+  }catch(e){}
+
+  voix3.play().catch(function(){});
+}
+
+if(animation3 && voix3){
+
+  animation3.addEventListener("play", lancerVoix3);
+
+  animation3.addEventListener("pause", function(){
+    voix3.pause();
+  });
+
+  animation3.addEventListener("seeking", function(){
+    try{
+      voix3.currentTime = animation3.currentTime || 0;
+    }catch(e){}
+  });
+
+  animation3.addEventListener("ended", function(){
+    voix3.pause();
+    voix3.currentTime = 0;
+  });
+
+  function autoriser(){
+    if(!animation3.paused){
+      lancerVoix3();
+    }
+  }
+
+  document.addEventListener("pointerdown", autoriser, {once:true});
+  document.addEventListener("keydown", autoriser, {once:true});
+
+  window.addEventListener("load", function(){
+    if(!animation3.paused){
+      lancerVoix3();
+    }
+  });
+
+}
 
 /* ======================================================
    ENREGISTREMENT DE LA PROGRESSION
