@@ -777,6 +777,12 @@ body{
       playsinline>
     </video>
 
+    <audio
+      id="voix4"
+      src="enigme4/voix4.mp3"
+      preload="auto">
+    </audio>
+
     <!-- ZONES DE DÉPÔT -->
 
     <div
@@ -925,10 +931,37 @@ const braviFinal =
     "braviFinal"
   );
 
+const voix4 =
+  document.getElementById(
+    "voix4"
+  );
+
 let lettreActive = null;
 let offsetX = 0;
 let offsetY = 0;
 let jeuTermine = false;
+
+/* ======================================================
+   VOIX SYNCHRONISÉE AVEC LA VIDÉO
+====================================================== */
+
+function lancerVoix4(){
+  if(!videoEnigme4||!voix4)return;
+  try{voix4.currentTime=videoEnigme4.currentTime||0;}catch(e){}
+  voix4.play().catch(function(){});
+}
+
+videoEnigme4.addEventListener("play",lancerVoix4);
+videoEnigme4.addEventListener("pause",()=>voix4.pause());
+videoEnigme4.addEventListener("seeking",()=>{try{voix4.currentTime=videoEnigme4.currentTime||0;}catch(e){}});
+videoEnigme4.addEventListener("ended",()=>{voix4.pause();try{voix4.currentTime=0;}catch(e){}});
+
+function autoriserVoix4(){
+ if(!videoEnigme4.paused) lancerVoix4();
+}
+document.addEventListener("pointerdown",autoriserVoix4,{once:true});
+document.addEventListener("keydown",autoriserVoix4,{once:true});
+window.addEventListener("load",()=>{if(!videoEnigme4.paused) lancerVoix4();});
 
 /* ======================================================
    ENREGISTREMENT DE LA PROGRESSION
