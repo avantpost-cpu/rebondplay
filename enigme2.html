@@ -775,6 +775,12 @@ body{
       playsinline>
     </video>
 
+    <audio
+      id="voix2"
+      src="enigme2/voix2.mp3"
+      preload="auto">
+    </audio>
+
     <!-- ZONES CLIQUABLES -->
 
     <button
@@ -909,7 +915,228 @@ const braviFinal =
     "braviFinal"
   );
 
+const animation2 =
+  document.querySelector(
+    ".animation-2"
+  );
+
+const voix2 =
+  document.getElementById(
+    "voix2"
+  );
+
 let jeuTermine = false;
+
+/* ======================================================
+   VOIX SYNCHRONISÉE AVEC LA VIDÉO
+====================================================== */
+
+let voix2Autorisee = false;
+
+function synchroniserVoix2(){
+
+  if(
+    !animation2 ||
+    !voix2
+  ){
+    return;
+  }
+
+  try{
+
+    voix2.currentTime =
+      Math.max(
+        0,
+        animation2.currentTime || 0
+      );
+
+  }
+  catch(error){
+    console.warn(
+      "La voix 2 n'a pas pu être repositionnée.",
+      error
+    );
+  }
+
+  const lecture =
+    voix2.play();
+
+  if(
+    lecture &&
+    typeof lecture.then === "function"
+  ){
+
+    lecture
+      .then(
+        function(){
+
+          voix2Autorisee = true;
+
+        }
+      )
+      .catch(
+        function(){
+
+          /*
+            Les navigateurs peuvent bloquer un son automatique.
+            La première interaction de l'utilisateur relancera
+            alors la voix au bon endroit.
+          */
+
+        }
+      );
+
+  }
+
+}
+
+function autoriserVoix2ParInteraction(){
+
+  if(
+    !animation2 ||
+    !voix2
+  ){
+    return;
+  }
+
+  if(
+    animation2.ended
+  ){
+    return;
+  }
+
+  synchroniserVoix2();
+
+  document.removeEventListener(
+    "pointerdown",
+    autoriserVoix2ParInteraction
+  );
+
+  document.removeEventListener(
+    "keydown",
+    autoriserVoix2ParInteraction
+  );
+
+}
+
+if(
+  animation2 &&
+  voix2
+){
+
+  animation2.addEventListener(
+    "play",
+    synchroniserVoix2
+  );
+
+  animation2.addEventListener(
+    "playing",
+    function(){
+
+      if(
+        voix2.paused
+      ){
+        synchroniserVoix2();
+      }
+
+    }
+  );
+
+  animation2.addEventListener(
+    "pause",
+    function(){
+
+      voix2.pause();
+
+    }
+  );
+
+  animation2.addEventListener(
+    "seeking",
+    function(){
+
+      try{
+
+        voix2.currentTime =
+          Math.max(
+            0,
+            animation2.currentTime || 0
+          );
+
+      }
+      catch(error){
+
+        console.warn(
+          "La voix 2 n'a pas pu suivre le déplacement de la vidéo.",
+          error
+        );
+
+      }
+
+    }
+  );
+
+  animation2.addEventListener(
+    "ended",
+    function(){
+
+      voix2.pause();
+
+      try{
+        voix2.currentTime = 0;
+      }
+      catch(error){
+        console.warn(error);
+      }
+
+    }
+  );
+
+  voix2.addEventListener(
+    "ended",
+    function(){
+
+      voix2Autorisee = true;
+
+    }
+  );
+
+  document.addEventListener(
+    "pointerdown",
+    autoriserVoix2ParInteraction,
+    {
+      once:true
+    }
+  );
+
+  document.addEventListener(
+    "keydown",
+    autoriserVoix2ParInteraction,
+    {
+      once:true
+    }
+  );
+
+  window.addEventListener(
+    "load",
+    function(){
+
+      /*
+        Si l'autoplay audio est autorisé, la voix démarre
+        immédiatement avec la vidéo. Sinon, elle démarrera
+        à la première interaction, au même point que la vidéo.
+      */
+
+      if(
+        !animation2.paused
+      ){
+        synchroniserVoix2();
+      }
+
+    }
+  );
+
+}
 
 /* ======================================================
    ENREGISTREMENT DE LA PROGRESSION
