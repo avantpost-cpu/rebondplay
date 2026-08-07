@@ -25,27 +25,17 @@ body{
 
 body{
   min-height:100vh;
-
-  padding:
-    26px
-    14px
-    40px;
-
+  padding:26px 14px 40px;
   background:#1b5f6e;
-
-  font-family:
-    Arial,
-    Helvetica,
-    sans-serif;
+  font-family:Arial, Helvetica, sans-serif;
 }
 
 /* ======================================================
-   ENSEMBLE DIPLÔME + BOUTONS
+   PAGE
 ====================================================== */
 
 .page-diplome{
   width:100%;
-
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -53,25 +43,21 @@ body{
 
 /* ======================================================
    DIPLÔME
-   75 % de la largeur disponible = réduction de 25 %
+   Réduction de 25 % à l’écran
 ====================================================== */
 
 .diplome{
   position:relative;
-
   width:75vw;
   max-width:960px;
   min-width:720px;
-
   margin:0 auto;
 }
 
 .fond-diplome{
   display:block;
-
   width:100%;
   height:auto;
-
   user-select:none;
   pointer-events:none;
 }
@@ -83,83 +69,51 @@ body{
 .texte-variable,
 .date{
   position:absolute;
-
+  transform:translate(-50%,-50%);
   margin:0;
   padding:0;
-
   color:#044e61;
-
-  font-family:
-    "Sacramento",
-    cursive;
-
+  font-family:"Sacramento", cursive;
   font-weight:400;
   line-height:1;
-
   text-align:center;
-
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
-
   pointer-events:none;
 }
 
 /*
-  Les trois textes sont positionnés sur les lignes
-  imprimées à droite du personnage.
+  Les coordonnées ci-dessous utilisent le CENTRE
+  de chaque ligne du diplôme.
 */
 
 .nom-equipe{
-  left:59.3%;
-  top:40.9%;
-
-  width:31.5%;
-
-  font-size:clamp(
-    38px,
-    4.4vw,
-    66px
-  );
+  left:74.5%;
+  top:44.0%;
+  width:30%;
+  font-size:clamp(38px,4vw,62px);
 }
 
 .classe{
-  left:59.3%;
-  top:49.7%;
-
-  width:31.5%;
-
-  font-size:clamp(
-    29px,
-    3.4vw,
-    49px
-  );
+  left:74.5%;
+  top:52.5%;
+  width:30%;
+  font-size:clamp(27px,3vw,44px);
 }
 
 .ecole{
-  left:59.3%;
-  top:58.5%;
-
-  width:31.5%;
-
-  font-size:clamp(
-    27px,
-    3.1vw,
-    45px
-  );
+  left:74.5%;
+  top:61.0%;
+  width:30%;
+  font-size:clamp(25px,2.8vw,41px);
 }
 
 .date{
-  left:42.4%;
-  top:80.5%;
-
-  width:21%;
-
-  font-size:clamp(
-    18px,
-    2vw,
-    29px
-  );
+  left:53.0%;
+  top:82.6%;
+  width:22%;
+  font-size:clamp(17px,1.8vw,27px);
 }
 
 /* ======================================================
@@ -170,18 +124,12 @@ body{
   width:75vw;
   max-width:960px;
   min-width:720px;
-
   display:flex;
   align-items:center;
   justify-content:center;
   flex-wrap:wrap;
-
   gap:14px;
-
-  margin:
-    22px
-    auto
-    0;
+  margin:22px auto 0;
 }
 
 .actions button,
@@ -189,31 +137,18 @@ body{
   display:inline-flex;
   align-items:center;
   justify-content:center;
-
   min-height:48px;
-
-  padding:
-    13px
-    28px;
-
+  padding:13px 28px;
   border:0;
   border-radius:999px;
-
   outline:0;
   box-shadow:none;
-
-  font-family:
-    Arial,
-    Helvetica,
-    sans-serif;
-
+  font-family:Arial, Helvetica, sans-serif;
   font-size:16px;
   font-weight:800;
   line-height:1;
-
   text-align:center;
   text-decoration:none;
-
   cursor:pointer;
 }
 
@@ -238,19 +173,11 @@ body{
   width:75vw;
   max-width:960px;
   min-width:720px;
-
   min-height:18px;
-
-  margin:
-    10px
-    auto
-    0;
-
+  margin:10px auto 0;
   color:#ffffff;
-
   font-size:13px;
   font-weight:bold;
-
   text-align:center;
 }
 
@@ -262,12 +189,7 @@ body{
 
   body{
     min-width:760px;
-
-    padding:
-      18px
-      0
-      30px;
-
+    padding:18px 0 30px;
     overflow-x:auto;
   }
 
@@ -296,7 +218,6 @@ body{
   body{
     margin:0;
     padding:0;
-
     background:#ffffff;
   }
 
@@ -312,7 +233,6 @@ body{
     width:100%;
     max-width:none;
     min-width:0;
-
     margin:0;
   }
 
@@ -322,19 +242,19 @@ body{
   }
 
   .nom-equipe{
-    font-size:66px;
+    font-size:62px;
   }
 
   .classe{
-    font-size:49px;
+    font-size:44px;
   }
 
   .ecole{
-    font-size:45px;
+    font-size:41px;
   }
 
   .date{
-    font-size:29px;
+    font-size:27px;
   }
 
 }
@@ -408,34 +328,22 @@ body{
 (function(){
 
   const nomEquipe =
-    document.getElementById(
-      "nomEquipe"
-    );
+    document.getElementById("nomEquipe");
 
   const classe =
-    document.getElementById(
-      "classe"
-    );
+    document.getElementById("classe");
 
   const ecole =
-    document.getElementById(
-      "ecole"
-    );
+    document.getElementById("ecole");
 
   const date =
-    document.getElementById(
-      "date"
-    );
+    document.getElementById("date");
 
   const boutonImprimer =
-    document.getElementById(
-      "boutonImprimer"
-    );
+    document.getElementById("boutonImprimer");
 
   const message =
-    document.getElementById(
-      "message"
-    );
+    document.getElementById("message");
 
   function lireEquipeCourante(){
 
@@ -449,11 +357,7 @@ body{
     }
 
     try{
-
-      return JSON.parse(
-        donnees
-      );
-
+      return JSON.parse(donnees);
     }
     catch(error){
 
@@ -463,23 +367,16 @@ body{
       );
 
       return null;
-
     }
 
   }
 
-  function mettreEnCassePhrase(
-    valeur
-  ){
+  function mettreEnCassePhrase(valeur){
 
     const texte =
-      String(
-        valeur || ""
-      )
+      String(valeur || "")
         .trim()
-        .toLocaleLowerCase(
-          "fr-FR"
-        );
+        .toLocaleLowerCase("fr-FR");
 
     if(!texte){
       return "";
@@ -487,17 +384,13 @@ body{
 
     return (
       texte.charAt(0)
-        .toLocaleUpperCase(
-          "fr-FR"
-        ) +
+        .toLocaleUpperCase("fr-FR") +
       texte.slice(1)
     );
 
   }
 
-  function afficherDate(
-    dateBrute
-  ){
+  function afficherDate(dateBrute){
 
     if(!dateBrute){
       return "";
@@ -505,8 +398,7 @@ body{
 
     const objetDate =
       new Date(
-        dateBrute +
-        "T12:00:00"
+        dateBrute + "T12:00:00"
       );
 
     if(
@@ -517,15 +409,14 @@ body{
       return dateBrute;
     }
 
-    return objetDate
-      .toLocaleDateString(
-        "fr-FR",
-        {
-          day:"numeric",
-          month:"long",
-          year:"numeric"
-        }
-      );
+    return objetDate.toLocaleDateString(
+      "fr-FR",
+      {
+        day:"numeric",
+        month:"long",
+        year:"numeric"
+      }
+    );
 
   }
 
@@ -540,7 +431,6 @@ body{
         "Les informations de l’équipe n’ont pas été trouvées sur cet appareil.";
 
       return;
-
     }
 
     const nomBrut =
@@ -582,9 +472,7 @@ body{
   boutonImprimer.addEventListener(
     "click",
     function(){
-
       window.print();
-
     }
   );
 
