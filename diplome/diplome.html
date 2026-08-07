@@ -6,6 +6,10 @@
 
 <title>Diplôme Rebond</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap" rel="stylesheet">
+
 <style>
 *{
   margin:0;
@@ -21,78 +25,163 @@ body{
 
 body{
   min-height:100vh;
-  padding:30px 16px 42px;
+
+  padding:
+    26px
+    14px
+    40px;
+
   background:#1b5f6e;
-  font-family:Arial, Helvetica, sans-serif;
-  color:#044e61;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
 }
 
-/*
-  À l'écran, le diplôme occupe 75 % de la largeur disponible.
-  Le conteneur et tous les textes diminuent ensemble.
-*/
+/* ======================================================
+   ENSEMBLE DIPLÔME + BOUTONS
+====================================================== */
+
+.page-diplome{
+  width:100%;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+/* ======================================================
+   DIPLÔME
+   75 % de la largeur disponible = réduction de 25 %
+====================================================== */
+
 .diplome{
   position:relative;
-  width:75%;
-  max-width:900px;
+
+  width:75vw;
+  max-width:960px;
+  min-width:720px;
+
   margin:0 auto;
-  line-height:1;
 }
 
 .fond-diplome{
   display:block;
+
   width:100%;
   height:auto;
+
   user-select:none;
   pointer-events:none;
 }
 
+/* ======================================================
+   TEXTES PERSONNALISÉS
+====================================================== */
+
 .texte-variable,
 .date{
   position:absolute;
-  left:50%;
-  width:78%;
-  transform:translateX(-50%);
+
+  margin:0;
+  padding:0;
+
   color:#044e61;
+
+  font-family:
+    "Sacramento",
+    cursive;
+
+  font-weight:400;
+  line-height:1;
+
   text-align:center;
-  font-weight:800;
-  line-height:1.1;
-  overflow-wrap:anywhere;
+
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+
+  pointer-events:none;
 }
 
 /*
-  Ces positions sont exprimées en pourcentage du diplôme.
-  Elles restent donc alignées lorsque le diplôme est réduit.
+  Les trois textes sont positionnés sur les lignes
+  imprimées à droite du personnage.
 */
+
 .nom-equipe{
-  top:43.6%;
-  font-size:clamp(18px,3.2vw,44px);
+  left:59.3%;
+  top:40.9%;
+
+  width:31.5%;
+
+  font-size:clamp(
+    38px,
+    4.4vw,
+    66px
+  );
 }
 
 .classe{
-  top:54.4%;
-  font-size:clamp(13px,2vw,28px);
+  left:59.3%;
+  top:49.7%;
+
+  width:31.5%;
+
+  font-size:clamp(
+    29px,
+    3.4vw,
+    49px
+  );
 }
 
 .ecole{
-  top:60.2%;
-  font-size:clamp(13px,2vw,28px);
+  left:59.3%;
+  top:58.5%;
+
+  width:31.5%;
+
+  font-size:clamp(
+    27px,
+    3.1vw,
+    45px
+  );
 }
 
 .date{
-  top:79.8%;
-  font-size:clamp(11px,1.55vw,21px);
-  font-weight:700;
+  left:42.4%;
+  top:80.5%;
+
+  width:21%;
+
+  font-size:clamp(
+    18px,
+    2vw,
+    29px
+  );
 }
 
+/* ======================================================
+   BOUTONS SOUS LE DIPLÔME
+====================================================== */
+
 .actions{
+  width:75vw;
+  max-width:960px;
+  min-width:720px;
+
   display:flex;
-  flex-wrap:wrap;
+  align-items:center;
   justify-content:center;
-  gap:12px;
-  width:75%;
-  max-width:900px;
-  margin:22px auto 0;
+  flex-wrap:wrap;
+
+  gap:14px;
+
+  margin:
+    22px
+    auto
+    0;
 }
 
 .actions button,
@@ -100,15 +189,31 @@ body{
   display:inline-flex;
   align-items:center;
   justify-content:center;
+
   min-height:48px;
-  padding:12px 25px;
+
+  padding:
+    13px
+    28px;
+
   border:0;
   border-radius:999px;
-  outline:none;
+
+  outline:0;
   box-shadow:none;
-  font-size:15px;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size:16px;
   font-weight:800;
+  line-height:1;
+
+  text-align:center;
   text-decoration:none;
+
   cursor:pointer;
 }
 
@@ -130,51 +235,68 @@ body{
 }
 
 .message{
-  width:75%;
-  max-width:900px;
-  min-height:20px;
-  margin:12px auto 0;
+  width:75vw;
+  max-width:960px;
+  min-width:720px;
+
+  min-height:18px;
+
+  margin:
+    10px
+    auto
+    0;
+
   color:#ffffff;
+
   font-size:13px;
   font-weight:bold;
+
   text-align:center;
 }
 
+/* ======================================================
+   ÉCRANS PLUS PETITS
+====================================================== */
+
 @media screen and (max-width:760px){
+
   body{
-    padding:18px 8px 30px;
+    min-width:760px;
+
+    padding:
+      18px
+      0
+      30px;
+
+    overflow-x:auto;
   }
 
   .diplome,
   .actions,
   .message{
-    width:94%;
+    width:720px;
+    min-width:720px;
+    max-width:720px;
   }
 
-  .actions{
-    flex-direction:column;
-  }
-
-  .actions button,
-  .actions a{
-    width:100%;
-  }
 }
 
-/*
-  À l'impression, le diplôme retrouve sa taille maximale.
-  Les boutons et le fond de page disparaissent.
-*/
+/* ======================================================
+   IMPRESSION
+====================================================== */
+
 @page{
-  size:auto;
+  size:A4 landscape;
   margin:0;
 }
 
 @media print{
+
   html,
   body{
     margin:0;
     padding:0;
+
     background:#ffffff;
   }
 
@@ -182,9 +304,15 @@ body{
     min-height:auto;
   }
 
+  .page-diplome{
+    display:block;
+  }
+
   .diplome{
     width:100%;
     max-width:none;
+    min-width:0;
+
     margin:0;
   }
 
@@ -193,29 +321,29 @@ body{
     display:none !important;
   }
 
-  .fond-diplome{
-    width:100%;
-  }
-
   .nom-equipe{
-    font-size:36px;
+    font-size:66px;
   }
 
-  .classe,
+  .classe{
+    font-size:49px;
+  }
+
   .ecole{
-    font-size:23px;
+    font-size:45px;
   }
 
   .date{
-    font-size:18px;
+    font-size:29px;
   }
+
 }
 </style>
 </head>
 
 <body>
 
-<main>
+<main class="page-diplome">
 
   <section
     id="diplome"
@@ -230,19 +358,19 @@ body{
     <div
       id="nomEquipe"
       class="texte-variable nom-equipe">
-      NOM DE L’ÉQUIPE
+      Nom de l’équipe
     </div>
 
     <div
       id="classe"
       class="texte-variable classe">
-      CLASSE
+      Classe
     </div>
 
     <div
       id="ecole"
       class="texte-variable ecole">
-      ÉCOLE OU STRUCTURE
+      École ou structure
     </div>
 
     <div
@@ -280,22 +408,34 @@ body{
 (function(){
 
   const nomEquipe =
-    document.getElementById("nomEquipe");
+    document.getElementById(
+      "nomEquipe"
+    );
 
   const classe =
-    document.getElementById("classe");
+    document.getElementById(
+      "classe"
+    );
 
   const ecole =
-    document.getElementById("ecole");
+    document.getElementById(
+      "ecole"
+    );
 
   const date =
-    document.getElementById("date");
+    document.getElementById(
+      "date"
+    );
 
   const boutonImprimer =
-    document.getElementById("boutonImprimer");
+    document.getElementById(
+      "boutonImprimer"
+    );
 
   const message =
-    document.getElementById("message");
+    document.getElementById(
+      "message"
+    );
 
   function lireEquipeCourante(){
 
@@ -309,20 +449,55 @@ body{
     }
 
     try{
-      return JSON.parse(donnees);
+
+      return JSON.parse(
+        donnees
+      );
+
     }
     catch(error){
+
       console.error(
         "Impossible de lire les informations de l’équipe.",
         error
       );
 
       return null;
+
     }
 
   }
 
-  function afficherDate(dateBrute){
+  function mettreEnCassePhrase(
+    valeur
+  ){
+
+    const texte =
+      String(
+        valeur || ""
+      )
+        .trim()
+        .toLocaleLowerCase(
+          "fr-FR"
+        );
+
+    if(!texte){
+      return "";
+    }
+
+    return (
+      texte.charAt(0)
+        .toLocaleUpperCase(
+          "fr-FR"
+        ) +
+      texte.slice(1)
+    );
+
+  }
+
+  function afficherDate(
+    dateBrute
+  ){
 
     if(!dateBrute){
       return "";
@@ -330,7 +505,8 @@ body{
 
     const objetDate =
       new Date(
-        dateBrute + "T12:00:00"
+        dateBrute +
+        "T12:00:00"
       );
 
     if(
@@ -341,14 +517,15 @@ body{
       return dateBrute;
     }
 
-    return objetDate.toLocaleDateString(
-      "fr-FR",
-      {
-        day:"numeric",
-        month:"long",
-        year:"numeric"
-      }
-    );
+    return objetDate
+      .toLocaleDateString(
+        "fr-FR",
+        {
+          day:"numeric",
+          month:"long",
+          year:"numeric"
+        }
+      );
 
   }
 
@@ -363,30 +540,41 @@ body{
         "Les informations de l’équipe n’ont pas été trouvées sur cet appareil.";
 
       return;
+
     }
 
-    nomEquipe.textContent =
+    const nomBrut =
       equipe.nomEquipe ||
-      "ÉQUIPE REBOND";
+      equipe.teamName ||
+      equipe.equipe ||
+      "Équipe Rebond";
+
+    nomEquipe.textContent =
+      mettreEnCassePhrase(
+        nomBrut
+      );
 
     classe.textContent =
       equipe.classe ||
+      equipe.className ||
       "";
 
     ecole.textContent =
       equipe.ecole ||
+      equipe.schoolName ||
       "";
 
     date.textContent =
       afficherDate(
-        equipe.date
+        equipe.date ||
+        equipe.sessionDate ||
+        ""
       );
 
     document.title =
       "Diplôme Rebond — " +
-      (
-        equipe.nomEquipe ||
-        "Équipe"
+      mettreEnCassePhrase(
+        nomBrut
       );
 
   }
@@ -395,10 +583,6 @@ body{
     "click",
     function(){
 
-      /*
-        Le navigateur permet ensuite d’imprimer
-        ou d’enregistrer le diplôme au format PDF.
-      */
       window.print();
 
     }
