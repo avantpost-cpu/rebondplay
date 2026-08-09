@@ -128,7 +128,7 @@ body{
   display:none;
 
   width:999px;
-  height:718px;
+  height:722px;
 
   object-fit:fill;
 
@@ -659,7 +659,7 @@ body{
 
   .video-intro{
     width:100%;
-    height:calc(100% + 2px);
+    height:calc(100% + 6px);
     transform:translateY(-1px);
   }
 
@@ -1123,27 +1123,60 @@ boutonGo.addEventListener(
 );
 
 /* ======================================================
-   AFFICHAGE DU FORMULAIRE À LA FIN DE LA VIDÉO
+   AFFICHAGE DU FORMULAIRE 6 SECONDES AVANT LA FIN
 ====================================================== */
+
+let formulaireAffiche = false;
+
+function afficherFormulaire(){
+
+  if(formulaireAffiche){
+    return;
+  }
+
+  formulaireAffiche = true;
+
+  inscriptionOverlay.classList.add(
+    "visible"
+  );
+
+  window.setTimeout(
+    function(){
+
+      champCode.focus();
+
+    },
+    80
+  );
+
+}
+
+videoIntro.addEventListener(
+  "timeupdate",
+  function(){
+
+    if(
+      Number.isFinite(videoIntro.duration) &&
+      videoIntro.duration > 0 &&
+      videoIntro.currentTime >=
+        Math.max(
+          0,
+          videoIntro.duration - 6
+        )
+    ){
+
+      afficherFormulaire();
+
+    }
+
+  }
+);
 
 videoIntro.addEventListener(
   "ended",
   function(){
 
-    videoIntro.pause();
-
-    inscriptionOverlay.classList.add(
-      "visible"
-    );
-
-    window.setTimeout(
-      function(){
-
-        champCode.focus();
-
-      },
-      80
-    );
+    afficherFormulaire();
 
   }
 );
