@@ -918,42 +918,23 @@ body{
 
 
 /* ======================================================
-   BRAVI FINAL — UNIQUEMENT APRÈS LES TROIS BONNES RÉPONSES
+   ANIMATION FINALE — APRÈS LES TROIS BONNES RÉPONSES
 ====================================================== */
 
-.bloc-fin.gagnee .animation-fin,
-.bloc-fin.gagnee .carnet-zone{
-  opacity:.5;
-  filter:saturate(.5);
-  transition:opacity .45s ease, filter .45s ease;
-}
-
-.bravi-final{
+.finanime-final{
   position:absolute;
   inset:0;
-
-  display:flex;
-  justify-content:center;
-  align-items:center;
-
-  opacity:0;
-  pointer-events:none;
+  width:999px;
+  height:716px;
+  display:none;
+  object-fit:fill;
+  background:#000;
   z-index:2600;
-
-  transition:opacity .45s ease;
 }
 
-.bravi-final.visible{
-  opacity:1;
-}
-
-.bravi-final img{
-  width:50%;
-  height:auto;
+.finanime-final.visible{
   display:block;
-  filter:drop-shadow(0 10px 20px rgba(0,0,0,.35));
 }
-
 
 /* ======================================================
    COPYRIGHT SOUS L’IMAGE
@@ -1073,21 +1054,17 @@ body{
       </div>
 
     </div>
+    <!-- ANIMATION FINALE : visible après les trois bonnes réponses -->
 
-    <!-- BRAVI FINAL : visible seulement quand les trois mots sont corrects -->
+    <video
+      class="finanime-final"
+      id="finanimeFinal"
+      src="finanime.mp4"
+      playsinline
+      preload="auto">
+    </video>
 
-    <div
-      class="bravi-final"
-      id="braviFinal"
-      aria-hidden="true">
-
-      <img
-        src="../bravi5.png"
-        alt="Bravo, énigme réussie">
-
-    </div>
-
-    <!-- VIDÉO DE FOND -->
+<!-- VIDÉO DE FOND -->
 
     <video
       id="videoFin"
@@ -1305,11 +1282,8 @@ const champsMorse = [
 const messageReussite =
   document.getElementById("messageReussite");
 
-const braviFinal =
-  document.getElementById("braviFinal");
-
-const blocFin =
-  document.querySelector(".bloc-fin");
+const finanimeFinal =
+  document.getElementById("finanimeFinal");
 
 let sequenceFinaleLancee = false;
 let enigmeFinaleValidee = false;
@@ -1991,7 +1965,7 @@ function tournerPagesEnArriere(){
 
 
 /* ======================================================
-   SÉQUENCE FINALE : VIDÉO PUIS TROIS CHAMPS
+   SÉQUENCE FINALE : VIDÉO, TROIS CHAMPS, PUIS ANIMATION
 ====================================================== */
 
 function lancerSequenceFinale(){
@@ -2259,37 +2233,89 @@ function verifierEnigmeFinale(){
 
   ajouterMotFinalAuSac();
 
-  /*
-    Le Bravi final n'apparaît qu'une fois les trois réponses correctes.
-  */
-
   if(messageReussite){
     messageReussite.classList.remove(
       "visible"
     );
   }
 
-  blocFin.classList.add(
-    "gagnee"
-  );
+  /*
+    Les trois réponses sont correctes :
+    on masque l'écran Morse et on lance l'animation finale
+    plein cadre (999 × 716).
+  */
 
-  braviFinal.classList.add(
+  reponsesFinales.classList.remove(
     "visible"
   );
 
-  braviFinal.setAttribute(
+  reponsesFinales.setAttribute(
     "aria-hidden",
-    "false"
+    "true"
   );
 
-  /*
-    L'équipe est maintenant marquée comme terminée dans Supabase.
-    Après un court délai, le diplôme personnalisé est ouvert.
-  */
+  videoJeuFinal.classList.remove(
+    "visible"
+  );
 
-  finaliserPartieRebond();
+  finanimeFinal.classList.add(
+    "visible"
+  );
+
+  finanimeFinal.currentTime = 0;
+  finanimeFinal.muted = false;
+  finanimeFinal.volume = 1;
+
+  const lectureFinanime =
+    finanimeFinal.play();
+
+  if(
+    lectureFinanime &&
+    typeof lectureFinanime.catch === "function"
+  ){
+
+    lectureFinanime.catch(function(erreur){
+
+      console.warn(
+        "L'animation finale n'a pas pu démarrer automatiquement :",
+        erreur
+      );
+
+      /*
+        Si le navigateur bloque exceptionnellement la lecture,
+        un clic sur la vidéo permet de la lancer.
+      */
+
+      finanimeFinal.controls = true;
+
+    });
+
+  }
 
 }
+
+finanimeFinal.addEventListener(
+  "click",
+  function(event){
+
+    event.stopPropagation();
+
+    if(finanimeFinal.paused){
+      finanimeFinal.play();
+    }
+
+  }
+);
+
+finanimeFinal.addEventListener(
+  "ended",
+  function(){
+
+    finaliserPartieRebond();
+
+  }
+);
+
 
 async function finaliserPartieRebond(){
 
@@ -2298,19 +2324,6 @@ async function finaliserPartieRebond(){
   }
 
   finalisationRebondEnCours = true;
-
-  /*
-    On laisse le Bravi visible avant la redirection.
-  */
-
-  await new Promise(function(resolve){
-
-    window.setTimeout(
-      resolve,
-      1800
-    );
-
-  });
 
   try{
 
