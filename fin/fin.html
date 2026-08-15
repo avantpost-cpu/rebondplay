@@ -35,16 +35,13 @@ body{
   height:716px;
   line-height:0;
   font-size:0;
-  overflow:hidden;
 }
 
 .animation-fin{
   display:block;
   width:999px;
-  height:718px;
-  margin-bottom:-2px;
+  height:716px;
   border:0;
-  object-fit:fill;
 }
 
 
@@ -713,6 +710,18 @@ body{
   transform:scale(1.08);
 }
 
+/*
+  Les ombres des onglets sont neutralisées sur la page finale.
+  Elles ne servent pas pendant l'animation de conclusion.
+*/
+
+.inventaire-tab img,
+.navigation-tab img{
+  box-shadow:none !important;
+}
+
+
+
 .navigation-content{
   position:absolute;
   left:70px;
@@ -797,8 +806,6 @@ body{
   object-fit:fill;
   background:#000;
   pointer-events:auto;
-  height:calc(100% + 2px);
-  bottom:-2px;
 }
 
 .video-jeu-final.visible,
@@ -964,10 +971,9 @@ body{
 
 .finanime-final{
   position:absolute;
-  left:0;
-  top:0;
+  inset:0;
   width:999px;
-  height:718px;
+  height:716px;
   display:none;
   object-fit:fill;
   background:#000;
@@ -1387,6 +1393,12 @@ const braviDefFinal =
 
 const sonLevelFinal =
   document.getElementById("sonLevelFinal");
+
+const inventaire =
+  document.getElementById("inventaire");
+
+const navigationEnigmes =
+  document.getElementById("navigationEnigmes");
 
 let sequenceFinaleLancee = false;
 let enigmeFinaleValidee = false;
@@ -2406,6 +2418,20 @@ function verifierEnigmeFinale(){
         braviDefFinal.classList.remove(
           "visible"
         );
+      }
+
+      /*
+        Sur l’écran final, on retire complètement les onglets
+        Sac et Énigmes afin qu’aucune ombre portée résiduelle
+        ne déborde sur la vidéo.
+      */
+
+      if(inventaire){
+        inventaire.style.display = "none";
+      }
+
+      if(navigationEnigmes){
+        navigationEnigmes.style.display = "none";
       }
 
       finanimeFinal.classList.add(
