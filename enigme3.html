@@ -521,28 +521,60 @@ body.debug .debug-zone{
 .music-toggle{
   position:absolute;
   left:-70px;
-  top:205px;
+  top:220px;
   z-index:2985;
-  width:54px;
-  height:54px;
+
+  width:46px;
+  height:46px;
+
   display:flex;
   align-items:center;
   justify-content:center;
+
+  padding:0;
+
   border:0;
   border-radius:50%;
-  background:rgba(255,255,255,.90);
-  color:#044e61;
-  font-size:24px;
-  line-height:1;
+
+  background:transparent;
+
   cursor:pointer;
-  box-shadow:0 5px 12px rgba(0,0,0,.25);
+
   -webkit-tap-highlight-color:transparent;
-  transition:transform .2s ease, background .2s ease;
+
+  transition:
+    transform .2s ease;
 }
-.music-toggle:hover{ transform:scale(1.06); background:#fff; }
-.music-toggle:active{ transform:scale(.96); }
+
+.music-toggle img{
+  display:block;
+
+  width:46px;
+  height:46px;
+
+  object-fit:contain;
+
+  pointer-events:none;
+
+  filter:
+    drop-shadow(
+      0 5px 8px
+      rgba(0,0,0,.25)
+    );
+}
+
+.music-toggle:hover{
+  transform:scale(1.06);
+}
+
+.music-toggle:active{
+  transform:scale(.96);
+}
+
 .music-toggle:focus,
-.music-toggle:focus-visible{ outline:none; }
+.music-toggle:focus-visible{
+  outline:none;
+}
 
 .navigation-content-inner{
   width:230px;
@@ -785,7 +817,13 @@ body.debug .debug-zone{
       type="button"
       aria-label="Couper la musique d’ambiance"
       title="Couper la musique d’ambiance">
-      🔊
+
+      <img
+        id="musicToggleImage"
+        src="musicok.png"
+        alt=""
+        draggable="false">
+
     </button>
 
     <!-- BRAVO FINAL -->
@@ -880,6 +918,12 @@ body.debug .debug-zone{
         src="enigme5/son5.mp3"
         preload="auto"
         loop>
+      </audio>
+
+      <audio
+        id="sonWin2"
+        src="enigme3/win2.mp3"
+        preload="auto">
       </audio>
 
       <div
@@ -1105,6 +1149,16 @@ const musicToggle =
     "musicToggle"
   );
 
+const musicToggleImage =
+  document.getElementById(
+    "musicToggleImage"
+  );
+
+const sonWin2 =
+  document.getElementById(
+    "sonWin2"
+  );
+
 let badgeActif = null;
 let offsetX = 0;
 let offsetY = 0;
@@ -1274,7 +1328,7 @@ document.addEventListener(
    MUSIQUE D’AMBIANCE
 ====================================================== */
 
-const VOLUME_MUSIQUE = 0.16;
+const VOLUME_MUSIQUE = 0.22;
 let musiqueDemarree = false;
 
 function musiqueEstCoupee(){
@@ -1282,17 +1336,43 @@ function musiqueEstCoupee(){
 }
 
 function mettreAJourBoutonMusique(){
-  if(!musicToggle) return;
+
+  if(
+    !musicToggle ||
+    !musicToggleImage
+  ){
+    return;
+  }
 
   if(musiqueEstCoupee()){
-    musicToggle.textContent = "🔇";
-    musicToggle.setAttribute("aria-label","Activer la musique d’ambiance");
-    musicToggle.title = "Activer la musique d’ambiance";
-  } else {
-    musicToggle.textContent = "🔊";
-    musicToggle.setAttribute("aria-label","Couper la musique d’ambiance");
-    musicToggle.title = "Couper la musique d’ambiance";
+
+    musicToggleImage.src =
+      "musicno.png";
+
+    musicToggle.setAttribute(
+      "aria-label",
+      "Activer la musique d’ambiance"
+    );
+
+    musicToggle.title =
+      "Activer la musique d’ambiance";
+
   }
+  else{
+
+    musicToggleImage.src =
+      "musicok.png";
+
+    musicToggle.setAttribute(
+      "aria-label",
+      "Couper la musique d’ambiance"
+    );
+
+    musicToggle.title =
+      "Couper la musique d’ambiance";
+
+  }
+
 }
 
 function demarrerMusiqueAmbiance(){
@@ -1353,6 +1433,57 @@ document.addEventListener("keydown",autoriserMusiqueAuPremierGeste);
 window.addEventListener("load",function(){
   window.setTimeout(demarrerMusiqueAmbiance,150);
 });
+
+/* ======================================================
+   SON DE RÉUSSITE
+====================================================== */
+
+function jouerWin2(){
+
+  if(!sonWin2){
+    return;
+  }
+
+  try{
+
+    sonWin2.pause();
+    sonWin2.currentTime = 0;
+    sonWin2.volume = 1;
+    sonWin2.muted = false;
+
+    const lecture =
+      sonWin2.play();
+
+    if(
+      lecture &&
+      typeof lecture.catch ===
+      "function"
+    ){
+
+      lecture.catch(
+        function(error){
+
+          console.error(
+            "Le son win2 n’a pas pu être joué.",
+            error
+          );
+
+        }
+      );
+
+    }
+
+  }
+  catch(error){
+
+    console.error(
+      "Erreur de lecture win2.",
+      error
+    );
+
+  }
+
+}
 
 /* ======================================================
    ENREGISTREMENT DE LA PROGRESSION
@@ -1457,6 +1588,8 @@ function verrouillerMot(
   input,
   mot
 ){
+
+  jouerWin2();
 
   input.classList.add(
     "ok"
@@ -1775,6 +1908,8 @@ function placerBadgeDansZone(
   badge,
   zone
 ){
+
+  jouerWin2();
 
   zoneImage.appendChild(
     badge
