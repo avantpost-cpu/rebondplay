@@ -163,6 +163,37 @@ body{
   opacity:1;
 }
 
+/* ======================================================
+   TEXTE / IMAGE D’INSTRUCTIONS DU PREMIER TEST
+   1B2.jpg se superpose à 1B1.jpg au démarrage
+====================================================== */
+
+.instruction-jeu1{
+  position:absolute;
+
+  left:0;
+  top:0;
+
+  z-index:20;
+
+  display:block;
+
+  width:500px;
+  height:716px;
+
+  object-fit:fill;
+
+  opacity:1;
+
+  pointer-events:none;
+
+  transition:opacity .45s ease;
+}
+
+.instruction-jeu1.masquee{
+  opacity:0;
+}
+
 .reponses{
   opacity:0;
   visibility:hidden;
@@ -891,6 +922,12 @@ body{
         src="enigme1/1B1.jpg"
         alt="Deuxième partie de l’énigme">
 
+      <img
+        id="instructionJeu1"
+        class="instruction-jeu1"
+        src="enigme1/1B2.jpg"
+        alt="Instructions du premier test">
+
       <div
         class="reponses"
         id="reponsesJeu2">
@@ -1030,6 +1067,11 @@ const imageJeu2 =
 const reponsesJeu2 =
   document.getElementById(
     "reponsesJeu2"
+  );
+
+const instructionJeu1 =
+  document.getElementById(
+    "instructionJeu1"
   );
 
 const sonWin =
@@ -1284,6 +1326,12 @@ function activerSecondJeu(){
   grid.classList.add(
     "terminee"
   );
+
+  if(instructionJeu1){
+    instructionJeu1.classList.add(
+      "masquee"
+    );
+  }
 
   imageJeu2.classList.remove(
     "visible"
