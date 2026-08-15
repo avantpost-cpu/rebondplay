@@ -1100,6 +1100,15 @@ body{
       preload="auto">
     </video>
 
+    <!-- MUSIQUE DE L’OUTRO -->
+
+    <audio
+      id="musiqueOutro"
+      src="outro.mp3"
+      preload="auto"
+      loop>
+    </audio>
+
 <!-- VIDÉO DE FOND -->
 
     <video
@@ -1321,10 +1330,12 @@ const messageReussite =
 const finanimeFinal =
   document.getElementById("finanimeFinal");
 
+const musiqueOutro =
+  document.getElementById("musiqueOutro");
+
 let sequenceFinaleLancee = false;
 let enigmeFinaleValidee = false;
 let attenteClicApresFinE = false;
-let finalisationRebondEnCours = false;
 
 
 
@@ -2302,6 +2313,43 @@ function verifierEnigmeFinale(){
   finanimeFinal.muted = false;
   finanimeFinal.volume = 1;
 
+  /*
+    La musique d’outro démarre exactement en même temps
+    que l’animation finale et continue ensuite en boucle.
+  */
+
+  if(musiqueOutro){
+
+    try{
+      musiqueOutro.pause();
+      musiqueOutro.currentTime = 0;
+      musiqueOutro.volume = 0.80;
+      musiqueOutro.muted = false;
+      musiqueOutro.loop = true;
+    }
+    catch(error){}
+
+    const lectureOutro =
+      musiqueOutro.play();
+
+    if(
+      lectureOutro &&
+      typeof lectureOutro.catch === "function"
+    ){
+
+      lectureOutro.catch(function(error){
+
+        console.warn(
+          "La musique outro.mp3 n’a pas pu démarrer automatiquement :",
+          error
+        );
+
+      });
+
+    }
+
+  }
+
   const lectureFinanime =
     finanimeFinal.play();
 
@@ -2336,8 +2384,13 @@ finanimeFinal.addEventListener(
 
     event.stopPropagation();
 
-    if(finanimeFinal.paused){
+    if(
+      !finanimeFinal.ended &&
+      finanimeFinal.paused
+    ){
+
       finanimeFinal.play();
+
     }
 
   }
@@ -2347,65 +2400,20 @@ finanimeFinal.addEventListener(
   "ended",
   function(){
 
-    finaliserPartieRebond();
+    /*
+      FIN ABSOLUE DU JEU :
+      aucune redirection ni autre action.
+      La vidéo reste sur sa dernière image
+      et outro.mp3 continue en boucle.
+    */
+
+    finanimeFinal.pause();
+    finanimeFinal.controls = false;
+    finanimeFinal.style.pointerEvents = "none";
 
   }
 );
 
-
-async function finaliserPartieRebond(){
-
-  if(finalisationRebondEnCours){
-    return;
-  }
-
-  finalisationRebondEnCours = true;
-
-  try{
-
-    if(
-      !window.REBOND_DB ||
-      typeof window.REBOND_DB.terminerPartie !== "function"
-    ){
-
-      throw new Error(
-        "Le moteur de session Rebond n'est pas disponible."
-      );
-
-    }
-
-    await window.REBOND_DB.terminerPartie();
-
-    /*
-      Le diplôme lit automatiquement le nom de l'équipe,
-      l'école, la classe et la date dans localStorage.
-    */
-
-    window.location.href =
-      window.REBOND_CONFIG.diplomaUrl ||
-      "../diplome/diplome.html";
-
-  }
-  catch(error){
-
-    console.error(
-      "La partie n'a pas pu être enregistrée comme terminée :",
-      error
-    );
-
-    /*
-      Le joueur a bien réussi l'énigme.
-      En cas de problème de connexion, on ouvre tout de même
-      le diplôme afin de ne pas bloquer la fin du jeu.
-    */
-
-    window.location.href =
-      window.REBOND_CONFIG.diplomaUrl ||
-      "../diplome/diplome.html";
-
-  }
-
-}
 
 function ajouterMotFinalAuSac(){
 
