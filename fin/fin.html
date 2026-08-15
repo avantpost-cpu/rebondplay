@@ -811,17 +811,14 @@ body{
   position:absolute;
 
   /*
-    Les trois cases blanches sont désormais DESSINÉES
-    directement dans la dernière image de finEjeu.mp4.
-
-    Les champs HTML restent donc transparents et sont
-    simplement posés exactement par-dessus les zones prévues,
-    en laissant visibles les numéros rouges 1), 2) et 3).
+    Les champs sont calés directement dans les trois
+    rectangles blancs dessinés dans la dernière image
+    de finEjeu.mp4.
   */
 
-  height:50px;
+  height:38px;
 
-  padding:0 10px;
+  padding:0 8px;
 
   border:0;
   outline:0;
@@ -830,13 +827,13 @@ body{
   color:#111111;
 
   font-family:Arial, Helvetica, sans-serif;
-  font-size:24px;
-  line-height:50px;
+  font-size:20px;
+  line-height:38px;
   font-weight:900;
 
   text-align:center;
   text-transform:uppercase;
-  letter-spacing:1px;
+  letter-spacing:.6px;
 
   box-shadow:none;
 
@@ -846,10 +843,10 @@ body{
 }
 
 .champ-morse::placeholder{
-  color:rgba(0,0,0,.28);
-  font-size:13px;
+  color:rgba(0,0,0,.22);
+  font-size:11px;
   font-weight:700;
-  letter-spacing:.4px;
+  letter-spacing:.2px;
 }
 
 .champ-morse:focus{
@@ -857,40 +854,34 @@ body{
 }
 
 /*
-  Coordonnées calculées pour les trois cartouches visibles
-  sur la dernière image de la nouvelle vidéo.
-
-  carnet-zone commence à x=304 / y=183 dans l'écran 999×716.
-  Les valeurs négatives sont volontaires : overflow:visible
-  permet au premier champ de déborder à gauche du carnet.
+  POSITION DES TROIS CHAMPS
+  coordonnées relatives à la zone du carnet 635 × 479 px
 */
 
 .champ-morse-1{
-  left:-194px;
-  top:401px;
+  left:49px;
+  top:392px;
 
-  width:215px;
+  width:181px;
 }
 
 .champ-morse-2{
-  left:95px;
-  top:401px;
+  left:237px;
+  top:392px;
 
-  width:215px;
+  width:177px;
 }
 
 .champ-morse-3{
-  left:381px;
-  top:401px;
+  left:419px;
+  top:392px;
 
-  width:215px;
+  width:178px;
 }
 
 /*
-  Bonne réponse :
-  on garde uniquement le texte vert.
-  Aucun fond n'est ajouté afin de préserver le graphisme
-  du cartouche déjà présent dans la vidéo.
+  Bonne réponse : texte vert uniquement.
+  Le cartouche blanc reste celui de la vidéo.
 */
 
 .champ-morse.correct{
@@ -899,8 +890,7 @@ body{
 }
 
 /*
-  Mauvaise réponse :
-  texte rouge uniquement, sans masquer le cartouche.
+  Mauvaise réponse : texte rouge uniquement.
 */
 
 .champ-morse.erreur{
@@ -1185,7 +1175,6 @@ body{
           autocomplete="off"
           spellcheck="false"
           maxlength="10"
-          placeholder="TA RÉPONSE"
           aria-label="Premier mot caché">
 
         <input
@@ -1196,7 +1185,6 @@ body{
           autocomplete="off"
           spellcheck="false"
           maxlength="10"
-          placeholder="TA RÉPONSE"
           aria-label="Deuxième mot caché">
 
         <input
@@ -1207,7 +1195,6 @@ body{
           autocomplete="off"
           spellcheck="false"
           maxlength="10"
-          placeholder="TA RÉPONSE"
           aria-label="Troisième mot caché">
 
         <div
