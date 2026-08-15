@@ -869,6 +869,14 @@ body{
       loop>
     </audio>
 
+    <!-- SON DE FIN / BRAVI -->
+
+    <audio
+      id="sonBravi"
+      src="level.mp3"
+      preload="auto">
+    </audio>
+
     <!-- ZONES DE DÉPÔT -->
 
     <div
@@ -1025,6 +1033,11 @@ const voix4 =
 const musiqueAmbiance =
   document.getElementById(
     "musiqueAmbiance"
+  );
+
+const sonBravi =
+  document.getElementById(
+    "sonBravi"
   );
 
 const musicToggle =
@@ -1845,6 +1858,37 @@ function terminerEnigme(){
   braviFinal.classList.add(
     "visible"
   );
+
+  /*
+    Son de réussite finale : lancé exactement
+    au moment où l'image Bravi apparaît.
+  */
+  if(sonBravi){
+
+    try{
+      sonBravi.pause();
+      sonBravi.currentTime = 0;
+      sonBravi.volume = 1;
+      sonBravi.muted = false;
+    }
+    catch(error){}
+
+    const lectureBravi =
+      sonBravi.play();
+
+    if(
+      lectureBravi &&
+      typeof lectureBravi.catch === "function"
+    ){
+      lectureBravi.catch(function(error){
+        console.warn(
+          "Le son level.mp3 n'a pas pu être lu :",
+          error
+        );
+      });
+    }
+
+  }
 
   window.setTimeout(
     function(){
