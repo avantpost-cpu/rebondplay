@@ -927,6 +927,12 @@ body.debug .debug-zone{
         preload="auto">
       </audio>
 
+      <audio
+        id="sonLevel"
+        src="level.mp3"
+        preload="auto">
+      </audio>
+
       <div
         class="badges-panel"
         id="badgesPanel">
@@ -1158,6 +1164,11 @@ const musicToggleImage =
 const sonWin2 =
   document.getElementById(
     "sonWin2"
+  );
+
+const sonLevel =
+  document.getElementById(
+    "sonLevel"
   );
 
 let badgeActif = null;
@@ -1479,6 +1490,57 @@ function jouerWin2(){
 
     console.error(
       "Erreur de lecture win2.",
+      error
+    );
+
+  }
+
+}
+
+/* ======================================================
+   SON DE FIN DE NIVEAU
+====================================================== */
+
+function jouerSonLevel(){
+
+  if(!sonLevel){
+    return;
+  }
+
+  try{
+
+    sonLevel.pause();
+    sonLevel.currentTime = 0;
+    sonLevel.volume = 1;
+    sonLevel.muted = false;
+
+    const lecture =
+      sonLevel.play();
+
+    if(
+      lecture &&
+      typeof lecture.catch ===
+      "function"
+    ){
+
+      lecture.catch(
+        function(error){
+
+          console.error(
+            "Le son level.mp3 n’a pas pu être joué.",
+            error
+          );
+
+        }
+      );
+
+    }
+
+  }
+  catch(error){
+
+    console.error(
+      "Erreur de lecture de level.mp3.",
       error
     );
 
@@ -2017,6 +2079,8 @@ function verifierFin(){
     .classList.add(
       "gagnee"
     );
+
+  jouerSonLevel();
 
   braviFinal.classList.add(
     "visible"
