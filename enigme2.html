@@ -881,6 +881,14 @@ body{
       preload="auto">
     </audio>
 
+    <!-- SON DE FIN DE NIVEAU -->
+
+    <audio
+      id="sonLevel"
+      src="level.mp3"
+      preload="auto">
+    </audio>
+
     <!-- ZONES CLIQUABLES -->
 
     <button
@@ -1033,6 +1041,11 @@ const sonWin2 =
 const sonWrong =
   document.getElementById(
     "sonWrong"
+  );
+
+const sonLevel =
+  document.getElementById(
+    "sonLevel"
   );
 
 const musiqueAmbiance =
@@ -1464,6 +1477,57 @@ function jouerMauvaiseReponse(){
 }
 
 /* ======================================================
+   SON DE FIN DE NIVEAU
+====================================================== */
+
+function jouerSonLevel(){
+
+  if(!sonLevel){
+    return;
+  }
+
+  try{
+
+    sonLevel.pause();
+    sonLevel.currentTime = 0;
+    sonLevel.volume = 1;
+    sonLevel.muted = false;
+
+    const lecture =
+      sonLevel.play();
+
+    if(
+      lecture &&
+      typeof lecture.catch ===
+      "function"
+    ){
+
+      lecture.catch(
+        function(error){
+
+          console.error(
+            "Le son level.mp3 n’a pas pu être joué.",
+            error
+          );
+
+        }
+      );
+
+    }
+
+  }
+  catch(error){
+
+    console.error(
+      "Erreur de lecture de level.mp3.",
+      error
+    );
+
+  }
+
+}
+
+/* ======================================================
    ENREGISTREMENT DE LA PROGRESSION
 ====================================================== */
 
@@ -1721,6 +1785,8 @@ function validerMot(){
     .classList.add(
       "gagnee"
     );
+
+  jouerSonLevel();
 
   braviFinal.classList.add(
     "visible"
