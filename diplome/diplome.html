@@ -8,7 +8,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sacramento&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
 
 <style>
 *{
@@ -43,7 +43,6 @@ body{
 
 /* ======================================================
    DIPLÔME
-   Réduction de 25 % à l’écran
 ====================================================== */
 
 .diplome{
@@ -72,48 +71,60 @@ body{
   transform:translate(-50%,-50%);
   margin:0;
   padding:0;
+
   color:#044e61;
-  font-family:"Sacramento", cursive;
+
+  font-family:"Pacifico", cursive;
   font-weight:400;
-  line-height:1;
+
+  line-height:1.08;
   text-align:center;
   white-space:nowrap;
+
   overflow:hidden;
   text-overflow:ellipsis;
+
   pointer-events:none;
+
+  /*
+    Pacifico descend davantage sous la ligne de base
+    que Sacramento : ce petit décalage permet de centrer
+    visuellement les textes dans les emplacements.
+  */
+  padding-bottom:.08em;
 }
 
 /*
-  Les coordonnées ci-dessous utilisent le CENTRE
+  Les coordonnées utilisent le CENTRE
   de chaque ligne du diplôme.
 */
 
 .nom-equipe{
   left:74.5%;
-  top:44.0%;
-  width:30%;
-  font-size:clamp(38px,4vw,62px);
+  top:43.7%;
+  width:31%;
+  font-size:clamp(34px,3.7vw,56px);
 }
 
 .classe{
   left:74.5%;
-  top:52.5%;
-  width:30%;
-  font-size:clamp(27px,3vw,44px);
+  top:52.2%;
+  width:31%;
+  font-size:clamp(24px,2.6vw,38px);
 }
 
 .ecole{
   left:74.5%;
-  top:61.0%;
-  width:30%;
-  font-size:clamp(25px,2.8vw,41px);
+  top:60.7%;
+  width:31%;
+  font-size:clamp(22px,2.4vw,35px);
 }
 
 .date{
   left:53.0%;
-  top:82.6%;
-  width:22%;
-  font-size:clamp(17px,1.8vw,27px);
+  top:82.3%;
+  width:24%;
+  font-size:clamp(15px,1.55vw,23px);
 }
 
 /* ======================================================
@@ -124,11 +135,14 @@ body{
   width:75vw;
   max-width:960px;
   min-width:720px;
+
   display:flex;
   align-items:center;
   justify-content:center;
   flex-wrap:wrap;
+
   gap:14px;
+
   margin:22px auto 0;
 }
 
@@ -137,18 +151,24 @@ body{
   display:inline-flex;
   align-items:center;
   justify-content:center;
+
   min-height:48px;
+
   padding:13px 28px;
+
   border:0;
   border-radius:999px;
   outline:0;
   box-shadow:none;
+
   font-family:Arial, Helvetica, sans-serif;
   font-size:16px;
   font-weight:800;
   line-height:1;
+
   text-align:center;
   text-decoration:none;
+
   cursor:pointer;
 }
 
@@ -173,11 +193,16 @@ body{
   width:75vw;
   max-width:960px;
   min-width:720px;
+
   min-height:18px;
+
   margin:10px auto 0;
+
   color:#ffffff;
+
   font-size:13px;
   font-weight:bold;
+
   text-align:center;
 }
 
@@ -242,19 +267,19 @@ body{
   }
 
   .nom-equipe{
-    font-size:62px;
+    font-size:56px;
   }
 
   .classe{
-    font-size:44px;
+    font-size:38px;
   }
 
   .ecole{
-    font-size:41px;
+    font-size:35px;
   }
 
   .date{
-    font-size:27px;
+    font-size:23px;
   }
 
 }
