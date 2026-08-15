@@ -1055,7 +1055,8 @@ let offsetY = 0;
 let jeuTermine = false;
 
 /* ======================================================
-   VOIX 3 — DÉMARRE AVEC LA VIDÉO ET VA JUSQU'AU BOUT
+   VOIX 3 — DÉMARRAGE IMMÉDIAT À L’OUVERTURE DE LA PAGE
+   AVEC REPLI AU PREMIER GESTE SI LE NAVIGATEUR BLOQUE
 ====================================================== */
 
 let voix3DejaLancee = false;
@@ -1072,69 +1073,146 @@ function lancerVoix3(){
   voix3DejaLancee = true;
 
   try{
+    voix3.pause();
     voix3.currentTime = 0;
+    voix3.volume = 1;
+    voix3.muted = false;
   }
   catch(error){}
 
-  voix3.play().catch(
-    function(){
+  const lecture =
+    voix3.play();
 
-      voix3DejaLancee = false;
+  if(
+    lecture &&
+    typeof lecture.catch ===
+    "function"
+  ){
 
-    }
-  );
+    lecture.catch(
+      function(){
 
-}
+        /*
+          Si le navigateur refuse l’autoplay sonore,
+          on autorise une nouvelle tentative au
+          premier geste du joueur.
+        */
 
-if(
-  animation3 &&
-  voix3
-){
+        voix3DejaLancee = false;
 
-  animation3.addEventListener(
-    "play",
-    lancerVoix3,
-    {
-      once:true
-    }
-  );
-
-  function autoriserVoix3(){
-
-    lancerVoix3();
+      }
+    );
 
   }
 
-  document.addEventListener(
+}
+
+function tenterDemarrageAudioEtVideo3(){
+
+  if(animation3){
+
+    try{
+      animation3.currentTime = 0;
+    }
+    catch(error){}
+
+    const lectureVideo =
+      animation3.play();
+
+    if(
+      lectureVideo &&
+      typeof lectureVideo.catch ===
+      "function"
+    ){
+
+      lectureVideo.catch(
+        function(){}
+      );
+
+    }
+
+  }
+
+  lancerVoix3();
+
+}
+
+function autoriserVoix3(){
+
+  lancerVoix3();
+
+  document.removeEventListener(
     "pointerdown",
-    autoriserVoix3,
-    {
-      once:true
-    }
+    autoriserVoix3
   );
+
+  document.removeEventListener(
+    "keydown",
+    autoriserVoix3
+  );
+
+  document.removeEventListener(
+    "touchstart",
+    autoriserVoix3
+  );
+
+}
+
+/* Tentative dès que le DOM est prêt */
+
+if(
+  document.readyState ===
+  "loading"
+){
 
   document.addEventListener(
-    "keydown",
-    autoriserVoix3,
+    "DOMContentLoaded",
+    tenterDemarrageAudioEtVideo3,
     {
       once:true
-    }
-  );
-
-  window.addEventListener(
-    "load",
-    function(){
-
-      if(
-        !animation3.paused
-      ){
-        lancerVoix3();
-      }
-
     }
   );
 
 }
+else{
+
+  tenterDemarrageAudioEtVideo3();
+
+}
+
+/* Nouvelle tentative au chargement complet */
+
+window.addEventListener(
+  "load",
+  function(){
+
+    lancerVoix3();
+
+  },
+  {
+    once:true
+  }
+);
+
+/* Repli au premier geste si l’autoplay est bloqué */
+
+document.addEventListener(
+  "pointerdown",
+  autoriserVoix3
+);
+
+document.addEventListener(
+  "touchstart",
+  autoriserVoix3,
+  {
+    passive:true
+  }
+);
+
+document.addEventListener(
+  "keydown",
+  autoriserVoix3
+);
 
 /* ======================================================
    ENREGISTREMENT DE LA PROGRESSION
