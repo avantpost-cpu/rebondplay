@@ -781,6 +781,20 @@ body{
       preload="auto">
     </audio>
 
+    <!-- SONS BONNE / MAUVAISE RÉPONSE -->
+
+    <audio
+      id="sonWin2"
+      src="enigme2/win2.mp3"
+      preload="auto">
+    </audio>
+
+    <audio
+      id="sonWrong"
+      src="enigme2/wrong.mp3"
+      preload="auto">
+    </audio>
+
     <!-- ZONES CLIQUABLES -->
 
     <button
@@ -925,6 +939,16 @@ const voix2 =
     "voix2"
   );
 
+const sonWin2 =
+  document.getElementById(
+    "sonWin2"
+  );
+
+const sonWrong =
+  document.getElementById(
+    "sonWrong"
+  );
+
 let jeuTermine = false;
 
 /* ======================================================
@@ -1015,6 +1039,51 @@ if(
 }
 
 /* ======================================================
+   SONS BONNE / MAUVAISE RÉPONSE
+====================================================== */
+
+function jouerSon(audio){
+
+  if(!audio){
+    return;
+  }
+
+  try{
+    audio.pause();
+    audio.currentTime = 0;
+
+    audio.play().catch(
+      function(error){
+
+        console.log(
+          "Le son n’a pas pu être joué.",
+          error
+        );
+
+      }
+    );
+  }
+  catch(error){}
+
+}
+
+function jouerBonneReponse(){
+
+  jouerSon(
+    sonWin2
+  );
+
+}
+
+function jouerMauvaiseReponse(){
+
+  jouerSon(
+    sonWrong
+  );
+
+}
+
+/* ======================================================
    ENREGISTREMENT DE LA PROGRESSION
 ====================================================== */
 
@@ -1049,6 +1118,8 @@ phrases.forEach(
           )
         ){
 
+          jouerMauvaiseReponse();
+
           phrase.classList.add(
             "grisee"
           );
@@ -1066,6 +1137,8 @@ phrases.forEach(
           return;
 
         }
+
+        jouerBonneReponse();
 
         phrase.classList.add(
           "active"
@@ -1179,6 +1252,8 @@ if(validateBtn){
       }
       else{
 
+        jouerMauvaiseReponse();
+
         motCle.classList.add(
           "erreur"
         );
@@ -1209,6 +1284,8 @@ function validerMot(){
 
   jeuTermine =
     true;
+
+  jouerBonneReponse();
 
   motCle.classList.remove(
     "erreur"
