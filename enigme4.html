@@ -524,39 +524,50 @@ body{
 .music-toggle{
   position:absolute;
   left:-70px;
-  top:205px;
+  top:220px;
   z-index:2985;
 
-  width:54px;
-  height:54px;
+  width:46px;
+  height:46px;
 
   display:flex;
   align-items:center;
   justify-content:center;
 
+  padding:0;
+
   border:0;
   border-radius:50%;
 
-  background:rgba(255,255,255,.90);
-  color:#044e61;
-
-  font-size:24px;
-  line-height:1;
+  background:transparent;
 
   cursor:pointer;
-
-  box-shadow:0 5px 12px rgba(0,0,0,.25);
 
   -webkit-tap-highlight-color:transparent;
 
   transition:
-    transform .2s ease,
-    background .2s ease;
+    transform .2s ease;
+}
+
+.music-toggle img{
+  display:block;
+
+  width:46px;
+  height:46px;
+
+  object-fit:contain;
+
+  pointer-events:none;
+
+  filter:
+    drop-shadow(
+      0 5px 8px
+      rgba(0,0,0,.25)
+    );
 }
 
 .music-toggle:hover{
   transform:scale(1.06);
-  background:#ffffff;
 }
 
 .music-toggle:active{
@@ -811,7 +822,13 @@ body{
       type="button"
       aria-label="Couper la musique d’ambiance"
       title="Couper la musique d’ambiance">
-      🔊
+
+      <img
+        id="musicToggleImage"
+        src="musicok.png"
+        alt=""
+        draggable="false">
+
     </button>
 
     <!-- BRAVO FINAL -->
@@ -1015,6 +1032,11 @@ const musicToggle =
     "musicToggle"
   );
 
+const musicToggleImage =
+  document.getElementById(
+    "musicToggleImage"
+  );
+
 let lettreActive = null;
 let offsetX = 0;
 let offsetY = 0;
@@ -1166,7 +1188,7 @@ document.addEventListener(
    MUSIQUE D’AMBIANCE
 ====================================================== */
 
-const VOLUME_MUSIQUE = 0.16;
+const VOLUME_MUSIQUE = 0.22;
 let musiqueDemarree = false;
 
 function musiqueEstCoupee(){
@@ -1175,27 +1197,40 @@ function musiqueEstCoupee(){
 
 function mettreAJourBoutonMusique(){
 
-  if(!musicToggle){
+  if(
+    !musicToggle ||
+    !musicToggleImage
+  ){
     return;
   }
 
   if(musiqueEstCoupee()){
-    musicToggle.textContent = "🔇";
+
+    musicToggleImage.src =
+      "musicno.png";
+
     musicToggle.setAttribute(
       "aria-label",
       "Activer la musique d’ambiance"
     );
+
     musicToggle.title =
       "Activer la musique d’ambiance";
+
   }
   else{
-    musicToggle.textContent = "🔊";
+
+    musicToggleImage.src =
+      "musicok.png";
+
     musicToggle.setAttribute(
       "aria-label",
       "Couper la musique d’ambiance"
     );
+
     musicToggle.title =
       "Couper la musique d’ambiance";
+
   }
 
 }
