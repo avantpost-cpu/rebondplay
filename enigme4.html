@@ -1084,6 +1084,78 @@ document.addEventListener(
 );
 
 /* ======================================================
+   SONS DU PREMIER JEU
+   Bonne association : win2.mp3
+   Mauvaise association : wrong.mp3
+====================================================== */
+
+function jouerSonReponse4(src){
+
+  try{
+
+    const audio =
+      new Audio(src);
+
+    audio.preload =
+      "auto";
+
+    audio.volume =
+      1;
+
+    audio.currentTime =
+      0;
+
+    const lecture =
+      audio.play();
+
+    if(
+      lecture &&
+      typeof lecture.catch ===
+      "function"
+    ){
+
+      lecture.catch(
+        function(error){
+
+          console.error(
+            "Impossible de lire le son : " + src,
+            error
+          );
+
+        }
+      );
+
+    }
+
+  }
+  catch(error){
+
+    console.error(
+      "Erreur audio : " + src,
+      error
+    );
+
+  }
+
+}
+
+function jouerBonneReponse4(){
+
+  jouerSonReponse4(
+    "enigme4/win2.mp3"
+  );
+
+}
+
+function jouerMauvaiseReponse4(){
+
+  jouerSonReponse4(
+    "enigme4/wrong.mp3"
+  );
+
+}
+
+/* ======================================================
    ENREGISTREMENT DE LA PROGRESSION
 ====================================================== */
 
@@ -1270,6 +1342,8 @@ document.addEventListener(
       zoneTrouvee.dataset.answer
     ){
 
+      jouerBonneReponse4();
+
       zoneTrouvee.appendChild(
         lettreActive
       );
@@ -1309,6 +1383,18 @@ document.addEventListener(
 
     }
     else{
+
+      /*
+        Si l'enfant a bien déposé le signal sur une note,
+        mais sur la mauvaise note : son d'erreur.
+        Un simple lâcher en dehors des notes ne déclenche pas wrong.
+      */
+
+      if(zoneTrouvee){
+
+        jouerMauvaiseReponse4();
+
+      }
 
       retourDepart(
         lettreActive
