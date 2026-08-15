@@ -459,39 +459,50 @@ body{
 .music-toggle{
   position:absolute;
   left:-70px;
-  top:205px;
+  top:220px;
   z-index:2985;
 
-  width:54px;
-  height:54px;
+  width:46px;
+  height:46px;
 
   display:flex;
   align-items:center;
   justify-content:center;
 
+  padding:0;
+
   border:0;
   border-radius:50%;
 
-  background:rgba(255,255,255,.90);
-  color:#044e61;
-
-  font-size:24px;
-  line-height:1;
+  background:transparent;
 
   cursor:pointer;
-
-  box-shadow:0 5px 12px rgba(0,0,0,.25);
 
   -webkit-tap-highlight-color:transparent;
 
   transition:
-    transform .2s ease,
-    background .2s ease;
+    transform .2s ease;
+}
+
+.music-toggle img{
+  display:block;
+
+  width:46px;
+  height:46px;
+
+  object-fit:contain;
+
+  pointer-events:none;
+
+  filter:
+    drop-shadow(
+      0 5px 8px
+      rgba(0,0,0,.25)
+    );
 }
 
 .music-toggle:hover{
   transform:scale(1.06);
-  background:#ffffff;
 }
 
 .music-toggle:active{
@@ -810,7 +821,13 @@ body{
       type="button"
       aria-label="Couper la musique d’ambiance"
       title="Couper la musique d’ambiance">
-      🔊
+
+      <img
+        id="musicToggleImage"
+        src="musicok.png"
+        alt=""
+        draggable="false">
+
     </button>
 
     <!-- BRAVO FINAL -->
@@ -1028,6 +1045,11 @@ const musicToggle =
     "musicToggle"
   );
 
+const musicToggleImage =
+  document.getElementById(
+    "musicToggleImage"
+  );
+
 let jeuTermine = false;
 
 /* ======================================================
@@ -1207,7 +1229,7 @@ document.addEventListener(
    MUSIQUE D’AMBIANCE
 ====================================================== */
 
-const VOLUME_MUSIQUE = 0.16;
+const VOLUME_MUSIQUE = 0.22;
 let musiqueDemarree = false;
 
 function musiqueEstCoupee(){
@@ -1216,27 +1238,40 @@ function musiqueEstCoupee(){
 
 function mettreAJourBoutonMusique(){
 
-  if(!musicToggle){
+  if(
+    !musicToggle ||
+    !musicToggleImage
+  ){
     return;
   }
 
   if(musiqueEstCoupee()){
-    musicToggle.textContent = "🔇";
+
+    musicToggleImage.src =
+      "musicno.png";
+
     musicToggle.setAttribute(
       "aria-label",
       "Activer la musique d’ambiance"
     );
+
     musicToggle.title =
       "Activer la musique d’ambiance";
+
   }
   else{
-    musicToggle.textContent = "🔊";
+
+    musicToggleImage.src =
+      "musicok.png";
+
     musicToggle.setAttribute(
       "aria-label",
       "Couper la musique d’ambiance"
     );
+
     musicToggle.title =
       "Couper la musique d’ambiance";
+
   }
 
 }
@@ -1362,36 +1397,59 @@ window.addEventListener(
 
 /* ======================================================
    SONS BONNE / MAUVAISE RÉPONSE
+   Déclenchés directement pendant le geste utilisateur.
 ====================================================== */
 
-function jouerSon(audio){
+function jouerSonFeedback(audio){
 
   if(!audio){
     return;
   }
 
   try{
+
     audio.pause();
     audio.currentTime = 0;
+    audio.volume = 1;
+    audio.muted = false;
 
-    audio.play().catch(
-      function(error){
+    const lecture =
+      audio.play();
 
-        console.log(
-          "Le son n’a pas pu être joué.",
-          error
-        );
+    if(
+      lecture &&
+      typeof lecture.catch ===
+      "function"
+    ){
 
-      }
-    );
+      lecture.catch(
+        function(error){
+
+          console.error(
+            "Le son de réponse n’a pas pu être joué.",
+            error
+          );
+
+        }
+      );
+
+    }
+
   }
-  catch(error){}
+  catch(error){
+
+    console.error(
+      "Erreur de lecture du son de réponse.",
+      error
+    );
+
+  }
 
 }
 
 function jouerBonneReponse(){
 
-  jouerSon(
+  jouerSonFeedback(
     sonWin2
   );
 
@@ -1399,7 +1457,7 @@ function jouerBonneReponse(){
 
 function jouerMauvaiseReponse(){
 
-  jouerSon(
+  jouerSonFeedback(
     sonWrong
   );
 
@@ -1423,6 +1481,41 @@ afficherMotsTrouves();
 phrases.forEach(
   function(phrase){
 
+    /*
+      Le son part dès l'appui : il est alors directement
+      lié au geste utilisateur, ce qui évite les blocages
+      audio de Chrome / Safari.
+    */
+
+    phrase.addEventListener(
+      "pointerdown",
+      function(){
+
+        if(phrase.disabled){
+          return;
+        }
+
+        const id =
+          phrase.dataset.id;
+
+        if(
+          bonnesPhrases.includes(
+            id
+          )
+        ){
+
+          jouerBonneReponse();
+
+        }
+        else{
+
+          jouerMauvaiseReponse();
+
+        }
+
+      }
+    );
+
     phrase.addEventListener(
       "click",
       function(){
@@ -1439,8 +1532,6 @@ phrases.forEach(
             id
           )
         ){
-
-          jouerMauvaiseReponse();
 
           phrase.classList.add(
             "grisee"
@@ -1459,8 +1550,6 @@ phrases.forEach(
           return;
 
         }
-
-        jouerBonneReponse();
 
         phrase.classList.add(
           "active"
