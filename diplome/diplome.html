@@ -69,29 +69,27 @@ body{
 .date{
   position:absolute;
   transform:translate(-50%,-50%);
+
   margin:0;
-  padding:0;
+  padding:0 .08em .14em;
 
   color:#044e61;
 
   font-family:"Pacifico", cursive;
   font-weight:400;
 
-  line-height:1.08;
+  line-height:1.12;
   text-align:center;
   white-space:nowrap;
 
-  overflow:hidden;
-  text-overflow:ellipsis;
+  /*
+    Important avec Pacifico :
+    on ne coupe plus les hampes, boucles et descendantes.
+  */
+  overflow:visible;
+  text-overflow:clip;
 
   pointer-events:none;
-
-  /*
-    Pacifico descend davantage sous la ligne de base
-    que Sacramento : ce petit décalage permet de centrer
-    visuellement les textes dans les emplacements.
-  */
-  padding-bottom:.08em;
 }
 
 /*
@@ -100,31 +98,37 @@ body{
 */
 
 .nom-equipe{
-  left:74.5%;
-  top:43.7%;
-  width:31%;
-  font-size:clamp(34px,3.7vw,56px);
+  left:74.2%;
+  top:43.6%;
+  width:35%;
+  font-size:clamp(31px,3.35vw,51px);
 }
 
 .classe{
-  left:74.5%;
-  top:52.2%;
-  width:31%;
-  font-size:clamp(24px,2.6vw,38px);
+  left:74.2%;
+  top:52.0%;
+  width:34%;
+  font-size:clamp(22px,2.35vw,35px);
 }
 
 .ecole{
-  left:74.5%;
-  top:60.7%;
-  width:31%;
-  font-size:clamp(22px,2.4vw,35px);
+  left:74.2%;
+  top:60.2%;
+  width:36%;
+  font-size:clamp(20px,2.15vw,32px);
 }
 
+/*
+  Date remontée et légèrement décalée à gauche
+  pour éviter la zone de signature.
+*/
+
 .date{
-  left:53.0%;
-  top:82.3%;
+  left:51.8%;
+  top:79.3%;
   width:24%;
-  font-size:clamp(15px,1.55vw,23px);
+  font-size:clamp(14px,1.45vw,21px);
+  line-height:1;
 }
 
 /* ======================================================
@@ -267,19 +271,19 @@ body{
   }
 
   .nom-equipe{
-    font-size:56px;
+    font-size:51px;
   }
 
   .classe{
-    font-size:38px;
-  }
-
-  .ecole{
     font-size:35px;
   }
 
+  .ecole{
+    font-size:32px;
+  }
+
   .date{
-    font-size:23px;
+    font-size:21px;
   }
 
 }
