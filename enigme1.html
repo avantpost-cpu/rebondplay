@@ -168,7 +168,7 @@ body{
    1B2.jpg se superpose à 1B1.jpg au démarrage
 ====================================================== */
 
-.instruction-jeu1{
+.partie-droite .instruction-jeu1{
   position:absolute;
 
   left:0;
@@ -190,7 +190,7 @@ body{
   transition:opacity .45s ease;
 }
 
-.instruction-jeu1.masquee{
+.partie-droite .instruction-jeu1.masquee{
   opacity:0;
 }
 
@@ -1484,6 +1484,17 @@ function endSelection(){
       motsTrouvesGrille.size ===
       hiddenWords.length
     ){
+
+      /*
+        Le premier jeu est résolu :
+        l’image d’instructions 1B2 disparaît immédiatement.
+      */
+
+      if(instructionJeu1){
+        instructionJeu1.classList.add(
+          "masquee"
+        );
+      }
 
       setTimeout(
         activerSecondJeu,
