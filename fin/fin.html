@@ -809,66 +809,99 @@ body{
 
 .champ-morse{
   position:absolute;
+
+  /*
+    Les champs sont volontairement placés SOUS le code Morse
+    afin que les mots déjà trouvés ne masquent plus les signes
+    nécessaires pour déchiffrer les mots suivants.
+  */
+
   left:238px;
+
   width:319px;
-  height:49px;
-  border:0;
+  height:42px;
+
+  padding:0 12px;
+
+  border:2px dashed rgba(27,95,110,.72);
+  border-radius:9px;
   outline:0;
-  padding:2px 12px 0;
-  background:transparent;
-  color:#000;
+
+  background:rgba(255,255,255,.82);
+  color:#111111;
+
   font-family:Arial, Helvetica, sans-serif;
-  font-size:31px;
-  line-height:49px;
+  font-size:25px;
+  line-height:38px;
   font-weight:900;
+
   text-align:center;
   text-transform:uppercase;
   letter-spacing:1px;
-  box-shadow:none;
+
+  box-shadow:
+    0 2px 5px
+    rgba(0,0,0,.10);
+
   pointer-events:auto;
+
+  transition:
+    background .2s ease,
+    border-color .2s ease,
+    color .2s ease;
 }
 
 .champ-morse::placeholder{
-  color:rgba(0,0,0,.35);
+  color:rgba(27,95,110,.58);
+  font-size:15px;
+  font-weight:800;
+  letter-spacing:.8px;
 }
 
 .champ-morse:focus{
-  background:transparent;
+  background:rgba(255,255,255,.96);
+  border-color:#1b5f6e;
 }
 
-.champ-morse:-webkit-autofill,
-.champ-morse:-webkit-autofill:hover,
-.champ-morse:-webkit-autofill:focus{
-  -webkit-text-fill-color:#000;
-  -webkit-box-shadow:0 0 0 1000px transparent inset;
-  box-shadow:0 0 0 1000px transparent inset;
-  transition:background-color 9999s ease-out 0s;
-}
+/*
+  Un emplacement distinct sous chacun des trois codes Morse.
+  Le léger angle reste cohérent avec la mise en page du carnet.
+*/
 
 .champ-morse-1{
-  top:253px;
+  top:296px;
   transform:rotate(-2.8deg);
 }
 
 .champ-morse-2{
-  top:311px;
+  top:355px;
   transform:rotate(-3.7deg);
 }
 
 .champ-morse-3{
-  top:369px;
+  top:414px;
   transform:rotate(-4.2deg);
 }
 
 .champ-morse.correct{
   background:#39b54a;
   color:#ffffff;
-  border-radius:8px;
+  border:2px solid #39b54a;
 }
 
 .champ-morse.erreur{
-  background:transparent;
+  background:rgba(255,255,255,.90);
   color:#c0392b;
+  border-color:#c0392b;
+}
+
+.champ-morse:-webkit-autofill,
+.champ-morse:-webkit-autofill:hover,
+.champ-morse:-webkit-autofill:focus{
+  -webkit-text-fill-color:#111111;
+  -webkit-box-shadow:0 0 0 1000px rgba(255,255,255,.96) inset;
+  box-shadow:0 0 0 1000px rgba(255,255,255,.96) inset;
+  transition:background-color 9999s ease-out 0s;
 }
 
 .message-reussite{
@@ -1139,6 +1172,7 @@ body{
           autocomplete="off"
           spellcheck="false"
           maxlength="10"
+          placeholder="ÉCRIS LE MOT ICI"
           aria-label="Premier mot caché">
 
         <input
@@ -1149,6 +1183,7 @@ body{
           autocomplete="off"
           spellcheck="false"
           maxlength="10"
+          placeholder="ÉCRIS LE MOT ICI"
           aria-label="Deuxième mot caché">
 
         <input
@@ -1159,6 +1194,7 @@ body{
           autocomplete="off"
           spellcheck="false"
           maxlength="10"
+          placeholder="ÉCRIS LE MOT ICI"
           aria-label="Troisième mot caché">
 
         <div
