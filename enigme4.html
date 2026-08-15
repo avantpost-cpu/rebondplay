@@ -517,6 +517,57 @@ body{
   width:230px;
 }
 
+/* ======================================================
+   BOUTON MUSIQUE D’AMBIANCE
+====================================================== */
+
+.music-toggle{
+  position:absolute;
+  left:-70px;
+  top:205px;
+  z-index:2985;
+
+  width:54px;
+  height:54px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border:0;
+  border-radius:50%;
+
+  background:rgba(255,255,255,.90);
+  color:#044e61;
+
+  font-size:24px;
+  line-height:1;
+
+  cursor:pointer;
+
+  box-shadow:0 5px 12px rgba(0,0,0,.25);
+
+  -webkit-tap-highlight-color:transparent;
+
+  transition:
+    transform .2s ease,
+    background .2s ease;
+}
+
+.music-toggle:hover{
+  transform:scale(1.06);
+  background:#ffffff;
+}
+
+.music-toggle:active{
+  transform:scale(.96);
+}
+
+.music-toggle:focus,
+.music-toggle:focus-visible{
+  outline:none;
+}
+
 .navigation-content-inner{
   width:230px;
 
@@ -754,6 +805,15 @@ body{
 
     </div>
 
+    <button
+      id="musicToggle"
+      class="music-toggle"
+      type="button"
+      aria-label="Couper la musique d’ambiance"
+      title="Couper la musique d’ambiance">
+      🔊
+    </button>
+
     <!-- BRAVO FINAL -->
 
     <div
@@ -781,6 +841,15 @@ body{
       id="voix4"
       src="enigme4/voix4.mp3"
       preload="auto">
+    </audio>
+
+    <!-- MUSIQUE D’AMBIANCE GLOBALE -->
+
+    <audio
+      id="musiqueAmbiance"
+      src="enigme5/son5.mp3"
+      preload="auto"
+      loop>
     </audio>
 
     <!-- ZONES DE DÉPÔT -->
@@ -936,6 +1005,16 @@ const voix4 =
     "voix4"
   );
 
+const musiqueAmbiance =
+  document.getElementById(
+    "musiqueAmbiance"
+  );
+
+const musicToggle =
+  document.getElementById(
+    "musicToggle"
+  );
+
 let lettreActive = null;
 let offsetX = 0;
 let offsetY = 0;
@@ -1081,6 +1160,163 @@ document.addEventListener(
 document.addEventListener(
   "keydown",
   autoriserVoix4
+);
+
+/* ======================================================
+   MUSIQUE D’AMBIANCE
+====================================================== */
+
+const VOLUME_MUSIQUE = 0.16;
+let musiqueDemarree = false;
+
+function musiqueEstCoupee(){
+  return localStorage.getItem("rebondMusicMuted") === "1";
+}
+
+function mettreAJourBoutonMusique(){
+
+  if(!musicToggle){
+    return;
+  }
+
+  if(musiqueEstCoupee()){
+    musicToggle.textContent = "🔇";
+    musicToggle.setAttribute(
+      "aria-label",
+      "Activer la musique d’ambiance"
+    );
+    musicToggle.title =
+      "Activer la musique d’ambiance";
+  }
+  else{
+    musicToggle.textContent = "🔊";
+    musicToggle.setAttribute(
+      "aria-label",
+      "Couper la musique d’ambiance"
+    );
+    musicToggle.title =
+      "Couper la musique d’ambiance";
+  }
+
+}
+
+function demarrerMusiqueAmbiance(){
+
+  if(
+    !musiqueAmbiance ||
+    musiqueEstCoupee()
+  ){
+    return;
+  }
+
+  musiqueAmbiance.loop = true;
+  musiqueAmbiance.volume = VOLUME_MUSIQUE;
+  musiqueAmbiance.muted = false;
+
+  const lecture = musiqueAmbiance.play();
+
+  if(
+    lecture &&
+    typeof lecture.then === "function"
+  ){
+    lecture
+      .then(function(){
+        musiqueDemarree = true;
+      })
+      .catch(function(){
+        musiqueDemarree = false;
+      });
+  }
+
+}
+
+function couperMusiqueAmbiance(){
+
+  if(!musiqueAmbiance){
+    return;
+  }
+
+  musiqueAmbiance.pause();
+  musiqueDemarree = false;
+
+}
+
+function basculerMusique(){
+
+  if(musiqueEstCoupee()){
+
+    localStorage.setItem(
+      "rebondMusicMuted",
+      "0"
+    );
+
+    mettreAJourBoutonMusique();
+    demarrerMusiqueAmbiance();
+
+  }
+  else{
+
+    localStorage.setItem(
+      "rebondMusicMuted",
+      "1"
+    );
+
+    couperMusiqueAmbiance();
+    mettreAJourBoutonMusique();
+
+  }
+
+}
+
+function autoriserMusiqueAuPremierGeste(){
+
+  if(
+    !musiqueDemarree &&
+    !musiqueEstCoupee()
+  ){
+    demarrerMusiqueAmbiance();
+  }
+
+}
+
+if(musicToggle){
+
+  musicToggle.addEventListener(
+    "click",
+    function(event){
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      basculerMusique();
+
+    }
+  );
+
+}
+
+mettreAJourBoutonMusique();
+
+document.addEventListener(
+  "pointerdown",
+  autoriserMusiqueAuPremierGeste
+);
+
+document.addEventListener(
+  "keydown",
+  autoriserMusiqueAuPremierGeste
+);
+
+window.addEventListener(
+  "load",
+  function(){
+
+    window.setTimeout(
+      demarrerMusiqueAmbiance,
+      150
+    );
+
+  }
 );
 
 /* ======================================================
