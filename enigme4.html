@@ -942,7 +942,8 @@ let offsetY = 0;
 let jeuTermine = false;
 
 /* ======================================================
-   VOIX 4 — DÉMARRE AVEC LA VIDÉO ET VA JUSQU'AU BOUT
+   VOIX 4 — DÉMARRAGE IMMÉDIAT À L’OUVERTURE DE LA PAGE
+   AVEC REPLI AU PREMIER GESTE SI LE NAVIGATEUR BLOQUE
 ====================================================== */
 
 let voix4DejaLancee = false;
@@ -959,69 +960,128 @@ function lancerVoix4(){
   voix4DejaLancee = true;
 
   try{
+    voix4.pause();
     voix4.currentTime = 0;
+    voix4.volume = 1;
+    voix4.muted = false;
   }
   catch(error){}
 
-  voix4.play().catch(
-    function(){
+  const lecture =
+    voix4.play();
 
-      voix4DejaLancee = false;
+  if(
+    lecture &&
+    typeof lecture.catch ===
+    "function"
+  ){
 
+    lecture.catch(
+      function(){
+        voix4DejaLancee = false;
+      }
+    );
+
+  }
+
+}
+
+function tenterDemarrageAudioEtVideo4(){
+
+  if(videoEnigme4){
+
+    try{
+      videoEnigme4.currentTime = 0;
     }
+    catch(error){}
+
+    const lectureVideo =
+      videoEnigme4.play();
+
+    if(
+      lectureVideo &&
+      typeof lectureVideo.catch ===
+      "function"
+    ){
+      lectureVideo.catch(
+        function(){}
+      );
+    }
+
+  }
+
+  lancerVoix4();
+
+}
+
+function autoriserVoix4(){
+
+  lancerVoix4();
+
+  document.removeEventListener(
+    "pointerdown",
+    autoriserVoix4
+  );
+
+  document.removeEventListener(
+    "keydown",
+    autoriserVoix4
+  );
+
+  document.removeEventListener(
+    "touchstart",
+    autoriserVoix4
   );
 
 }
 
 if(
-  videoEnigme4 &&
-  voix4
+  document.readyState ===
+  "loading"
 ){
 
-  videoEnigme4.addEventListener(
-    "play",
-    lancerVoix4,
-    {
-      once:true
-    }
-  );
-
-  function autoriserVoix4(){
-
-    lancerVoix4();
-
-  }
-
   document.addEventListener(
-    "pointerdown",
-    autoriserVoix4,
+    "DOMContentLoaded",
+    tenterDemarrageAudioEtVideo4,
     {
       once:true
-    }
-  );
-
-  document.addEventListener(
-    "keydown",
-    autoriserVoix4,
-    {
-      once:true
-    }
-  );
-
-  window.addEventListener(
-    "load",
-    function(){
-
-      if(
-        !videoEnigme4.paused
-      ){
-        lancerVoix4();
-      }
-
     }
   );
 
 }
+else{
+
+  tenterDemarrageAudioEtVideo4();
+
+}
+
+window.addEventListener(
+  "load",
+  function(){
+    lancerVoix4();
+  },
+  {
+    once:true
+  }
+);
+
+document.addEventListener(
+  "pointerdown",
+  autoriserVoix4
+);
+
+document.addEventListener(
+  "touchstart",
+  autoriserVoix4,
+  {
+    passive:true
+  }
+);
+
+document.addEventListener(
+  "keydown",
+  autoriserVoix4
+);
 
 /* ======================================================
    ENREGISTREMENT DE LA PROGRESSION
@@ -1225,8 +1285,13 @@ document.addEventListener(
       lettreActive.style.position =
         "absolute";
 
+      /*
+        On décale légèrement le signal d’alerte vers la droite
+        afin de laisser visible le numéro #1, #2, etc. de la note.
+      */
+
       lettreActive.style.left =
-        "50%";
+        "56%";
 
       lettreActive.style.top =
         "50%";
