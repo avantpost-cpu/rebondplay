@@ -972,6 +972,43 @@ body{
   display:block;
 }
 
+
+/* ======================================================
+   BRAVI FINAL — AVANT L’ANIMATION DE FIN
+====================================================== */
+
+.bravi-def-final{
+  position:absolute;
+  inset:0;
+
+  z-index:2700;
+
+  display:none;
+  align-items:center;
+  justify-content:center;
+
+  background:rgba(27,95,110,.18);
+
+  pointer-events:none;
+}
+
+.bravi-def-final.visible{
+  display:flex;
+}
+
+.bravi-def-final img{
+  display:block;
+
+  width:50%;
+  height:auto;
+
+  filter:
+    drop-shadow(
+      0 10px 20px
+      rgba(0,0,0,.35)
+    );
+}
+
 /* ======================================================
    COPYRIGHT SOUS L’IMAGE
 ====================================================== */
@@ -1099,6 +1136,26 @@ body{
       playsinline
       preload="auto">
     </video>
+
+    <!-- BRAVI FINAL AVANT L’ANIMATION -->
+
+    <div
+      class="bravi-def-final"
+      id="braviDefFinal">
+
+      <img
+        src="bravidef.png"
+        alt="Bravo">
+
+    </div>
+
+    <!-- SON DU BRAVI FINAL -->
+
+    <audio
+      id="sonLevelFinal"
+      src="../level.mp3"
+      preload="auto">
+    </audio>
 
     <!-- MUSIQUE DE L’OUTRO -->
 
@@ -1332,6 +1389,12 @@ const finanimeFinal =
 
 const musiqueOutro =
   document.getElementById("musiqueOutro");
+
+const braviDefFinal =
+  document.getElementById("braviDefFinal");
+
+const sonLevelFinal =
+  document.getElementById("sonLevelFinal");
 
 let sequenceFinaleLancee = false;
 let enigmeFinaleValidee = false;
@@ -2287,9 +2350,11 @@ function verifierEnigmeFinale(){
   }
 
   /*
-    Les trois réponses sont correctes :
-    on masque l'écran Morse et on lance l'animation finale
-    plein cadre (999 × 716).
+    1) On masque l'écran Morse.
+    2) On affiche bravidef.png.
+    3) On joue level.mp3.
+    4) On laisse le BRAVI pendant 3 secondes.
+    5) Puis on lance finanime.mp4 + outro.mp3.
   */
 
   reponsesFinales.classList.remove(
@@ -2305,42 +2370,34 @@ function verifierEnigmeFinale(){
     "visible"
   );
 
-  finanimeFinal.classList.add(
-    "visible"
-  );
+  if(braviDefFinal){
+    braviDefFinal.classList.add(
+      "visible"
+    );
+  }
 
-  finanimeFinal.currentTime = 0;
-  finanimeFinal.muted = false;
-  finanimeFinal.volume = 1;
-
-  /*
-    La musique d’outro démarre exactement en même temps
-    que l’animation finale et continue ensuite en boucle.
-  */
-
-  if(musiqueOutro){
+  if(sonLevelFinal){
 
     try{
-      musiqueOutro.pause();
-      musiqueOutro.currentTime = 0;
-      musiqueOutro.volume = 0.80;
-      musiqueOutro.muted = false;
-      musiqueOutro.loop = true;
+      sonLevelFinal.pause();
+      sonLevelFinal.currentTime = 0;
+      sonLevelFinal.volume = 1;
+      sonLevelFinal.muted = false;
     }
     catch(error){}
 
-    const lectureOutro =
-      musiqueOutro.play();
+    const lectureLevel =
+      sonLevelFinal.play();
 
     if(
-      lectureOutro &&
-      typeof lectureOutro.catch === "function"
+      lectureLevel &&
+      typeof lectureLevel.catch === "function"
     ){
 
-      lectureOutro.catch(function(error){
+      lectureLevel.catch(function(error){
 
         console.warn(
-          "La musique outro.mp3 n’a pas pu démarrer automatiquement :",
+          "Le son level.mp3 n’a pas pu être joué :",
           error
         );
 
@@ -2350,31 +2407,84 @@ function verifierEnigmeFinale(){
 
   }
 
-  const lectureFinanime =
-    finanimeFinal.play();
+  window.setTimeout(
+    function(){
 
-  if(
-    lectureFinanime &&
-    typeof lectureFinanime.catch === "function"
-  ){
+      if(braviDefFinal){
+        braviDefFinal.classList.remove(
+          "visible"
+        );
+      }
 
-    lectureFinanime.catch(function(erreur){
-
-      console.warn(
-        "L'animation finale n'a pas pu démarrer automatiquement :",
-        erreur
+      finanimeFinal.classList.add(
+        "visible"
       );
 
+      finanimeFinal.currentTime = 0;
+      finanimeFinal.muted = false;
+      finanimeFinal.volume = 1;
+
       /*
-        Si le navigateur bloque exceptionnellement la lecture,
-        un clic sur la vidéo permet de la lancer.
+        La musique d’outro démarre exactement en même temps
+        que finanime.mp4 et continue ensuite en boucle.
       */
 
-      finanimeFinal.controls = true;
+      if(musiqueOutro){
 
-    });
+        try{
+          musiqueOutro.pause();
+          musiqueOutro.currentTime = 0;
+          musiqueOutro.volume = 0.80;
+          musiqueOutro.muted = false;
+          musiqueOutro.loop = true;
+        }
+        catch(error){}
 
-  }
+        const lectureOutro =
+          musiqueOutro.play();
+
+        if(
+          lectureOutro &&
+          typeof lectureOutro.catch === "function"
+        ){
+
+          lectureOutro.catch(function(error){
+
+            console.warn(
+              "La musique outro.mp3 n’a pas pu démarrer automatiquement :",
+              error
+            );
+
+          });
+
+        }
+
+      }
+
+      const lectureFinanime =
+        finanimeFinal.play();
+
+      if(
+        lectureFinanime &&
+        typeof lectureFinanime.catch === "function"
+      ){
+
+        lectureFinanime.catch(function(erreur){
+
+          console.warn(
+            "L'animation finale n'a pas pu démarrer automatiquement :",
+            erreur
+          );
+
+          finanimeFinal.controls = true;
+
+        });
+
+      }
+
+    },
+    3000
+  );
 
 }
 
@@ -2402,9 +2512,10 @@ finanimeFinal.addEventListener(
 
     /*
       FIN ABSOLUE DU JEU :
-      aucune redirection ni autre action.
-      La vidéo reste sur sa dernière image
-      et outro.mp3 continue en boucle.
+      - aucune redirection ;
+      - aucune autre action ;
+      - dernière image de finanime.mp4 conservée ;
+      - outro.mp3 continue en boucle.
     */
 
     finanimeFinal.pause();
