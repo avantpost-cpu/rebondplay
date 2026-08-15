@@ -952,7 +952,8 @@ const sonWrong =
 let jeuTermine = false;
 
 /* ======================================================
-   VOIX 2 — DÉMARRE AVEC LA VIDÉO ET VA JUSQU'AU BOUT
+   VOIX 2 — DÉMARRAGE IMMÉDIAT À L’OUVERTURE DE LA PAGE
+   AVEC REPLI AU PREMIER GESTE SI LE NAVIGATEUR BLOQUE
 ====================================================== */
 
 let voix2DejaLancee = false;
@@ -969,74 +970,159 @@ function lancerVoix2(){
   voix2DejaLancee = true;
 
   try{
+    voix2.pause();
     voix2.currentTime = 0;
+    voix2.volume = 1;
+    voix2.muted = false;
   }
   catch(error){}
 
-  voix2.play().catch(
-    function(){
+  const lecture =
+    voix2.play();
 
-      /*
-        Si le navigateur bloque l'audio automatique,
-        la première interaction du joueur relancera la voix.
-      */
+  if(
+    lecture &&
+    typeof lecture.catch ===
+    "function"
+  ){
 
-      voix2DejaLancee = false;
+    lecture.catch(
+      function(){
 
-    }
-  );
+        /*
+          Certains navigateurs bloquent encore l’autoplay sonore.
+          Dans ce cas, on autorise une nouvelle tentative au
+          premier clic / toucher / appui clavier.
+        */
 
-}
+        voix2DejaLancee = false;
 
-if(
-  animation2 &&
-  voix2
-){
-
-  animation2.addEventListener(
-    "play",
-    lancerVoix2,
-    {
-      once:true
-    }
-  );
-
-  function autoriserVoix2(){
-
-    lancerVoix2();
+      }
+    );
 
   }
 
-  document.addEventListener(
+}
+
+function tenterDemarrageAudioEtVideo(){
+
+  /*
+    La vidéo est déjà déclarée autoplay + muted dans le HTML.
+    On s'assure simplement qu'elle repart bien depuis le début,
+    puis on tente immédiatement la voix off.
+  */
+
+  if(animation2){
+
+    try{
+      animation2.currentTime = 0;
+    }
+    catch(error){}
+
+    const lectureVideo =
+      animation2.play();
+
+    if(
+      lectureVideo &&
+      typeof lectureVideo.catch ===
+      "function"
+    ){
+
+      lectureVideo.catch(
+        function(){}
+      );
+
+    }
+
+  }
+
+  lancerVoix2();
+
+}
+
+function autoriserVoix2(){
+
+  lancerVoix2();
+
+  document.removeEventListener(
     "pointerdown",
-    autoriserVoix2,
-    {
-      once:true
-    }
+    autoriserVoix2
   );
+
+  document.removeEventListener(
+    "keydown",
+    autoriserVoix2
+  );
+
+  document.removeEventListener(
+    "touchstart",
+    autoriserVoix2
+  );
+
+}
+
+/*
+  1) Tentative très tôt, dès que le DOM est prêt.
+*/
+
+if(
+  document.readyState ===
+  "loading"
+){
 
   document.addEventListener(
-    "keydown",
-    autoriserVoix2,
+    "DOMContentLoaded",
+    tenterDemarrageAudioEtVideo,
     {
       once:true
-    }
-  );
-
-  window.addEventListener(
-    "load",
-    function(){
-
-      if(
-        !animation2.paused
-      ){
-        lancerVoix2();
-      }
-
     }
   );
 
 }
+else{
+
+  tenterDemarrageAudioEtVideo();
+
+}
+
+/*
+  2) Nouvelle tentative au chargement complet.
+*/
+
+window.addEventListener(
+  "load",
+  function(){
+
+    lancerVoix2();
+
+  },
+  {
+    once:true
+  }
+);
+
+/*
+  3) Si l’autoplay sonore est refusé,
+     démarrage au tout premier geste utilisateur.
+*/
+
+document.addEventListener(
+  "pointerdown",
+  autoriserVoix2
+);
+
+document.addEventListener(
+  "touchstart",
+  autoriserVoix2,
+  {
+    passive:true
+  }
+);
+
+document.addEventListener(
+  "keydown",
+  autoriserVoix2
+);
 
 /* ======================================================
    SONS BONNE / MAUVAISE RÉPONSE
