@@ -1156,16 +1156,6 @@ body{
       src="../level.mp3"
       preload="auto">
     </audio>
-
-    <!-- MUSIQUE DE L’OUTRO -->
-
-    <audio
-      id="musiqueOutro"
-      src="outro.mp3"
-      preload="auto"
-      loop>
-    </audio>
-
 <!-- VIDÉO DE FOND -->
 
     <video
@@ -1386,10 +1376,6 @@ const messageReussite =
 
 const finanimeFinal =
   document.getElementById("finanimeFinal");
-
-const musiqueOutro =
-  document.getElementById("musiqueOutro");
-
 const braviDefFinal =
   document.getElementById("braviDefFinal");
 
@@ -2354,7 +2340,7 @@ function verifierEnigmeFinale(){
     2) On affiche bravidef.png.
     3) On joue level.mp3.
     4) On laisse le BRAVI pendant 3 secondes.
-    5) Puis on lance finanime.mp4 + outro.mp3.
+    5) Puis on lance finanime.mp4, qui contient directement sa propre bande-son.
   */
 
   reponsesFinales.classList.remove(
@@ -2424,43 +2410,6 @@ function verifierEnigmeFinale(){
       finanimeFinal.muted = false;
       finanimeFinal.volume = 1;
 
-      /*
-        La musique d’outro démarre exactement en même temps
-        que finanime.mp4 et continue ensuite en boucle.
-      */
-
-      if(musiqueOutro){
-
-        try{
-          musiqueOutro.pause();
-          musiqueOutro.currentTime = 0;
-          musiqueOutro.volume = 0.80;
-          musiqueOutro.muted = false;
-          musiqueOutro.loop = true;
-        }
-        catch(error){}
-
-        const lectureOutro =
-          musiqueOutro.play();
-
-        if(
-          lectureOutro &&
-          typeof lectureOutro.catch === "function"
-        ){
-
-          lectureOutro.catch(function(error){
-
-            console.warn(
-              "La musique outro.mp3 n’a pas pu démarrer automatiquement :",
-              error
-            );
-
-          });
-
-        }
-
-      }
-
       const lectureFinanime =
         finanimeFinal.play();
 
@@ -2515,7 +2464,7 @@ finanimeFinal.addEventListener(
       - aucune redirection ;
       - aucune autre action ;
       - dernière image de finanime.mp4 conservée ;
-      - outro.mp3 continue en boucle.
+      - aucune musique séparée n’est lancée.
     */
 
     finanimeFinal.pause();
