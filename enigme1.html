@@ -884,6 +884,14 @@ body{
 
 </audio>
 
+<!-- SON DE FIN DE NIVEAU -->
+
+<audio
+  id="sonLevel"
+  src="level.mp3"
+  preload="auto">
+</audio>
+
 <div class="wrapper">
 
   <div class="enigme">
@@ -1164,6 +1172,11 @@ const sonWin =
     "sonWin"
   );
 
+const sonLevel =
+  document.getElementById(
+    "sonLevel"
+  );
+
 const voixInstruction =
   document.getElementById(
     "voixInstruction"
@@ -1401,6 +1414,57 @@ window.addEventListener(
 );
 
 /* ======================================================
+   SON DE FIN DE NIVEAU
+====================================================== */
+
+function jouerSonLevel(){
+
+  if(!sonLevel){
+    return;
+  }
+
+  try{
+
+    sonLevel.pause();
+    sonLevel.currentTime = 0;
+    sonLevel.volume = 1;
+    sonLevel.muted = false;
+
+    const lecture =
+      sonLevel.play();
+
+    if(
+      lecture &&
+      typeof lecture.catch ===
+      "function"
+    ){
+
+      lecture.catch(
+        function(error){
+
+          console.error(
+            "Le son level.mp3 n’a pas pu être joué.",
+            error
+          );
+
+        }
+      );
+
+    }
+
+  }
+  catch(error){
+
+    console.error(
+      "Erreur de lecture de level.mp3.",
+      error
+    );
+
+  }
+
+}
+
+/* ======================================================
    ENREGISTREMENT DE LA PROGRESSION
 ====================================================== */
 
@@ -1603,6 +1667,13 @@ function verifierFin(){
     "Énigme 1",
     "PROTÉGEONS"
   );
+
+  /*
+    Le son de fin de niveau se déclenche exactement
+    au moment où le BRAVI apparaît.
+  */
+
+  jouerSonLevel();
 
   braviFinal.classList.add(
     "visible"
