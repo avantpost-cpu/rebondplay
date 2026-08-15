@@ -35,13 +35,16 @@ body{
   height:716px;
   line-height:0;
   font-size:0;
+  overflow:hidden;
 }
 
 .animation-fin{
   display:block;
   width:999px;
-  height:716px;
+  height:718px;
+  margin-bottom:-2px;
   border:0;
+  object-fit:fill;
 }
 
 
@@ -794,6 +797,8 @@ body{
   object-fit:fill;
   background:#000;
   pointer-events:auto;
+  height:calc(100% + 2px);
+  bottom:-2px;
 }
 
 .video-jeu-final.visible,
@@ -959,9 +964,10 @@ body{
 
 .finanime-final{
   position:absolute;
-  inset:0;
+  left:0;
+  top:0;
   width:999px;
-  height:716px;
+  height:718px;
   display:none;
   object-fit:fill;
   background:#000;
