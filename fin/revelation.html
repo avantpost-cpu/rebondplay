@@ -392,6 +392,54 @@ body{
 
 
 /* ======================================================
+   BOUTONS DE FIN
+====================================================== */
+
+.actions-fin{
+  width:999px;
+  display:none;
+  justify-content:center;
+  gap:12px;
+  margin-top:12px;
+}
+
+.actions-fin.visible{
+  display:flex;
+}
+
+.actions-fin a{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  min-height:34px;
+  padding:7px 15px;
+
+  border:2px solid #ffffff;
+  border-radius:999px;
+
+  background:transparent;
+  color:#ffffff;
+
+  font-size:12px;
+  line-height:1;
+  font-weight:700;
+  text-decoration:none;
+
+  cursor:pointer;
+
+  transition:
+    background .15s ease,
+    color .15s ease;
+}
+
+.actions-fin a:hover{
+  background:#ffffff;
+  color:#1b5f6e;
+}
+
+
+/* ======================================================
    COPYRIGHT
 ====================================================== */
 
@@ -609,6 +657,21 @@ body{
 
 
   <div
+    class="actions-fin"
+    id="actionsFin">
+
+    <a href="../index.html">
+      Revenir au menu
+    </a>
+
+    <a href="../diplome/diplome.html">
+      Afficher ton diplôme
+    </a>
+
+  </div>
+
+
+  <div
     class="copyright-rebond"
     aria-label="Copyright Rebond">
     © Rebond
@@ -667,6 +730,11 @@ const finanimeFinal =
 const boutonVideo =
   document.getElementById(
     "boutonVideo"
+  );
+
+const actionsFin =
+  document.getElementById(
+    "actionsFin"
   );
 
 
@@ -1543,6 +1611,16 @@ finanimeFinal.addEventListener(
 
     finanimeFinal.style.pointerEvents =
       "none";
+
+
+    /*
+      Les deux petits boutons apparaissent
+      seulement lorsque la vidéo finale est terminée.
+    */
+
+    actionsFin.classList.add(
+      "visible"
+    );
 
   }
 );
