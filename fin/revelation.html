@@ -458,6 +458,12 @@ body{
       aria-label="Révélation finale">
     </video>
 
+    <audio
+      id="voixConsigne"
+      src="voix.mp3"
+      preload="auto">
+    </audio>
+
 
     <!-- POSITIONS DE DÉPART SUR LE PAPIER JAUNE -->
 
@@ -637,6 +643,16 @@ const departs =
       ".depart"
     )
   ];
+
+const voixConsigne =
+  document.getElementById(
+    "voixConsigne"
+  );
+
+const videoRevelation =
+  document.querySelector(
+    ".fond-revelation"
+  );
 
 const sonVictoire =
   document.getElementById(
@@ -1541,6 +1557,86 @@ window.addEventListener(
   function(){
 
     placerMotsMelanges();
+
+
+    /*
+      La voix des consignes démarre en même temps
+      que revelation.mp4.
+    */
+
+    if(
+      videoRevelation &&
+      voixConsigne
+    ){
+
+      voixConsigne.currentTime =
+        0;
+
+      voixConsigne.volume =
+        1;
+
+      voixConsigne.muted =
+        false;
+
+
+      const lancerVoix =
+        function(){
+
+          voixConsigne.currentTime =
+            0;
+
+          const lectureVoix =
+            voixConsigne.play();
+
+
+          if(
+            lectureVoix &&
+            typeof lectureVoix.catch ===
+              "function"
+          ){
+
+            lectureVoix.catch(
+              function(erreur){
+
+                console.warn(
+                  "Le navigateur a bloqué la lecture automatique de voix.mp3 :",
+                  erreur
+                );
+
+              }
+            );
+
+          }
+
+        };
+
+
+      /*
+        Si la vidéo est déjà partie grâce à autoplay,
+        on lance immédiatement la voix.
+        Sinon on attend son événement "play".
+      */
+
+      if(
+        !videoRevelation.paused
+      ){
+
+        lancerVoix();
+
+      }
+      else{
+
+        videoRevelation.addEventListener(
+          "play",
+          lancerVoix,
+          {
+            once:true
+          }
+        );
+
+      }
+
+    }
 
   }
 );
