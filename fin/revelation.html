@@ -3,1016 +3,288 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Escape Game Rebond - Révélation finale</title>
-
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
-html,
-body{
-  width:100%;
-  min-height:100%;
-  background:#1b5f6e;
-  font-family:Arial, Helvetica, sans-serif;
-}
-
-body{
-  overflow-x:auto;
-}
-
-.page-revelation{
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  padding-top:40px;
-}
-
-.bloc-revelation{
-  position:relative;
-  width:999px;
-  height:716px;
-  overflow:hidden;
-  background:#1b5f6e;
-}
-
-.fond-revelation{
-  position:absolute;
-  inset:0;
-  width:999px;
-  height:716px;
-  object-fit:cover;
-  z-index:1;
-  pointer-events:none;
-  user-select:none;
-}
-
-.panneau-jeu{
-  position:absolute;
-  left:88px;
-  top:74px;
-  width:823px;
-  min-height:565px;
-  z-index:20;
-  padding:34px 38px 32px;
-  background:rgba(255,255,255,.94);
-  border-radius:28px;
-  box-shadow:0 18px 45px rgba(0,0,0,.28);
-  color:#044e61;
-}
-
-.surtitre{
-  margin-bottom:7px;
-  font-size:16px;
-  line-height:20px;
-  font-weight:800;
-  letter-spacing:.6px;
-  text-transform:uppercase;
-  color:#e65b10;
-}
-
-h1{
-  max-width:680px;
-  font-size:34px;
-  line-height:38px;
-  font-weight:900;
-  color:#044e61;
-}
-
-.consigne{
-  max-width:700px;
-  margin-top:13px;
-  font-size:18px;
-  line-height:25px;
-  font-weight:600;
-  color:#244f59;
-}
-
-.zone-mots{
-  margin-top:28px;
-}
-
-.titre-zone{
-  margin-bottom:11px;
-  font-size:14px;
-  line-height:18px;
-  font-weight:900;
-  letter-spacing:.4px;
-  text-transform:uppercase;
-  color:#597a82;
-}
-
-.mots-disponibles,
-.phrase-a-construire{
-  min-height:92px;
-  display:flex;
-  flex-wrap:wrap;
-  align-content:center;
-  gap:12px;
-  padding:16px;
-  border-radius:18px;
-  border:3px dashed rgba(4,78,97,.22);
-  background:rgba(27,95,110,.06);
-}
-
-.phrase-a-construire{
-  min-height:108px;
-  border-color:rgba(230,91,16,.38);
-  background:rgba(230,91,16,.055);
-}
-
-.phrase-a-construire.vide::before{
-  content:"Glisse les mots ici dans le bon ordre";
-  align-self:center;
-  width:100%;
-  text-align:center;
-  color:rgba(4,78,97,.40);
-  font-size:16px;
-  font-weight:800;
-}
-
-.mot{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  min-height:48px;
-  padding:10px 18px;
-  border:0;
-  border-radius:14px;
-  background:#ffffff;
-  color:#044e61;
-  font-size:18px;
-  line-height:22px;
-  font-weight:900;
-  text-transform:uppercase;
-  box-shadow:0 5px 13px rgba(0,0,0,.15);
-  cursor:grab;
-  user-select:none;
-  transition:
-    transform .16s ease,
-    box-shadow .16s ease,
-    background .2s ease,
-    color .2s ease;
-}
-
-.mot:hover{
-  transform:translateY(-2px);
-  box-shadow:0 8px 17px rgba(0,0,0,.18);
-}
-
-.mot:active{
-  cursor:grabbing;
-}
-
-.mot.dragging{
-  opacity:.35;
-  transform:scale(.96);
-}
-
-.phrase-a-construire.correcte .mot{
-  background:#18a558;
-  color:#ffffff;
-}
-
-.phrase-a-construire.erreur{
-  animation:secouer .32s linear;
-}
-
-@keyframes secouer{
-  0%,100%{ transform:translateX(0); }
-  25%{ transform:translateX(-7px); }
-  75%{ transform:translateX(7px); }
-}
-
-.actions{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:16px;
-  margin-top:22px;
-}
-
-.message{
-  flex:1;
-  min-height:24px;
-  font-size:16px;
-  line-height:22px;
-  font-weight:800;
-  color:#c0392b;
-}
-
-.message.ok{
-  color:#18a558;
-}
-
-.boutons{
-  display:flex;
-  gap:10px;
-}
-
-.bouton{
-  border:0;
-  border-radius:999px;
-  padding:13px 22px;
-  font-size:16px;
-  line-height:20px;
-  font-weight:900;
-  cursor:pointer;
-}
-
-.bouton-secondaire{
-  background:#dce8ea;
-  color:#044e61;
-}
-
-.bouton-valider{
-  background:#e65b10;
-  color:#ffffff;
-}
-
-.ecran-phrase-finale{
-  position:absolute;
-  inset:0;
-  z-index:150;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:70px;
-  background:#1b5f6e;
-  text-align:center;
-}
-
-.ecran-phrase-finale.visible{
-  display:flex;
-}
-
-.phrase-finale{
-  max-width:830px;
-  color:#ffffff;
-  font-size:58px;
-  line-height:1.08;
-  font-weight:900;
-  text-transform:uppercase;
-  letter-spacing:-1.2px;
-  animation:apparitionPhrase .65s cubic-bezier(.2,.8,.2,1) both;
-}
-
-@keyframes apparitionPhrase{
-  from{
-    opacity:0;
-    transform:scale(.90);
-  }
-  to{
-    opacity:1;
-    transform:scale(1);
-  }
-}
-
-.finanime-final{
-  position:absolute;
-  inset:0;
-  z-index:300;
-  display:none;
-  width:999px;
-  height:716px;
-  object-fit:fill;
-  background:#000;
-}
-
-.finanime-final.visible{
-  display:block;
-}
-
-.copyright-rebond{
-  width:999px;
-  margin:11px auto 30px;
-  color:rgba(255,255,255,.88);
-  font-size:11px;
-  line-height:1.2;
-  font-weight:500;
-  letter-spacing:.3px;
-  text-align:center;
-  pointer-events:none;
-  user-select:none;
-}
-
-@media screen and (max-width:1140px){
-  .page-revelation{
-    align-items:flex-start;
-    padding-left:25px;
-  }
-}
-
-@media screen and (max-width:600px){
-  .copyright-rebond{
-    margin-top:8px;
-    font-size:9px;
-  }
-}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;min-height:100%;background:#1b5f6e;font-family:Arial,Helvetica,sans-serif}
+body{overflow-x:auto}
+.page-revelation{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding-top:40px}
+.bloc-revelation{position:relative;width:999px;height:716px;overflow:hidden;background:#1b5f6e;user-select:none;-webkit-user-select:none;touch-action:none}
+.fond-revelation{position:absolute;inset:0;width:999px;height:716px;object-fit:fill;z-index:1;pointer-events:none;user-select:none}
+.mot-image{position:absolute;z-index:30;display:block;height:auto;cursor:grab;touch-action:none;filter:drop-shadow(0 4px 5px rgba(0,0,0,.18));transition:transform .14s ease,filter .14s ease,opacity .14s ease}
+.mot-image:hover{transform:scale(1.035);filter:drop-shadow(0 6px 8px rgba(0,0,0,.24))}
+.mot-image.dragging{z-index:200;cursor:grabbing;transform:scale(1.055);filter:drop-shadow(0 9px 12px rgba(0,0,0,.28))}
+#motEnsemble{left:98px;top:220px;width:185px}
+#motProtegeons{left:92px;top:294px;width:214px}
+#motLenfance{left:108px;top:370px;width:183px}
+#motDans{left:125px;top:446px;width:128px}
+#motLesport{left:106px;top:515px;width:180px}
+.zone-depot{position:absolute;z-index:15;left:575px;width:320px;height:72px;border-radius:12px;background:rgba(255,255,255,0);border:2px solid rgba(255,255,255,0);transition:background .15s ease,border-color .15s ease}
+.zone-depot.survol{background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.45)}
+#zone1{top:183px}#zone2{top:272px}#zone3{top:361px}#zone4{top:450px}#zone5{top:539px}
+.mot-image.place{z-index:40;cursor:default;filter:none}
+.mot-image.correct{animation:validationMot .28s ease both}
+@keyframes validationMot{0%{transform:scale(1)}55%{transform:scale(1.06)}100%{transform:scale(1)}}
+.finanime-final{position:absolute;inset:0;width:999px;height:716px;display:none;object-fit:fill;background:#000;z-index:500}
+.finanime-final.visible{display:block}
+.bouton-video{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:520;display:none;border:0;border-radius:999px;padding:15px 28px;background:#e65b10;color:#fff;font-size:18px;font-weight:900;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,.35)}
+.bouton-video.visible{display:block}
+.copyright-rebond{width:999px;margin:11px auto 30px;color:rgba(255,255,255,.88);font-size:11px;line-height:1.2;font-weight:500;letter-spacing:.3px;text-align:center;pointer-events:none;user-select:none}
+@media screen and (max-width:1140px){.page-revelation{align-items:flex-start;padding-left:25px}}
+@media screen and (max-width:600px){.copyright-rebond{margin-top:8px;font-size:9px}}
 </style>
 </head>
-
 <body>
-
 <div class="page-revelation">
+  <div class="bloc-revelation" id="blocRevelation">
+    <img class="fond-revelation" src="revelation.jpg" alt="Révélation finale">
 
-  <div class="bloc-revelation">
+    <img class="mot-image" id="motEnsemble" src="ensemble.png" data-mot="ensemble" alt="Ensemble" draggable="false">
+    <img class="mot-image" id="motProtegeons" src="protegeons.png" data-mot="protegeons" alt="Protégeons" draggable="false">
+    <img class="mot-image" id="motLenfance" src="lenfance.png" data-mot="lenfance" alt="L'enfance" draggable="false">
+    <img class="mot-image" id="motDans" src="dans.png" data-mot="dans" alt="Dans" draggable="false">
+    <img class="mot-image" id="motLesport" src="lesport.png" data-mot="lesport" alt="Le sport" draggable="false">
 
-    <img
-      class="fond-revelation"
-      src="revelation.png"
-      alt=""
-      onerror="this.style.display='none'">
+    <div class="zone-depot" id="zone1" data-attendu="ensemble"></div>
+    <div class="zone-depot" id="zone2" data-attendu="protegeons"></div>
+    <div class="zone-depot" id="zone3" data-attendu="lenfance"></div>
+    <div class="zone-depot" id="zone4" data-attendu="dans"></div>
+    <div class="zone-depot" id="zone5" data-attendu="lesport"></div>
 
-    <section
-      class="panneau-jeu"
-      id="panneauJeu"
-      aria-labelledby="titreRevelation">
-
-      <div class="surtitre">Ultime défi</div>
-
-      <h1 id="titreRevelation">
-        Remets les mots du sac dans le bon ordre
-      </h1>
-
-      <p class="consigne">
-        Tous les mots que tu as récoltés forment un message.
-        Déplace-les pour retrouver la phrase finale.
-      </p>
-
-      <div class="zone-mots">
-        <div class="titre-zone">Les mots du sac</div>
-        <div
-          class="mots-disponibles"
-          id="motsDisponibles"
-          aria-label="Mots disponibles">
-        </div>
-      </div>
-
-      <div class="zone-mots">
-        <div class="titre-zone">Ton message</div>
-        <div
-          class="phrase-a-construire vide"
-          id="phraseAConstruire"
-          aria-label="Phrase à construire">
-        </div>
-      </div>
-
-      <div class="actions">
-
-        <div
-          class="message"
-          id="messageJeu"
-          role="status"
-          aria-live="polite">
-        </div>
-
-        <div class="boutons">
-
-          <button
-            class="bouton bouton-secondaire"
-            id="boutonMelanger"
-            type="button">
-            Mélanger
-          </button>
-
-          <button
-            class="bouton bouton-valider"
-            id="boutonValider"
-            type="button">
-            Valider
-          </button>
-
-        </div>
-
-      </div>
-
-    </section>
-
-    <div
-      class="ecran-phrase-finale"
-      id="ecranPhraseFinale"
-      aria-hidden="true">
-      <div class="phrase-finale">
-        Ensemble,<br>
-        protégeons l’enfance<br>
-        dans le sport.
-      </div>
-    </div>
-
-    <video
-      class="finanime-final"
-      id="finanimeFinal"
-      src="finanime.mp4"
-      playsinline
-      preload="auto">
-    </video>
-
-    <audio
-      id="sonLevel"
-      src="../level.mp3"
-      preload="auto">
-    </audio>
-
+    <video class="finanime-final" id="finanimeFinal" src="finanime.mp4" playsinline preload="auto"></video>
+    <button class="bouton-video" id="boutonVideo" type="button">Voir la fin</button>
+    <audio id="sonVictoire" src="../level.mp3" preload="auto"></audio>
   </div>
 
-  <div
-    class="copyright-rebond"
-    aria-label="Copyright Rebond">
-    © Rebond
-  </div>
-
+  <div class="copyright-rebond" aria-label="Copyright Rebond">© Rebond</div>
 </div>
 
 <script>
-const motsDisponibles =
-  document.getElementById("motsDisponibles");
-
-const phraseAConstruire =
-  document.getElementById("phraseAConstruire");
-
-const boutonMelanger =
-  document.getElementById("boutonMelanger");
-
-const boutonValider =
-  document.getElementById("boutonValider");
-
-const messageJeu =
-  document.getElementById("messageJeu");
-
-const panneauJeu =
-  document.getElementById("panneauJeu");
-
-const ecranPhraseFinale =
-  document.getElementById("ecranPhraseFinale");
-
-const finanimeFinal =
-  document.getElementById("finanimeFinal");
-
-const sonLevel =
-  document.getElementById("sonLevel");
-
-localStorage.setItem(
-  "rebondCurrentPage",
-  "fin/revelation.html"
-);
-
-function normaliser(texte){
-  return String(texte || "")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[’']/g, "")
-    .replace(/[^A-Za-z]/g, "")
-    .toUpperCase();
-}
-
-function lireMotsDuSac(){
-
-  let donnees = [];
-
-  try{
-    donnees =
-      JSON.parse(
-        localStorage.getItem("motsEscapeRebond")
-      ) || [];
-  }
-  catch(erreur){
-    donnees = [];
-  }
-
-  return donnees
-    .map(function(item){
-
-      if(
-        typeof item === "object" &&
-        item !== null &&
-        item.mot
-      ){
-        return String(item.mot).trim();
-      }
-
-      return String(item || "").trim();
-
-    })
-    .filter(Boolean);
-}
-
-const phraseAttendue =
-  normaliser(
-    "ENSEMBLE PROTÉGEONS L’ENFANCE DANS LE SPORT"
-  );
-
-function melangerTableau(tableau){
-
-  const copie = tableau.slice();
-
-  for(let i = copie.length - 1; i > 0; i--){
-
-    const j =
-      Math.floor(
-        Math.random() * (i + 1)
-      );
-
-    const temporaire = copie[i];
-    copie[i] = copie[j];
-    copie[j] = temporaire;
-  }
-
-  return copie;
-}
-
-function creerMot(texte){
-
-  const element =
-    document.createElement("button");
-
-  element.type = "button";
-  element.className = "mot";
-  element.textContent = texte;
-  element.draggable = true;
-
-  element.setAttribute(
-    "aria-label",
-    "Mot : " + texte
-  );
-
-  connecterMot(element);
-
-  return element;
-}
-
-let motEnCours = null;
-
-function connecterMot(mot){
-
-  mot.addEventListener(
-    "dragstart",
-    function(){
-
-      motEnCours = mot;
-
-      mot.classList.add(
-        "dragging"
-      );
-    }
-  );
-
-  mot.addEventListener(
-    "dragend",
-    function(){
-
-      mot.classList.remove(
-        "dragging"
-      );
-
-      motEnCours = null;
-
-      actualiserPlaceholder();
-    }
-  );
-
-  mot.addEventListener(
-    "click",
-    function(event){
-
-      event.preventDefault();
-
-      if(
-        mot.parentElement ===
-        motsDisponibles
-      ){
-        phraseAConstruire.appendChild(
-          mot
-        );
-      }
-      else{
-        motsDisponibles.appendChild(
-          mot
-        );
-      }
-
-      nettoyerMessage();
-      actualiserPlaceholder();
-    }
-  );
-}
-
-function installerZoneDepot(zone){
-
-  zone.addEventListener(
-    "dragover",
-    function(event){
-
-      event.preventDefault();
-
-      if(!motEnCours){
-        return;
-      }
-
-      const apres =
-        trouverElementApres(
-          zone,
-          event.clientX,
-          event.clientY
-        );
-
-      if(apres){
-        zone.insertBefore(
-          motEnCours,
-          apres
-        );
-      }
-      else{
-        zone.appendChild(
-          motEnCours
-        );
-      }
-
-      actualiserPlaceholder();
-    }
-  );
-
-  zone.addEventListener(
-    "drop",
-    function(event){
-
-      event.preventDefault();
-      nettoyerMessage();
-      actualiserPlaceholder();
-    }
-  );
-}
-
-function trouverElementApres(
-  conteneur,
-  x,
-  y
-){
-
-  const elements =
-    [
-      ...conteneur.querySelectorAll(
-        ".mot:not(.dragging)"
-      )
-    ];
-
-  let meilleur = null;
-  let meilleurePosition = Infinity;
-
-  elements.forEach(function(element){
-
-    const boite =
-      element.getBoundingClientRect();
-
-    const position =
-      (boite.top * 10000) + boite.left;
-
-    const pointeur =
-      (y * 10000) + x;
-
-    if(
-      position > pointeur &&
-      position < meilleurePosition
-    ){
-      meilleurePosition = position;
-      meilleur = element;
-    }
-
-  });
-
-  return meilleur;
-}
-
-installerZoneDepot(motsDisponibles);
-installerZoneDepot(phraseAConstruire);
-
-function afficherMots(){
-
-  let mots =
-    lireMotsDuSac();
-
-  /*
-    En partie normale, on utilise exclusivement les mots du sac.
-    Si la page est ouverte directement pour un test local,
-    on injecte seulement les cinq cartouches nécessaires.
-  */
-
-  if(mots.length === 0){
-    mots = [
-      "ENSEMBLE",
-      "PROTÉGEONS",
-      "L’ENFANCE",
-      "DANS",
-      "LE SPORT"
-    ];
-  }
-
-  motsDisponibles.innerHTML = "";
-  phraseAConstruire.innerHTML = "";
-
-  melangerTableau(mots)
-    .forEach(function(texte){
-
-      motsDisponibles.appendChild(
-        creerMot(texte)
-      );
+const bloc=document.getElementById("blocRevelation");
+const mots=[...document.querySelectorAll(".mot-image")];
+const zones=[...document.querySelectorAll(".zone-depot")];
+const sonVictoire=document.getElementById("sonVictoire");
+const finanimeFinal=document.getElementById("finanimeFinal");
+const boutonVideo=document.getElementById("boutonVideo");
+
+localStorage.setItem("rebondCurrentPage","fin/revelation.html");
+
+const etatInitial=new Map();
+window.addEventListener("load",function(){
+  mots.forEach(function(mot){
+    etatInitial.set(mot.dataset.mot,{
+      left:mot.offsetLeft,
+      top:mot.offsetTop
     });
+  });
+});
 
-  /*
-    Évite le cas rare où le mélange initial tomberait
-    directement sur l'ordre exact.
-  */
+let motActif=null;
+let decalageX=0;
+let decalageY=0;
+let pointeurActif=null;
+let jeuTermine=false;
 
-  const ordreInitial =
-    [
-      ...motsDisponibles.querySelectorAll(
-        ".mot"
-      )
-    ]
-      .map(function(mot){
-        return mot.textContent;
-      })
-      .join(" ");
+mots.forEach(function(mot){
+  mot.addEventListener("pointerdown",commencerDeplacement);
+});
 
-  if(
-    normaliser(ordreInitial) ===
-    phraseAttendue
-  ){
-    const premier =
-      motsDisponibles.firstElementChild;
+function commencerDeplacement(event){
+  if(jeuTermine)return;
 
-    if(premier){
-      motsDisponibles.appendChild(
-        premier
-      );
-    }
+  const mot=event.currentTarget;
+  libererZoneDuMot(mot);
+
+  motActif=mot;
+  pointeurActif=event.pointerId;
+
+  const rectMot=mot.getBoundingClientRect();
+  const rectBloc=bloc.getBoundingClientRect();
+
+  decalageX=event.clientX-rectMot.left;
+  decalageY=event.clientY-rectMot.top;
+
+  mot.style.left=(rectMot.left-rectBloc.left)+"px";
+  mot.style.top=(rectMot.top-rectBloc.top)+"px";
+
+  mot.classList.remove("place","correct");
+  mot.classList.add("dragging");
+
+  try{mot.setPointerCapture(event.pointerId)}catch(e){}
+  event.preventDefault();
+}
+
+bloc.addEventListener("pointermove",function(event){
+  if(!motActif||event.pointerId!==pointeurActif)return;
+
+  const rectBloc=bloc.getBoundingClientRect();
+  let x=event.clientX-rectBloc.left-decalageX;
+  let y=event.clientY-rectBloc.top-decalageY;
+
+  x=Math.max(-motActif.offsetWidth*.25,Math.min(x,bloc.clientWidth-motActif.offsetWidth*.75));
+  y=Math.max(-motActif.offsetHeight*.25,Math.min(y,bloc.clientHeight-motActif.offsetHeight*.75));
+
+  motActif.style.left=x+"px";
+  motActif.style.top=y+"px";
+  mettreAJourSurvol();
+  event.preventDefault();
+});
+
+bloc.addEventListener("pointerup",terminerDeplacement);
+bloc.addEventListener("pointercancel",terminerDeplacement);
+
+function terminerDeplacement(event){
+  if(!motActif||event.pointerId!==pointeurActif)return;
+
+  const mot=motActif;
+  mot.classList.remove("dragging");
+
+  zones.forEach(function(zone){zone.classList.remove("survol")});
+
+  const zone=trouverZoneSousMot(mot);
+
+  if(zone&&!zone.dataset.occupePar){
+    placerMotDansZone(mot,zone);
+  }else{
+    remettreMotAuDepart(mot);
   }
 
-  nettoyerMessage();
-  actualiserPlaceholder();
+  try{mot.releasePointerCapture(event.pointerId)}catch(e){}
+
+  motActif=null;
+  pointeurActif=null;
+
+  verifierPhrase();
 }
 
-function actualiserPlaceholder(){
+function trouverZoneSousMot(mot){
+  const rectMot=mot.getBoundingClientRect();
+  const centreX=rectMot.left+rectMot.width/2;
+  const centreY=rectMot.top+rectMot.height/2;
 
-  phraseAConstruire.classList.toggle(
-    "vide",
-    phraseAConstruire.querySelectorAll(
-      ".mot"
-    ).length === 0
-  );
+  return zones.find(function(zone){
+    const rect=zone.getBoundingClientRect();
+    return centreX>=rect.left&&centreX<=rect.right&&centreY>=rect.top&&centreY<=rect.bottom;
+  })||null;
 }
 
-function nettoyerMessage(){
+function mettreAJourSurvol(){
+  if(!motActif)return;
+  const zoneCible=trouverZoneSousMot(motActif);
 
-  messageJeu.textContent = "";
-
-  messageJeu.classList.remove(
-    "ok"
-  );
-
-  phraseAConstruire.classList.remove(
-    "erreur"
-  );
+  zones.forEach(function(zone){
+    zone.classList.toggle("survol",zone===zoneCible&&!zone.dataset.occupePar);
+  });
 }
 
-boutonMelanger.addEventListener(
-  "click",
-  function(){
+function placerMotDansZone(mot,zone){
+  const rectZone=zone.getBoundingClientRect();
+  const rectBloc=bloc.getBoundingClientRect();
 
-    const tousLesMots =
-      [
-        ...motsDisponibles.querySelectorAll(
-          ".mot"
-        ),
-        ...phraseAConstruire.querySelectorAll(
-          ".mot"
-        )
-      ];
+  const left=rectZone.left-rectBloc.left+(rectZone.width-mot.offsetWidth)/2;
+  const top=rectZone.top-rectBloc.top+(rectZone.height-mot.offsetHeight)/2;
 
-    motsDisponibles.innerHTML = "";
-    phraseAConstruire.innerHTML = "";
+  mot.style.left=left+"px";
+  mot.style.top=top+"px";
+  mot.classList.add("place");
 
-    melangerTableau(tousLesMots)
-      .forEach(function(mot){
+  mot.dataset.zone=zone.id;
+  zone.dataset.occupePar=mot.dataset.mot;
+}
 
-        motsDisponibles.appendChild(
-          mot
-        );
-      });
+function libererZoneDuMot(mot){
+  const idZone=mot.dataset.zone;
+  if(!idZone)return;
 
-    nettoyerMessage();
-    actualiserPlaceholder();
-  }
-);
+  const zone=document.getElementById(idZone);
+  if(zone)delete zone.dataset.occupePar;
 
-boutonValider.addEventListener(
-  "click",
-  verifierPhrase
-);
+  delete mot.dataset.zone;
+}
+
+function remettreMotAuDepart(mot){
+  libererZoneDuMot(mot);
+
+  const depart=etatInitial.get(mot.dataset.mot);
+  if(!depart)return;
+
+  mot.style.left=depart.left+"px";
+  mot.style.top=depart.top+"px";
+  mot.classList.remove("place","correct");
+}
 
 function verifierPhrase(){
+  if(jeuTermine)return;
 
-  const motsRestants =
-    motsDisponibles.querySelectorAll(
-      ".mot"
-    ).length;
+  const toutesOccupees=zones.every(function(zone){
+    return Boolean(zone.dataset.occupePar);
+  });
 
-  const motsPlaces =
-    [
-      ...phraseAConstruire.querySelectorAll(
-        ".mot"
-      )
-    ];
+  if(!toutesOccupees)return;
 
-  if(motsPlaces.length === 0){
+  const ordreCorrect=zones.every(function(zone){
+    return zone.dataset.occupePar===zone.dataset.attendu;
+  });
 
-    messageJeu.textContent =
-      "Place d’abord les mots dans la zone « Ton message ».";
+  if(!ordreCorrect)return;
 
-    return;
-  }
+  jeuTermine=true;
 
-  if(motsRestants > 0){
+  mots.forEach(function(mot){
+    mot.classList.add("correct");
+    mot.style.pointerEvents="none";
+  });
 
-    messageJeu.textContent =
-      "Il reste encore des mots à placer.";
-
-    return;
-  }
-
-  const phraseProposee =
-    motsPlaces
-      .map(function(element){
-        return element.textContent;
-      })
-      .join(" ");
-
-  if(
-    normaliser(phraseProposee) ===
-    phraseAttendue
-  ){
-
-    phraseAConstruire.classList.add(
-      "correcte"
-    );
-
-    messageJeu.textContent =
-      "Bravo ! Tu as trouvé le message final.";
-
-    messageJeu.classList.add(
-      "ok"
-    );
-
-    terminerJeu();
-  }
-  else{
-
-    messageJeu.textContent =
-      "Ce n’est pas encore le bon ordre. Essaie encore !";
-
-    phraseAConstruire.classList.remove(
-      "erreur"
-    );
-
-    void phraseAConstruire.offsetWidth;
-
-    phraseAConstruire.classList.add(
-      "erreur"
-    );
-  }
+  jouerVictoirePuisVideo();
 }
 
-let finLancee = false;
-
-function terminerJeu(){
-
-  if(finLancee){
-    return;
-  }
-
-  finLancee = true;
-
-  document
-    .querySelectorAll(".mot")
-    .forEach(function(mot){
-      mot.disabled = true;
-      mot.draggable = false;
-    });
-
-  boutonMelanger.disabled = true;
-  boutonValider.disabled = true;
-
-  if(sonLevel){
-
+function jouerVictoirePuisVideo(){
+  if(sonVictoire){
     try{
-      sonLevel.pause();
-      sonLevel.currentTime = 0;
-      sonLevel.volume = 1;
-      sonLevel.muted = false;
-    }
-    catch(erreur){}
+      sonVictoire.pause();
+      sonVictoire.currentTime=0;
+      sonVictoire.volume=1;
+      sonVictoire.muted=false;
+    }catch(e){}
 
-    const lectureSon =
-      sonLevel.play();
-
-    if(
-      lectureSon &&
-      typeof lectureSon.catch ===
-        "function"
-    ){
-      lectureSon.catch(function(){});
+    const lecture=sonVictoire.play();
+    if(lecture&&typeof lecture.catch==="function"){
+      lecture.catch(function(error){
+        console.warn("Le son de victoire n'a pas pu être joué :",error);
+      });
     }
   }
 
-  window.setTimeout(
-    function(){
-
-      panneauJeu.style.display =
-        "none";
-
-      ecranPhraseFinale.classList.add(
-        "visible"
-      );
-
-      ecranPhraseFinale.setAttribute(
-        "aria-hidden",
-        "false"
-      );
-    },
-    700
-  );
-
-  window.setTimeout(
-    lancerVideoFinale,
-    3300
-  );
+  window.setTimeout(lancerVideoFinale,1800);
 }
 
 function lancerVideoFinale(){
+  finanimeFinal.classList.add("visible");
+  finanimeFinal.currentTime=0;
+  finanimeFinal.muted=false;
+  finanimeFinal.volume=1;
 
-  ecranPhraseFinale.classList.remove(
-    "visible"
-  );
+  const lecture=finanimeFinal.play();
 
-  ecranPhraseFinale.setAttribute(
-    "aria-hidden",
-    "true"
-  );
-
-  finanimeFinal.classList.add(
-    "visible"
-  );
-
-  finanimeFinal.currentTime = 0;
-  finanimeFinal.muted = false;
-  finanimeFinal.volume = 1;
-
-  const lecture =
-    finanimeFinal.play();
-
-  if(
-    lecture &&
-    typeof lecture.catch ===
-      "function"
-  ){
-
+  if(lecture&&typeof lecture.catch==="function"){
     lecture.catch(function(){
-      finanimeFinal.controls = true;
+      boutonVideo.classList.add("visible");
     });
   }
 }
 
-finanimeFinal.addEventListener(
-  "click",
-  function(){
+boutonVideo.addEventListener("click",function(){
+  boutonVideo.classList.remove("visible");
+  finanimeFinal.muted=false;
+  finanimeFinal.volume=1;
+  finanimeFinal.play();
+});
 
-    if(
-      !finanimeFinal.ended &&
-      finanimeFinal.paused
-    ){
-      finanimeFinal.play();
-    }
-  }
-);
-
-finanimeFinal.addEventListener(
-  "ended",
-  function(){
-
-    finanimeFinal.pause();
-    finanimeFinal.controls = false;
-    finanimeFinal.style.pointerEvents =
-      "none";
-  }
-);
-
-afficherMots();
+finanimeFinal.addEventListener("ended",function(){
+  finanimeFinal.pause();
+  finanimeFinal.controls=false;
+  finanimeFinal.style.pointerEvents="none";
+});
 </script>
-
 </body>
 </html>
