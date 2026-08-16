@@ -95,8 +95,7 @@ body{
     transform .12s ease,
     filter .12s ease,
     left .18s ease,
-    top .18s ease,
-    width .18s ease;
+    top .18s ease;
 }
 
 .mot-image:hover{
@@ -123,28 +122,21 @@ body{
 
 
 /*
-  Largeur des images sur le papier jaune.
-  Les proportions réelles des PNG sont conservées.
+  Les cinq images-mots conservent exactement la même
+  hauteur visuelle pendant tout le jeu, sur le papier jaune
+  comme lorsqu'elles sont posées sur les bandes bleues.
+
+  Leur largeur reste automatique afin de conserver
+  les proportions propres à chaque PNG.
 */
 
-#motEnsemble{
-  width:205px;
-}
-
-#motProtegeons{
-  width:205px;
-}
-
-#motLenfance{
-  width:205px;
-}
-
-#motDans{
-  width:205px;
-}
-
+#motEnsemble,
+#motProtegeons,
+#motLenfance,
+#motDans,
 #motLesport{
-  width:205px;
+  width:auto;
+  height:54px;
 }
 
 
@@ -1168,7 +1160,7 @@ function trouverZoneSousMot(
 
 
 /* ======================================================
-   PLACEMENT PRÉCIS DANS LES BANDES BLEUES
+   PLACEMENT PRÉCIS DANS LES BANDES BLEUES — TAILLE CONSTANTE
 ====================================================== */
 
 function placerMotDansZone(
@@ -1184,30 +1176,19 @@ function placerMotDansZone(
 
 
   /*
-    Le mot doit tenir dans sa case.
-    On limite sa largeur à 92 % de l'emplacement.
+    IMPORTANT :
+    le mot garde exactement la même taille
+    qu'il avait sur le papier jaune.
+
+    On ne modifie donc ni sa largeur,
+    ni sa hauteur au moment du dépôt.
   */
 
-  const largeurMax =
-    rectZone.width *
-    .92;
 
-
-  if(
-    mot.offsetWidth >
-    largeurMax
-  ){
-
-    mot.style.width =
-      largeurMax + "px";
-
-  }
-
-
-  const nouvelleLargeur =
+  const largeurMot =
     mot.offsetWidth;
 
-  const nouvelleHauteur =
+  const hauteurMot =
     mot.offsetHeight;
 
 
@@ -1216,7 +1197,7 @@ function placerMotDansZone(
     rectBloc.left +
     (
       rectZone.width -
-      nouvelleLargeur
+      largeurMot
     ) / 2;
 
 
@@ -1225,7 +1206,7 @@ function placerMotDansZone(
     rectBloc.top +
     (
       rectZone.height -
-      nouvelleHauteur
+      hauteurMot
     ) / 2;
 
 
@@ -1312,17 +1293,7 @@ function remettreMotAuDepart(
   if(!depart){
     return;
   }
-
-
-  /*
-    On remet aussi sa largeur initiale.
-  */
-
-  mot.style.width =
-    "";
-
-
-  mot.style.left =
+mot.style.left =
     depart.offsetLeft +
     "px";
 
