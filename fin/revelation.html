@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Escape Game Rebond - Révélation finale</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html,
+body{
+  width:100%;
+  min-height:100%;
+  background:#1b5f6e;
+  font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+  overflow-x:auto;
+}
+
+.page-revelation{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding-top:40px;
+}
+
+.bloc-revelation{
+  position:relative;
+  width:999px;
+  height:716px;
+  overflow:hidden;
+  background:#1b5f6e;
+}
+
+.fond-revelation{
+  position:absolute;
+  inset:0;
+  width:999px;
+  height:716px;
+  object-fit:cover;
+  z-index:1;
+  pointer-events:none;
+  user-select:none;
+}
+
+.panneau-jeu{
+  position:absolute;
+  left:88px;
+  top:74px;
+  width:823px;
+  min-height:565px;
+  z-index:20;
+  padding:34px 38px 32px;
+  background:rgba(255,255,255,.94);
+  border-radius:28px;
+  box-shadow:0 18px 45px rgba(0,0,0,.28);
+  color:#044e61;
+}
+
+.surtitre{
+  margin-bottom:7px;
+  font-size:16px;
+  line-height:20px;
+  font-weight:800;
+  letter-spacing:.6px;
+  text-transform:uppercase;
+  color:#e65b10;
+}
+
+h1{
+  max-width:680px;
+  font-size:34px;
+  line-height:38px;
+  font-weight:900;
+  color:#044e61;
+}
+
+.consigne{
+  max-width:700px;
+  margin-top:13px;
+  font-size:18px;
+  line-height:25px;
+  font-weight:600;
+  color:#244f59;
+}
+
+.zone-mots{
+  margin-top:28px;
+}
+
+.titre-zone{
+  margin-bottom:11px;
+  font-size:14px;
+  line-height:18px;
+  font-weight:900;
+  letter-spacing:.4px;
+  text-transform:uppercase;
+  color:#597a82;
+}
+
+.mots-disponibles,
+.phrase-a-construire{
+  min-height:92px;
+  display:flex;
+  flex-wrap:wrap;
+  align-content:center;
+  gap:12px;
+  padding:16px;
+  border-radius:18px;
+  border:3px dashed rgba(4,78,97,.22);
+  background:rgba(27,95,110,.06);
+}
+
+.phrase-a-construire{
+  min-height:108px;
+  border-color:rgba(230,91,16,.38);
+  background:rgba(230,91,16,.055);
+}
+
+.phrase-a-construire.vide::before{
+  content:"Glisse les mots ici dans le bon ordre";
+  align-self:center;
+  width:100%;
+  text-align:center;
+  color:rgba(4,78,97,.40);
+  font-size:16px;
+  font-weight:800;
+}
+
+.mot{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:48px;
+  padding:10px 18px;
+  border:0;
+  border-radius:14px;
+  background:#ffffff;
+  color:#044e61;
+  font-size:18px;
+  line-height:22px;
+  font-weight:900;
+  text-transform:uppercase;
+  box-shadow:0 5px 13px rgba(0,0,0,.15);
+  cursor:grab;
+  user-select:none;
+  transition:
+    transform .16s ease,
+    box-shadow .16s ease,
+    background .2s ease,
+    color .2s ease;
+}
+
+.mot:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 17px rgba(0,0,0,.18);
+}
+
+.mot:active{
+  cursor:grabbing;
+}
+
+.mot.dragging{
+  opacity:.35;
+  transform:scale(.96);
+}
+
+.phrase-a-construire.correcte .mot{
+  background:#18a558;
+  color:#ffffff;
+}
+
+.phrase-a-construire.erreur{
+  animation:secouer .32s linear;
+}
+
+@keyframes secouer{
+  0%,100%{ transform:translateX(0); }
+  25%{ transform:translateX(-7px); }
+  75%{ transform:translateX(7px); }
+}
+
+.actions{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin-top:22px;
+}
+
+.message{
+  flex:1;
+  min-height:24px;
+  font-size:16px;
+  line-height:22px;
+  font-weight:800;
+  color:#c0392b;
+}
+
+.message.ok{
+  color:#18a558;
+}
+
+.boutons{
+  display:flex;
+  gap:10px;
+}
+
+.bouton{
+  border:0;
+  border-radius:999px;
+  padding:13px 22px;
+  font-size:16px;
+  line-height:20px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.bouton-secondaire{
+  background:#dce8ea;
+  color:#044e61;
+}
+
+.bouton-valider{
+  background:#e65b10;
+  color:#ffffff;
+}
+
+.ecran-phrase-finale{
+  position:absolute;
+  inset:0;
+  z-index:150;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:70px;
+  background:#1b5f6e;
+  text-align:center;
+}
+
+.ecran-phrase-finale.visible{
+  display:flex;
+}
+
+.phrase-finale{
+  max-width:830px;
+  color:#ffffff;
+  font-size:58px;
+  line-height:1.08;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:-1.2px;
+  animation:apparitionPhrase .65s cubic-bezier(.2,.8,.2,1) both;
+}
+
+@keyframes apparitionPhrase{
+  from{
+    opacity:0;
+    transform:scale(.90);
+  }
+  to{
+    opacity:1;
+    transform:scale(1);
+  }
+}
+
+.finanime-final{
+  position:absolute;
+  inset:0;
+  z-index:300;
+  display:none;
+  width:999px;
+  height:716px;
+  object-fit:fill;
+  background:#000;
+}
+
+.finanime-final.visible{
+  display:block;
+}
+
+.copyright-rebond{
+  width:999px;
+  margin:11px auto 30px;
+  color:rgba(255,255,255,.88);
+  font-size:11px;
+  line-height:1.2;
+  font-weight:500;
+  letter-spacing:.3px;
+  text-align:center;
+  pointer-events:none;
+  user-select:none;
+}
+
+@media screen and (max-width:1140px){
+  .page-revelation{
+    align-items:flex-start;
+    padding-left:25px;
+  }
+}
+
+@media screen and (max-width:600px){
+  .copyright-rebond{
+    margin-top:8px;
+    font-size:9px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="page-revelation">
+
+  <div class="bloc-revelation">
+
+    <img
+      class="fond-revelation"
+      src="revelation.png"
+      alt=""
+      onerror="this.style.display='none'">
+
+    <section
+      class="panneau-jeu"
+      id="panneauJeu"
+      aria-labelledby="titreRevelation">
+
+      <div class="surtitre">Ultime défi</div>
+
+      <h1 id="titreRevelation">
+        Remets les mots du sac dans le bon ordre
+      </h1>
+
+      <p class="consigne">
+        Tous les mots que tu as récoltés forment un message.
+        Déplace-les pour retrouver la phrase finale.
+      </p>
+
+      <div class="zone-mots">
+        <div class="titre-zone">Les mots du sac</div>
+        <div
+          class="mots-disponibles"
+          id="motsDisponibles"
+          aria-label="Mots disponibles">
+        </div>
+      </div>
+
+      <div class="zone-mots">
+        <div class="titre-zone">Ton message</div>
+        <div
+          class="phrase-a-construire vide"
+          id="phraseAConstruire"
+          aria-label="Phrase à construire">
+        </div>
+      </div>
+
+      <div class="actions">
+
+        <div
+          class="message"
+          id="messageJeu"
+          role="status"
+          aria-live="polite">
+        </div>
+
+        <div class="boutons">
+
+          <button
+            class="bouton bouton-secondaire"
+            id="boutonMelanger"
+            type="button">
+            Mélanger
+          </button>
+
+          <button
+            class="bouton bouton-valider"
+            id="boutonValider"
+            type="button">
+            Valider
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <div
+      class="ecran-phrase-finale"
+      id="ecranPhraseFinale"
+      aria-hidden="true">
+      <div class="phrase-finale">
+        Ensemble,<br>
+        protégeons l’enfance<br>
+        dans le sport.
+      </div>
+    </div>
+
+    <video
+      class="finanime-final"
+      id="finanimeFinal"
+      src="finanime.mp4"
+      playsinline
+      preload="auto">
+    </video>
+
+    <audio
+      id="sonLevel"
+      src="../level.mp3"
+      preload="auto">
+    </audio>
+
+  </div>
+
+  <div
+    class="copyright-rebond"
+    aria-label="Copyright Rebond">
+    © Rebond
+  </div>
+
+</div>
+
+<script>
+const motsDisponibles =
+  document.getElementById("motsDisponibles");
+
+const phraseAConstruire =
+  document.getElementById("phraseAConstruire");
+
+const boutonMelanger =
+  document.getElementById("boutonMelanger");
+
+const boutonValider =
+  document.getElementById("boutonValider");
+
+const messageJeu =
+  document.getElementById("messageJeu");
+
+const panneauJeu =
+  document.getElementById("panneauJeu");
+
+const ecranPhraseFinale =
+  document.getElementById("ecranPhraseFinale");
+
+const finanimeFinal =
+  document.getElementById("finanimeFinal");
+
+const sonLevel =
+  document.getElementById("sonLevel");
+
+localStorage.setItem(
+  "rebondCurrentPage",
+  "fin/revelation.html"
+);
+
+function normaliser(texte){
+  return String(texte || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[’']/g, "")
+    .replace(/[^A-Za-z]/g, "")
+    .toUpperCase();
+}
+
+function lireMotsDuSac(){
+
+  let donnees = [];
+
+  try{
+    donnees =
+      JSON.parse(
+        localStorage.getItem("motsEscapeRebond")
+      ) || [];
+  }
+  catch(erreur){
+    donnees = [];
+  }
+
+  return donnees
+    .map(function(item){
+
+      if(
+        typeof item === "object" &&
+        item !== null &&
+        item.mot
+      ){
+        return String(item.mot).trim();
+      }
+
+      return String(item || "").trim();
+
+    })
+    .filter(Boolean);
+}
+
+const phraseAttendue =
+  normaliser(
+    "ENSEMBLE PROTÉGEONS L’ENFANCE DANS LE SPORT"
+  );
+
+function melangerTableau(tableau){
+
+  const copie = tableau.slice();
+
+  for(let i = copie.length - 1; i > 0; i--){
+
+    const j =
+      Math.floor(
+        Math.random() * (i + 1)
+      );
+
+    const temporaire = copie[i];
+    copie[i] = copie[j];
+    copie[j] = temporaire;
+  }
+
+  return copie;
+}
+
+function creerMot(texte){
+
+  const element =
+    document.createElement("button");
+
+  element.type = "button";
+  element.className = "mot";
+  element.textContent = texte;
+  element.draggable = true;
+
+  element.setAttribute(
+    "aria-label",
+    "Mot : " + texte
+  );
+
+  connecterMot(element);
+
+  return element;
+}
+
+let motEnCours = null;
+
+function connecterMot(mot){
+
+  mot.addEventListener(
+    "dragstart",
+    function(){
+
+      motEnCours = mot;
+
+      mot.classList.add(
+        "dragging"
+      );
+    }
+  );
+
+  mot.addEventListener(
+    "dragend",
+    function(){
+
+      mot.classList.remove(
+        "dragging"
+      );
+
+      motEnCours = null;
+
+      actualiserPlaceholder();
+    }
+  );
+
+  mot.addEventListener(
+    "click",
+    function(event){
+
+      event.preventDefault();
+
+      if(
+        mot.parentElement ===
+        motsDisponibles
+      ){
+        phraseAConstruire.appendChild(
+          mot
+        );
+      }
+      else{
+        motsDisponibles.appendChild(
+          mot
+        );
+      }
+
+      nettoyerMessage();
+      actualiserPlaceholder();
+    }
+  );
+}
+
+function installerZoneDepot(zone){
+
+  zone.addEventListener(
+    "dragover",
+    function(event){
+
+      event.preventDefault();
+
+      if(!motEnCours){
+        return;
+      }
+
+      const apres =
+        trouverElementApres(
+          zone,
+          event.clientX,
+          event.clientY
+        );
+
+      if(apres){
+        zone.insertBefore(
+          motEnCours,
+          apres
+        );
+      }
+      else{
+        zone.appendChild(
+          motEnCours
+        );
+      }
+
+      actualiserPlaceholder();
+    }
+  );
+
+  zone.addEventListener(
+    "drop",
+    function(event){
+
+      event.preventDefault();
+      nettoyerMessage();
+      actualiserPlaceholder();
+    }
+  );
+}
+
+function trouverElementApres(
+  conteneur,
+  x,
+  y
+){
+
+  const elements =
+    [
+      ...conteneur.querySelectorAll(
+        ".mot:not(.dragging)"
+      )
+    ];
+
+  let meilleur = null;
+  let meilleurePosition = Infinity;
+
+  elements.forEach(function(element){
+
+    const boite =
+      element.getBoundingClientRect();
+
+    const position =
+      (boite.top * 10000) + boite.left;
+
+    const pointeur =
+      (y * 10000) + x;
+
+    if(
+      position > pointeur &&
+      position < meilleurePosition
+    ){
+      meilleurePosition = position;
+      meilleur = element;
+    }
+
+  });
+
+  return meilleur;
+}
+
+installerZoneDepot(motsDisponibles);
+installerZoneDepot(phraseAConstruire);
+
+function afficherMots(){
+
+  let mots =
+    lireMotsDuSac();
+
+  /*
+    En partie normale, on utilise exclusivement les mots du sac.
+    Si la page est ouverte directement pour un test local,
+    on injecte seulement les cinq cartouches nécessaires.
+  */
+
+  if(mots.length === 0){
+    mots = [
+      "ENSEMBLE",
+      "PROTÉGEONS",
+      "L’ENFANCE",
+      "DANS",
+      "LE SPORT"
+    ];
+  }
+
+  motsDisponibles.innerHTML = "";
+  phraseAConstruire.innerHTML = "";
+
+  melangerTableau(mots)
+    .forEach(function(texte){
+
+      motsDisponibles.appendChild(
+        creerMot(texte)
+      );
+    });
+
+  /*
+    Évite le cas rare où le mélange initial tomberait
+    directement sur l'ordre exact.
+  */
+
+  const ordreInitial =
+    [
+      ...motsDisponibles.querySelectorAll(
+        ".mot"
+      )
+    ]
+      .map(function(mot){
+        return mot.textContent;
+      })
+      .join(" ");
+
+  if(
+    normaliser(ordreInitial) ===
+    phraseAttendue
+  ){
+    const premier =
+      motsDisponibles.firstElementChild;
+
+    if(premier){
+      motsDisponibles.appendChild(
+        premier
+      );
+    }
+  }
+
+  nettoyerMessage();
+  actualiserPlaceholder();
+}
+
+function actualiserPlaceholder(){
+
+  phraseAConstruire.classList.toggle(
+    "vide",
+    phraseAConstruire.querySelectorAll(
+      ".mot"
+    ).length === 0
+  );
+}
+
+function nettoyerMessage(){
+
+  messageJeu.textContent = "";
+
+  messageJeu.classList.remove(
+    "ok"
+  );
+
+  phraseAConstruire.classList.remove(
+    "erreur"
+  );
+}
+
+boutonMelanger.addEventListener(
+  "click",
+  function(){
+
+    const tousLesMots =
+      [
+        ...motsDisponibles.querySelectorAll(
+          ".mot"
+        ),
+        ...phraseAConstruire.querySelectorAll(
+          ".mot"
+        )
+      ];
+
+    motsDisponibles.innerHTML = "";
+    phraseAConstruire.innerHTML = "";
+
+    melangerTableau(tousLesMots)
+      .forEach(function(mot){
+
+        motsDisponibles.appendChild(
+          mot
+        );
+      });
+
+    nettoyerMessage();
+    actualiserPlaceholder();
+  }
+);
+
+boutonValider.addEventListener(
+  "click",
+  verifierPhrase
+);
+
+function verifierPhrase(){
+
+  const motsRestants =
+    motsDisponibles.querySelectorAll(
+      ".mot"
+    ).length;
+
+  const motsPlaces =
+    [
+      ...phraseAConstruire.querySelectorAll(
+        ".mot"
+      )
+    ];
+
+  if(motsPlaces.length === 0){
+
+    messageJeu.textContent =
+      "Place d’abord les mots dans la zone « Ton message ».";
+
+    return;
+  }
+
+  if(motsRestants > 0){
+
+    messageJeu.textContent =
+      "Il reste encore des mots à placer.";
+
+    return;
+  }
+
+  const phraseProposee =
+    motsPlaces
+      .map(function(element){
+        return element.textContent;
+      })
+      .join(" ");
+
+  if(
+    normaliser(phraseProposee) ===
+    phraseAttendue
+  ){
+
+    phraseAConstruire.classList.add(
+      "correcte"
+    );
+
+    messageJeu.textContent =
+      "Bravo ! Tu as trouvé le message final.";
+
+    messageJeu.classList.add(
+      "ok"
+    );
+
+    terminerJeu();
+  }
+  else{
+
+    messageJeu.textContent =
+      "Ce n’est pas encore le bon ordre. Essaie encore !";
+
+    phraseAConstruire.classList.remove(
+      "erreur"
+    );
+
+    void phraseAConstruire.offsetWidth;
+
+    phraseAConstruire.classList.add(
+      "erreur"
+    );
+  }
+}
+
+let finLancee = false;
+
+function terminerJeu(){
+
+  if(finLancee){
+    return;
+  }
+
+  finLancee = true;
+
+  document
+    .querySelectorAll(".mot")
+    .forEach(function(mot){
+      mot.disabled = true;
+      mot.draggable = false;
+    });
+
+  boutonMelanger.disabled = true;
+  boutonValider.disabled = true;
+
+  if(sonLevel){
+
+    try{
+      sonLevel.pause();
+      sonLevel.currentTime = 0;
+      sonLevel.volume = 1;
+      sonLevel.muted = false;
+    }
+    catch(erreur){}
+
+    const lectureSon =
+      sonLevel.play();
+
+    if(
+      lectureSon &&
+      typeof lectureSon.catch ===
+        "function"
+    ){
+      lectureSon.catch(function(){});
+    }
+  }
+
+  window.setTimeout(
+    function(){
+
+      panneauJeu.style.display =
+        "none";
+
+      ecranPhraseFinale.classList.add(
+        "visible"
+      );
+
+      ecranPhraseFinale.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+    },
+    700
+  );
+
+  window.setTimeout(
+    lancerVideoFinale,
+    3300
+  );
+}
+
+function lancerVideoFinale(){
+
+  ecranPhraseFinale.classList.remove(
+    "visible"
+  );
+
+  ecranPhraseFinale.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+  finanimeFinal.classList.add(
+    "visible"
+  );
+
+  finanimeFinal.currentTime = 0;
+  finanimeFinal.muted = false;
+  finanimeFinal.volume = 1;
+
+  const lecture =
+    finanimeFinal.play();
+
+  if(
+    lecture &&
+    typeof lecture.catch ===
+      "function"
+  ){
+
+    lecture.catch(function(){
+      finanimeFinal.controls = true;
+    });
+  }
+}
+
+finanimeFinal.addEventListener(
+  "click",
+  function(){
+
+    if(
+      !finanimeFinal.ended &&
+      finanimeFinal.paused
+    ){
+      finanimeFinal.play();
+    }
+  }
+);
+
+finanimeFinal.addEventListener(
+  "ended",
+  function(){
+
+    finanimeFinal.pause();
+    finanimeFinal.controls = false;
+    finanimeFinal.style.pointerEvents =
+      "none";
+  }
+);
+
+afficherMots();
+</script>
+
+</body>
+</html>
