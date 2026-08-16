@@ -344,6 +344,12 @@ body{
   object-fit:fill;
 
   background:#000;
+
+  /* Vidéo finale légèrement plus dense */
+  filter:
+    saturate(1.18)
+    contrast(1.08)
+    brightness(0.97);
 }
 
 .finanime-final.visible{
@@ -1550,7 +1556,7 @@ function lancerVideoFinale(){
     false;
 
   finanimeFinal.volume =
-    0.8;
+    1;
 
 
   const lecture =
