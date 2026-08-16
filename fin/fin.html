@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Escape Game Rebond - Révélation</title>
+<title>Escape Game Rebond - Carnet final</title>
 
 <style>
 *{
@@ -966,26 +966,6 @@ body{
 
 
 /* ======================================================
-   ANIMATION FINALE — APRÈS LES TROIS BONNES RÉPONSES
-====================================================== */
-
-.finanime-final{
-  position:absolute;
-  inset:0;
-  width:999px;
-  height:716px;
-  display:none;
-  object-fit:fill;
-  background:#000;
-  z-index:2600;
-}
-
-.finanime-final.visible{
-  display:block;
-}
-
-
-/* ======================================================
    BRAVI FINAL — AVANT L’ANIMATION DE FIN
 ====================================================== */
 
@@ -1139,17 +1119,7 @@ body{
       </div>
 
     </div>
-    <!-- ANIMATION FINALE : visible après les trois bonnes réponses -->
-
-    <video
-      class="finanime-final"
-      id="finanimeFinal"
-      src="finanime.mp4"
-      playsinline
-      preload="auto">
-    </video>
-
-    <!-- BRAVI FINAL AVANT L’ANIMATION -->
+<!-- BRAVI FINAL AVANT L’ANIMATION -->
 
     <div
       class="bravi-def-final"
@@ -1386,8 +1356,6 @@ const champsMorse = [
 const messageReussite =
   document.getElementById("messageReussite");
 
-const finanimeFinal =
-  document.getElementById("finanimeFinal");
 const braviDefFinal =
   document.getElementById("braviDefFinal");
 
@@ -2358,7 +2326,7 @@ function verifierEnigmeFinale(){
     2) On affiche bravidef.png.
     3) On joue level.mp3.
     4) On laisse le BRAVI pendant 3 secondes.
-    5) Puis on lance finanime.mp4, qui contient directement sa propre bande-son.
+    5) Puis on ouvre revelation.html pour l'ultime jeu.
   */
 
   reponsesFinales.classList.remove(
@@ -2420,92 +2388,19 @@ function verifierEnigmeFinale(){
         );
       }
 
-      /*
-        Sur l’écran final, on retire complètement les onglets
-        Sac et Énigmes afin qu’aucune ombre portée résiduelle
-        ne déborde sur la vidéo.
-      */
-
-      if(inventaire){
-        inventaire.style.display = "none";
-      }
-
-      if(navigationEnigmes){
-        navigationEnigmes.style.display = "none";
-      }
-
-      finanimeFinal.classList.add(
-        "visible"
+      localStorage.setItem(
+        "rebondCurrentPage",
+        "fin/revelation.html"
       );
 
-      finanimeFinal.currentTime = 0;
-      finanimeFinal.muted = false;
-      finanimeFinal.volume = 1;
-
-      const lectureFinanime =
-        finanimeFinal.play();
-
-      if(
-        lectureFinanime &&
-        typeof lectureFinanime.catch === "function"
-      ){
-
-        lectureFinanime.catch(function(erreur){
-
-          console.warn(
-            "L'animation finale n'a pas pu démarrer automatiquement :",
-            erreur
-          );
-
-          finanimeFinal.controls = true;
-
-        });
-
-      }
+      window.location.href =
+        "revelation.html";
 
     },
     3000
   );
 
 }
-
-finanimeFinal.addEventListener(
-  "click",
-  function(event){
-
-    event.stopPropagation();
-
-    if(
-      !finanimeFinal.ended &&
-      finanimeFinal.paused
-    ){
-
-      finanimeFinal.play();
-
-    }
-
-  }
-);
-
-finanimeFinal.addEventListener(
-  "ended",
-  function(){
-
-    /*
-      FIN ABSOLUE DU JEU :
-      - aucune redirection ;
-      - aucune autre action ;
-      - dernière image de finanime.mp4 conservée ;
-      - aucune musique séparée n’est lancée.
-    */
-
-    finanimeFinal.pause();
-    finanimeFinal.controls = false;
-    finanimeFinal.style.pointerEvents = "none";
-
-  }
-);
-
 
 function ajouterMotFinalAuSac(){
 
