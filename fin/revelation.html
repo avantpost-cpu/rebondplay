@@ -4,287 +4,1572 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Escape Game Rebond - Révélation finale</title>
+
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;min-height:100%;background:#1b5f6e;font-family:Arial,Helvetica,sans-serif}
-body{overflow-x:auto}
-.page-revelation{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding-top:40px}
-.bloc-revelation{position:relative;width:999px;height:716px;overflow:hidden;background:#1b5f6e;user-select:none;-webkit-user-select:none;touch-action:none}
-.fond-revelation{position:absolute;inset:0;width:999px;height:716px;object-fit:fill;z-index:1;pointer-events:none;user-select:none}
-.mot-image{position:absolute;z-index:30;display:block;height:auto;cursor:grab;touch-action:none;filter:drop-shadow(0 4px 5px rgba(0,0,0,.18));transition:transform .14s ease,filter .14s ease,opacity .14s ease}
-.mot-image:hover{transform:scale(1.035);filter:drop-shadow(0 6px 8px rgba(0,0,0,.24))}
-.mot-image.dragging{z-index:200;cursor:grabbing;transform:scale(1.055);filter:drop-shadow(0 9px 12px rgba(0,0,0,.28))}
-#motEnsemble{left:98px;top:220px;width:185px}
-#motProtegeons{left:92px;top:294px;width:214px}
-#motLenfance{left:108px;top:370px;width:183px}
-#motDans{left:125px;top:446px;width:128px}
-#motLesport{left:106px;top:515px;width:180px}
-.zone-depot{position:absolute;z-index:15;left:575px;width:320px;height:72px;border-radius:12px;background:rgba(255,255,255,0);border:2px solid rgba(255,255,255,0);transition:background .15s ease,border-color .15s ease}
-.zone-depot.survol{background:rgba(255,255,255,.13);border-color:rgba(255,255,255,.45)}
-#zone1{top:183px}#zone2{top:272px}#zone3{top:361px}#zone4{top:450px}#zone5{top:539px}
-.mot-image.place{z-index:40;cursor:default;filter:none}
-.mot-image.correct{animation:validationMot .28s ease both}
-@keyframes validationMot{0%{transform:scale(1)}55%{transform:scale(1.06)}100%{transform:scale(1)}}
-.finanime-final{position:absolute;inset:0;width:999px;height:716px;display:none;object-fit:fill;background:#000;z-index:500}
-.finanime-final.visible{display:block}
-.bouton-video{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:520;display:none;border:0;border-radius:999px;padding:15px 28px;background:#e65b10;color:#fff;font-size:18px;font-weight:900;cursor:pointer;box-shadow:0 8px 22px rgba(0,0,0,.35)}
-.bouton-video.visible{display:block}
-.copyright-rebond{width:999px;margin:11px auto 30px;color:rgba(255,255,255,.88);font-size:11px;line-height:1.2;font-weight:500;letter-spacing:.3px;text-align:center;pointer-events:none;user-select:none}
-@media screen and (max-width:1140px){.page-revelation{align-items:flex-start;padding-left:25px}}
-@media screen and (max-width:600px){.copyright-rebond{margin-top:8px;font-size:9px}}
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html,
+body{
+  width:100%;
+  min-height:100%;
+  background:#1b5f6e;
+  font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+  overflow-x:auto;
+}
+
+.page-revelation{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding-top:40px;
+}
+
+.bloc-revelation{
+  position:relative;
+  width:999px;
+  height:716px;
+  overflow:hidden;
+  background:#1b5f6e;
+
+  user-select:none;
+  -webkit-user-select:none;
+
+  touch-action:none;
+}
+
+/* ======================================================
+   FOND 999 × 716
+====================================================== */
+
+.fond-revelation{
+  position:absolute;
+  inset:0;
+
+  width:999px;
+  height:716px;
+
+  display:block;
+  object-fit:fill;
+
+  z-index:1;
+
+  pointer-events:none;
+  user-select:none;
+}
+
+
+/* ======================================================
+   MOTS MOBILES
+====================================================== */
+
+.mot-image{
+  position:absolute;
+
+  z-index:30;
+
+  display:block;
+
+  height:auto;
+
+  cursor:grab;
+
+  touch-action:none;
+
+  transform-origin:center center;
+
+  filter:
+    drop-shadow(
+      0 4px 5px
+      rgba(0,0,0,.18)
+    );
+
+  transition:
+    transform .12s ease,
+    filter .12s ease,
+    left .18s ease,
+    top .18s ease,
+    width .18s ease;
+}
+
+.mot-image:hover{
+  transform:scale(1.03);
+}
+
+.mot-image.dragging{
+  z-index:250;
+
+  cursor:grabbing;
+
+  transform:scale(1.055);
+
+  filter:
+    drop-shadow(
+      0 8px 10px
+      rgba(0,0,0,.28)
+    );
+
+  transition:
+    transform .12s ease,
+    filter .12s ease;
+}
+
+
+/*
+  Largeur des images sur le papier jaune.
+  Les proportions réelles des PNG sont conservées.
+*/
+
+#motEnsemble{
+  width:175px;
+}
+
+#motProtegeons{
+  width:205px;
+}
+
+#motLenfance{
+  width:170px;
+}
+
+#motDans{
+  width:105px;
+}
+
+#motLesport{
+  width:145px;
+}
+
+
+/* ======================================================
+   5 POSITIONS INVISIBLES SUR LE PAPIER JAUNE
+   Les mots y sont mélangés automatiquement au chargement.
+====================================================== */
+
+.depart{
+  position:absolute;
+
+  width:1px;
+  height:1px;
+
+  pointer-events:none;
+
+  z-index:2;
+}
+
+#depart1{
+  left:150px;
+  top:238px;
+}
+
+#depart2{
+  left:165px;
+  top:308px;
+}
+
+#depart3{
+  left:145px;
+  top:378px;
+}
+
+#depart4{
+  left:195px;
+  top:450px;
+}
+
+#depart5{
+  left:155px;
+  top:520px;
+}
+
+
+/* ======================================================
+   EMPLACEMENTS DE LA PHRASE
+   2 mots sur la première bande
+   3 mots sur la seconde
+====================================================== */
+
+.zone-depot{
+  position:absolute;
+
+  z-index:15;
+
+  height:62px;
+
+  background:transparent;
+
+  border:0;
+
+  pointer-events:none;
+}
+
+
+/*
+  LIGNE 1 :
+  ENSEMBLE | PROTÉGEONS
+
+  Bande bleue visible environ :
+  x = 455 → 912
+  y = 304 → 374
+*/
+
+#zone1{
+  left:468px;
+  top:309px;
+  width:175px;
+}
+
+#zone2{
+  left:653px;
+  top:309px;
+  width:242px;
+}
+
+
+/*
+  LIGNE 2 :
+  L'ENFANCE | DANS | LE SPORT
+
+  Bande bleue visible environ :
+  x = 441 → 948
+  y = 382 → 470
+*/
+
+#zone3{
+  left:455px;
+  top:393px;
+  width:180px;
+}
+
+#zone4{
+  left:645px;
+  top:393px;
+  width:110px;
+}
+
+#zone5{
+  left:765px;
+  top:393px;
+  width:166px;
+}
+
+
+/*
+  Zone de tolérance légèrement supérieure aux bandes,
+  uniquement utilisée pour faciliter le dépôt.
+*/
+
+.zone-cible{
+  position:absolute;
+
+  z-index:14;
+
+  pointer-events:none;
+
+  background:transparent;
+}
+
+#cibleLigne1{
+  left:450px;
+  top:297px;
+
+  width:470px;
+  height:84px;
+}
+
+#cibleLigne2{
+  left:435px;
+  top:379px;
+
+  width:520px;
+  height:96px;
+}
+
+
+/* ======================================================
+   MOT POSÉ
+====================================================== */
+
+.mot-image.place{
+  z-index:40;
+
+  cursor:grab;
+
+  filter:none;
+
+  transform:none;
+}
+
+
+/* ======================================================
+   PETIT EFFET DE VICTOIRE
+====================================================== */
+
+.mot-image.correct{
+  animation:
+    victoireMot .36s ease both;
+}
+
+@keyframes victoireMot{
+
+  0%{
+    transform:scale(1);
+  }
+
+  45%{
+    transform:scale(1.055);
+  }
+
+  100%{
+    transform:scale(1);
+  }
+
+}
+
+
+/* ======================================================
+   VIDÉO FINALE
+====================================================== */
+
+.finanime-final{
+  position:absolute;
+  inset:0;
+
+  z-index:500;
+
+  display:none;
+
+  width:999px;
+  height:716px;
+
+  object-fit:fill;
+
+  background:#000;
+}
+
+.finanime-final.visible{
+  display:block;
+}
+
+
+/* ======================================================
+   BOUTON DE SECOURS AUTOPLAY
+====================================================== */
+
+.bouton-video{
+  position:absolute;
+
+  left:50%;
+  top:50%;
+
+  transform:
+    translate(-50%,-50%);
+
+  z-index:520;
+
+  display:none;
+
+  border:0;
+  border-radius:999px;
+
+  padding:15px 28px;
+
+  background:#e65b10;
+  color:#ffffff;
+
+  font-size:18px;
+  font-weight:900;
+
+  cursor:pointer;
+
+  box-shadow:
+    0 8px 22px
+    rgba(0,0,0,.35);
+}
+
+.bouton-video.visible{
+  display:block;
+}
+
+
+/* ======================================================
+   COPYRIGHT
+====================================================== */
+
+.copyright-rebond{
+  width:999px;
+
+  margin:
+    11px auto 30px;
+
+  color:
+    rgba(255,255,255,.88);
+
+  font-size:11px;
+  line-height:1.2;
+  font-weight:500;
+  letter-spacing:.3px;
+
+  text-align:center;
+
+  pointer-events:none;
+  user-select:none;
+}
+
+
+@media screen and (max-width:1140px){
+
+  .page-revelation{
+    align-items:flex-start;
+    padding-left:25px;
+  }
+
+}
+
+
+@media screen and (max-width:600px){
+
+  .copyright-rebond{
+    margin-top:8px;
+    font-size:9px;
+  }
+
+}
 </style>
 </head>
+
 <body>
+
 <div class="page-revelation">
-  <div class="bloc-revelation" id="blocRevelation">
-    <img class="fond-revelation" src="revelation.jpg" alt="Révélation finale">
 
-    <img class="mot-image" id="motEnsemble" src="ensemble.png" data-mot="ensemble" alt="Ensemble" draggable="false">
-    <img class="mot-image" id="motProtegeons" src="protegeons.png" data-mot="protegeons" alt="Protégeons" draggable="false">
-    <img class="mot-image" id="motLenfance" src="lenfance.png" data-mot="lenfance" alt="L'enfance" draggable="false">
-    <img class="mot-image" id="motDans" src="dans.png" data-mot="dans" alt="Dans" draggable="false">
-    <img class="mot-image" id="motLesport" src="lesport.png" data-mot="lesport" alt="Le sport" draggable="false">
+  <div
+    class="bloc-revelation"
+    id="blocRevelation">
 
-    <div class="zone-depot" id="zone1" data-attendu="ensemble"></div>
-    <div class="zone-depot" id="zone2" data-attendu="protegeons"></div>
-    <div class="zone-depot" id="zone3" data-attendu="lenfance"></div>
-    <div class="zone-depot" id="zone4" data-attendu="dans"></div>
-    <div class="zone-depot" id="zone5" data-attendu="lesport"></div>
 
-    <video class="finanime-final" id="finanimeFinal" src="finanime.mp4" playsinline preload="auto"></video>
-    <button class="bouton-video" id="boutonVideo" type="button">Voir la fin</button>
-    <audio id="sonVictoire" src="../level.mp3" preload="auto"></audio>
+    <!-- FOND -->
+
+    <img
+      class="fond-revelation"
+      src="revelation.jpg"
+      alt="Révélation finale">
+
+
+    <!-- POSITIONS DE DÉPART SUR LE PAPIER JAUNE -->
+
+    <span
+      class="depart"
+      id="depart1">
+    </span>
+
+    <span
+      class="depart"
+      id="depart2">
+    </span>
+
+    <span
+      class="depart"
+      id="depart3">
+    </span>
+
+    <span
+      class="depart"
+      id="depart4">
+    </span>
+
+    <span
+      class="depart"
+      id="depart5">
+    </span>
+
+
+    <!-- MOTS MOBILES -->
+
+    <img
+      class="mot-image"
+      id="motEnsemble"
+      src="ensemble.png"
+      data-mot="ensemble"
+      alt="Ensemble"
+      draggable="false">
+
+    <img
+      class="mot-image"
+      id="motProtegeons"
+      src="protegeons.png"
+      data-mot="protegeons"
+      alt="Protégeons"
+      draggable="false">
+
+    <img
+      class="mot-image"
+      id="motLenfance"
+      src="lenfance.png"
+      data-mot="lenfance"
+      alt="L'enfance"
+      draggable="false">
+
+    <img
+      class="mot-image"
+      id="motDans"
+      src="dans.png"
+      data-mot="dans"
+      alt="Dans"
+      draggable="false">
+
+    <img
+      class="mot-image"
+      id="motLesport"
+      src="lesport.png"
+      data-mot="lesport"
+      alt="Le sport"
+      draggable="false">
+
+
+    <!--
+      ORDRE FINAL :
+
+      LIGNE 1
+      ENSEMBLE | PROTÉGEONS
+
+      LIGNE 2
+      L'ENFANCE | DANS | LE SPORT
+    -->
+
+    <div
+      class="zone-depot"
+      id="zone1"
+      data-attendu="ensemble">
+    </div>
+
+    <div
+      class="zone-depot"
+      id="zone2"
+      data-attendu="protegeons">
+    </div>
+
+    <div
+      class="zone-depot"
+      id="zone3"
+      data-attendu="lenfance">
+    </div>
+
+    <div
+      class="zone-depot"
+      id="zone4"
+      data-attendu="dans">
+    </div>
+
+    <div
+      class="zone-depot"
+      id="zone5"
+      data-attendu="lesport">
+    </div>
+
+
+    <!-- VIDÉO FINALE -->
+
+    <video
+      class="finanime-final"
+      id="finanimeFinal"
+      src="finanime.mp4"
+      playsinline
+      preload="auto">
+    </video>
+
+
+    <button
+      class="bouton-video"
+      id="boutonVideo"
+      type="button">
+      Voir la fin
+    </button>
+
+
+    <!-- SON DE VICTOIRE -->
+
+    <audio
+      id="sonVictoire"
+      src="../level.mp3"
+      preload="auto">
+    </audio>
+
+
   </div>
 
-  <div class="copyright-rebond" aria-label="Copyright Rebond">© Rebond</div>
+
+  <div
+    class="copyright-rebond"
+    aria-label="Copyright Rebond">
+    © Rebond
+  </div>
+
 </div>
 
+
 <script>
-const bloc=document.getElementById("blocRevelation");
-const mots=[...document.querySelectorAll(".mot-image")];
-const zones=[...document.querySelectorAll(".zone-depot")];
-const sonVictoire=document.getElementById("sonVictoire");
-const finanimeFinal=document.getElementById("finanimeFinal");
-const boutonVideo=document.getElementById("boutonVideo");
+const bloc =
+  document.getElementById(
+    "blocRevelation"
+  );
 
-localStorage.setItem("rebondCurrentPage","fin/revelation.html");
+const mots =
+  [
+    ...document.querySelectorAll(
+      ".mot-image"
+    )
+  ];
 
-const etatInitial=new Map();
-window.addEventListener("load",function(){
-  mots.forEach(function(mot){
-    etatInitial.set(mot.dataset.mot,{
-      left:mot.offsetLeft,
-      top:mot.offsetTop
-    });
-  });
-});
+const zones =
+  [
+    ...document.querySelectorAll(
+      ".zone-depot"
+    )
+  ];
 
-let motActif=null;
-let decalageX=0;
-let decalageY=0;
-let pointeurActif=null;
-let jeuTermine=false;
+const departs =
+  [
+    ...document.querySelectorAll(
+      ".depart"
+    )
+  ];
 
-mots.forEach(function(mot){
-  mot.addEventListener("pointerdown",commencerDeplacement);
-});
+const sonVictoire =
+  document.getElementById(
+    "sonVictoire"
+  );
 
-function commencerDeplacement(event){
-  if(jeuTermine)return;
+const finanimeFinal =
+  document.getElementById(
+    "finanimeFinal"
+  );
 
-  const mot=event.currentTarget;
-  libererZoneDuMot(mot);
+const boutonVideo =
+  document.getElementById(
+    "boutonVideo"
+  );
 
-  motActif=mot;
-  pointeurActif=event.pointerId;
 
-  const rectMot=mot.getBoundingClientRect();
-  const rectBloc=bloc.getBoundingClientRect();
+/* ======================================================
+   PROGRESSION
+====================================================== */
 
-  decalageX=event.clientX-rectMot.left;
-  decalageY=event.clientY-rectMot.top;
+localStorage.setItem(
+  "rebondCurrentPage",
+  "fin/revelation.html"
+);
 
-  mot.style.left=(rectMot.left-rectBloc.left)+"px";
-  mot.style.top=(rectMot.top-rectBloc.top)+"px";
 
-  mot.classList.remove("place","correct");
-  mot.classList.add("dragging");
+/* ======================================================
+   ORDRE ATTENDU
+====================================================== */
 
-  try{mot.setPointerCapture(event.pointerId)}catch(e){}
+const ordreFinal = [
+  "ensemble",
+  "protegeons",
+  "lenfance",
+  "dans",
+  "lesport"
+];
+
+
+/* ======================================================
+   MÉLANGE DES MOTS SUR LE PAPIER JAUNE
+====================================================== */
+
+function melanger(tableau){
+
+  const copie =
+    tableau.slice();
+
+  for(
+    let i =
+      copie.length - 1;
+    i > 0;
+    i--
+  ){
+
+    const j =
+      Math.floor(
+        Math.random() *
+        (i + 1)
+      );
+
+    [
+      copie[i],
+      copie[j]
+    ] = [
+      copie[j],
+      copie[i]
+    ];
+
+  }
+
+  return copie;
+}
+
+
+function ordreEstCorrect(tableau){
+
+  return tableau.every(
+    function(mot, index){
+
+      return (
+        mot.dataset.mot ===
+        ordreFinal[index]
+      );
+
+    }
+  );
+
+}
+
+
+function placerMotsMelanges(){
+
+  let melange =
+    melanger(
+      mots
+    );
+
+  /*
+    Le mélange ne doit JAMAIS présenter
+    directement la phrase dans le bon ordre.
+  */
+
+  while(
+    ordreEstCorrect(
+      melange
+    )
+  ){
+
+    melange =
+      melanger(
+        mots
+      );
+
+  }
+
+
+  melange.forEach(
+    function(mot, index){
+
+      const depart =
+        departs[index];
+
+      mot.style.left =
+        depart.offsetLeft + "px";
+
+      mot.style.top =
+        depart.offsetTop + "px";
+
+      mot.dataset.depart =
+        String(index);
+
+      mot.classList.remove(
+        "place",
+        "correct",
+        "dragging"
+      );
+
+      delete mot.dataset.zone;
+
+    }
+  );
+
+}
+
+
+/* ======================================================
+   GLISSER / DÉPOSER
+====================================================== */
+
+let motActif =
+  null;
+
+let decalageX =
+  0;
+
+let decalageY =
+  0;
+
+let pointeurActif =
+  null;
+
+let jeuTermine =
+  false;
+
+
+mots.forEach(
+  function(mot){
+
+    mot.addEventListener(
+      "pointerdown",
+      commencerDeplacement
+    );
+
+  }
+);
+
+
+function commencerDeplacement(
+  event
+){
+
+  if(jeuTermine){
+    return;
+  }
+
+  const mot =
+    event.currentTarget;
+
+
+  /*
+    Si le mot était déjà dans une case,
+    sa case redevient libre.
+  */
+
+  libererZoneDuMot(
+    mot
+  );
+
+
+  motActif =
+    mot;
+
+  pointeurActif =
+    event.pointerId;
+
+
+  const rectMot =
+    mot.getBoundingClientRect();
+
+  const rectBloc =
+    bloc.getBoundingClientRect();
+
+
+  decalageX =
+    event.clientX -
+    rectMot.left;
+
+  decalageY =
+    event.clientY -
+    rectMot.top;
+
+
+  mot.style.left =
+    (
+      rectMot.left -
+      rectBloc.left
+    ) + "px";
+
+  mot.style.top =
+    (
+      rectMot.top -
+      rectBloc.top
+    ) + "px";
+
+
+  mot.classList.remove(
+    "place",
+    "correct"
+  );
+
+  mot.classList.add(
+    "dragging"
+  );
+
+
+  try{
+
+    mot.setPointerCapture(
+      event.pointerId
+    );
+
+  }
+  catch(erreur){}
+
+
   event.preventDefault();
 }
 
-bloc.addEventListener("pointermove",function(event){
-  if(!motActif||event.pointerId!==pointeurActif)return;
 
-  const rectBloc=bloc.getBoundingClientRect();
-  let x=event.clientX-rectBloc.left-decalageX;
-  let y=event.clientY-rectBloc.top-decalageY;
+bloc.addEventListener(
+  "pointermove",
+  function(event){
 
-  x=Math.max(-motActif.offsetWidth*.25,Math.min(x,bloc.clientWidth-motActif.offsetWidth*.75));
-  y=Math.max(-motActif.offsetHeight*.25,Math.min(y,bloc.clientHeight-motActif.offsetHeight*.75));
+    if(
+      !motActif ||
+      event.pointerId !==
+      pointeurActif
+    ){
 
-  motActif.style.left=x+"px";
-  motActif.style.top=y+"px";
-  mettreAJourSurvol();
-  event.preventDefault();
-});
+      return;
 
-bloc.addEventListener("pointerup",terminerDeplacement);
-bloc.addEventListener("pointercancel",terminerDeplacement);
+    }
 
-function terminerDeplacement(event){
-  if(!motActif||event.pointerId!==pointeurActif)return;
 
-  const mot=motActif;
-  mot.classList.remove("dragging");
+    const rectBloc =
+      bloc.getBoundingClientRect();
 
-  zones.forEach(function(zone){zone.classList.remove("survol")});
 
-  const zone=trouverZoneSousMot(mot);
+    let x =
+      event.clientX -
+      rectBloc.left -
+      decalageX;
 
-  if(zone&&!zone.dataset.occupePar){
-    placerMotDansZone(mot,zone);
-  }else{
-    remettreMotAuDepart(mot);
+    let y =
+      event.clientY -
+      rectBloc.top -
+      decalageY;
+
+
+    x =
+      Math.max(
+        -motActif.offsetWidth *
+          .15,
+        Math.min(
+          x,
+          bloc.clientWidth -
+          motActif.offsetWidth *
+          .85
+        )
+      );
+
+
+    y =
+      Math.max(
+        -motActif.offsetHeight *
+          .15,
+        Math.min(
+          y,
+          bloc.clientHeight -
+          motActif.offsetHeight *
+          .85
+        )
+      );
+
+
+    motActif.style.left =
+      x + "px";
+
+    motActif.style.top =
+      y + "px";
+
+
+    event.preventDefault();
+
+  }
+);
+
+
+bloc.addEventListener(
+  "pointerup",
+  terminerDeplacement
+);
+
+
+bloc.addEventListener(
+  "pointercancel",
+  terminerDeplacement
+);
+
+
+function terminerDeplacement(
+  event
+){
+
+  if(
+    !motActif ||
+    event.pointerId !==
+    pointeurActif
+  ){
+
+    return;
+
   }
 
-  try{mot.releasePointerCapture(event.pointerId)}catch(e){}
 
-  motActif=null;
-  pointeurActif=null;
+  const mot =
+    motActif;
+
+
+  mot.classList.remove(
+    "dragging"
+  );
+
+
+  const zone =
+    trouverZoneSousMot(
+      mot
+    );
+
+
+  if(
+    zone &&
+    !zone.dataset.occupePar
+  ){
+
+    placerMotDansZone(
+      mot,
+      zone
+    );
+
+  }
+  else{
+
+    remettreMotAuDepart(
+      mot
+    );
+
+  }
+
+
+  try{
+
+    mot.releasePointerCapture(
+      event.pointerId
+    );
+
+  }
+  catch(erreur){}
+
+
+  motActif =
+    null;
+
+  pointeurActif =
+    null;
+
 
   verifierPhrase();
+
 }
 
-function trouverZoneSousMot(mot){
-  const rectMot=mot.getBoundingClientRect();
-  const centreX=rectMot.left+rectMot.width/2;
-  const centreY=rectMot.top+rectMot.height/2;
 
-  return zones.find(function(zone){
-    const rect=zone.getBoundingClientRect();
-    return centreX>=rect.left&&centreX<=rect.right&&centreY>=rect.top&&centreY<=rect.bottom;
-  })||null;
+/* ======================================================
+   TROUVER LA CASE LA PLUS PROCHE
+====================================================== */
+
+function trouverZoneSousMot(
+  mot
+){
+
+  const rectMot =
+    mot.getBoundingClientRect();
+
+
+  const centreX =
+    rectMot.left +
+    rectMot.width / 2;
+
+  const centreY =
+    rectMot.top +
+    rectMot.height / 2;
+
+
+  /*
+    Tolérance généreuse autour de chaque case :
+    il suffit que le centre du mot arrive
+    près de son emplacement.
+  */
+
+  let meilleureZone =
+    null;
+
+  let meilleureDistance =
+    Infinity;
+
+
+  zones.forEach(
+    function(zone){
+
+      if(
+        zone.dataset.occupePar
+      ){
+
+        return;
+
+      }
+
+
+      const rect =
+        zone.getBoundingClientRect();
+
+
+      const centreZoneX =
+        rect.left +
+        rect.width / 2;
+
+      const centreZoneY =
+        rect.top +
+        rect.height / 2;
+
+
+      const dx =
+        centreX -
+        centreZoneX;
+
+      const dy =
+        centreY -
+        centreZoneY;
+
+
+      const distance =
+        Math.sqrt(
+          dx * dx +
+          dy * dy
+        );
+
+
+      if(
+        distance <
+        meilleureDistance
+      ){
+
+        meilleureDistance =
+          distance;
+
+        meilleureZone =
+          zone;
+
+      }
+
+    }
+  );
+
+
+  /*
+    135 px donne une zone de dépôt confortable
+    sans faire aspirer un mot depuis l'autre côté
+    de l'écran.
+  */
+
+  if(
+    meilleureDistance <=
+    135
+  ){
+
+    return meilleureZone;
+
+  }
+
+
+  return null;
+
 }
 
-function mettreAJourSurvol(){
-  if(!motActif)return;
-  const zoneCible=trouverZoneSousMot(motActif);
 
-  zones.forEach(function(zone){
-    zone.classList.toggle("survol",zone===zoneCible&&!zone.dataset.occupePar);
-  });
+/* ======================================================
+   PLACEMENT PRÉCIS DANS LES BANDES BLEUES
+====================================================== */
+
+function placerMotDansZone(
+  mot,
+  zone
+){
+
+  const rectZone =
+    zone.getBoundingClientRect();
+
+  const rectBloc =
+    bloc.getBoundingClientRect();
+
+
+  /*
+    Le mot doit tenir dans sa case.
+    On limite sa largeur à 92 % de l'emplacement.
+  */
+
+  const largeurMax =
+    rectZone.width *
+    .92;
+
+
+  if(
+    mot.offsetWidth >
+    largeurMax
+  ){
+
+    mot.style.width =
+      largeurMax + "px";
+
+  }
+
+
+  const nouvelleLargeur =
+    mot.offsetWidth;
+
+  const nouvelleHauteur =
+    mot.offsetHeight;
+
+
+  const left =
+    rectZone.left -
+    rectBloc.left +
+    (
+      rectZone.width -
+      nouvelleLargeur
+    ) / 2;
+
+
+  const top =
+    rectZone.top -
+    rectBloc.top +
+    (
+      rectZone.height -
+      nouvelleHauteur
+    ) / 2;
+
+
+  mot.style.left =
+    left + "px";
+
+  mot.style.top =
+    top + "px";
+
+
+  mot.classList.add(
+    "place"
+  );
+
+
+  mot.dataset.zone =
+    zone.id;
+
+
+  zone.dataset.occupePar =
+    mot.dataset.mot;
+
 }
 
-function placerMotDansZone(mot,zone){
-  const rectZone=zone.getBoundingClientRect();
-  const rectBloc=bloc.getBoundingClientRect();
 
-  const left=rectZone.left-rectBloc.left+(rectZone.width-mot.offsetWidth)/2;
-  const top=rectZone.top-rectBloc.top+(rectZone.height-mot.offsetHeight)/2;
+/* ======================================================
+   LIBÉRER UNE CASE
+====================================================== */
 
-  mot.style.left=left+"px";
-  mot.style.top=top+"px";
-  mot.classList.add("place");
+function libererZoneDuMot(
+  mot
+){
 
-  mot.dataset.zone=zone.id;
-  zone.dataset.occupePar=mot.dataset.mot;
-}
+  const idZone =
+    mot.dataset.zone;
 
-function libererZoneDuMot(mot){
-  const idZone=mot.dataset.zone;
-  if(!idZone)return;
 
-  const zone=document.getElementById(idZone);
-  if(zone)delete zone.dataset.occupePar;
+  if(!idZone){
+    return;
+  }
+
+
+  const zone =
+    document.getElementById(
+      idZone
+    );
+
+
+  if(zone){
+
+    delete zone.dataset.occupePar;
+
+  }
+
 
   delete mot.dataset.zone;
+
 }
 
-function remettreMotAuDepart(mot){
-  libererZoneDuMot(mot);
 
-  const depart=etatInitial.get(mot.dataset.mot);
-  if(!depart)return;
+/* ======================================================
+   RETOUR SUR LE PAPIER JAUNE
+====================================================== */
 
-  mot.style.left=depart.left+"px";
-  mot.style.top=depart.top+"px";
-  mot.classList.remove("place","correct");
+function remettreMotAuDepart(
+  mot
+){
+
+  libererZoneDuMot(
+    mot
+  );
+
+
+  const index =
+    Number(
+      mot.dataset.depart
+    );
+
+
+  const depart =
+    departs[index];
+
+
+  if(!depart){
+    return;
+  }
+
+
+  /*
+    On remet aussi sa largeur initiale.
+  */
+
+  mot.style.width =
+    "";
+
+
+  mot.style.left =
+    depart.offsetLeft +
+    "px";
+
+  mot.style.top =
+    depart.offsetTop +
+    "px";
+
+
+  mot.classList.remove(
+    "place",
+    "correct"
+  );
+
 }
+
+
+/* ======================================================
+   VALIDATION AUTOMATIQUE
+====================================================== */
 
 function verifierPhrase(){
-  if(jeuTermine)return;
 
-  const toutesOccupees=zones.every(function(zone){
-    return Boolean(zone.dataset.occupePar);
-  });
+  if(jeuTermine){
+    return;
+  }
 
-  if(!toutesOccupees)return;
 
-  const ordreCorrect=zones.every(function(zone){
-    return zone.dataset.occupePar===zone.dataset.attendu;
-  });
+  const toutesOccupees =
+    zones.every(
+      function(zone){
 
-  if(!ordreCorrect)return;
+        return Boolean(
+          zone.dataset.occupePar
+        );
 
-  jeuTermine=true;
+      }
+    );
 
-  mots.forEach(function(mot){
-    mot.classList.add("correct");
-    mot.style.pointerEvents="none";
-  });
+
+  if(!toutesOccupees){
+    return;
+  }
+
+
+  const ordreCorrect =
+    zones.every(
+      function(zone){
+
+        return (
+          zone.dataset.occupePar ===
+          zone.dataset.attendu
+        );
+
+      }
+    );
+
+
+  if(!ordreCorrect){
+    return;
+  }
+
+
+  jeuTermine =
+    true;
+
+
+  mots.forEach(
+    function(mot){
+
+      mot.classList.add(
+        "correct"
+      );
+
+      mot.style.pointerEvents =
+        "none";
+
+    }
+  );
+
 
   jouerVictoirePuisVideo();
+
 }
+
+
+/* ======================================================
+   SON DE VICTOIRE
+====================================================== */
 
 function jouerVictoirePuisVideo(){
-  if(sonVictoire){
-    try{
-      sonVictoire.pause();
-      sonVictoire.currentTime=0;
-      sonVictoire.volume=1;
-      sonVictoire.muted=false;
-    }catch(e){}
 
-    const lecture=sonVictoire.play();
-    if(lecture&&typeof lecture.catch==="function"){
-      lecture.catch(function(error){
-        console.warn("Le son de victoire n'a pas pu être joué :",error);
-      });
+  if(sonVictoire){
+
+    try{
+
+      sonVictoire.pause();
+
+      sonVictoire.currentTime =
+        0;
+
+      sonVictoire.volume =
+        1;
+
+      sonVictoire.muted =
+        false;
+
     }
+    catch(erreur){}
+
+
+    const lecture =
+      sonVictoire.play();
+
+
+    if(
+      lecture &&
+      typeof lecture.catch ===
+        "function"
+    ){
+
+      lecture.catch(
+        function(erreur){
+
+          console.warn(
+            "Le son de victoire n'a pas pu être joué :",
+            erreur
+          );
+
+        }
+      );
+
+    }
+
   }
 
-  window.setTimeout(lancerVideoFinale,1800);
+
+  /*
+    On garde la phrase reconstituée visible
+    1,8 seconde avant la vidéo.
+  */
+
+  window.setTimeout(
+    lancerVideoFinale,
+    1800
+  );
+
 }
+
+
+/* ======================================================
+   VIDÉO FINALE
+====================================================== */
 
 function lancerVideoFinale(){
-  finanimeFinal.classList.add("visible");
-  finanimeFinal.currentTime=0;
-  finanimeFinal.muted=false;
-  finanimeFinal.volume=1;
 
-  const lecture=finanimeFinal.play();
+  finanimeFinal.classList.add(
+    "visible"
+  );
 
-  if(lecture&&typeof lecture.catch==="function"){
-    lecture.catch(function(){
-      boutonVideo.classList.add("visible");
-    });
+
+  finanimeFinal.currentTime =
+    0;
+
+  finanimeFinal.muted =
+    false;
+
+  finanimeFinal.volume =
+    1;
+
+
+  const lecture =
+    finanimeFinal.play();
+
+
+  if(
+    lecture &&
+    typeof lecture.catch ===
+      "function"
+  ){
+
+    lecture.catch(
+      function(){
+
+        boutonVideo.classList.add(
+          "visible"
+        );
+
+      }
+    );
+
   }
+
 }
 
-boutonVideo.addEventListener("click",function(){
-  boutonVideo.classList.remove("visible");
-  finanimeFinal.muted=false;
-  finanimeFinal.volume=1;
-  finanimeFinal.play();
-});
 
-finanimeFinal.addEventListener("ended",function(){
-  finanimeFinal.pause();
-  finanimeFinal.controls=false;
-  finanimeFinal.style.pointerEvents="none";
-});
+boutonVideo.addEventListener(
+  "click",
+  function(){
+
+    boutonVideo.classList.remove(
+      "visible"
+    );
+
+
+    finanimeFinal.muted =
+      false;
+
+    finanimeFinal.volume =
+      1;
+
+
+    finanimeFinal.play();
+
+  }
+);
+
+
+finanimeFinal.addEventListener(
+  "ended",
+  function(){
+
+    finanimeFinal.pause();
+
+    finanimeFinal.controls =
+      false;
+
+    finanimeFinal.style.pointerEvents =
+      "none";
+
+  }
+);
+
+
+/* ======================================================
+   DÉMARRAGE
+====================================================== */
+
+window.addEventListener(
+  "load",
+  function(){
+
+    placerMotsMelanges();
+
+  }
+);
+
 </script>
+
 </body>
 </html>
