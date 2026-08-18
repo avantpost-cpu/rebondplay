@@ -1,1 +1,1516 @@
+<!DOCTYPE html>
+<html lang="fr">
 
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>REBOND — Administration Vrai / Faux</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --blue:#1b5f6e;
+    --blue-dark:#124955;
+    --light:#9ecbd2;
+    --yellow:#edb01a;
+    --green:#1f8a5b;
+    --red:#de5103;
+
+    --white:#ffffff;
+    --ink:#183d47;
+    --muted:#68838a;
+    --line:#dbe6e8;
+
+    --page:#edf4f5;
+    --panel:#ffffff;
+}
+
+html,
+body{
+    width:100%;
+    min-height:100%;
+}
+
+body{
+    min-height:100vh;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:var(--page);
+
+    color:var(--ink);
+}
+
+
+/* ============================================================
+   PAGE
+============================================================ */
+
+.page{
+    width:100%;
+    max-width:1450px;
+
+    margin:0 auto;
+
+    padding:
+        28px
+        28px
+        60px;
+}
+
+
+/* ============================================================
+   HEADER
+============================================================ */
+
+.header{
+    display:flex;
+
+    align-items:center;
+    justify-content:space-between;
+
+    gap:20px;
+
+    margin-bottom:28px;
+}
+
+.header-left{
+    display:flex;
+
+    align-items:center;
+
+    gap:20px;
+}
+
+.logo{
+    width:145px;
+    height:auto;
+}
+
+.header h1{
+    font-size:
+        clamp(
+            23px,
+            3vw,
+            34px
+        );
+
+    color:var(--blue);
+}
+
+.header-sub{
+    margin-top:4px;
+
+    font-size:13px;
+
+    color:var(--muted);
+}
+
+.actions{
+    display:flex;
+
+    gap:8px;
+}
+
+.action-button{
+    border:0;
+
+    border-radius:9px;
+
+    padding:
+        10px
+        14px;
+
+    background:var(--blue);
+
+    color:#ffffff;
+
+    cursor:pointer;
+
+    font-weight:800;
+
+    font-size:12px;
+
+    text-transform:uppercase;
+}
+
+.action-button:hover{
+    background:var(--blue-dark);
+}
+
+.action-button:disabled{
+    opacity:.5;
+    cursor:wait;
+}
+
+
+/* ============================================================
+   STATS
+============================================================ */
+
+.stats{
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            4,
+            minmax(0,1fr)
+        );
+
+    gap:16px;
+
+    margin-bottom:24px;
+}
+
+.stat{
+    position:relative;
+
+    overflow:hidden;
+
+    padding:22px;
+
+    border-radius:17px;
+
+    background:var(--panel);
+
+    box-shadow:
+        0 5px 18px
+        rgba(21,67,77,.07);
+}
+
+.stat-label{
+    margin-bottom:10px;
+
+    font-size:11px;
+
+    font-weight:900;
+
+    text-transform:uppercase;
+
+    letter-spacing:.08em;
+
+    color:var(--muted);
+}
+
+.stat-value{
+    font-size:38px;
+
+    line-height:1;
+
+    font-weight:900;
+
+    color:var(--blue);
+}
+
+.stat-small{
+    margin-top:8px;
+
+    font-size:12px;
+
+    color:var(--muted);
+}
+
+.stat::after{
+    content:"";
+
+    position:absolute;
+
+    left:0;
+    right:0;
+    bottom:0;
+
+    height:5px;
+
+    background:var(--yellow);
+}
+
+
+/* ============================================================
+   PANELS
+============================================================ */
+
+.panel{
+    margin-bottom:24px;
+
+    overflow:hidden;
+
+    border-radius:18px;
+
+    background:#ffffff;
+
+    box-shadow:
+        0 5px 18px
+        rgba(21,67,77,.07);
+}
+
+.panel-head{
+    display:flex;
+
+    align-items:center;
+    justify-content:space-between;
+
+    gap:12px;
+
+    padding:
+        20px
+        22px;
+
+    border-bottom:
+        1px solid
+        var(--line);
+}
+
+.panel-head h2{
+    font-size:18px;
+
+    color:var(--blue);
+}
+
+.panel-head span{
+    font-size:12px;
+
+    color:var(--muted);
+}
+
+
+/* ============================================================
+   TABLE
+============================================================ */
+
+.table-wrap{
+    width:100%;
+
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+
+    border-collapse:collapse;
+
+    min-width:900px;
+}
+
+th{
+    padding:
+        12px
+        16px;
+
+    text-align:left;
+
+    background:#f7fafb;
+
+    border-bottom:
+        1px solid
+        var(--line);
+
+    font-size:10px;
+
+    font-weight:900;
+
+    letter-spacing:.07em;
+
+    text-transform:uppercase;
+
+    color:var(--muted);
+}
+
+td{
+    padding:
+        13px
+        16px;
+
+    border-bottom:
+        1px solid
+        #edf2f3;
+
+    font-size:13px;
+
+    vertical-align:middle;
+}
+
+tr:last-child td{
+    border-bottom:0;
+}
+
+.name{
+    font-weight:800;
+
+    color:var(--ink);
+}
+
+.score{
+    display:inline-flex;
+
+    align-items:center;
+    justify-content:center;
+
+    min-width:54px;
+
+    padding:
+        6px
+        8px;
+
+    border-radius:999px;
+
+    background:#eef5f6;
+
+    font-weight:900;
+
+    color:var(--blue);
+}
+
+.status{
+    display:inline-flex;
+
+    padding:
+        5px
+        8px;
+
+    border-radius:999px;
+
+    font-size:10px;
+
+    font-weight:900;
+
+    text-transform:uppercase;
+}
+
+.status.done{
+    background:#e4f4eb;
+
+    color:var(--green);
+}
+
+.status.open{
+    background:#fff2df;
+
+    color:#a96600;
+}
+
+
+/* ============================================================
+   QUESTIONS
+============================================================ */
+
+.questions{
+    padding:
+        8px
+        20px
+        22px;
+}
+
+.question{
+    display:grid;
+
+    grid-template-columns:
+        52px
+        minmax(260px,1fr)
+        170px
+        80px;
+
+    gap:16px;
+
+    align-items:center;
+
+    padding:
+        15px
+        2px;
+
+    border-bottom:
+        1px solid
+        #edf2f3;
+}
+
+.question:last-child{
+    border-bottom:0;
+}
+
+.q-number{
+    width:40px;
+    height:40px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:var(--blue);
+
+    color:#ffffff;
+
+    font-weight:900;
+}
+
+.q-text{
+    font-size:13px;
+
+    line-height:1.35;
+}
+
+.q-detail{
+    margin-top:4px;
+
+    font-size:11px;
+
+    color:#83989d;
+}
+
+.bar{
+    height:10px;
+
+    overflow:hidden;
+
+    border-radius:999px;
+
+    background:#e5edef;
+}
+
+.bar-fill{
+    height:100%;
+
+    background:var(--green);
+
+    border-radius:999px;
+}
+
+.percent{
+    font-size:15px;
+
+    font-weight:900;
+
+    text-align:right;
+
+    color:var(--blue);
+}
+
+
+/* ============================================================
+   MESSAGES
+============================================================ */
+
+.loading{
+    padding:40px;
+
+    text-align:center;
+
+    color:var(--muted);
+}
+
+.error{
+    margin-bottom:20px;
+
+    padding:14px 16px;
+
+    border-radius:10px;
+
+    background:#fde9e4;
+
+    color:#a63417;
+
+    font-size:13px;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media(max-width:900px){
+
+    .stats{
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0,1fr)
+            );
+    }
+
+    .header{
+        align-items:flex-start;
+
+        flex-direction:column;
+    }
+
+    .question{
+        grid-template-columns:
+            44px
+            1fr;
+    }
+
+    .bar{
+        grid-column:2;
+
+        width:100%;
+    }
+
+    .percent{
+        grid-column:2;
+
+        text-align:left;
+    }
+
+}
+
+
+@media(max-width:520px){
+
+    .page{
+        padding:
+            18px
+            12px
+            40px;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .header-left{
+        align-items:flex-start;
+
+        flex-direction:column;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<main class="page">
+
+
+<!-- ============================================================
+     HEADER
+============================================================ -->
+
+<header class="header">
+
+    <div class="header-left">
+
+        <img
+            class="logo"
+            src="https://avantpost-cpu.github.io/depot-quiz/cartes/logo.png"
+            alt="REBOND"
+        >
+
+        <div>
+
+            <h1>
+                Vrai / Faux
+            </h1>
+
+            <div class="header-sub">
+                Tableau de bord des participations
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="actions">
+
+        <button
+            class="action-button"
+            id="refreshButton"
+        >
+            Actualiser
+        </button>
+
+    </div>
+
+</header>
+
+
+<div
+    class="error"
+    id="errorBox"
+    hidden
+></div>
+
+
+<!-- ============================================================
+     STATS
+============================================================ -->
+
+<section class="stats">
+
+    <article class="stat">
+
+        <div class="stat-label">
+            Participations
+        </div>
+
+        <div
+            class="stat-value"
+            id="statTotal"
+        >
+            —
+        </div>
+
+        <div class="stat-small">
+            Parties enregistrées
+        </div>
+
+    </article>
+
+
+    <article class="stat">
+
+        <div class="stat-label">
+            Terminées
+        </div>
+
+        <div
+            class="stat-value"
+            id="statFinished"
+        >
+            —
+        </div>
+
+        <div
+            class="stat-small"
+            id="statFinishedPercent"
+        >
+            —
+        </div>
+
+    </article>
+
+
+    <article class="stat">
+
+        <div class="stat-label">
+            Score moyen
+        </div>
+
+        <div
+            class="stat-value"
+            id="statScore"
+        >
+            —
+        </div>
+
+        <div class="stat-small">
+            Sur 20
+        </div>
+
+    </article>
+
+
+    <article class="stat">
+
+        <div class="stat-label">
+            Durée moyenne
+        </div>
+
+        <div
+            class="stat-value"
+            id="statDuration"
+        >
+            —
+        </div>
+
+        <div class="stat-small">
+            Parties terminées
+        </div>
+
+    </article>
+
+</section>
+
+
+<!-- ============================================================
+     PARTICIPATIONS
+============================================================ -->
+
+<section class="panel">
+
+    <div class="panel-head">
+
+        <h2>
+            Dernières participations
+        </h2>
+
+        <span id="partsCount"></span>
+
+    </div>
+
+
+    <div class="table-wrap">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Date</th>
+
+                    <th>Participant</th>
+
+                    <th>Structure</th>
+
+                    <th>Fonction</th>
+
+                    <th>Score</th>
+
+                    <th>Durée</th>
+
+                    <th>État</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody id="participantsBody">
+
+                <tr>
+
+                    <td
+                        colspan="7"
+                        class="loading"
+                    >
+                        Chargement…
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+
+<!-- ============================================================
+     QUESTIONS
+============================================================ -->
+
+<section class="panel">
+
+    <div class="panel-head">
+
+        <h2>
+            Réussite par question
+        </h2>
+
+        <span>
+            20 questions
+        </span>
+
+    </div>
+
+
+    <div
+        class="questions"
+        id="questionsList"
+    >
+
+        <div class="loading">
+            Chargement…
+        </div>
+
+    </div>
+
+</section>
+
+
+</main>
+
+
+<script>
+
+(() => {
+
+
+/* ============================================================
+   SUPABASE
+
+   Même URL et même clé publique que vraifaux.html
+============================================================ */
+
+const SUPABASE_URL =
+    "https://tdsrqmpfdvntybdlvejy.supabase.co";
+
+
+const SUPABASE_KEY =
+    "sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO";
+
+
+const client =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+const $ =
+    id =>
+        document.getElementById(id);
+
+
+/* ============================================================
+   UTILS
+============================================================ */
+
+function escapeHTML(value){
+
+    return String(
+        value ?? ""
+    )
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+function formatDate(value){
+
+    if(!value){
+        return "—";
+    }
+
+
+    const d =
+        new Date(value);
+
+
+    return new Intl.DateTimeFormat(
+        "fr-FR",
+        {
+            dateStyle:"short",
+            timeStyle:"short"
+        }
+    ).format(d);
+
+}
+
+
+function formatDuration(seconds){
+
+    if(
+        seconds === null ||
+        seconds === undefined
+    ){
+        return "—";
+    }
+
+
+    const s =
+        Math.max(
+            0,
+            Math.round(
+                Number(seconds)
+            )
+        );
+
+
+    const minutes =
+        Math.floor(
+            s / 60
+        );
+
+
+    const reste =
+        s % 60;
+
+
+    if(minutes < 1){
+
+        return `${reste}s`;
+
+    }
+
+
+    return (
+        `${minutes} min ` +
+        `${String(reste).padStart(2,"0")} s`
+    );
+
+}
+
+
+function showError(message){
+
+    const box =
+        $("errorBox");
+
+
+    box.textContent =
+        message;
+
+
+    box.hidden =
+        false;
+
+}
+
+
+function clearError(){
+
+    $("errorBox").hidden =
+        true;
+
+}
+
+
+/* ============================================================
+   CHARGEMENT GLOBAL
+============================================================ */
+
+async function loadDashboard(){
+
+    clearError();
+
+
+    $("refreshButton").disabled =
+        true;
+
+
+    try{
+
+        await Promise.all([
+            loadParties(),
+            loadQuestions()
+        ]);
+
+    }finally{
+
+        $("refreshButton").disabled =
+            false;
+
+    }
+
+}
+
+
+/* ============================================================
+   PARTICIPATIONS
+============================================================ */
+
+async function loadParties(){
+
+    const {
+        data,
+        error
+    } =
+    await client.rpc(
+        "vf_admin_parties"
+    );
+
+
+    if(error){
+
+        console.error(
+            "Erreur vf_admin_parties :",
+            error
+        );
+
+
+        showError(
+            "Impossible de charger les participations."
+        );
+
+
+        return;
+
+    }
+
+
+    const parties =
+        data || [];
+
+
+    renderStats(
+        parties
+    );
+
+
+    renderParties(
+        parties
+    );
+
+}
+
+
+/* ============================================================
+   STATS
+============================================================ */
+
+function renderStats(parties){
+
+    const total =
+        parties.length;
+
+
+    const finished =
+        parties.filter(
+            p =>
+                p.terminee === true
+        );
+
+
+    const finishedCount =
+        finished.length;
+
+
+    const scores =
+        finished
+        .map(
+            p =>
+                Number(p.score)
+        )
+        .filter(
+            Number.isFinite
+        );
+
+
+    const durations =
+        finished
+        .map(
+            p =>
+                Number(
+                    p.duree_secondes
+                )
+        )
+        .filter(
+            Number.isFinite
+        );
+
+
+    const avgScore =
+        scores.length
+        ?
+        scores.reduce(
+            (a,b) => a+b,
+            0
+        ) / scores.length
+        :
+        null;
+
+
+    const avgDuration =
+        durations.length
+        ?
+        durations.reduce(
+            (a,b) => a+b,
+            0
+        ) / durations.length
+        :
+        null;
+
+
+    $("statTotal").textContent =
+        total;
+
+
+    $("statFinished").textContent =
+        finishedCount;
+
+
+    $("statFinishedPercent").textContent =
+        total
+        ?
+        `${Math.round(
+            finishedCount
+            /
+            total
+            *
+            100
+        )}% des participations`
+        :
+        "—";
+
+
+    $("statScore").textContent =
+        avgScore !== null
+        ?
+        avgScore.toFixed(1)
+        :
+        "—";
+
+
+    $("statDuration").textContent =
+        avgDuration !== null
+        ?
+        formatDuration(
+            avgDuration
+        )
+        :
+        "—";
+
+}
+
+
+/* ============================================================
+   TABLEAU PARTICIPANTS
+============================================================ */
+
+function renderParties(parties){
+
+    const body =
+        $("participantsBody");
+
+
+    $("partsCount").textContent =
+        `${parties.length} participation${
+            parties.length > 1
+            ? "s"
+            : ""
+        }`;
+
+
+    if(!parties.length){
+
+        body.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="7"
+                    class="loading"
+                >
+                    Aucune participation.
+                </td>
+
+            </tr>
+
+        `;
+
+        return;
+
+    }
+
+
+    body.innerHTML =
+        parties
+        .map(
+            p => {
+
+
+                const fullName =
+                    [
+                        p.prenom,
+                        p.nom
+                    ]
+                    .filter(Boolean)
+                    .join(" ");
+
+
+                return `
+
+                    <tr>
+
+                        <td>
+                            ${escapeHTML(
+                                formatDate(
+                                    p.created_at
+                                )
+                            )}
+                        </td>
+
+
+                        <td class="name">
+
+                            ${escapeHTML(
+                                fullName ||
+                                "—"
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            ${escapeHTML(
+                                p.structure ||
+                                "—"
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            ${escapeHTML(
+                                p.fonction ||
+                                "—"
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            <span class="score">
+
+                                ${
+                                    p.terminee
+                                    ?
+                                    `${p.score}/${p.total}`
+                                    :
+                                    "—"
+                                }
+
+                            </span>
+
+                        </td>
+
+
+                        <td>
+
+                            ${escapeHTML(
+                                formatDuration(
+                                    p.duree_secondes
+                                )
+                            )}
+
+                        </td>
+
+
+                        <td>
+
+                            <span
+                                class="
+                                    status
+                                    ${
+                                        p.terminee
+                                        ?
+                                        "done"
+                                        :
+                                        "open"
+                                    }
+                                "
+                            >
+
+                                ${
+                                    p.terminee
+                                    ?
+                                    "Terminée"
+                                    :
+                                    "En cours"
+                                }
+
+                            </span>
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
+        )
+        .join("");
+
+}
+
+
+/* ============================================================
+   QUESTIONS
+============================================================ */
+
+async function loadQuestions(){
+
+    const {
+        data,
+        error
+    } =
+    await client.rpc(
+        "vf_admin_questions"
+    );
+
+
+    if(error){
+
+        console.error(
+            "Erreur vf_admin_questions :",
+            error
+        );
+
+
+        showError(
+            "Impossible de charger les statistiques des questions."
+        );
+
+
+        return;
+
+    }
+
+
+    renderQuestions(
+        data || []
+    );
+
+}
+
+
+function renderQuestions(rows){
+
+    const container =
+        $("questionsList");
+
+
+    if(!rows.length){
+
+        container.innerHTML = `
+
+            <div class="loading">
+
+                Aucune réponse
+                enregistrée pour le moment.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    container.innerHTML =
+        rows
+        .map(
+            row => {
+
+
+                const percent =
+                    Number(
+                        row.taux_reussite
+                    ) || 0;
+
+
+                const safePercent =
+                    Math.max(
+                        0,
+                        Math.min(
+                            100,
+                            percent
+                        )
+                    );
+
+
+                return `
+
+                    <div class="question">
+
+
+                        <div class="q-number">
+
+                            ${row.question_numero}
+
+                        </div>
+
+
+                        <div class="q-text">
+
+                            ${escapeHTML(
+                                row.question
+                            )}
+
+
+                            <div class="q-detail">
+
+                                ${row.bonnes_reponses}
+                                bonne(s)
+                                sur
+                                ${row.total_reponses}
+                                réponse(s)
+
+                                —
+                                ${row.mauvaises_reponses}
+                                erreur(s)
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="bar">
+
+                            <div
+                                class="bar-fill"
+                                style="
+                                    width:${safePercent}%;
+                                "
+                            ></div>
+
+                        </div>
+
+
+                        <div class="percent">
+
+                            ${percent.toFixed(1)} %
+
+                        </div>
+
+
+                    </div>
+
+                `;
+
+            }
+        )
+        .join("");
+
+}
+
+
+/* ============================================================
+   ACTUALISATION
+============================================================ */
+
+$("refreshButton")
+.addEventListener(
+    "click",
+    loadDashboard
+);
+
+
+/* ============================================================
+   INITIALISATION
+============================================================ */
+
+loadDashboard();
+
+
+})();
+</script>
+
+
+</body>
+
+</html>
