@@ -1,20 +1,275 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="access-pending">
+
 <head>
+
 <meta charset="UTF-8">
 
 <meta
   name="viewport"
-  content="width=device-width, initial-scale=1.0">
+  content="width=device-width, initial-scale=1.0"
+>
 
 <title>Escape Game Rebond</title>
 
+
+<!-- =========================================================
+     SUPABASE
+========================================================= -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<!-- =========================================================
+     PROTECTION GLOBALE REBONDPLAY
+========================================================= -->
+
+<script>
+
+window.REBONDPLAY_SUPABASE_URL =
+    "https://tdsrqmpfdvntybdlvejy.supabase.co";
+
+
+window.REBONDPLAY_SUPABASE_KEY =
+    "sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO";
+
+
+window.REBONDPLAY_CLIENT =
+    window.supabase.createClient(
+        window.REBONDPLAY_SUPABASE_URL,
+        window.REBONDPLAY_SUPABASE_KEY
+    );
+
+
+window.REBONDPLAY_ACCESS_READY =
+(async () => {
+
+
+    const STORAGE_OK =
+        "rebondplay_access_ok";
+
+    const STORAGE_CODE =
+        "rebondplay_code";
+
+    const STORAGE_ABONNEMENT =
+        "rebondplay_abonnement_id";
+
+    const STORAGE_STRUCTURE =
+        "rebondplay_nom_structure";
+
+    const STORAGE_DATE_FIN =
+        "rebondplay_date_fin";
+
+
+    /* ========================================================
+       EFFACER LES DONNÉES D'ACCÈS
+    ======================================================== */
+
+    function effacerAcces(){
+
+        sessionStorage.removeItem(
+            STORAGE_OK
+        );
+
+        sessionStorage.removeItem(
+            STORAGE_CODE
+        );
+
+        sessionStorage.removeItem(
+            STORAGE_ABONNEMENT
+        );
+
+        sessionStorage.removeItem(
+            STORAGE_STRUCTURE
+        );
+
+        sessionStorage.removeItem(
+            STORAGE_DATE_FIN
+        );
+
+    }
+
+
+    /* ========================================================
+       REFUSER L'ACCÈS
+    ======================================================== */
+
+    function refuserAcces(){
+
+        effacerAcces();
+
+        window.location.replace(
+            "/"
+        );
+
+    }
+
+
+    /* ========================================================
+       VÉRIFICATION SESSION
+    ======================================================== */
+
+    const accesOK =
+        sessionStorage.getItem(
+            STORAGE_OK
+        );
+
+
+    const code =
+        sessionStorage.getItem(
+            STORAGE_CODE
+        );
+
+
+    /*
+       Si la personne n'est pas passée
+       par le portail RebondPlay,
+       retour immédiat à l'accueil.
+    */
+
+    if(
+        accesOK !== "1" ||
+        !code
+    ){
+
+        refuserAcces();
+
+        return false;
+
+    }
+
+
+    /* ========================================================
+       VÉRIFICATION RÉELLE DU CODE DANS SUPABASE
+    ======================================================== */
+
+    try{
+
+
+        const {
+            data,
+            error
+        } =
+        await window.REBONDPLAY_CLIENT.rpc(
+            "rp_verifier_code",
+            {
+                p_code:code
+            }
+        );
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        const abonnement =
+            data?.[0];
+
+
+        /*
+           Code inexistant, désactivé,
+           pas encore actif ou expiré.
+        */
+
+        if(
+            !abonnement ||
+            abonnement.valide !== true
+        ){
+
+            refuserAcces();
+
+            return false;
+
+        }
+
+
+        /* ====================================================
+           MISE À JOUR DE LA SESSION
+        ==================================================== */
+
+        sessionStorage.setItem(
+            STORAGE_OK,
+            "1"
+        );
+
+
+        sessionStorage.setItem(
+            STORAGE_ABONNEMENT,
+            abonnement.abonnement_id
+        );
+
+
+        sessionStorage.setItem(
+            STORAGE_STRUCTURE,
+            abonnement.nom_structure || ""
+        );
+
+
+        sessionStorage.setItem(
+            STORAGE_DATE_FIN,
+            abonnement.date_fin || ""
+        );
+
+
+        /* ====================================================
+           L'ESCAPE GAME PEUT ÊTRE AFFICHÉ
+        ==================================================== */
+
+        document
+            .documentElement
+            .classList
+            .remove(
+                "access-pending"
+            );
+
+
+        return true;
+
+
+    }catch(error){
+
+
+        console.error(
+            "REBONDPLAY — vérification d'accès impossible :",
+            error
+        );
+
+
+        refuserAcces();
+
+        return false;
+
+    }
+
+
+})();
+
+</script>
+
+
 <style>
+
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
 }
+
+
+/* ======================================================
+   PROTECTION REBONDPLAY
+
+   Tant que Supabase n'a pas validé l'abonnement,
+   aucun élément de l'Escape Game n'est visible.
+====================================================== */
+
+html.access-pending body{
+  visibility:hidden;
+}
+
 
 html,
 body{
@@ -22,8 +277,10 @@ body{
   min-height:100%;
 }
 
+
 body{
   display:flex;
+
   align-items:center;
   justify-content:center;
 
@@ -34,6 +291,7 @@ body{
 
   background:#1b5f6e;
 }
+
 
 /*
   Le conteneur conserve les proportions
@@ -49,13 +307,10 @@ body{
   aspect-ratio:976 / 835;
 }
 
+
 /*
   L’image constitue tout le graphisme
   visible de la page.
-
-  IMPORTANT :
-  index.html se trouve maintenant dans /escapegame/
-  alors que ecran_accueil.png reste à la racine.
 */
 
 .image-accueil{
@@ -70,6 +325,7 @@ body{
   -webkit-user-drag:none;
 }
 
+
 /*
   Zones cliquables transparentes placées
   au-dessus des deux blocs de l’image.
@@ -77,6 +333,7 @@ body{
 
 .acces{
   position:absolute;
+
   z-index:2;
 
   display:block;
@@ -99,6 +356,7 @@ body{
     transform .18s ease;
 }
 
+
 /*
   Bloc bleu : accès encadrant.
 */
@@ -110,6 +368,7 @@ body{
   width:38.1%;
   height:42.8%;
 }
+
 
 /*
   Bloc orange : rejoindre une partie.
@@ -123,6 +382,7 @@ body{
   height:43.2%;
 }
 
+
 /*
   Léger agrandissement au survol,
   sans ombre portée.
@@ -135,6 +395,7 @@ body{
   background:transparent;
 }
 
+
 /*
   Léger effet de pression au clic.
 */
@@ -146,6 +407,7 @@ body{
   background:transparent;
 }
 
+
 /*
   Aucun contour supplémentaire au clavier,
   afin de ne pas décaler le graphisme.
@@ -154,9 +416,11 @@ body{
 .acces:focus,
 .acces:focus-visible{
   outline:none;
+
   box-shadow:none;
   background:transparent;
 }
+
 
 /*
   Texte uniquement destiné
@@ -182,6 +446,7 @@ body{
   border:0;
 }
 
+
 /* ======================================================
    RESPONSIVE
 ====================================================== */
@@ -194,9 +459,11 @@ body{
     padding:10px 6px;
   }
 
+
   .acces{
     border-radius:15px;
   }
+
 
   /*
     Sur écran tactile, on retire
@@ -207,47 +474,73 @@ body{
     transform:none;
   }
 
+
   .acces:active{
     transform:scale(.992);
   }
 
 }
+
 </style>
+
 </head>
+
 
 <body>
 
+
 <main class="accueil">
+
 
   <img
     class="image-accueil"
-    src="../ecran_accueil.png"
+    src="ecran_accueil.png"
     alt="Escape Game Rebond : choisissez entre l’accès encadrant et l’accès pour rejoindre une partie."
-    draggable="false">
+    draggable="false"
+  >
+
+
+  <!-- ===================================================
+       ACCÈS ENCADRANT
+  ==================================================== -->
 
   <a
     class="acces acces-encadrant"
-    href="../admin/creer-session.html"
-    aria-label="Accès encadrant : créer une nouvelle session">
+    href="admin/creer-session.html"
+    aria-label="Accès encadrant : créer une nouvelle session"
+  >
 
     <span class="visuellement-cache">
+
       Accès encadrant — Créer une session
+
     </span>
 
   </a>
+
+
+  <!-- ===================================================
+       ACCÈS PARTICIPANT
+  ==================================================== -->
 
   <a
     class="acces acces-participant"
-    href="../Intro/intro.html"
-    aria-label="Rejoindre une partie avec un code de session">
+    href="Intro/intro.html"
+    aria-label="Rejoindre une partie avec un code de session"
+  >
 
     <span class="visuellement-cache">
+
       Je rejoins une partie
+
     </span>
 
   </a>
 
+
 </main>
 
+
 </body>
+
 </html>
