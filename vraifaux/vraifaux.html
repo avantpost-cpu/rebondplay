@@ -1,0 +1,810 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>REBOND — Vrai / Faux</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Schoolbell&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#9ecbd2;
+
+      --ink:#ffffff;
+      --muted:rgba(255,255,255,.78);
+      --hair:rgba(255,255,255,.28);
+
+      --pad:26px;
+      --school:"Schoolbell", cursive;
+
+      --c5:#c57e31;          /* accent VF */
+      --ok:#1f8a5b;          /* vert */
+      --bad:#de5103;         /* orange/rouge */
+      --corr:#275e72;        /* bleu correction */
+
+      --logoH:84px;
+      --angeH:120px;
+
+      --boardRadius: 28px;
+
+      --lift: -16px;
+
+      /* pile cartes à gauche */
+      --stackScale: .78;
+      --stackSafeTop: 18px;
+      --stackShiftX: 14px;
+
+      /* calage texte sur e1.png (ajuste ici) */
+      --qInsetTop: 14%;
+      --qInsetSides: 12%;
+      --qInsetBottom: 14%;
+
+      --tiltE: -2.2deg;
+
+      /* micro */
+      --tapFlash: rgba(255,255,255,.12);
+    }
+
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    body{
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: var(--bg);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow:hidden;
+
+      min-height: 100vh;
+      display:grid;
+      place-items:center;
+    }
+
+    .outer{
+      width:100%;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:20px;
+    }
+
+    .board{
+      width:1100px;
+      height:820px;
+      border-radius: var(--boardRadius);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+
+      background:
+        url("https://avantpost-cpu.github.io/depot-quiz/cartes/tapis.png")
+        center center / 120% no-repeat;
+
+      box-shadow:
+        0 0 0 0px rgba(255,255,255,.18),
+        -5px 5px 10px rgba(0,0,0,.78);
+    }
+
+    .top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      padding: calc(var(--pad) + 6px) var(--pad) 0;
+      transform: translateY(var(--lift));
+    }
+    .brand img{ display:block; height:var(--logoH); width:auto; object-fit:contain; }
+
+    .mid-ange{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex:1 1 auto;
+      min-width:0;
+      padding:0 10px;
+    }
+    .mid-ange img{
+      display:block;
+      height: var(--angeH);
+      width:auto;
+      object-fit:contain;
+      max-width:100%;
+    }
+
+    .fsBtn{
+      appearance:none;
+      border:1px solid var(--hair);
+      background:transparent;
+      padding:8px 10px;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      font-size:11px;
+      cursor:pointer;
+      transition: transform .16s ease, border-color .16s ease;
+      color: var(--ink);
+      white-space:nowrap;
+      flex:0 0 auto;
+    }
+    .fsBtn:hover{ border-color: rgba(255,255,255,.45); transform: translateY(-1px); }
+
+    /* header VF */
+    .head{
+      margin: 10px var(--pad) 0;
+      padding: 12px var(--pad) 16px;
+      border-top: 1px solid var(--hair);
+      border-bottom: 1px solid var(--hair);
+      transform: translateY(var(--lift));
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:18px;
+    }
+
+    .headLeft{
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+      min-width:0;
+    }
+    .headLeft img{
+      width:54px;
+      height:auto;
+      object-fit:contain;
+      transform: rotate(-2.2deg);
+      transform-origin: 0% 100%;
+      flex:0 0 auto;
+    }
+
+    .k{
+      font-weight: 850;
+      letter-spacing:.08em;
+      text-transform: uppercase;
+      font-size: 11px;
+      line-height: 1.2;
+      color: var(--muted);
+      display:flex;
+      align-items:baseline;
+      gap:10px;
+    }
+    .counter{
+      font-weight: 900;
+      letter-spacing:.08em;
+      font-size: 10.5px;
+      color: rgba(255,255,255,.82);
+      text-transform: uppercase;
+      white-space:nowrap;
+    }
+    .title{
+      font-weight: 800;
+      letter-spacing:.02em;
+      font-size: 18px;
+      line-height: 1.35;
+      color: var(--ink);
+      margin-top: 2px;
+      max-width: 78ch;
+    }
+
+    .vfProgress{
+      margin-top: 10px;
+      display: grid;
+      gap: 8px;
+      width: min(320px, 100%);
+    }
+    .vfRow{
+      display: grid;
+      grid-template-columns: repeat(10, 12px);
+      gap: 8px;
+    }
+    .vfP{
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.62);
+      background: transparent;
+    }
+    .vfP.ok{ border-color: rgba(31,138,91,.98); background: rgba(31,138,91,.20); }
+    .vfP.bad{ border-color: rgba(222,81,3,.98); background: rgba(222,81,3,.20); }
+    .vfP.cur{ border-color: rgba(255,255,255,.92); background: rgba(255,255,255,.16); }
+
+    .content{
+      flex:1;
+      overflow:hidden;
+      padding: 0 var(--pad) var(--pad);
+      transform: translateY(var(--lift));
+      display:flex;
+      flex-direction:column;
+      gap: 12px;
+    }
+
+    /* intro */
+    .intro{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-start;
+      gap: 14px;
+      padding-top: 10px;
+    }
+    h2{ font-size:16px; letter-spacing:.02em; font-weight:750; margin-bottom:6px; color: var(--ink); }
+    .hint{ font-size:13.5px; line-height:1.55; color:var(--muted); max-width:78ch; }
+    .hint b{ color:var(--ink); }
+    .rappel{ margin-top:6px; padding-left:14px; border-left:1px solid var(--hair); }
+    .rappel .label{ font-weight:800; letter-spacing:.08em; text-transform:uppercase; font-size:11px; color:var(--ink); margin-bottom:8px; }
+    .rappel .txt{ font-size:15px; line-height:1.55; color:var(--ink); max-width:78ch; }
+
+    button{
+      appearance:none;
+      border: 1px solid var(--hair);
+      background: rgba(255,255,255,.06);
+      color: var(--ink);
+      padding: 10px 14px;
+      font-weight: 750;
+      letter-spacing:.06em;
+      text-transform: uppercase;
+      font-size: 11.5px;
+      cursor:pointer;
+      transition: border-color .16s ease, transform .16s ease, opacity .16s ease, background .16s ease;
+      backdrop-filter: blur(2px);
+      position: relative;
+    }
+    button:hover{ border-color: rgba(255,255,255,.45); transform: translateY(-1px); }
+    button:disabled{ opacity:.45; cursor:not-allowed; transform:none; }
+
+    .navBar{
+      width:100%;
+      max-width: 820px;
+      margin: 6px auto 0;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    /* CTA start only */
+    .ctaStart{ z-index:0; }
+    .ctaStart::after{
+      content:"";
+      position:absolute;
+      left:10px;
+      right:10px;
+      height: 12px;
+      bottom: -10px;
+      background: rgba(31,138,91,.92);
+      border-radius: 999px;
+      box-shadow: 0 10px 18px rgba(0,0,0,.16);
+      z-index:-1;
+    }
+
+    /* layout game */
+    .vfLayout{
+      width: 100%;
+      display:grid;
+      grid-template-columns: 420px 1fr;
+      gap: 18px;
+      align-items:start;
+      justify-content:start;
+      margin-top: 6px;
+      overflow: visible;
+    }
+
+    .stackClip{
+      position:relative;
+      width: 410px;
+      aspect-ratio: 3 / 4;
+      overflow: visible;
+      justify-self:start;
+      transform: translateX(var(--stackShiftX));
+      z-index: 1;
+    }
+    .stackInner{
+      position:absolute;
+      inset: 0;
+      transform: translateY(var(--stackSafeTop)) scale(var(--stackScale));
+      transform-origin: 0% 0%;
+      overflow: visible;
+    }
+    .cardLayer{
+      position:absolute;
+      inset:0;
+      transform-origin: 0% 100%;
+      pointer-events:none;
+      overflow: visible;
+    }
+    .cardLayer img{
+      width:100%;
+      height:100%;
+      object-fit: contain;
+      display:block;
+    }
+    .layerBack{ transform: rotate(-6.8deg) translate(8px, -14px); }
+    .layerFront{ transform: rotate(var(--tiltE)) translate(6px, 8px); }
+
+    .qOverlay{
+      position:absolute;
+      top: var(--qInsetTop);
+      left: var(--qInsetSides);
+      right: var(--qInsetSides);
+      bottom: var(--qInsetBottom);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      pointer-events:none;
+    }
+    .qTxt{
+      font-family: var(--school);
+      font-size: clamp(22px, 2.6vw, 30px);
+      line-height: 1.15;
+      color: #426576;
+      font-weight: 400;
+      white-space: pre-wrap;
+      text-shadow: 0 1px 0 rgba(0,0,0,.25);
+    }
+
+    .vfSide{
+      display:flex;
+      flex-direction:column;
+      gap: 12px;
+      align-items:flex-start;
+      min-height: 280px;
+      overflow:hidden;
+    }
+
+    /* ✅ réponses cliquables = validation immédiate */
+    .chipsVF{
+      width: min(520px, 100%);
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 2px;
+    }
+    .chipVF{
+      appearance:none;
+      border: 1px solid var(--hair);
+      background: rgba(255,255,255,.06);
+      padding: 12px 12px;
+      cursor:pointer;
+      text-align:center;
+      position:relative;
+      backdrop-filter: blur(2px);
+      color: var(--ink);
+      font-weight: 850;
+      letter-spacing:.06em;
+      text-transform: uppercase;
+      font-size: 12px;
+      transition: border-color .16s ease, transform .16s ease, background .16s ease;
+    }
+    .chipVF:hover{ border-color: rgba(255,255,255,.45); transform: translateY(-1px); }
+    .chipVF:active{ transform: translateY(0px); background: var(--tapFlash); }
+    .chipVF[disabled]{ opacity:.45; cursor:not-allowed; transform:none; }
+
+    .chipVF::before{
+      content:"";
+      position:absolute;
+      left:2px; right:2px; top:2px; bottom:2px;
+      background: transparent;
+      z-index:0;
+      transition: background .18s ease;
+    }
+    .chipVF .label{
+      position:relative;
+      z-index:1;
+      display:block;
+      padding: 12px 10px;
+    }
+    .chipVF.selected::before{ background: var(--c5); }
+
+    .corrWrap{
+      width: min(820px, 100%);
+      display:flex;
+      flex-direction:column;
+      gap: 14px;
+      overflow:hidden;
+    }
+    .corrBlock{
+      border-top: 1px solid var(--hair);
+      padding-top: 12px;
+      display:flex;
+      flex-direction:column;
+      gap: 8px;
+    }
+    .corrHead{ display:flex; gap:10px; align-items:center; color: var(--ink); }
+    .tag{
+      display:inline-block;
+      padding: 6px 10px;
+      font-weight: 900;
+      letter-spacing:.08em;
+      text-transform: uppercase;
+      font-size: 11px;
+      color:#fff;
+      line-height: 1;
+    }
+    .tag.ok{ background: var(--ok); }
+    .tag.bad{ background: var(--bad); }
+    .tag.corr{ background: var(--corr); }
+    .corrText{ font-size: 13.5px; line-height: 1.5; color: var(--ink); max-width: 78ch; }
+
+    /* ✅ bouton "Suivante" uniquement (pas de Valider) */
+    .nextBtn{
+      margin-top: 2px;
+    }
+
+    @media (max-width: 980px){
+      :root{
+        --lift: -12px;
+        --stackScale: .74;
+        --stackSafeTop: 16px;
+        --stackShiftX: 10px;
+      }
+      .head{ flex-direction:column; }
+      .vfLayout{ grid-template-columns: 1fr; }
+      .stackClip{ width: min(410px, 92%); }
+      .chipsVF{ grid-template-columns: 1fr; }
+    }
+    @media (max-width: 520px){
+      :root{
+        --lift: -9px;
+        --stackScale: .72;
+        --stackSafeTop: 14px;
+      }
+      .brand img{ height: 72px; }
+      .mid-ange img{ height: 78px; }
+      .headLeft img{ width:48px; }
+      .title{ font-size:16px; }
+      .vfRow{ gap: 7px; grid-template-columns: repeat(10, 11px); }
+      .vfP{ width: 9px; height: 9px; }
+    }
+
+    [hidden]{ display:none !important; }
+  </style>
+</head>
+
+<body>
+  <div class="outer">
+    <div class="board" role="application" aria-label="REBOND — Vrai / Faux">
+
+      <div class="top">
+        <div class="brand">
+          <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/logo.png" alt="REBOND">
+        </div>
+
+        <div class="mid-ange" aria-hidden="true">
+          <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/vf.png" alt="">
+        </div>
+
+        <button class="fsBtn" id="btn-fs">Plein écran</button>
+      </div>
+
+      <div class="head" aria-label="Vrai / Faux">
+        <div class="headLeft">
+          <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/e.png" alt="Carte — Vrai/Faux">
+          <div>
+            <div class="k">
+              Vrai / Faux
+              <span class="counter" id="vfCounter">0/20</span>
+            </div>
+            <div class="title" id="vfTitle">Question 1 / 20 — Vrai ou Faux ?</div>
+
+            <div class="vfProgress" aria-label="Progression">
+              <div class="vfRow" id="vfRow1"></div>
+              <div class="vfRow" id="vfRow2"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="navBar" style="margin:0; justify-content:flex-end; max-width:none; width:auto;">
+          <button id="btn-restart">Recommencer</button>
+        </div>
+      </div>
+
+      <div class="content">
+
+        <!-- INTRO -->
+        <section id="screen-intro" class="intro">
+          <div>
+            <h2>Cadre de travail</h2>
+            <p class="hint">
+              Ce module est un <b>Vrai / Faux</b> de sensibilisation. L’objectif : renforcer les bons réflexes
+              (protéger, tracer, orienter) et éviter les pratiques à risque.<br/>
+              Personne n’est obligé de partager une expérience personnelle.
+            </p>
+
+            <div class="rappel" aria-label="Rappel">
+              <div class="label">Rappel</div>
+              <div class="txt">
+                Le rôle d’un encadrant n’est pas d’enquêter, mais de <b>protéger</b> et d’<b>orienter</b>.
+                En cas de doute, on privilégie toujours la protection du mineur.
+              </div>
+            </div>
+          </div>
+
+          <div class="navBar">
+            <button id="btn-start" class="ctaStart">Commencer</button>
+          </div>
+        </section>
+
+        <!-- GAME -->
+        <section id="screen-game" hidden>
+          <div class="vfLayout">
+
+            <!-- GAUCHE : 2 cartes empilées -->
+            <div class="stackClip" aria-label="Cartes empilées">
+              <div class="stackInner">
+                <div class="cardLayer layerBack" id="layerBack">
+                  <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/e.png" alt="Dos carte Vrai/Faux">
+                </div>
+
+                <div class="cardLayer layerFront" id="layerFront">
+                  <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/e1.png" alt="Carte question Vrai/Faux">
+                  <div class="qOverlay" aria-hidden="true">
+                    <div class="qTxt" id="qText"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- DROITE : réponses + correction + suivante -->
+            <div class="vfSide" aria-label="Réponses">
+              <div class="chipsVF" id="vfChips">
+                <button class="chipVF" id="pick-true" type="button"><span class="label">Vrai</span></button>
+                <button class="chipVF" id="pick-false" type="button"><span class="label">Faux</span></button>
+              </div>
+
+              <div class="corrWrap" id="vfCorr" hidden></div>
+
+              <div class="navBar" style="justify-content:flex-start; margin-top:2px;" id="nextWrap" hidden>
+                <button id="btn-next" class="nextBtn">Suivante</button>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      const $ = (id) => document.getElementById(id);
+
+      /* ✅ Questions + réponses + précisions = PDF */
+      const VF_Q = [
+        { q:"La performance\njustifie tout", a:false, exp:"" },
+        { q:"Un mineur\npeut consentir\njuridiquement", a:false, exp:"" },
+        { q:"Sans plainte,\nil n’y a pas\nd’infraction", a:false, exp:"" },
+        { q:"Le silence\nprotège", a:false, exp:"" },
+        { q:"Un encadrant\npeut être\nresponsable\npénalement", a:true, exp:"" },
+        { q:"Le club peut être\npoursuivi", a:true, exp:"" },
+        { q:"Une situation\npeut relever\nde plusieurs\ninfractions", a:true, exp:"" },
+        { q:"Signaler,\nce n’est pas\naccuser/dénoncer", a:true, exp:"" },
+        { q:"Les violences\net leurs\nconséquences ne\nsont pas toujours\nvisibles", a:true, exp:"" },
+        { q:"Le sport doit être\nun espace sécurisé\net bienveillant", a:true, exp:"" },
+        { q:"En France\n1 enfant est victime\nde violences\nsexuelles toutes\nles trois minutes", a:true, exp:"" },
+        { q:"1 enfant sur 7\nest victime de\nviolences sexuelles\ndans le sport", a:true, exp:"" },
+        {
+          q:"Dans 3 cas sur 10,\nla victime connaît\nson agresseur",
+          a:false,
+          exp:"La bonne réponse :\nDans 9 cas sur 10, la victime connaît son agresseur."
+        },
+        {
+          q:"1 enfant sur 10 est\nvictime de violences\ndans sa vie\n(tous types de violences\nconfondus)",
+          a:false,
+          exp:"La bonne réponse :\n1 enfant sur 5."
+        },
+        {
+          q:"Depuis le lancement de la\ncellule Signal-Sports en\n2020, 1284 personnes\nont été mises en cause,\ndonnant lieu à 624\nmesures administratives",
+          a:true,
+          exp:""
+        },
+        {
+          q:"1 père sur 2\ncautionne\nles violences dans\nle sport",
+          a:true,
+          exp:""
+        },
+        {
+          q:"Dans le cadre\nsportif, 80% des\nagresseurs se\ntrouvent parmi les\nentraîneurs",
+          a:true,
+          exp:""
+        },
+        {
+          q:"10% des femmes\nautistes sont victimes\nde violences sexuelles\nau cours de leur vie",
+          a:false,
+          exp:"La bonne réponse :\n80%."
+        },
+        {
+          q:"1 sportif de haut niveau\nsur 7 est victime\nde violences sexuelles\nau cours de sa carrière\nsportive",
+          a:false,
+          exp:"La bonne réponse :\n1 sportif de haut niveau sur 3."
+        },
+        {
+          q:"31% des parents\ndéclarent que leur enfant\na été au moins une fois\nvictime de cyber-violence\nau cours de sa vie\nnumérique (2022).",
+          a:true,
+          exp:""
+        },
+      ];
+
+      const state = {
+        idx: 0,
+        locked: false,
+        score: 0,
+        marks: Array(20).fill(null)
+      };
+
+      function setScreen(which){
+        $("screen-intro").hidden = which !== "intro";
+        $("screen-game").hidden = which !== "game";
+      }
+
+      async function toggleFullscreen(){
+        try{
+          if(!document.fullscreenElement) await document.documentElement.requestFullscreen();
+          else await document.exitFullscreen();
+        }catch(e){ alert("Plein écran indisponible."); }
+      }
+
+      function setChoicesEnabled(on){
+        $("pick-true").disabled = !on;
+        $("pick-false").disabled = !on;
+      }
+
+      function updateDots(){
+        const r1 = $("vfRow1");
+        const r2 = $("vfRow2");
+        r1.innerHTML = "";
+        r2.innerHTML = "";
+
+        for(let i=0;i<20;i++){
+          const d = document.createElement("div");
+          d.className = "vfP";
+          const mark = state.marks[i];
+          if(mark === true) d.classList.add("ok");
+          if(mark === false) d.classList.add("bad");
+          if(state.idx === i && mark === null) d.classList.add("cur");
+          (i < 10 ? r1 : r2).appendChild(d);
+        }
+
+        $("vfCounter").textContent = `${state.score}/20`;
+      }
+
+      function render(){
+        updateDots();
+
+        const qObj = VF_Q[state.idx] || null;
+
+        // reset UI
+        $("vfCorr").hidden = true;
+        $("vfCorr").innerHTML = "";
+        $("nextWrap").hidden = true;
+
+        $("pick-true").classList.remove("selected");
+        $("pick-false").classList.remove("selected");
+        setChoicesEnabled(true);
+
+        if(!qObj){
+          $("vfTitle").textContent = "Terminé";
+          $("qText").textContent = "Fin du Vrai / Faux";
+          $("vfChips").hidden = true;
+
+          $("vfCorr").hidden = false;
+          $("vfCorr").innerHTML = `
+            <div class="corrBlock">
+              <div class="corrHead">
+                <div class="tag ok">TERMINÉ</div>
+                <div class="h">Score</div>
+              </div>
+              <div class="corrText"><b>${state.score}</b> / <b>20</b> bonnes réponses.</div>
+            </div>
+            <div class="corrBlock">
+              <div class="corrHead"><div class="tag corr">RAPPEL</div><div class="h">Ce qu’on retient</div></div>
+              <div class="corrText">On ne mène pas d’enquête : on <b>protège</b>, on <b>trace</b>, on <b>oriente/alerte</b>. En cas de doute, la <b>protection du mineur</b> prime.</div>
+            </div>
+          `;
+
+          $("nextWrap").hidden = false;
+          $("btn-next").textContent = "Recommencer";
+          return;
+        }
+
+        $("vfChips").hidden = false;
+        $("btn-next").textContent = "Suivante";
+        $("vfTitle").textContent = `Question ${state.idx + 1} / 20 — Vrai ou Faux ?`;
+        $("qText").textContent = qObj.q;
+
+        state.locked = false;
+      }
+
+      function start(){
+        state.idx = 0;
+        state.locked = false;
+        state.score = 0;
+        state.marks = Array(20).fill(null);
+        setScreen("game");
+        render();
+      }
+
+      function validateAnswer(choiceBool){
+        const qObj = VF_Q[state.idx] || null;
+        if(!qObj) return;
+
+        if(state.locked) return;
+        state.locked = true;
+
+        // UI select
+        if(choiceBool === true){
+          $("pick-true").classList.add("selected");
+          $("pick-false").classList.remove("selected");
+        }else{
+          $("pick-false").classList.add("selected");
+          $("pick-true").classList.remove("selected");
+        }
+
+        setChoicesEnabled(false);
+
+        const isOk = (choiceBool === qObj.a);
+        if(isOk) state.score++;
+        state.marks[state.idx] = isOk;
+
+        updateDots();
+
+        const exp = (qObj.exp || "").trim();
+        const expBlock = exp
+          ? `
+            <div class="corrBlock">
+              <div class="corrHead"><div class="tag corr">PRÉCISION</div><div class="h">Détail</div></div>
+              <div class="corrText">${exp.replace(/\n/g,"<br/>")}</div>
+            </div>
+          `
+          : "";
+
+        $("vfCorr").hidden = false;
+        $("vfCorr").innerHTML = `
+          <div class="corrBlock">
+            <div class="corrHead">
+              <div class="tag ${isOk ? "ok" : "bad"}">${isOk ? "OK" : "À REVOIR"}</div>
+              <div class="h">${isOk ? "Bonne réponse" : "Réponse incorrecte"}</div>
+            </div>
+            <div class="corrText">Correction : <b>${qObj.a ? "Vrai" : "Faux"}</b>.</div>
+          </div>
+          ${expBlock}
+        `;
+
+        $("nextWrap").hidden = false;
+      }
+
+      function next(){
+        // terminé => restart
+        if(!VF_Q[state.idx]){
+          start();
+          return;
+        }
+
+        state.idx++;
+        render();
+      }
+
+      // events
+      $("btn-fs").addEventListener("click", toggleFullscreen);
+      $("btn-start").addEventListener("click", start);
+      $("btn-restart").addEventListener("click", () => {
+        if(confirm("Recommencer le Vrai / Faux ?")) start();
+      });
+
+      // ✅ click = validation immédiate
+      $("pick-true").addEventListener("click", () => validateAnswer(true));
+      $("pick-false").addEventListener("click", () => validateAnswer(false));
+
+      // bouton "Suivante" uniquement
+      $("btn-next").addEventListener("click", next);
+
+      // init
+      setScreen("intro");
+      render();
+    })();
+  </script>
+</body>
+</html>
