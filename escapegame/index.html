@@ -60,9 +60,15 @@ window.REBONDPLAY_ACCESS_READY =
     const STORAGE_DATE_FIN =
         "rebondplay_date_fin";
 
+    const STORAGE_PRENOM =
+        "rebondplay_prenom_contact";
+
+    const STORAGE_NOM =
+        "rebondplay_nom_contact";
+
 
     /* ========================================================
-       EFFACER LES DONNÉES D'ACCÈS
+       EFFACER L'ACCÈS
     ======================================================== */
 
     function effacerAcces(){
@@ -87,6 +93,14 @@ window.REBONDPLAY_ACCESS_READY =
             STORAGE_DATE_FIN
         );
 
+        sessionStorage.removeItem(
+            STORAGE_PRENOM
+        );
+
+        sessionStorage.removeItem(
+            STORAGE_NOM
+        );
+
     }
 
 
@@ -106,7 +120,7 @@ window.REBONDPLAY_ACCESS_READY =
 
 
     /* ========================================================
-       VÉRIFICATION SESSION
+       DONNÉES DE SESSION
     ======================================================== */
 
     const accesOK =
@@ -124,7 +138,7 @@ window.REBONDPLAY_ACCESS_READY =
     /*
        Si la personne n'est pas passée
        par le portail RebondPlay,
-       retour immédiat à l'accueil.
+       on la renvoie à l'accueil.
     */
 
     if(
@@ -169,11 +183,6 @@ window.REBONDPLAY_ACCESS_READY =
             data?.[0];
 
 
-        /*
-           Code inexistant, désactivé,
-           pas encore actif ou expiré.
-        */
-
         if(
             !abonnement ||
             abonnement.valide !== true
@@ -187,7 +196,7 @@ window.REBONDPLAY_ACCESS_READY =
 
 
         /* ====================================================
-           MISE À JOUR DE LA SESSION
+           MISE À JOUR DES INFORMATIONS DE SESSION
         ==================================================== */
 
         sessionStorage.setItem(
@@ -198,7 +207,7 @@ window.REBONDPLAY_ACCESS_READY =
 
         sessionStorage.setItem(
             STORAGE_ABONNEMENT,
-            abonnement.abonnement_id
+            abonnement.abonnement_id || ""
         );
 
 
@@ -214,8 +223,20 @@ window.REBONDPLAY_ACCESS_READY =
         );
 
 
+        sessionStorage.setItem(
+            STORAGE_PRENOM,
+            abonnement.prenom_contact || ""
+        );
+
+
+        sessionStorage.setItem(
+            STORAGE_NOM,
+            abonnement.nom_contact || ""
+        );
+
+
         /* ====================================================
-           L'ESCAPE GAME PEUT ÊTRE AFFICHÉ
+           AFFICHAGE DE L'ESCAPE
         ==================================================== */
 
         document
@@ -261,9 +282,6 @@ window.REBONDPLAY_ACCESS_READY =
 
 /* ======================================================
    PROTECTION REBONDPLAY
-
-   Tant que Supabase n'a pas validé l'abonnement,
-   aucun élément de l'Escape Game n'est visible.
 ====================================================== */
 
 html.access-pending body{
@@ -384,8 +402,7 @@ body{
 
 
 /*
-  Léger agrandissement au survol,
-  sans ombre portée.
+  Léger agrandissement au survol.
 */
 
 .acces:hover{
@@ -407,11 +424,6 @@ body{
   background:transparent;
 }
 
-
-/*
-  Aucun contour supplémentaire au clavier,
-  afin de ne pas décaler le graphisme.
-*/
 
 .acces:focus,
 .acces:focus-visible{
@@ -465,11 +477,6 @@ body{
   }
 
 
-  /*
-    Sur écran tactile, on retire
-    l’agrandissement au survol.
-  */
-
   .acces:hover{
     transform:none;
   }
@@ -492,9 +499,15 @@ body{
 <main class="accueil">
 
 
+  <!-- ===================================================
+       IMPORTANT :
+       ecran_accueil.png est resté à la racine
+       de rebondplay.
+  ==================================================== -->
+
   <img
     class="image-accueil"
-    src="ecran_accueil.png"
+    src="../ecran_accueil.png"
     alt="Escape Game Rebond : choisissez entre l’accès encadrant et l’accès pour rejoindre une partie."
     draggable="false"
   >
@@ -502,18 +515,19 @@ body{
 
   <!-- ===================================================
        ACCÈS ENCADRANT
+
+       Le dossier admin est resté
+       à la racine de rebondplay.
   ==================================================== -->
 
   <a
     class="acces acces-encadrant"
-    href="admin/creer-session.html"
+    href="../admin/creer-session.html"
     aria-label="Accès encadrant : créer une nouvelle session"
   >
 
     <span class="visuellement-cache">
-
       Accès encadrant — Créer une session
-
     </span>
 
   </a>
@@ -521,18 +535,19 @@ body{
 
   <!-- ===================================================
        ACCÈS PARTICIPANT
+
+       Le dossier Intro est resté
+       à la racine de rebondplay.
   ==================================================== -->
 
   <a
     class="acces acces-participant"
-    href="Intro/intro.html"
+    href="../Intro/intro.html"
     aria-label="Rejoindre une partie avec un code de session"
   >
 
     <span class="visuellement-cache">
-
       Je rejoins une partie
-
     </span>
 
   </a>
