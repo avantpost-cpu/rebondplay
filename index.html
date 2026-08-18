@@ -14,7 +14,7 @@
   content="#f1f1ef"
 >
 
-<title>RebondPlay — Jeux de sensibilisation</title>
+<title>RebondPlay — Outils de sensibilisation</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -28,9 +28,7 @@
 
 :root{
     --blue:#1b5f6e;
-    --blue-dark:#114754;
     --yellow:#edb01a;
-    --orange:#de5103;
     --white:#ffffff;
 }
 
@@ -49,7 +47,7 @@ body{
         Helvetica,
         sans-serif;
 
-    background:#1b5f6e;
+    background:#eeeeec;
 
     color:#ffffff;
 }
@@ -119,13 +117,11 @@ body{
 
 .access-box input{
     width:100%;
-
     min-height:52px;
 
     padding:12px 14px;
 
     border:1px solid rgba(255,255,255,.30);
-
     border-radius:12px;
 
     background:rgba(255,255,255,.10);
@@ -135,7 +131,6 @@ body{
     font-size:17px;
 
     text-align:center;
-
     text-transform:uppercase;
 
     letter-spacing:.08em;
@@ -149,31 +144,26 @@ body{
 
 .access-box input:focus{
     border-color:#ffffff;
-
     background:rgba(255,255,255,.14);
 }
 
 .access-button{
     width:100%;
-
     min-height:52px;
 
     margin-top:14px;
 
     border:0;
-
     border-radius:12px;
 
-    background:#edb01a;
+    background:var(--yellow);
 
     color:#ffffff;
 
     font-size:13px;
-
     font-weight:900;
 
     text-transform:uppercase;
-
     letter-spacing:.07em;
 
     cursor:pointer;
@@ -220,16 +210,16 @@ body{
     justify-content:center;
 
     padding:
-        calc(12px + env(safe-area-inset-top))
-        12px
-        calc(12px + env(safe-area-inset-bottom));
+        calc(10px + env(safe-area-inset-top))
+        10px
+        calc(10px + env(safe-area-inset-bottom));
 
     overflow:auto;
 }
 
 
 /* =========================================================
-   GABARIT IMAGE
+   IMAGE / GABARIT
 ========================================================= */
 
 .intro-board{
@@ -237,7 +227,7 @@ body{
 
     width:min(
         1000px,
-        calc(100vw - 24px)
+        calc(100vw - 20px)
     );
 
     aspect-ratio:1000 / 717;
@@ -247,7 +237,6 @@ body{
 
 .intro-image{
     position:absolute;
-
     inset:0;
 
     display:block;
@@ -257,10 +246,10 @@ body{
 
     object-fit:contain;
 
+    pointer-events:none;
+
     user-select:none;
     -webkit-user-drag:none;
-
-    pointer-events:none;
 }
 
 
@@ -271,23 +260,23 @@ body{
 .account{
     position:absolute;
 
-    z-index:20;
+    z-index:30;
 
-    top:2.6%;
-    right:3.7%;
+    top:2.2%;
+    right:3.5%;
 
-    max-width:34%;
+    max-width:35%;
 
     display:flex;
     align-items:center;
 
-    gap:9px;
+    gap:8px;
 
-    padding:7px 9px 7px 12px;
+    padding:7px 9px 7px 11px;
 
-    border-radius:11px;
+    border-radius:10px;
 
-    background:rgba(255,255,255,.78);
+    background:rgba(255,255,255,.80);
 
     color:#15566a;
 
@@ -306,7 +295,7 @@ body{
     font-size:
         clamp(
             9px,
-            1.2vw,
+            1.15vw,
             13px
         );
 
@@ -326,7 +315,7 @@ body{
     font-size:
         clamp(
             6px,
-            .82vw,
+            .78vw,
             9px
         );
 
@@ -344,8 +333,7 @@ body{
     flex:0 0 auto;
 
     border:0;
-
-    border-radius:8px;
+    border-radius:7px;
 
     padding:6px 8px;
 
@@ -356,7 +344,7 @@ body{
     font-size:
         clamp(
             6px,
-            .75vw,
+            .72vw,
             8px
         );
 
@@ -371,7 +359,33 @@ body{
 
 
 /* =========================================================
-   ZONES TEXTES
+   ZONES CLIQUABLES
+========================================================= */
+
+.game-link-zone{
+    position:absolute;
+
+    z-index:5;
+
+    top:45.6%;
+
+    width:39.5%;
+    height:47.4%;
+
+    border-radius:22px;
+}
+
+.escape-link-zone{
+    left:6.3%;
+}
+
+.vf-link-zone{
+    left:54.2%;
+}
+
+
+/* =========================================================
+   CONTENU DES CASES
 ========================================================= */
 
 .game-copy{
@@ -380,7 +394,6 @@ body{
     z-index:10;
 
     display:flex;
-
     flex-direction:column;
 
     color:#ffffff;
@@ -389,14 +402,14 @@ body{
 }
 
 
-/* ESCAPE GAME */
+/* ESCAPE */
 
 .escape-copy{
-    left:9.5%;
-    top:68.8%;
+    left:9.4%;
+    top:66.3%;
 
-    width:33.2%;
-    height:20.2%;
+    width:33.4%;
+    height:23.5%;
 }
 
 
@@ -404,30 +417,30 @@ body{
 
 .vf-copy{
     left:57.3%;
-    top:68.8%;
+    top:66.3%;
 
-    width:33.2%;
-    height:20.2%;
+    width:33.4%;
+    height:23.5%;
 }
 
 
 /* =========================================================
-   TYPE D'OUTIL
+   TYPE
 ========================================================= */
 
 .game-type{
     margin-bottom:
         clamp(
-            3px,
-            .5vw,
-            6px
+            4px,
+            .55vw,
+            7px
         );
 
     font-size:
         clamp(
-            7px,
-            1vw,
-            10px
+            7.5px,
+            1.02vw,
+            11px
         );
 
     line-height:1;
@@ -438,7 +451,7 @@ body{
 
     text-transform:uppercase;
 
-    opacity:.72;
+    opacity:.75;
 }
 
 
@@ -449,9 +462,9 @@ body{
 .game-description{
     font-size:
         clamp(
-            8px,
-            1.22vw,
-            12.5px
+            9px,
+            1.32vw,
+            14px
         );
 
     line-height:1.32;
@@ -476,14 +489,14 @@ body{
         clamp(
             3px,
             .45vw,
-            5px
+            6px
         );
 
     margin-top:
         clamp(
-            4px,
-            .7vw,
-            8px
+            6px,
+            .8vw,
+            10px
         );
 }
 
@@ -493,12 +506,12 @@ body{
     align-items:center;
 
     padding:
-        clamp(2px,.32vw,4px)
-        clamp(4px,.55vw,7px);
+        clamp(2px,.35vw,4px)
+        clamp(5px,.6vw,8px);
 
     border:
         1px solid
-        rgba(255,255,255,.42);
+        rgba(255,255,255,.45);
 
     border-radius:999px;
 
@@ -509,9 +522,9 @@ body{
 
     font-size:
         clamp(
-            5.5px,
-            .78vw,
-            8px
+            6px,
+            .82vw,
+            9px
         );
 
     font-weight:900;
@@ -541,17 +554,17 @@ body{
 
     min-height:
         clamp(
-            20px,
-            3.2vw,
-            32px
+            24px,
+            3.5vw,
+            36px
         );
 
     padding:
         5px
         clamp(
-            8px,
-            1vw,
-            13px
+            9px,
+            1.15vw,
+            14px
         );
 
     border-radius:7px;
@@ -564,9 +577,9 @@ body{
 
     font-size:
         clamp(
-            6px,
-            .87vw,
-            9px
+            6.5px,
+            .9vw,
+            10px
         );
 
     font-weight:900;
@@ -579,11 +592,11 @@ body{
         0 3px 8px
         rgba(0,0,0,.14);
 
+    pointer-events:auto;
+
     transition:
         transform .15s ease,
         background .15s ease;
-
-    pointer-events:auto;
 }
 
 .vf-copy .play{
@@ -600,34 +613,7 @@ body{
 
 .play:hover{
     transform:translateY(-2px);
-
     background:#f7f7f5;
-}
-
-
-/* =========================================================
-   GRANDES ZONES CLIQUABLES
-========================================================= */
-
-.game-link-zone{
-    position:absolute;
-
-    z-index:5;
-
-    top:48.2%;
-
-    width:39.8%;
-    height:44.5%;
-
-    border-radius:22px;
-}
-
-.escape-link-zone{
-    left:6.2%;
-}
-
-.vf-link-zone{
-    left:54.0%;
 }
 
 
@@ -639,12 +625,11 @@ body{
 
     .portal{
         align-items:flex-start;
-
-        padding-top:10px;
+        padding-top:8px;
     }
 
     .account{
-        top:1.5%;
+        top:1.4%;
         right:2%;
 
         max-width:46%;
@@ -666,12 +651,12 @@ body{
 @media(max-width:470px){
 
     .game-description{
-        line-height:1.22;
+        line-height:1.2;
     }
 
     .game-meta{
-        gap:2px;
         margin-top:3px;
+        gap:2px;
     }
 
     .badge{
@@ -680,7 +665,6 @@ body{
 
     .play{
         border-radius:4px;
-
         padding:3px 5px;
     }
 
@@ -767,9 +751,7 @@ body{
     <div class="intro-board">
 
 
-        <!-- =================================================
-             IMAGE DE FOND
-        ================================================== -->
+        <!-- IMAGE -->
 
         <img
             class="intro-image"
@@ -779,9 +761,7 @@ body{
         >
 
 
-        <!-- =================================================
-             COMPTE CONNECTÉ
-        ================================================== -->
+        <!-- COMPTE -->
 
         <div class="account">
 
@@ -810,9 +790,7 @@ body{
         </div>
 
 
-        <!-- =================================================
-             ZONE CLIQUABLE ESCAPE
-        ================================================== -->
+        <!-- ZONE ESCAPE -->
 
         <a
             class="game-link-zone escape-link-zone"
@@ -821,9 +799,7 @@ body{
         ></a>
 
 
-        <!-- =================================================
-             ZONE CLIQUABLE VRAI / FAUX
-        ================================================== -->
+        <!-- ZONE VRAI FAUX -->
 
         <a
             class="game-link-zone vf-link-zone"
@@ -852,7 +828,6 @@ body{
 
             </p>
 
-
             <div class="game-meta">
 
                 <span class="badge">
@@ -868,7 +843,6 @@ body{
                 </span>
 
             </div>
-
 
             <a
                 class="play"
@@ -900,7 +874,6 @@ body{
 
             </p>
 
-
             <div class="game-meta">
 
                 <span class="badge">
@@ -916,7 +889,6 @@ body{
                 </span>
 
             </div>
-
 
             <a
                 class="play"
@@ -1024,7 +996,7 @@ function formatDate(value){
 
 
 /* ============================================================
-   COMPTE CONNECTÉ
+   COMPTE
 ============================================================ */
 
 function renderAccount(){
@@ -1103,7 +1075,7 @@ function renderAccount(){
 
 
 /* ============================================================
-   AFFICHER LE PORTAIL
+   PORTAIL
 ============================================================ */
 
 function showPortal(){
@@ -1388,7 +1360,6 @@ $("logoutButton")
 })();
 
 </script>
-
 
 </body>
 </html>
