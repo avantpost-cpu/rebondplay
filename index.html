@@ -371,9 +371,7 @@ body{
 
 
 /* =========================================================
-   ZONES JEUX
-
-   Calage sur image 1000 × 717
+   ZONES TEXTES
 ========================================================= */
 
 .game-copy{
@@ -386,10 +384,12 @@ body{
     flex-direction:column;
 
     color:#ffffff;
+
+    pointer-events:none;
 }
 
 
-/* ESCAPE */
+/* ESCAPE GAME */
 
 .escape-copy{
     left:9.5%;
@@ -412,7 +412,7 @@ body{
 
 
 /* =========================================================
-   TYPE
+   TYPE D'OUTIL
 ========================================================= */
 
 .game-type{
@@ -525,7 +525,7 @@ body{
 
 
 /* =========================================================
-   BOUTON JOUER
+   BOUTONS
 ========================================================= */
 
 .play{
@@ -582,6 +582,8 @@ body{
     transition:
         transform .15s ease,
         background .15s ease;
+
+    pointer-events:auto;
 }
 
 .vf-copy .play{
@@ -604,7 +606,7 @@ body{
 
 
 /* =========================================================
-   CLIQUABLE SUR TOUTE LA CASE
+   GRANDES ZONES CLIQUABLES
 ========================================================= */
 
 .game-link-zone{
@@ -629,22 +631,8 @@ body{
 }
 
 
-/*
-   Les textes et boutons restent au-dessus
-   de la grande zone cliquable.
-*/
-
-.game-copy{
-    pointer-events:none;
-}
-
-.game-copy .play{
-    pointer-events:auto;
-}
-
-
 /* =========================================================
-   RESPONSIVE PORTRAIT
+   RESPONSIVE
 ========================================================= */
 
 @media(max-width:650px){
@@ -675,10 +663,6 @@ body{
 }
 
 
-/* =========================================================
-   PETITS ÉCRANS
-========================================================= */
-
 @media(max-width:470px){
 
     .game-description{
@@ -691,16 +675,13 @@ body{
     }
 
     .badge{
-        padding:
-            1px
-            3px;
+        padding:1px 3px;
     }
 
     .play{
         border-radius:4px;
-        padding:
-            3px
-            5px;
+
+        padding:3px 5px;
     }
 
 }
@@ -744,7 +725,7 @@ body{
 
         <p>
             Entre le code d’accès associé à ton abonnement
-            pour accéder aux jeux.
+            pour accéder aux outils.
         </p>
 
         <input
@@ -760,7 +741,7 @@ body{
             id="accessButton"
             type="submit"
         >
-            Accéder aux jeux
+            Accéder aux outils
         </button>
 
         <div
@@ -830,29 +811,29 @@ body{
 
 
         <!-- =================================================
-             GRANDE ZONE CLIQUABLE ESCAPE
+             ZONE CLIQUABLE ESCAPE
         ================================================== -->
 
         <a
             class="game-link-zone escape-link-zone"
             href="/escapegame/"
-            aria-label="Jouer à l'Escape Game"
+            aria-label="Lancer l'Escape Game"
         ></a>
 
 
         <!-- =================================================
-             GRANDE ZONE CLIQUABLE VRAI / FAUX
+             ZONE CLIQUABLE VRAI / FAUX
         ================================================== -->
 
         <a
             class="game-link-zone vf-link-zone"
             href="/vraifaux/vraifaux.html"
-            aria-label="Jouer au Vrai ou Faux"
+            aria-label="Lancer le Vrai ou Faux"
         ></a>
 
 
         <!-- =================================================
-             TEXTE ESCAPE GAME
+             ESCAPE GAME
         ================================================== -->
 
         <section class="game-copy escape-copy">
@@ -863,10 +844,11 @@ body{
 
             <p class="game-description">
 
-                Résous les énigmes,
-                trouve les indices et avance
-                dans une aventure autour de la prévention
-                des violences dans le sport.
+                Un escape game de sensibilisation
+                à proposer aux jeunes pour aborder
+                la prévention des violences dans le sport
+                à travers des énigmes, des vidéos
+                et une aventure collective.
 
             </p>
 
@@ -874,15 +856,15 @@ body{
             <div class="game-meta">
 
                 <span class="badge">
-                    Énigmes
-                </span>
-
-                <span class="badge">
-                    Vidéos
+                    Jeunes
                 </span>
 
                 <span class="badge">
                     En équipe
+                </span>
+
+                <span class="badge">
+                    Animé par un encadrant
                 </span>
 
             </div>
@@ -892,28 +874,29 @@ body{
                 class="play"
                 href="/escapegame/"
             >
-                Jouer à l’Escape Game
+                Lancer l’Escape Game
             </a>
 
         </section>
 
 
         <!-- =================================================
-             TEXTE VRAI / FAUX
+             VRAI / FAUX
         ================================================== -->
 
         <section class="game-copy vf-copy">
 
             <div class="game-type">
-                Quiz de sensibilisation
+                Outil de sensibilisation
             </div>
 
             <p class="game-description">
 
-                20 affirmations pour tester tes connaissances,
-                déconstruire les idées reçues
-                et découvrir les bons réflexes
-                pour un sport plus sûr.
+                Un quiz de 20 affirmations
+                pour questionner les idées reçues,
+                transmettre des repères essentiels
+                et ouvrir le dialogue autour
+                des violences dans le sport.
 
             </p>
 
@@ -925,11 +908,11 @@ body{
                 </span>
 
                 <span class="badge">
-                    Vrai / Faux
+                    Échanges
                 </span>
 
                 <span class="badge">
-                    Score final
+                    Sensibilisation
                 </span>
 
             </div>
@@ -939,7 +922,7 @@ body{
                 class="play"
                 href="/vraifaux/vraifaux.html"
             >
-                Jouer au Vrai / Faux
+                Lancer le Vrai / Faux
             </a>
 
         </section>
@@ -1041,7 +1024,7 @@ function formatDate(value){
 
 
 /* ============================================================
-   COMPTE
+   COMPTE CONNECTÉ
 ============================================================ */
 
 function renderAccount(){
@@ -1329,7 +1312,7 @@ $("accessForm")
 
 
             button.textContent =
-                "Accéder aux jeux";
+                "Accéder aux outils";
 
         }
 
