@@ -3,8 +3,14 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#1b5f6e">
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+>
+<meta
+  name="theme-color"
+  content="#1b5f6e"
+>
 
 <title>RebondPlay — Jeux de sensibilisation</title>
 
@@ -37,7 +43,10 @@ body{
     min-height:100vh;
     min-height:100dvh;
 
-    font-family:Arial, Helvetica, sans-serif;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
     background:
         linear-gradient(
@@ -56,11 +65,13 @@ body{
 
 .access-screen{
     position:fixed;
+
     inset:0;
 
     z-index:1000;
 
     display:flex;
+
     align-items:center;
     justify-content:center;
 
@@ -80,16 +91,21 @@ body{
 
     border-radius:24px;
 
-    background:rgba(255,255,255,.10);
+    background:
+        rgba(255,255,255,.10);
 
-    border:1px solid rgba(255,255,255,.26);
+    border:
+        1px solid
+        rgba(255,255,255,.26);
 
     box-shadow:
-        0 20px 50px rgba(0,0,0,.25);
+        0 20px 50px
+        rgba(0,0,0,.25);
 
     text-align:center;
 
-    backdrop-filter:blur(6px);
+    backdrop-filter:
+        blur(6px);
 }
 
 .access-logo{
@@ -109,9 +125,11 @@ body{
 
 .access-box p{
     font-size:14px;
+
     line-height:1.5;
 
-    color:rgba(255,255,255,.78);
+    color:
+        rgba(255,255,255,.78);
 
     margin-bottom:22px;
 }
@@ -121,13 +139,18 @@ body{
 
     min-height:52px;
 
-    padding:12px 14px;
+    padding:
+        12px
+        14px;
 
-    border:1px solid rgba(255,255,255,.30);
+    border:
+        1px solid
+        rgba(255,255,255,.30);
 
     border-radius:12px;
 
-    background:rgba(255,255,255,.10);
+    background:
+        rgba(255,255,255,.10);
 
     color:#ffffff;
 
@@ -143,13 +166,15 @@ body{
 }
 
 .access-box input::placeholder{
-    color:rgba(255,255,255,.48);
+    color:
+        rgba(255,255,255,.48);
 }
 
 .access-box input:focus{
     border-color:#ffffff;
 
-    background:rgba(255,255,255,.14);
+    background:
+        rgba(255,255,255,.14);
 }
 
 .access-button{
@@ -163,7 +188,8 @@ body{
 
     border-radius:12px;
 
-    background:var(--yellow);
+    background:
+        var(--yellow);
 
     color:#ffffff;
 
@@ -193,7 +219,8 @@ body{
 
     border-radius:9px;
 
-    background:rgba(192,57,43,.88);
+    background:
+        rgba(192,57,43,.88);
 
     color:#ffffff;
 
@@ -211,17 +238,109 @@ body{
 
 .page{
     width:100%;
+
     min-height:100vh;
     min-height:100dvh;
 
     display:flex;
+
     flex-direction:column;
+
     align-items:center;
 
     padding:
-        calc(38px + env(safe-area-inset-top))
+        calc(28px + env(safe-area-inset-top))
         24px
         calc(36px + env(safe-area-inset-bottom));
+}
+
+
+/* =========================================================
+   BARRE COMPTE
+========================================================= */
+
+.account-bar{
+    width:100%;
+    max-width:1100px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:space-between;
+
+    gap:20px;
+
+    margin-bottom:22px;
+
+    padding:
+        12px
+        16px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.18);
+
+    border-radius:14px;
+
+    background:
+        rgba(255,255,255,.07);
+}
+
+.account-left{
+    min-width:0;
+}
+
+.account-name{
+    font-size:15px;
+
+    font-weight:900;
+
+    color:#ffffff;
+}
+
+.account-meta{
+    margin-top:3px;
+
+    font-size:12px;
+
+    line-height:1.4;
+
+    color:
+        rgba(255,255,255,.68);
+}
+
+.logout-button{
+    flex:0 0 auto;
+
+    border:
+        1px solid
+        rgba(255,255,255,.25);
+
+    border-radius:9px;
+
+    padding:
+        8px
+        11px;
+
+    background:
+        transparent;
+
+    color:#ffffff;
+
+    font-size:10px;
+
+    font-weight:900;
+
+    letter-spacing:.07em;
+
+    text-transform:uppercase;
+
+    cursor:pointer;
+}
+
+.logout-button:hover{
+    background:
+        rgba(255,255,255,.08);
 }
 
 
@@ -234,7 +353,9 @@ body{
     max-width:1100px;
 
     display:flex;
+
     flex-direction:column;
+
     align-items:center;
 
     text-align:center;
@@ -246,6 +367,7 @@ body{
     display:block;
 
     width:min(260px,70vw);
+
     height:auto;
 
     margin-bottom:22px;
@@ -255,21 +377,15 @@ body{
     max-width:720px;
 
     font-size:20px;
+
     line-height:1.45;
 
     font-weight:700;
 }
 
 .intro span{
-    color:var(--yellow);
-}
-
-.access-info{
-    margin-top:10px;
-
-    font-size:12px;
-
-    color:rgba(255,255,255,.65);
+    color:
+        var(--yellow);
 }
 
 
@@ -284,7 +400,10 @@ body{
     display:grid;
 
     grid-template-columns:
-        repeat(2,minmax(0,1fr));
+        repeat(
+            2,
+            minmax(0,1fr)
+        );
 
     gap:28px;
 
@@ -314,6 +433,7 @@ body{
         rgba(0,0,0,.25);
 
     display:flex;
+
     flex-direction:column;
 
     transition:
@@ -322,7 +442,8 @@ body{
 }
 
 .game-card:hover{
-    transform:translateY(-7px);
+    transform:
+        translateY(-7px);
 
     box-shadow:
         0 20px 45px
@@ -342,16 +463,19 @@ body{
     overflow:hidden;
 
     display:flex;
+
     align-items:center;
     justify-content:center;
 }
 
 .visual.escape{
-    background:#edb01a;
+    background:
+        #edb01a;
 }
 
 .visual.vf{
-    background:#9ecbd2;
+    background:
+        #9ecbd2;
 }
 
 .visual::after{
@@ -387,11 +511,17 @@ body{
 
 .visual-title{
     position:relative;
+
     z-index:2;
 
     text-align:center;
 
-    font-size:clamp(40px,6vw,72px);
+    font-size:
+        clamp(
+            40px,
+            6vw,
+            72px
+        );
 
     font-weight:900;
 
@@ -405,11 +535,13 @@ body{
         0 4px 0
         rgba(0,0,0,.12);
 
-    transform:rotate(-3deg);
+    transform:
+        rotate(-3deg);
 }
 
 .visual.vf .visual-title{
-    transform:rotate(2deg);
+    transform:
+        rotate(2deg);
 }
 
 
@@ -421,6 +553,7 @@ body{
     flex:1;
 
     display:flex;
+
     flex-direction:column;
 
     padding:
@@ -465,6 +598,7 @@ body{
 
 .meta{
     display:flex;
+
     flex-wrap:wrap;
 
     gap:7px;
@@ -473,7 +607,9 @@ body{
 }
 
 .badge{
-    padding:7px 10px;
+    padding:
+        7px
+        10px;
 
     border-radius:999px;
 
@@ -499,6 +635,7 @@ body{
     margin-top:auto;
 
     display:flex;
+
     align-items:center;
     justify-content:center;
 
@@ -506,7 +643,9 @@ body{
 
     min-height:56px;
 
-    padding:15px 20px;
+    padding:
+        15px
+        20px;
 
     border-radius:14px;
 
@@ -514,7 +653,8 @@ body{
 
     color:#ffffff;
 
-    background:var(--blue);
+    background:
+        var(--blue);
 
     font-size:14px;
 
@@ -530,9 +670,11 @@ body{
 }
 
 .play:hover{
-    background:var(--blue-dark);
+    background:
+        var(--blue-dark);
 
-    transform:scale(1.015);
+    transform:
+        scale(1.015);
 }
 
 .play::after{
@@ -558,7 +700,8 @@ body{
 
     font-size:12px;
 
-    color:rgba(255,255,255,.65);
+    color:
+        rgba(255,255,255,.65);
 }
 
 
@@ -587,6 +730,10 @@ body{
 
     .visual-title{
         font-size:48px;
+    }
+
+    .account-bar{
+        align-items:flex-start;
     }
 
 }
@@ -628,7 +775,7 @@ body{
         </h1>
 
         <p>
-            Entrez le code d’accès associé à votre abonnement
+            Entre le code d’accès associé à ton abonnement
             pour accéder aux jeux.
         </p>
 
@@ -668,6 +815,44 @@ body{
     hidden
 >
 
+
+    <!-- =====================================================
+         COMPTE CONNECTÉ
+    ====================================================== -->
+
+    <div class="account-bar">
+
+        <div class="account-left">
+
+            <div
+                class="account-name"
+                id="accountName"
+            >
+            </div>
+
+            <div
+                class="account-meta"
+                id="accountMeta"
+            >
+            </div>
+
+        </div>
+
+        <button
+            class="logout-button"
+            id="logoutButton"
+            type="button"
+        >
+            Se déconnecter
+        </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         HEADER
+    ====================================================== -->
+
     <header class="header">
 
         <img
@@ -677,19 +862,24 @@ body{
         >
 
         <div class="intro">
+
             Des jeux pour
-            <span>comprendre</span>,
+
+            <span>
+                comprendre
+            </span>,
+
             réfléchir et construire ensemble
             un sport plus sûr.
-        </div>
 
-        <div
-            class="access-info"
-            id="accessInfo"
-        ></div>
+        </div>
 
     </header>
 
+
+    <!-- =====================================================
+         JEUX
+    ====================================================== -->
 
     <section class="games">
 
@@ -708,6 +898,7 @@ body{
 
             </div>
 
+
             <div class="card-content">
 
                 <div class="type">
@@ -719,10 +910,13 @@ body{
                 </h2>
 
                 <p class="description">
-                    Résous les énigmes, trouve les indices
-                    et avance dans une aventure autour
-                    de la prévention des violences
-                    dans le sport.
+
+                    Résous les énigmes,
+                    trouve les indices
+                    et avance dans une aventure
+                    autour de la prévention
+                    des violences dans le sport.
+
                 </p>
 
                 <div class="meta">
@@ -740,6 +934,7 @@ body{
                     </span>
 
                 </div>
+
 
                 <a
                     class="play"
@@ -767,6 +962,7 @@ body{
 
             </div>
 
+
             <div class="card-content">
 
                 <div class="type">
@@ -778,9 +974,13 @@ body{
                 </h2>
 
                 <p class="description">
-                    20 affirmations pour tester tes connaissances,
-                    déconstruire les idées reçues et découvrir
-                    les bons réflexes pour un sport plus sûr.
+
+                    20 affirmations pour tester
+                    tes connaissances,
+                    déconstruire les idées reçues
+                    et découvrir les bons réflexes
+                    pour un sport plus sûr.
+
                 </p>
 
                 <div class="meta">
@@ -798,6 +998,7 @@ body{
                     </span>
 
                 </div>
+
 
                 <a
                     class="play"
@@ -820,6 +1021,7 @@ body{
         les violences et construire un sport plus sûr.
 
     </footer>
+
 
 </main>
 
@@ -872,57 +1074,11 @@ const STORAGE_CODE =
 const STORAGE_DATE_FIN =
     "rebondplay_date_fin";
 
+const STORAGE_PRENOM =
+    "rebondplay_prenom_contact";
 
-/* ============================================================
-   AFFICHER PORTAIL
-============================================================ */
-
-function showPortal(){
-
-    $("accessScreen").hidden =
-        true;
-
-    $("portal").hidden =
-        false;
-
-
-    const structure =
-        sessionStorage.getItem(
-            STORAGE_STRUCTURE
-        );
-
-
-    const dateFin =
-        sessionStorage.getItem(
-            STORAGE_DATE_FIN
-        );
-
-
-    let info = "";
-
-
-    if(structure){
-
-        info +=
-            `Accès : ${structure}`;
-
-    }
-
-
-    if(dateFin){
-
-        info +=
-            structure
-            ? ` — valable jusqu’au ${formatDate(dateFin)}`
-            : `Valable jusqu’au ${formatDate(dateFin)}`;
-
-    }
-
-
-    $("accessInfo").textContent =
-        info;
-
-}
+const STORAGE_NOM =
+    "rebondplay_nom_contact";
 
 
 /* ============================================================
@@ -943,9 +1099,11 @@ function formatDate(value){
             {
                 dateStyle:"long"
             }
-        ).format(
+        )
+        .format(
             new Date(
-                value + "T12:00:00"
+                value +
+                "T12:00:00"
             )
         );
 
@@ -954,6 +1112,104 @@ function formatDate(value){
         return value;
 
     }
+
+}
+
+
+/* ============================================================
+   AFFICHAGE DU COMPTE
+============================================================ */
+
+function renderAccount(){
+
+    const prenom =
+        sessionStorage.getItem(
+            STORAGE_PRENOM
+        ) || "";
+
+
+    const nom =
+        sessionStorage.getItem(
+            STORAGE_NOM
+        ) || "";
+
+
+    const structure =
+        sessionStorage.getItem(
+            STORAGE_STRUCTURE
+        ) || "";
+
+
+    const dateFin =
+        sessionStorage.getItem(
+            STORAGE_DATE_FIN
+        ) || "";
+
+
+    const fullName =
+        [
+            prenom,
+            nom
+        ]
+        .filter(Boolean)
+        .join(" ");
+
+
+    $("accountName").textContent =
+        fullName
+        ?
+        `Bonjour ${fullName}`
+        :
+        "Bienvenue";
+
+
+    const meta = [];
+
+
+    if(structure){
+
+        meta.push(
+            structure
+        );
+
+    }
+
+
+    if(dateFin){
+
+        meta.push(
+            "abonnement actif jusqu’au " +
+            formatDate(
+                dateFin
+            )
+        );
+
+    }
+
+
+    $("accountMeta").textContent =
+        meta.join(
+            " · "
+        );
+
+}
+
+
+/* ============================================================
+   AFFICHER PORTAIL
+============================================================ */
+
+function showPortal(){
+
+    $("accessScreen").hidden =
+        true;
+
+
+    $("portal").hidden =
+        false;
+
+
+    renderAccount();
 
 }
 
@@ -982,6 +1238,7 @@ $("accessForm")
     "submit",
     async event => {
 
+
         event.preventDefault();
 
 
@@ -1000,9 +1257,11 @@ $("accessForm")
             $("accessError");
 
 
-        errorBox.classList.remove(
-            "show"
-        );
+        errorBox
+            .classList
+            .remove(
+                "show"
+            );
 
 
         errorBox.textContent =
@@ -1014,9 +1273,13 @@ $("accessForm")
             errorBox.textContent =
                 "Merci de renseigner ton code d’accès.";
 
-            errorBox.classList.add(
-                "show"
-            );
+
+            errorBox
+                .classList
+                .add(
+                    "show"
+                );
+
 
             return;
 
@@ -1100,6 +1363,18 @@ $("accessForm")
             );
 
 
+            sessionStorage.setItem(
+                STORAGE_PRENOM,
+                result.prenom_contact || ""
+            );
+
+
+            sessionStorage.setItem(
+                STORAGE_NOM,
+                result.nom_contact || ""
+            );
+
+
             showPortal();
 
 
@@ -1115,9 +1390,12 @@ $("accessForm")
             errorBox.textContent =
                 "Code invalide, inactif ou arrivé à expiration.";
 
-            errorBox.classList.add(
-                "show"
-            );
+
+            errorBox
+                .classList
+                .add(
+                    "show"
+                );
 
 
         }finally{
@@ -1132,11 +1410,77 @@ $("accessForm")
 
         }
 
+
+    }
+);
+
+
+/* ============================================================
+   DÉCONNEXION
+============================================================ */
+
+$("logoutButton")
+.addEventListener(
+    "click",
+    () => {
+
+
+        sessionStorage.removeItem(
+            STORAGE_OK
+        );
+
+
+        sessionStorage.removeItem(
+            STORAGE_ABONNEMENT
+        );
+
+
+        sessionStorage.removeItem(
+            STORAGE_STRUCTURE
+        );
+
+
+        sessionStorage.removeItem(
+            STORAGE_CODE
+        );
+
+
+        sessionStorage.removeItem(
+            STORAGE_DATE_FIN
+        );
+
+
+        sessionStorage.removeItem(
+            STORAGE_PRENOM
+        );
+
+
+        sessionStorage.removeItem(
+            STORAGE_NOM
+        );
+
+
+        $("portal").hidden =
+            true;
+
+
+        $("accessScreen").hidden =
+            false;
+
+
+        $("accessCode").value =
+            "";
+
+
+        $("accessCode").focus();
+
+
     }
 );
 
 
 })();
+
 </script>
 
 
