@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr" class="access-pending">
 
 <head>
 
@@ -11,6 +11,11 @@
 >
 
 <title>REBOND — Vrai / Faux</title>
+
+
+<!-- =========================================================
+     POLICE
+========================================================= -->
 
 <link
   rel="preconnect"
@@ -28,12 +33,232 @@
   rel="stylesheet"
 >
 
+
+<!-- =========================================================
+     SUPABASE
+========================================================= -->
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<!-- =========================================================
+     PROTECTION GLOBALE REBONDPLAY
+========================================================= -->
+
+<script>
+
+window.REBONDPLAY_SUPABASE_URL =
+    "https://tdsrqmpfdvntybdlvejy.supabase.co";
+
+
+window.REBONDPLAY_SUPABASE_KEY =
+    "sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO";
+
+
+window.REBONDPLAY_CLIENT =
+    window.supabase.createClient(
+        window.REBONDPLAY_SUPABASE_URL,
+        window.REBONDPLAY_SUPABASE_KEY
+    );
+
+
+window.REBONDPLAY_ACCESS_READY =
+(async () => {
+
+
+    const STORAGE_OK =
+        "rebondplay_access_ok";
+
+    const STORAGE_CODE =
+        "rebondplay_code";
+
+    const STORAGE_ABONNEMENT =
+        "rebondplay_abonnement_id";
+
+    const STORAGE_STRUCTURE =
+        "rebondplay_nom_structure";
+
+    const STORAGE_DATE_FIN =
+        "rebondplay_date_fin";
+
+
+    function effacerAcces(){
+
+        sessionStorage.removeItem(
+            STORAGE_OK
+        );
+
+        sessionStorage.removeItem(
+            STORAGE_CODE
+        );
+
+        sessionStorage.removeItem(
+            STORAGE_ABONNEMENT
+        );
+
+        sessionStorage.removeItem(
+            STORAGE_STRUCTURE
+        );
+
+        sessionStorage.removeItem(
+            STORAGE_DATE_FIN
+        );
+
+    }
+
+
+    function refuserAcces(){
+
+        effacerAcces();
+
+        window.location.replace(
+            "/"
+        );
+
+    }
+
+
+    const accesOK =
+        sessionStorage.getItem(
+            STORAGE_OK
+        );
+
+
+    const code =
+        sessionStorage.getItem(
+            STORAGE_CODE
+        );
+
+
+    /*
+       Sans validation préalable sur le portail,
+       on refuse immédiatement l'accès.
+    */
+
+    if(
+        accesOK !== "1" ||
+        !code
+    ){
+
+        refuserAcces();
+
+        return false;
+
+    }
+
+
+    try{
+
+
+        /*
+           On vérifie réellement le code
+           dans Supabase à chaque ouverture du jeu.
+        */
+
+        const {
+            data,
+            error
+        } =
+        await window.REBONDPLAY_CLIENT.rpc(
+            "rp_verifier_code",
+            {
+                p_code:code
+            }
+        );
+
+
+        if(error){
+
+            throw error;
+
+        }
+
+
+        const abonnement =
+            data?.[0];
+
+
+        if(
+            !abonnement ||
+            abonnement.valide !== true
+        ){
+
+            refuserAcces();
+
+            return false;
+
+        }
+
+
+        /*
+           Mise à jour des données de session.
+        */
+
+        sessionStorage.setItem(
+            STORAGE_OK,
+            "1"
+        );
+
+
+        sessionStorage.setItem(
+            STORAGE_ABONNEMENT,
+            abonnement.abonnement_id
+        );
+
+
+        sessionStorage.setItem(
+            STORAGE_STRUCTURE,
+            abonnement.nom_structure || ""
+        );
+
+
+        sessionStorage.setItem(
+            STORAGE_DATE_FIN,
+            abonnement.date_fin || ""
+        );
+
+
+        /*
+           Seulement maintenant,
+           on rend la page visible.
+        */
+
+        document
+            .documentElement
+            .classList
+            .remove(
+                "access-pending"
+            );
+
+
+        return true;
+
+
+    }catch(error){
+
+
+        console.error(
+            "REBONDPLAY — vérification d'accès impossible :",
+            error
+        );
+
+
+        refuserAcces();
+
+        return false;
+
+    }
+
+
+})();
+
+</script>
 
 
 <style>
 
 :root{
+
     --bg:#9ecbd2;
 
     --ink:#ffffff;
@@ -66,6 +291,18 @@
     --qInsetBottom:14%;
 
     --tiltE:-2.2deg;
+
+}
+
+
+/* =========================================================
+   PROTECTION REBONDPLAY
+========================================================= */
+
+html.access-pending body{
+
+    visibility:hidden;
+
 }
 
 
@@ -74,18 +311,26 @@
 ========================================================= */
 
 *{
+
     box-sizing:border-box;
+
     margin:0;
     padding:0;
+
 }
+
 
 html,
 body{
+
     width:100%;
     min-height:100%;
+
 }
 
+
 body{
+
     font-family:
         ui-sans-serif,
         system-ui,
@@ -108,11 +353,18 @@ body{
     min-height:100dvh;
 
     display:grid;
+
     place-items:center;
+
 }
 
 
+/* =========================================================
+   EXTERIEUR
+========================================================= */
+
 .outer{
+
     width:100%;
 
     display:flex;
@@ -121,6 +373,7 @@ body{
     align-items:center;
 
     padding:20px;
+
 }
 
 
@@ -129,6 +382,7 @@ body{
 ========================================================= */
 
 .board{
+
     width:1100px;
     height:820px;
 
@@ -149,6 +403,7 @@ body{
 
     box-shadow:
         -5px 5px 10px rgba(0,0,0,.78);
+
 }
 
 
@@ -157,6 +412,7 @@ body{
 ========================================================= */
 
 .registrationScreen{
+
     position:absolute;
 
     inset:0;
@@ -171,34 +427,45 @@ body{
     padding:32px;
 
     background:
+
         linear-gradient(
             rgba(27,95,110,.94),
             rgba(27,95,110,.94)
         ),
+
         url("https://avantpost-cpu.github.io/depot-quiz/cartes/tapis.png")
         center center / cover no-repeat;
+
 }
 
 
 .registrationBox{
+
     width:min(620px,100%);
 
-    background:rgba(255,255,255,.10);
+    background:
+        rgba(255,255,255,.10);
 
-    border:1px solid rgba(255,255,255,.28);
+    border:
+        1px solid
+        rgba(255,255,255,.28);
 
     border-radius:24px;
 
     padding:34px;
 
-    backdrop-filter:blur(5px);
+    backdrop-filter:
+        blur(5px);
 
     box-shadow:
-        0 18px 40px rgba(0,0,0,.20);
+        0 18px 40px
+        rgba(0,0,0,.20);
+
 }
 
 
 .registrationLogo{
+
     display:block;
 
     width:180px;
@@ -206,11 +473,15 @@ body{
 
     height:auto;
 
-    margin:0 auto 24px;
+    margin:
+        0 auto
+        24px;
+
 }
 
 
 .registrationBox h1{
+
     text-align:center;
 
     font-size:30px;
@@ -218,40 +489,54 @@ body{
     line-height:1.1;
 
     margin-bottom:10px;
+
 }
 
 
 .registrationIntro{
+
     text-align:center;
 
     font-size:14px;
+
     line-height:1.5;
 
-    color:rgba(255,255,255,.82);
+    color:
+        rgba(255,255,255,.82);
 
     margin-bottom:26px;
+
 }
 
 
 .formGrid{
+
     display:grid;
 
     grid-template-columns:
-        repeat(2,minmax(0,1fr));
+        repeat(
+            2,
+            minmax(0,1fr)
+        );
 
     gap:14px;
+
 }
 
 
 .field{
+
     display:flex;
+
     flex-direction:column;
 
     gap:6px;
+
 }
 
 
 .field label{
+
     font-size:11px;
 
     font-weight:900;
@@ -260,22 +545,30 @@ body{
 
     letter-spacing:.08em;
 
-    color:rgba(255,255,255,.84);
+    color:
+        rgba(255,255,255,.84);
+
 }
 
 
 .field input{
+
     width:100%;
 
     min-height:48px;
 
-    border:1px solid rgba(255,255,255,.30);
+    border:
+        1px solid
+        rgba(255,255,255,.30);
 
     border-radius:10px;
 
-    padding:10px 12px;
+    padding:
+        10px
+        12px;
 
-    background:rgba(255,255,255,.10);
+    background:
+        rgba(255,255,255,.10);
 
     color:#ffffff;
 
@@ -284,31 +577,42 @@ body{
     font-size:16px;
 
     outline:none;
+
 }
 
 
 .field input::placeholder{
-    color:rgba(255,255,255,.48);
+
+    color:
+        rgba(255,255,255,.48);
+
 }
 
 
 .field input:focus{
-    border-color:rgba(255,255,255,.8);
 
-    background:rgba(255,255,255,.14);
+    border-color:
+        rgba(255,255,255,.8);
+
+    background:
+        rgba(255,255,255,.14);
+
 }
 
 
 .registrationActions{
+
     display:flex;
 
     justify-content:center;
 
     margin-top:24px;
+
 }
 
 
 .registrationButton{
+
     min-width:220px;
 
     min-height:52px;
@@ -330,26 +634,33 @@ body{
     letter-spacing:.07em;
 
     cursor:pointer;
+
 }
 
 
 .registrationButton:disabled{
+
     cursor:wait;
 
     opacity:.55;
+
 }
 
 
 .registrationError{
+
     display:none;
 
     margin-top:18px;
 
-    padding:10px 12px;
+    padding:
+        10px
+        12px;
 
     border-radius:9px;
 
-    background:rgba(192,57,43,.88);
+    background:
+        rgba(192,57,43,.88);
 
     color:#ffffff;
 
@@ -358,11 +669,14 @@ body{
     line-height:1.4;
 
     text-align:center;
+
 }
 
 
 .registrationError.show{
+
     display:block;
+
 }
 
 
@@ -371,6 +685,7 @@ body{
 ========================================================= */
 
 .videoIntroScreen{
+
     position:absolute;
 
     inset:0;
@@ -385,10 +700,12 @@ body{
     background:#1b5f6e;
 
     overflow:hidden;
+
 }
 
 
 .videoIntroScreen video{
+
     display:block;
 
     width:100%;
@@ -396,27 +713,36 @@ body{
 
     object-fit:cover;
 
-    transform:scale(1.004);
+    transform:
+        scale(1.004);
+
 }
 
 
 .videoPlayFallback{
+
     position:absolute;
 
     left:50%;
     bottom:38px;
 
-    transform:translateX(-50%);
+    transform:
+        translateX(-50%);
 
     z-index:3;
 
-    border:1px solid rgba(255,255,255,.45);
+    border:
+        1px solid
+        rgba(255,255,255,.45);
 
     border-radius:12px;
 
-    padding:14px 20px;
+    padding:
+        14px
+        20px;
 
-    background:rgba(27,95,110,.92);
+    background:
+        rgba(27,95,110,.92);
 
     color:#ffffff;
 
@@ -425,15 +751,19 @@ body{
     text-transform:uppercase;
 
     cursor:pointer;
+
 }
 
 
 .videoIntroScreen.fadeOut{
+
     opacity:0;
 
-    transition:opacity .4s ease;
+    transition:
+        opacity .4s ease;
 
     pointer-events:none;
+
 }
 
 
@@ -442,6 +772,7 @@ body{
 ========================================================= */
 
 .top{
+
     display:flex;
 
     align-items:center;
@@ -454,11 +785,16 @@ body{
         var(--pad)
         0;
 
-    transform:translateY(var(--lift));
+    transform:
+        translateY(
+            var(--lift)
+        );
+
 }
 
 
 .brand img{
+
     display:block;
 
     height:var(--logoH);
@@ -466,10 +802,12 @@ body{
     width:auto;
 
     object-fit:contain;
+
 }
 
 
 .mid-ange{
+
     display:flex;
 
     justify-content:center;
@@ -479,11 +817,15 @@ body{
 
     min-width:0;
 
-    padding:0 10px;
+    padding:
+        0
+        10px;
+
 }
 
 
 .mid-ange img{
+
     display:block;
 
     height:var(--angeH);
@@ -493,17 +835,23 @@ body{
     object-fit:contain;
 
     max-width:100%;
+
 }
 
 
 .fsBtn{
+
     appearance:none;
 
-    border:1px solid var(--hair);
+    border:
+        1px solid
+        var(--hair);
 
     background:transparent;
 
-    padding:8px 10px;
+    padding:
+        8px
+        10px;
 
     font-weight:800;
 
@@ -518,10 +866,12 @@ body{
     color:var(--ink);
 
     white-space:nowrap;
+
 }
 
 
 .head{
+
     margin:
         10px
         var(--pad)
@@ -532,10 +882,18 @@ body{
         var(--pad)
         16px;
 
-    border-top:1px solid var(--hair);
-    border-bottom:1px solid var(--hair);
+    border-top:
+        1px solid
+        var(--hair);
 
-    transform:translateY(var(--lift));
+    border-bottom:
+        1px solid
+        var(--hair);
+
+    transform:
+        translateY(
+            var(--lift)
+        );
 
     display:flex;
 
@@ -543,10 +901,12 @@ body{
     justify-content:space-between;
 
     gap:18px;
+
 }
 
 
 .headLeft{
+
     display:flex;
 
     align-items:flex-start;
@@ -554,25 +914,32 @@ body{
     gap:12px;
 
     min-width:0;
+
 }
 
 
 .headLeft img{
+
     width:54px;
 
     height:auto;
 
     object-fit:contain;
 
-    transform:rotate(-2.2deg);
+    transform:
+        rotate(-2.2deg);
 
-    transform-origin:0% 100%;
+    transform-origin:
+        0% 100%;
 
-    flex:0 0 auto;
+    flex:
+        0 0 auto;
+
 }
 
 
 .k{
+
     font-weight:850;
 
     letter-spacing:.08em;
@@ -590,23 +957,28 @@ body{
     align-items:baseline;
 
     gap:10px;
+
 }
 
 
 .counter{
+
     font-weight:900;
 
     letter-spacing:.08em;
 
     font-size:10.5px;
 
-    color:rgba(255,255,255,.82);
+    color:
+        rgba(255,255,255,.82);
 
     text-transform:uppercase;
+
 }
 
 
 .title{
+
     font-weight:800;
 
     letter-spacing:.02em;
@@ -618,60 +990,88 @@ body{
     color:var(--ink);
 
     margin-top:2px;
+
 }
 
 
 .vfProgress{
+
     margin-top:10px;
 
     display:grid;
 
     gap:8px;
 
-    width:min(320px,100%);
+    width:
+        min(
+            320px,
+            100%
+        );
+
 }
 
 
 .vfRow{
+
     display:grid;
 
     grid-template-columns:
-        repeat(10,12px);
+        repeat(
+            10,
+            12px
+        );
 
     gap:8px;
+
 }
 
 
 .vfP{
+
     width:10px;
     height:10px;
 
     border-radius:999px;
 
-    border:1px solid rgba(255,255,255,.62);
+    border:
+        1px solid
+        rgba(255,255,255,.62);
 
     background:transparent;
+
 }
 
 
 .vfP.ok{
-    border-color:rgba(31,138,91,.98);
 
-    background:rgba(31,138,91,.20);
+    border-color:
+        rgba(31,138,91,.98);
+
+    background:
+        rgba(31,138,91,.20);
+
 }
 
 
 .vfP.bad{
-    border-color:rgba(222,81,3,.98);
 
-    background:rgba(222,81,3,.20);
+    border-color:
+        rgba(222,81,3,.98);
+
+    background:
+        rgba(222,81,3,.20);
+
 }
 
 
 .vfP.cur{
-    border-color:rgba(255,255,255,.92);
 
-    background:rgba(255,255,255,.16);
+    border-color:
+        rgba(255,255,255,.92);
+
+    background:
+        rgba(255,255,255,.16);
+
 }
 
 
@@ -680,6 +1080,7 @@ body{
 ========================================================= */
 
 .content{
+
     flex:1;
 
     overflow:hidden;
@@ -689,17 +1090,22 @@ body{
         var(--pad)
         var(--pad);
 
-    transform:translateY(var(--lift));
+    transform:
+        translateY(
+            var(--lift)
+        );
 
     display:flex;
 
     flex-direction:column;
 
     gap:12px;
+
 }
 
 
 .intro{
+
     flex:1;
 
     display:flex;
@@ -711,19 +1117,23 @@ body{
     gap:14px;
 
     padding-top:10px;
+
 }
 
 
 h2{
+
     font-size:16px;
 
     font-weight:750;
 
     margin-bottom:6px;
+
 }
 
 
 .hint{
+
     font-size:13.5px;
 
     line-height:1.55;
@@ -731,24 +1141,32 @@ h2{
     color:var(--muted);
 
     max-width:78ch;
+
 }
 
 
 .hint b{
+
     color:var(--ink);
+
 }
 
 
 .rappel{
+
     margin-top:6px;
 
     padding-left:14px;
 
-    border-left:1px solid var(--hair);
+    border-left:
+        1px solid
+        var(--hair);
+
 }
 
 
 .rappel .label{
+
     font-weight:800;
 
     letter-spacing:.08em;
@@ -758,15 +1176,18 @@ h2{
     font-size:11px;
 
     margin-bottom:8px;
+
 }
 
 
 .rappel .txt{
+
     font-size:15px;
 
     line-height:1.55;
 
     max-width:78ch;
+
 }
 
 
@@ -775,15 +1196,21 @@ h2{
 ========================================================= */
 
 button{
+
     appearance:none;
 
-    border:1px solid var(--hair);
+    border:
+        1px solid
+        var(--hair);
 
-    background:rgba(255,255,255,.06);
+    background:
+        rgba(255,255,255,.06);
 
     color:var(--ink);
 
-    padding:10px 14px;
+    padding:
+        10px
+        14px;
 
     font-weight:750;
 
@@ -796,22 +1223,27 @@ button{
     cursor:pointer;
 
     position:relative;
+
 }
 
 
 button:disabled{
+
     opacity:.45;
 
     cursor:not-allowed;
+
 }
 
 
 .navBar{
+
     width:100%;
 
     max-width:820px;
 
-    margin:6px auto 0;
+    margin:
+        6px auto 0;
 
     display:flex;
 
@@ -821,6 +1253,7 @@ button:disabled{
     gap:10px;
 
     flex-wrap:wrap;
+
 }
 
 
@@ -829,6 +1262,7 @@ button:disabled{
 ========================================================= */
 
 .vfLayout{
+
     width:100%;
 
     display:grid;
@@ -841,67 +1275,92 @@ button:disabled{
     align-items:start;
 
     margin-top:6px;
+
 }
 
 
 .stackClip{
+
     position:relative;
 
     width:410px;
 
-    aspect-ratio:3 / 4;
+    aspect-ratio:
+        3 / 4;
 
-    transform:translateX(var(--stackShiftX));
+    transform:
+        translateX(
+            var(--stackShiftX)
+        );
+
 }
 
 
 .stackInner{
+
     position:absolute;
 
     inset:0;
 
     transform:
-        translateY(var(--stackSafeTop))
-        scale(var(--stackScale));
+        translateY(
+            var(--stackSafeTop)
+        )
+        scale(
+            var(--stackScale)
+        );
 
-    transform-origin:0 0;
+    transform-origin:
+        0 0;
+
 }
 
 
 .cardLayer{
+
     position:absolute;
 
     inset:0;
 
     pointer-events:none;
+
 }
 
 
 .cardLayer img{
+
     width:100%;
     height:100%;
 
     object-fit:contain;
 
     display:block;
+
 }
 
 
 .layerBack{
+
     transform:
         rotate(-6.8deg)
         translate(8px,-14px);
+
 }
 
 
 .layerFront{
+
     transform:
-        rotate(var(--tiltE))
+        rotate(
+            var(--tiltE)
+        )
         translate(6px,8px);
+
 }
 
 
 .qOverlay{
+
     position:absolute;
 
     top:var(--qInsetTop);
@@ -917,23 +1376,33 @@ button:disabled{
     justify-content:center;
 
     text-align:center;
+
 }
 
 
 .qTxt{
-    font-family:var(--school);
 
-    font-size:clamp(22px,2.6vw,30px);
+    font-family:
+        var(--school);
+
+    font-size:
+        clamp(
+            22px,
+            2.6vw,
+            30px
+        );
 
     line-height:1.15;
 
     color:#426576;
 
     white-space:pre-wrap;
+
 }
 
 
 .vfSide{
+
     display:flex;
 
     flex-direction:column;
@@ -949,35 +1418,51 @@ button:disabled{
     max-height:570px;
 
     padding-right:6px;
+
 }
 
 
 .chipsVF{
-    width:min(520px,100%);
+
+    width:
+        min(
+            520px,
+            100%
+        );
 
     display:grid;
 
     grid-template-columns:
-        repeat(2,minmax(0,1fr));
+        repeat(
+            2,
+            minmax(0,1fr)
+        );
 
     gap:10px;
+
 }
 
 
 .chipVF{
-    border:1px solid var(--hair);
 
-    background:rgba(255,255,255,.06);
+    border:
+        1px solid
+        var(--hair);
+
+    background:
+        rgba(255,255,255,.06);
 
     padding:12px;
 
     text-align:center;
 
     position:relative;
+
 }
 
 
 .chipVF::before{
+
     content:"";
 
     position:absolute;
@@ -985,38 +1470,55 @@ button:disabled{
     inset:2px;
 
     background:transparent;
+
 }
 
 
 .chipVF .label{
+
     position:relative;
 
     z-index:1;
 
     display:block;
 
-    padding:12px 10px;
+    padding:
+        12px
+        10px;
+
 }
 
 
 .chipVF.selected::before{
-    background:var(--c5);
+
+    background:
+        var(--c5);
+
 }
 
 
 .corrWrap{
-    width:min(820px,100%);
+
+    width:
+        min(
+            820px,
+            100%
+        );
 
     display:flex;
 
     flex-direction:column;
 
     gap:14px;
+
 }
 
 
 .corrBlock{
-    border-top:1px solid var(--hair);
+
+    border-top:
+        1px solid
+        var(--hair);
 
     padding-top:12px;
 
@@ -1025,22 +1527,28 @@ button:disabled{
     flex-direction:column;
 
     gap:8px;
+
 }
 
 
 .corrHead{
+
     display:flex;
 
     gap:10px;
 
     align-items:center;
+
 }
 
 
 .tag{
+
     display:inline-block;
 
-    padding:6px 10px;
+    padding:
+        6px
+        10px;
 
     font-weight:900;
 
@@ -1051,37 +1559,52 @@ button:disabled{
     font-size:11px;
 
     color:#fff;
+
 }
 
 
 .tag.ok{
-    background:var(--ok);
+
+    background:
+        var(--ok);
+
 }
 
 
 .tag.bad{
-    background:var(--bad);
+
+    background:
+        var(--bad);
+
 }
 
 
 .tag.corr{
-    background:var(--corr);
+
+    background:
+        var(--corr);
+
 }
 
 
 .corrText{
+
     font-size:13.5px;
 
     line-height:1.5;
+
 }
 
 
 .saveStatus{
+
     margin-top:7px;
 
     font-size:11px;
 
-    color:rgba(255,255,255,.65);
+    color:
+        rgba(255,255,255,.65);
+
 }
 
 
@@ -1090,24 +1613,38 @@ button:disabled{
 ========================================================= */
 
 .personalResult{
-    width:min(820px,100%);
+
+    width:
+        min(
+            820px,
+            100%
+        );
 
     padding-bottom:15px;
+
 }
 
 
 .resultHero{
-    padding:18px 20px;
+
+    padding:
+        18px
+        20px;
 
     border-radius:16px;
 
-    background:rgba(255,255,255,.10);
+    background:
+        rgba(255,255,255,.10);
 
-    border:1px solid rgba(255,255,255,.24);
+    border:
+        1px solid
+        rgba(255,255,255,.24);
+
 }
 
 
 .resultTitle{
+
     font-size:12px;
 
     font-weight:900;
@@ -1116,13 +1653,16 @@ button:disabled{
 
     letter-spacing:.08em;
 
-    color:rgba(255,255,255,.75);
+    color:
+        rgba(255,255,255,.75);
 
     margin-bottom:8px;
+
 }
 
 
 .resultScore{
+
     font-size:38px;
 
     line-height:1;
@@ -1130,10 +1670,12 @@ button:disabled{
     font-weight:900;
 
     color:#ffffff;
+
 }
 
 
 .resultInfos{
+
     display:flex;
 
     flex-wrap:wrap;
@@ -1141,25 +1683,32 @@ button:disabled{
     gap:8px;
 
     margin-top:14px;
+
 }
 
 
 .resultInfo{
-    padding:7px 10px;
+
+    padding:
+        7px
+        10px;
 
     border-radius:999px;
 
-    background:rgba(255,255,255,.12);
+    background:
+        rgba(255,255,255,.12);
 
     color:#ffffff;
 
     font-size:12px;
 
     font-weight:800;
+
 }
 
 
 .resultDetails{
+
     margin-top:18px;
 
     display:flex;
@@ -1167,10 +1716,12 @@ button:disabled{
     flex-direction:column;
 
     gap:7px;
+
 }
 
 
 .resultDetailTitle{
+
     margin-bottom:5px;
 
     font-size:12px;
@@ -1181,48 +1732,66 @@ button:disabled{
 
     letter-spacing:.07em;
 
-    color:rgba(255,255,255,.78);
+    color:
+        rgba(255,255,255,.78);
+
 }
 
 
 .resultLine{
+
     display:grid;
 
     grid-template-columns:
-        34px 1fr auto;
+        34px
+        1fr
+        auto;
 
     gap:10px;
 
     align-items:center;
 
-    padding:9px 10px;
+    padding:
+        9px
+        10px;
 
-    border-top:1px solid rgba(255,255,255,.18);
+    border-top:
+        1px solid
+        rgba(255,255,255,.18);
 
     font-size:12px;
 
     line-height:1.3;
+
 }
 
 
 .resultNumber{
+
     font-weight:900;
 
-    color:rgba(255,255,255,.65);
+    color:
+        rgba(255,255,255,.65);
+
 }
 
 
 .resultQuestion{
+
     color:#ffffff;
+
 }
 
 
 .resultState{
+
     min-width:72px;
 
     text-align:center;
 
-    padding:5px 7px;
+    padding:
+        5px
+        7px;
 
     font-size:10px;
 
@@ -1231,16 +1800,23 @@ button:disabled{
     text-transform:uppercase;
 
     color:#ffffff;
+
 }
 
 
 .resultState.ok{
-    background:var(--ok);
+
+    background:
+        var(--ok);
+
 }
 
 
 .resultState.bad{
-    background:var(--bad);
+
+    background:
+        var(--bad);
+
 }
 
 
@@ -1251,13 +1827,18 @@ button:disabled{
 @media(max-width:980px){
 
     :root{
+
         --lift:-12px;
 
         --stackScale:.74;
+
     }
 
+
     .vfLayout{
+
         grid-template-columns:1fr;
+
     }
 
 }
@@ -1266,32 +1847,52 @@ button:disabled{
 @media(max-width:620px){
 
     .registrationScreen{
+
         padding:18px;
+
     }
+
 
     .registrationBox{
-        padding:24px 20px;
+
+        padding:
+            24px
+            20px;
+
     }
+
 
     .formGrid{
+
         grid-template-columns:1fr;
+
     }
+
 
     .resultLine{
-        grid-template-columns:28px 1fr;
+
+        grid-template-columns:
+            28px
+            1fr;
+
     }
 
+
     .resultState{
+
         grid-column:2;
 
         justify-self:start;
+
     }
 
 }
 
 
 [hidden]{
+
     display:none !important;
+
 }
 
 </style>
@@ -1301,7 +1902,9 @@ button:disabled{
 
 <body>
 
+
 <div class="outer">
+
 
 <div
     class="board"
@@ -1321,25 +1924,32 @@ button:disabled{
 
     <div class="registrationBox">
 
+
         <img
             class="registrationLogo"
             src="https://avantpost-cpu.github.io/depot-quiz/cartes/logo.png"
             alt="REBOND"
         >
 
+
         <h1>
             Vrai / Faux
         </h1>
 
+
         <p class="registrationIntro">
+
             Avant de commencer,
             renseigne quelques informations.
+
         </p>
 
 
         <form id="registrationForm">
 
+
             <div class="formGrid">
+
 
                 <div class="field">
 
@@ -1400,6 +2010,7 @@ button:disabled{
 
                 </div>
 
+
             </div>
 
 
@@ -1421,6 +2032,7 @@ button:disabled{
 
             </div>
 
+
         </form>
 
     </div>
@@ -1429,7 +2041,7 @@ button:disabled{
 
 
 <!-- =========================================================
-     VIDEO
+     VIDEO INTRO
 ========================================================= -->
 
 <section
@@ -1469,6 +2081,7 @@ button:disabled{
 
 <div class="top">
 
+
     <div class="brand">
 
         <img
@@ -1499,12 +2112,15 @@ button:disabled{
         Plein écran
     </button>
 
+
 </div>
 
 
 <div class="head">
 
+
     <div class="headLeft">
+
 
         <img
             src="https://avantpost-cpu.github.io/depot-quiz/cartes/e.png"
@@ -1513,6 +2129,7 @@ button:disabled{
 
 
         <div>
+
 
             <div class="k">
 
@@ -1550,7 +2167,9 @@ button:disabled{
 
             </div>
 
+
         </div>
+
 
     </div>
 
@@ -1558,6 +2177,7 @@ button:disabled{
     <button id="btn-restart">
         Recommencer
     </button>
+
 
 </div>
 
@@ -1569,21 +2189,30 @@ button:disabled{
 <div class="content">
 
 
+<!-- =========================================================
+     INTRO
+========================================================= -->
+
 <section
     id="screen-intro"
     class="intro"
 >
 
+
     <div>
+
 
         <h2>
             Cadre de travail
         </h2>
 
+
         <p class="hint">
 
             Ce module est un
+
             <b>Vrai / Faux</b>
+
             de sensibilisation.
 
             L’objectif :
@@ -1601,17 +2230,22 @@ button:disabled{
 
         <div class="rappel">
 
+
             <div class="label">
                 Rappel
             </div>
+
 
             <div class="txt">
 
                 Le rôle d’un encadrant
                 n’est pas d’enquêter,
                 mais de
+
                 <b>protéger</b>
+
                 et d’
+
                 <b>orienter</b>.
 
                 En cas de doute,
@@ -1620,35 +2254,43 @@ button:disabled{
 
             </div>
 
+
         </div>
+
 
     </div>
 
 
     <div class="navBar">
 
-        <button
-            id="btn-start"
-        >
+        <button id="btn-start">
             Commencer
         </button>
 
     </div>
 
+
 </section>
 
+
+<!-- =========================================================
+     JEU
+========================================================= -->
 
 <section
     id="screen-game"
     hidden
 >
 
+
     <div class="vfLayout">
 
 
         <div class="stackClip">
 
+
             <div class="stackInner">
+
 
                 <div
                     class="cardLayer layerBack"
@@ -1671,6 +2313,7 @@ button:disabled{
                         alt=""
                     >
 
+
                     <div class="qOverlay">
 
                         <div
@@ -1680,9 +2323,12 @@ button:disabled{
 
                     </div>
 
+
                 </div>
 
+
             </div>
+
 
         </div>
 
@@ -1694,6 +2340,7 @@ button:disabled{
                 class="chipsVF"
                 id="vfChips"
             >
+
 
                 <button
                     class="chipVF"
@@ -1719,6 +2366,7 @@ button:disabled{
                     </span>
 
                 </button>
+
 
             </div>
 
@@ -1748,42 +2396,51 @@ button:disabled{
                 id="saveStatus"
             ></div>
 
+
         </div>
 
+
     </div>
+
 
 </section>
 
 
 </div>
 
+
 </div>
+
 
 </div>
 
 
 <script>
 
-(() => {
+(async () => {
 
 
 /* ============================================================
-   SUPABASE
+   ATTENDRE LA VALIDATION REBONDPLAY
 ============================================================ */
 
-const SUPABASE_URL =
-    "https://tdsrqmpfdvntybdlvejy.supabase.co";
+const accessGranted =
+    await window.REBONDPLAY_ACCESS_READY;
 
 
-const SUPABASE_ANON_KEY =
-    "sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO";
+if(accessGranted !== true){
 
+    return;
+
+}
+
+
+/* ============================================================
+   SUPABASE VRAI / FAUX
+============================================================ */
 
 const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_ANON_KEY
-    );
+    window.REBONDPLAY_CLIENT;
 
 
 const $ =
@@ -1795,11 +2452,16 @@ const $ =
    PARTIE
 ============================================================ */
 
-let partieId = null;
+let partieId =
+    null;
 
-let cleValidation = null;
 
-let pendingWrites = [];
+let cleValidation =
+    null;
+
+
+let pendingWrites =
+    [];
 
 
 /* ============================================================
@@ -1808,128 +2470,251 @@ let pendingWrites = [];
 
 const VF_Q = [
 
+
     {
-        q:"La performance\njustifie tout",
+        q:
+            "La performance\njustifie tout",
+
         a:false,
+
         exp:""
     },
 
+
     {
-        q:"Un mineur\npeut consentir\njuridiquement",
+        q:
+            "Un mineur\npeut consentir\njuridiquement",
+
         a:false,
+
         exp:""
     },
 
+
     {
-        q:"Sans plainte,\nil n’y a pas\nd’infraction",
+        q:
+            "Sans plainte,\nil n’y a pas\nd’infraction",
+
         a:false,
+
         exp:""
     },
 
+
     {
-        q:"Le silence\nprotège",
+        q:
+            "Le silence\nprotège",
+
         a:false,
+
         exp:""
     },
 
+
     {
-        q:"Un encadrant\npeut être\nresponsable\npénalement",
+        q:
+            "Un encadrant\npeut être\nresponsable\npénalement",
+
         a:true,
+
         exp:""
     },
 
+
     {
-        q:"Le club peut être\npoursuivi",
+        q:
+            "Le club peut être\npoursuivi",
+
         a:true,
+
         exp:""
     },
 
+
     {
-        q:"Une situation\npeut relever\nde plusieurs\ninfractions",
+        q:
+            "Une situation\npeut relever\nde plusieurs\ninfractions",
+
         a:true,
+
         exp:""
     },
 
+
     {
-        q:"Signaler,\nce n’est pas\naccuser/dénoncer",
+        q:
+            "Signaler,\nce n’est pas\naccuser/dénoncer",
+
         a:true,
+
         exp:""
     },
 
+
     {
-        q:"Les violences\net leurs\nconséquences ne\nsont pas toujours\nvisibles",
+        q:
+            "Les violences\net leurs\nconséquences ne\nsont pas toujours\nvisibles",
+
         a:true,
+
         exp:""
     },
 
+
     {
-        q:"Le sport doit être\nun espace sécurisé\net bienveillant",
+        q:
+            "Le sport doit être\nun espace sécurisé\net bienveillant",
+
         a:true,
+
         exp:""
     },
 
+
     {
-        q:"En France\n1 enfant est victime\nde violences\nsexuelles toutes\nles trois minutes",
+        q:
+            "En France\n1 enfant est victime\nde violences\nsexuelles toutes\nles trois minutes",
+
         a:true,
+
         exp:""
     },
 
+
     {
-        q:"1 enfant sur 7\nest victime de\nviolences sexuelles\ndans le sport",
+        q:
+            "1 enfant sur 7\nest victime de\nviolences sexuelles\ndans le sport",
+
         a:true,
+
         exp:""
     },
 
+
     {
-        q:"Dans 3 cas sur 10,\nla victime connaît\nson agresseur",
+        q:
+            "Dans 3 cas sur 10,\n" +
+            "la victime connaît\n" +
+            "son agresseur",
+
         a:false,
-        exp:"La bonne réponse :\nDans 9 cas sur 10, la victime connaît son agresseur."
+
+        exp:
+            "La bonne réponse :\n" +
+            "Dans 9 cas sur 10, la victime connaît son agresseur."
     },
 
+
     {
-        q:"1 enfant sur 10 est\nvictime de violences\ndans sa vie\n(tous types de violences\nconfondus)",
+        q:
+            "1 enfant sur 10 est\n" +
+            "victime de violences\n" +
+            "dans sa vie\n" +
+            "(tous types de violences\n" +
+            "confondus)",
+
         a:false,
-        exp:"La bonne réponse :\n1 enfant sur 5."
+
+        exp:
+            "La bonne réponse :\n" +
+            "1 enfant sur 5."
     },
 
+
     {
-        q:"Depuis le lancement de la\ncellule Signal-Sports en\n2020, 1284 personnes\nont été mises en cause,\ndonnant lieu à 624\nmesures administratives",
+        q:
+            "Depuis le lancement de la\n" +
+            "cellule Signal-Sports en\n" +
+            "2020, 1284 personnes\n" +
+            "ont été mises en cause,\n" +
+            "donnant lieu à 624\n" +
+            "mesures administratives",
+
         a:true,
+
         exp:""
     },
 
+
     {
-        q:"1 père sur 2\ncautionne\nles violences dans\nle sport",
+        q:
+            "1 père sur 2\n" +
+            "cautionne\n" +
+            "les violences dans\n" +
+            "le sport",
+
         a:true,
+
         exp:""
     },
 
+
     {
-        q:"Dans le cadre\nsportif, 80% des\nagresseurs se\ntrouvent parmi les\nentraîneurs",
+        q:
+            "Dans le cadre\n" +
+            "sportif, 80% des\n" +
+            "agresseurs se\n" +
+            "trouvent parmi les\n" +
+            "entraîneurs",
+
         a:true,
+
         exp:""
     },
 
-    {
-        q:"10% des femmes\nautistes sont victimes\nde violences sexuelles\nau cours de leur vie",
-        a:false,
-        exp:"La bonne réponse :\n80%."
-    },
 
     {
-        q:"1 sportif de haut niveau\nsur 7 est victime\nde violences sexuelles\nau cours de sa carrière\nsportive",
+        q:
+            "10% des femmes\n" +
+            "autistes sont victimes\n" +
+            "de violences sexuelles\n" +
+            "au cours de leur vie",
+
         a:false,
-        exp:"La bonne réponse :\n1 sportif de haut niveau sur 3."
+
+        exp:
+            "La bonne réponse :\n" +
+            "80%."
     },
 
+
     {
-        q:"31% des parents\ndéclarent que leur enfant\na été au moins une fois\nvictime de cyber-violence\nau cours de sa vie\nnumérique (2022).",
+        q:
+            "1 sportif de haut niveau\n" +
+            "sur 7 est victime\n" +
+            "de violences sexuelles\n" +
+            "au cours de sa carrière\n" +
+            "sportive",
+
+        a:false,
+
+        exp:
+            "La bonne réponse :\n" +
+            "1 sportif de haut niveau sur 3."
+    },
+
+
+    {
+        q:
+            "31% des parents\n" +
+            "déclarent que leur enfant\n" +
+            "a été au moins une fois\n" +
+            "victime de cyber-violence\n" +
+            "au cours de sa vie\n" +
+            "numérique (2022).",
+
         a:true,
+
         exp:""
     }
 
+
 ];
 
+
+/* ============================================================
+   ÉTAT
+============================================================ */
 
 const state = {
 
@@ -1940,7 +2725,10 @@ const state = {
     score:0,
 
     marks:
-        Array(VF_Q.length).fill(null),
+        Array(
+            VF_Q.length
+        )
+        .fill(null),
 
     partieTerminee:false
 
@@ -1955,6 +2743,7 @@ function setScreen(which){
 
     $("screen-intro").hidden =
         which !== "intro";
+
 
     $("screen-game").hidden =
         which !== "game";
@@ -1971,30 +2760,51 @@ $("registrationForm")
     "submit",
     async event => {
 
+
         event.preventDefault();
 
 
         const submit =
             $("registrationSubmit");
 
+
         const errorBox =
             $("registrationError");
 
 
-        errorBox.classList.remove("show");
+        errorBox
+            .classList
+            .remove(
+                "show"
+            );
+
+
+        errorBox.textContent =
+            "";
 
 
         const prenom =
-            $("prenom").value.trim();
+            $("prenom")
+            .value
+            .trim();
+
 
         const nom =
-            $("nom").value.trim();
+            $("nom")
+            .value
+            .trim();
+
 
         const structure =
-            $("structure").value.trim();
+            $("structure")
+            .value
+            .trim();
+
 
         const fonction =
-            $("fonction").value.trim();
+            $("fonction")
+            .value
+            .trim();
 
 
         if(
@@ -2007,14 +2817,22 @@ $("registrationForm")
             errorBox.textContent =
                 "Merci de renseigner les quatre champs.";
 
-            errorBox.classList.add("show");
+
+            errorBox
+                .classList
+                .add(
+                    "show"
+                );
+
 
             return;
 
         }
 
 
-        submit.disabled = true;
+        submit.disabled =
+            true;
+
 
         submit.textContent =
             "Connexion…";
@@ -2023,35 +2841,46 @@ $("registrationForm")
         try{
 
 
-            const {data,error} =
-                await supabaseClient.rpc(
-                    "vf_creer_partie",
-                    {
+            const {
+                data,
+                error
+            } =
+            await supabaseClient.rpc(
+                "vf_creer_partie",
+                {
 
-                        p_prenom:prenom,
+                    p_prenom:
+                        prenom,
 
-                        p_nom:nom,
+                    p_nom:
+                        nom,
 
-                        p_structure:structure,
+                    p_structure:
+                        structure,
 
-                        p_fonction:fonction
+                    p_fonction:
+                        fonction
 
-                    }
-                );
+                }
+            );
 
 
             if(error){
+
                 throw error;
+
             }
 
 
             if(
                 !data ||
-                !data.length
+                !data.length ||
+                !data[0].partie_id ||
+                !data[0].cle_validation
             ){
 
                 throw new Error(
-                    "Partie non créée."
+                    "La partie n'a pas pu être créée."
                 );
 
             }
@@ -2059,6 +2888,7 @@ $("registrationForm")
 
             partieId =
                 data[0].partie_id;
+
 
             cleValidation =
                 data[0].cle_validation;
@@ -2080,13 +2910,14 @@ $("registrationForm")
                 true;
 
 
-            lancerVideoIntro();
+            await lancerVideoIntro();
 
 
         }catch(error){
 
 
             console.error(
+                "Erreur création partie :",
                 error
             );
 
@@ -2094,18 +2925,26 @@ $("registrationForm")
             errorBox.textContent =
                 "Impossible de démarrer le jeu. Merci de réessayer.";
 
-            errorBox.classList.add("show");
+
+            errorBox
+                .classList
+                .add(
+                    "show"
+                );
 
 
         }finally{
 
 
-            submit.disabled = false;
+            submit.disabled =
+                false;
+
 
             submit.textContent =
                 "Commencer";
 
         }
+
 
     }
 );
@@ -2132,8 +2971,10 @@ async function lancerVideoIntro(){
     videoScreen.hidden =
         false;
 
+
     fallbackButton.hidden =
         true;
+
 
     introVideo.currentTime =
         0;
@@ -2141,12 +2982,16 @@ async function lancerVideoIntro(){
 
     try{
 
+
         await introVideo.play();
+
 
     }catch(error){
 
+
         fallbackButton.hidden =
             false;
+
 
     }
 
@@ -2156,8 +3001,26 @@ async function lancerVideoIntro(){
 fallbackButton
 .addEventListener(
     "click",
-    () =>
-        introVideo.play()
+    async () => {
+
+
+        fallbackButton.hidden =
+            true;
+
+
+        try{
+
+            await introVideo.play();
+
+        }catch(error){
+
+            fallbackButton.hidden =
+                false;
+
+        }
+
+
+    }
 );
 
 
@@ -2177,22 +3040,32 @@ introVideo
 
 function fermerVideoIntro(){
 
-    videoScreen.classList.add(
-        "fadeOut"
-    );
+    videoScreen
+        .classList
+        .add(
+            "fadeOut"
+        );
 
 
     setTimeout(
         () => {
 
+
             videoScreen.hidden =
                 true;
 
-            videoScreen.classList.remove(
-                "fadeOut"
+
+            videoScreen
+                .classList
+                .remove(
+                    "fadeOut"
+                );
+
+
+            setScreen(
+                "intro"
             );
 
-            setScreen("intro");
 
         },
         400
@@ -2209,7 +3082,10 @@ async function toggleFullscreen(){
 
     try{
 
-        if(!document.fullscreenElement){
+
+        if(
+            !document.fullscreenElement
+        ){
 
             await document
                 .documentElement
@@ -2222,13 +3098,32 @@ async function toggleFullscreen(){
 
         }
 
+
     }catch(error){
+
 
         alert(
             "Plein écran indisponible."
         );
 
+
     }
+
+}
+
+
+/* ============================================================
+   CHOIX
+============================================================ */
+
+function setChoicesEnabled(on){
+
+    $("pick-true").disabled =
+        !on;
+
+
+    $("pick-false").disabled =
+        !on;
 
 }
 
@@ -2237,21 +3132,11 @@ async function toggleFullscreen(){
    PROGRESSION
 ============================================================ */
 
-function setChoicesEnabled(on){
-
-    $("pick-true").disabled =
-        !on;
-
-    $("pick-false").disabled =
-        !on;
-
-}
-
-
 function updateDots(){
 
     const r1 =
         $("vfRow1");
+
 
     const r2 =
         $("vfRow2");
@@ -2260,12 +3145,14 @@ function updateDots(){
     r1.innerHTML =
         "";
 
+
     r2.innerHTML =
         "";
 
 
     VF_Q.forEach(
         (_,i) => {
+
 
             const d =
                 document.createElement(
@@ -2281,13 +3168,25 @@ function updateDots(){
                 state.marks[i];
 
 
-            if(mark === true){
-                d.classList.add("ok");
+            if(
+                mark === true
+            ){
+
+                d.classList.add(
+                    "ok"
+                );
+
             }
 
 
-            if(mark === false){
-                d.classList.add("bad");
+            if(
+                mark === false
+            ){
+
+                d.classList.add(
+                    "bad"
+                );
+
             }
 
 
@@ -2295,7 +3194,11 @@ function updateDots(){
                 state.idx === i &&
                 mark === null
             ){
-                d.classList.add("cur");
+
+                d.classList.add(
+                    "cur"
+                );
+
             }
 
 
@@ -2303,7 +3206,11 @@ function updateDots(){
                 i < 10
                 ? r1
                 : r2
-            ).appendChild(d);
+            )
+            .appendChild(
+                d
+            );
+
 
         }
     );
@@ -2316,7 +3223,7 @@ function updateDots(){
 
 
 /* ============================================================
-   RENDER
+   AFFICHAGE QUESTION
 ============================================================ */
 
 function render(){
@@ -2325,14 +3232,17 @@ function render(){
 
 
     const qObj =
-        VF_Q[state.idx] || null;
+        VF_Q[state.idx] ||
+        null;
 
 
     $("vfCorr").hidden =
         true;
 
+
     $("vfCorr").innerHTML =
         "";
+
 
     $("nextWrap").hidden =
         true;
@@ -2340,12 +3250,16 @@ function render(){
 
     $("pick-true")
         .classList
-        .remove("selected");
+        .remove(
+            "selected"
+        );
 
 
     $("pick-false")
         .classList
-        .remove("selected");
+        .remove(
+            "selected"
+        );
 
 
     if(!qObj){
@@ -2361,7 +3275,13 @@ function render(){
         false;
 
 
-    setChoicesEnabled(true);
+    setChoicesEnabled(
+        true
+    );
+
+
+    $("btn-next").textContent =
+        "Suivante";
 
 
     $("vfTitle").textContent =
@@ -2387,18 +3307,25 @@ function start(){
     state.idx =
         0;
 
+
     state.score =
         0;
+
 
     state.locked =
         false;
 
+
     state.marks =
-        Array(VF_Q.length)
+        Array(
+            VF_Q.length
+        )
         .fill(null);
+
 
     state.partieTerminee =
         false;
+
 
     pendingWrites =
         [];
@@ -2408,7 +3335,10 @@ function start(){
         "";
 
 
-    setScreen("game");
+    setScreen(
+        "game"
+    );
+
 
     render();
 
@@ -2416,7 +3346,7 @@ function start(){
 
 
 /* ============================================================
-   ENREGISTRER RÉPONSE
+   ENREGISTRER UNE RÉPONSE
 ============================================================ */
 
 function enregistrerReponseSupabase(
@@ -2425,6 +3355,18 @@ function enregistrerReponseSupabase(
     reponse,
     bonneReponse
 ){
+
+    if(
+        !partieId ||
+        !cleValidation
+    ){
+
+        return Promise.resolve(
+            false
+        );
+
+    }
+
 
     const promise =
         supabaseClient.rpc(
@@ -2452,25 +3394,36 @@ function enregistrerReponseSupabase(
             }
         )
         .then(
-            ({data,error}) => {
+            ({
+                data,
+                error
+            }) => {
+
 
                 if(error){
+
                     throw error;
+
                 }
 
+
                 return data;
+
 
             }
         )
         .catch(
             error => {
 
+
                 console.error(
                     "Erreur réponse :",
                     error
                 );
 
+
                 return false;
+
 
             }
         );
@@ -2500,7 +3453,9 @@ function validateAnswer(choice){
         !qObj ||
         state.locked
     ){
+
         return;
+
     }
 
 
@@ -2510,28 +3465,41 @@ function validateAnswer(choice){
 
     if(choice){
 
+
         $("pick-true")
             .classList
-            .add("selected");
+            .add(
+                "selected"
+            );
+
 
     }else{
 
+
         $("pick-false")
             .classList
-            .add("selected");
+            .add(
+                "selected"
+            );
+
 
     }
 
 
-    setChoicesEnabled(false);
+    setChoicesEnabled(
+        false
+    );
 
 
     const isOk =
-        choice === qObj.a;
+        choice ===
+        qObj.a;
 
 
     if(isOk){
+
         state.score++;
+
     }
 
 
@@ -2559,7 +3527,10 @@ function validateAnswer(choice){
 
 
     const exp =
-        (qObj.exp || "")
+        (
+            qObj.exp ||
+            ""
+        )
         .trim();
 
 
@@ -2576,7 +3547,11 @@ function validateAnswer(choice){
                 <div
                     class="
                         tag
-                        ${isOk ? "ok" : "bad"}
+                        ${
+                            isOk
+                            ? "ok"
+                            : "bad"
+                        }
                     "
                 >
 
@@ -2596,11 +3571,13 @@ function validateAnswer(choice){
                 Correction :
 
                 <b>
+
                     ${
                         qObj.a
                         ? "Vrai"
                         : "Faux"
                     }
+
                 </b>.
 
                 ${
@@ -2635,7 +3612,9 @@ async function terminerPartieSupabase(){
         !partieId ||
         !cleValidation
     ){
+
         return false;
+
     }
 
 
@@ -2655,30 +3634,37 @@ async function terminerPartieSupabase(){
     try{
 
 
-        const {data,error} =
-            await supabaseClient.rpc(
-                "vf_terminer_partie",
-                {
+        const {
+            data,
+            error
+        } =
+        await supabaseClient.rpc(
+            "vf_terminer_partie",
+            {
 
-                    p_partie_id:
-                        partieId,
+                p_partie_id:
+                    partieId,
 
-                    p_cle_validation:
-                        cleValidation,
+                p_cle_validation:
+                    cleValidation,
 
-                    p_score:
-                        state.score
+                p_score:
+                    state.score
 
-                }
-            );
+            }
+        );
 
 
         if(error){
+
             throw error;
+
         }
 
 
-        if(data !== true){
+        if(
+            data !== true
+        ){
 
             throw new Error(
                 "La partie n'a pas été clôturée."
@@ -2709,6 +3695,7 @@ async function terminerPartieSupabase(){
 
         return false;
 
+
     }
 
 }
@@ -2723,11 +3710,26 @@ function escapeHTML(value){
     return String(
         value ?? ""
     )
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+    .replaceAll(
+        "&",
+        "&amp;"
+    )
+    .replaceAll(
+        "<",
+        "&lt;"
+    )
+    .replaceAll(
+        ">",
+        "&gt;"
+    )
+    .replaceAll(
+        '"',
+        "&quot;"
+    )
+    .replaceAll(
+        "'",
+        "&#039;"
+    );
 
 }
 
@@ -2738,7 +3740,9 @@ function formatDuree(seconds){
         seconds === null ||
         seconds === undefined
     ){
+
         return "—";
+
     }
 
 
@@ -2746,7 +3750,9 @@ function formatDuree(seconds){
         Math.max(
             0,
             Math.round(
-                Number(seconds)
+                Number(
+                    seconds
+                )
             )
         );
 
@@ -2761,8 +3767,12 @@ function formatDuree(seconds){
         total % 60;
 
 
-    if(minutes === 0){
+    if(
+        minutes === 0
+    ){
+
         return `${secondes} s`;
+
     }
 
 
@@ -2788,6 +3798,7 @@ async function afficherResultatPersonnel(){
             reponsesResponse
         ] =
         await Promise.all([
+
 
             supabaseClient.rpc(
                 "vf_mon_resultat",
@@ -2816,25 +3827,37 @@ async function afficherResultatPersonnel(){
                 }
             )
 
+
         ]);
 
 
-        if(resultatResponse.error){
+        if(
+            resultatResponse.error
+        ){
+
             throw resultatResponse.error;
+
         }
 
 
-        if(reponsesResponse.error){
+        if(
+            reponsesResponse.error
+        ){
+
             throw reponsesResponse.error;
+
         }
 
 
         const resultat =
-            resultatResponse.data?.[0];
+            resultatResponse
+            .data?.[0];
 
 
         const reponses =
-            reponsesResponse.data || [];
+            reponsesResponse
+            .data ||
+            [];
 
 
         if(!resultat){
@@ -2848,13 +3871,15 @@ async function afficherResultatPersonnel(){
 
         const score =
             Number(
-                resultat.score || 0
+                resultat.score ||
+                0
             );
 
 
         const total =
             Number(
-                resultat.total || 20
+                resultat.total ||
+                20
             );
 
 
@@ -2875,13 +3900,16 @@ async function afficherResultatPersonnel(){
             .map(
                 row => {
 
+
                     const correcte =
-                        row.correcte === true;
+                        row.correcte ===
+                        true;
 
 
                     return `
 
                         <div class="resultLine">
+
 
                             <div class="resultNumber">
 
@@ -2918,9 +3946,11 @@ async function afficherResultatPersonnel(){
 
                             </div>
 
+
                         </div>
 
                     `;
+
 
                 }
             )
@@ -2938,6 +3968,7 @@ async function afficherResultatPersonnel(){
 
                 <div class="resultHero">
 
+
                     <div class="resultTitle">
 
                         Ton résultat
@@ -2954,6 +3985,7 @@ async function afficherResultatPersonnel(){
 
                     <div class="resultInfos">
 
+
                         <div class="resultInfo">
 
                             ${pourcentage} % de réussite
@@ -2964,6 +3996,7 @@ async function afficherResultatPersonnel(){
                         <div class="resultInfo">
 
                             Durée :
+
                             ${escapeHTML(
                                 formatDuree(
                                     resultat.duree_secondes
@@ -2972,12 +4005,15 @@ async function afficherResultatPersonnel(){
 
                         </div>
 
+
                     </div>
+
 
                 </div>
 
 
                 <div class="resultDetails">
+
 
                     <div class="resultDetailTitle">
 
@@ -2987,6 +4023,7 @@ async function afficherResultatPersonnel(){
 
 
                     ${lignes}
+
 
                 </div>
 
@@ -3013,10 +4050,13 @@ async function afficherResultatPersonnel(){
 
             <div class="corrBlock">
 
+
                 <div class="corrHead">
 
                     <div class="tag ok">
+
                         TERMINÉ
+
                     </div>
 
                 </div>
@@ -3038,9 +4078,11 @@ async function afficherResultatPersonnel(){
 
                 </div>
 
+
             </div>
 
         `;
+
 
     }
 
@@ -3130,13 +4172,14 @@ function next(){
 
     state.idx++;
 
+
     render();
 
 }
 
 
 /* ============================================================
-   NOUVELLE PARTIE
+   NOUVELLE PARTICIPATION
 ============================================================ */
 
 function nouvelleParticipation(){
@@ -3144,12 +4187,22 @@ function nouvelleParticipation(){
     partieId =
         null;
 
+
     cleValidation =
         null;
+
 
     pendingWrites =
         [];
 
+
+    /*
+       On efface seulement les données
+       de partie Vrai/Faux.
+
+       On NE TOUCHE PAS au code RebondPlay :
+       l'abonnement reste donc connecté.
+    */
 
     sessionStorage.removeItem(
         "rebond_vf_partie_id"
@@ -3167,7 +4220,9 @@ function nouvelleParticipation(){
 
     $("registrationError")
         .classList
-        .remove("show");
+        .remove(
+            "show"
+        );
 
 
     $("saveStatus").textContent =
@@ -3177,21 +4232,30 @@ function nouvelleParticipation(){
     state.idx =
         0;
 
+
     state.score =
         0;
+
 
     state.locked =
         false;
 
+
     state.partieTerminee =
         false;
 
+
     state.marks =
-        Array(VF_Q.length)
+        Array(
+            VF_Q.length
+        )
         .fill(null);
 
 
-    setScreen("intro");
+    setScreen(
+        "intro"
+    );
+
 
     render();
 
@@ -3224,7 +4288,9 @@ $("pick-true")
 .addEventListener(
     "click",
     () =>
-        validateAnswer(true)
+        validateAnswer(
+            true
+        )
 );
 
 
@@ -3232,7 +4298,9 @@ $("pick-false")
 .addEventListener(
     "click",
     () =>
-        validateAnswer(false)
+        validateAnswer(
+            false
+        )
 );
 
 
@@ -3248,6 +4316,7 @@ $("btn-restart")
     "click",
     () => {
 
+
         if(
             confirm(
                 "Quitter cette partie et recommencer ?"
@@ -3258,6 +4327,7 @@ $("btn-restart")
 
         }
 
+
     }
 );
 
@@ -3266,12 +4336,16 @@ $("btn-restart")
    INIT
 ============================================================ */
 
-setScreen("intro");
+setScreen(
+    "intro"
+);
+
 
 render();
 
 
 })();
+
 </script>
 
 
