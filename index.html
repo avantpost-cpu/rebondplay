@@ -52,6 +52,10 @@ body{
 /*
   L’image constitue tout le graphisme
   visible de la page.
+
+  IMPORTANT :
+  index.html se trouve maintenant dans /escapegame/
+  alors que ecran_accueil.png reste à la racine.
 */
 
 .image-accueil{
@@ -217,13 +221,13 @@ body{
 
   <img
     class="image-accueil"
-    src="ecran_accueil.png"
+    src="../ecran_accueil.png"
     alt="Escape Game Rebond : choisissez entre l’accès encadrant et l’accès pour rejoindre une partie."
     draggable="false">
 
   <a
     class="acces acces-encadrant"
-    href="admin/creer-session.html"
+    href="../admin/creer-session.html"
     aria-label="Accès encadrant : créer une nouvelle session">
 
     <span class="visuellement-cache">
@@ -234,7 +238,7 @@ body{
 
   <a
     class="acces acces-participant"
-    href="Intro/intro.html"
+    href="../Intro/intro.html"
     aria-label="Rejoindre une partie avec un code de session">
 
     <span class="visuellement-cache">
