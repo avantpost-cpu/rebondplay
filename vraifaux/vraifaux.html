@@ -12,11 +12,6 @@
 
 <title>REBOND — Vrai / Faux</title>
 
-
-<!-- =========================================================
-     POLICE
-========================================================= -->
-
 <link
   rel="preconnect"
   href="https://fonts.googleapis.com"
@@ -33,18 +28,12 @@
   rel="stylesheet"
 >
 
-
-<!-- =========================================================
-     SUPABASE
-========================================================= -->
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
 <style>
 
 :root{
-
     --bg:#9ecbd2;
 
     --ink:#ffffff;
@@ -77,8 +66,6 @@
     --qInsetBottom:14%;
 
     --tiltE:-2.2deg;
-
-    --tapFlash:rgba(255,255,255,.12);
 }
 
 
@@ -92,18 +79,13 @@
     padding:0;
 }
 
-
 html,
 body{
-
     width:100%;
     min-height:100%;
-
 }
 
-
 body{
-
     font-family:
         ui-sans-serif,
         system-ui,
@@ -127,16 +109,10 @@ body{
 
     display:grid;
     place-items:center;
-
 }
 
 
-/* =========================================================
-   EXTERIEUR
-========================================================= */
-
 .outer{
-
     width:100%;
 
     display:flex;
@@ -145,7 +121,6 @@ body{
     align-items:center;
 
     padding:20px;
-
 }
 
 
@@ -154,7 +129,6 @@ body{
 ========================================================= */
 
 .board{
-
     width:1100px;
     height:820px;
 
@@ -175,16 +149,14 @@ body{
 
     box-shadow:
         -5px 5px 10px rgba(0,0,0,.78);
-
 }
 
 
 /* =========================================================
-   ÉCRAN IDENTIFICATION
+   IDENTIFICATION
 ========================================================= */
 
 .registrationScreen{
-
     position:absolute;
 
     inset:0;
@@ -205,12 +177,10 @@ body{
         ),
         url("https://avantpost-cpu.github.io/depot-quiz/cartes/tapis.png")
         center center / cover no-repeat;
-
 }
 
 
 .registrationBox{
-
     width:min(620px,100%);
 
     background:rgba(255,255,255,.10);
@@ -225,12 +195,10 @@ body{
 
     box-shadow:
         0 18px 40px rgba(0,0,0,.20);
-
 }
 
 
 .registrationLogo{
-
     display:block;
 
     width:180px;
@@ -239,12 +207,10 @@ body{
     height:auto;
 
     margin:0 auto 24px;
-
 }
 
 
 .registrationBox h1{
-
     text-align:center;
 
     font-size:30px;
@@ -252,12 +218,10 @@ body{
     line-height:1.1;
 
     margin-bottom:10px;
-
 }
 
 
 .registrationIntro{
-
     text-align:center;
 
     font-size:14px;
@@ -266,34 +230,28 @@ body{
     color:rgba(255,255,255,.82);
 
     margin-bottom:26px;
-
 }
 
 
 .formGrid{
-
     display:grid;
 
     grid-template-columns:
         repeat(2,minmax(0,1fr));
 
     gap:14px;
-
 }
 
 
 .field{
-
     display:flex;
     flex-direction:column;
 
     gap:6px;
-
 }
 
 
 .field label{
-
     font-size:11px;
 
     font-weight:900;
@@ -303,12 +261,10 @@ body{
     letter-spacing:.08em;
 
     color:rgba(255,255,255,.84);
-
 }
 
 
 .field input{
-
     width:100%;
 
     min-height:48px;
@@ -328,39 +284,31 @@ body{
     font-size:16px;
 
     outline:none;
-
 }
 
 
 .field input::placeholder{
-
     color:rgba(255,255,255,.48);
-
 }
 
 
 .field input:focus{
-
     border-color:rgba(255,255,255,.8);
 
     background:rgba(255,255,255,.14);
-
 }
 
 
 .registrationActions{
-
     display:flex;
 
     justify-content:center;
 
     margin-top:24px;
-
 }
 
 
 .registrationButton{
-
     min-width:220px;
 
     min-height:52px;
@@ -382,34 +330,17 @@ body{
     letter-spacing:.07em;
 
     cursor:pointer;
-
-    transition:
-        transform .16s ease,
-        opacity .16s ease;
-
-}
-
-
-.registrationButton:hover{
-
-    transform:translateY(-2px);
-
 }
 
 
 .registrationButton:disabled{
-
     cursor:wait;
 
     opacity:.55;
-
-    transform:none;
-
 }
 
 
 .registrationError{
-
     display:none;
 
     margin-top:18px;
@@ -427,14 +358,11 @@ body{
     line-height:1.4;
 
     text-align:center;
-
 }
 
 
 .registrationError.show{
-
     display:block;
-
 }
 
 
@@ -443,7 +371,6 @@ body{
 ========================================================= */
 
 .videoIntroScreen{
-
     position:absolute;
 
     inset:0;
@@ -458,12 +385,10 @@ body{
     background:#1b5f6e;
 
     overflow:hidden;
-
 }
 
 
 .videoIntroScreen video{
-
     display:block;
 
     width:100%;
@@ -472,12 +397,10 @@ body{
     object-fit:cover;
 
     transform:scale(1.004);
-
 }
 
 
 .videoPlayFallback{
-
     position:absolute;
 
     left:50%;
@@ -502,18 +425,15 @@ body{
     text-transform:uppercase;
 
     cursor:pointer;
-
 }
 
 
 .videoIntroScreen.fadeOut{
-
     opacity:0;
 
     transition:opacity .4s ease;
 
     pointer-events:none;
-
 }
 
 
@@ -522,7 +442,6 @@ body{
 ========================================================= */
 
 .top{
-
     display:flex;
 
     align-items:center;
@@ -536,12 +455,10 @@ body{
         0;
 
     transform:translateY(var(--lift));
-
 }
 
 
 .brand img{
-
     display:block;
 
     height:var(--logoH);
@@ -549,12 +466,10 @@ body{
     width:auto;
 
     object-fit:contain;
-
 }
 
 
 .mid-ange{
-
     display:flex;
 
     justify-content:center;
@@ -565,12 +480,10 @@ body{
     min-width:0;
 
     padding:0 10px;
-
 }
 
 
 .mid-ange img{
-
     display:block;
 
     height:var(--angeH);
@@ -580,12 +493,10 @@ body{
     object-fit:contain;
 
     max-width:100%;
-
 }
 
 
 .fsBtn{
-
     appearance:none;
 
     border:1px solid var(--hair);
@@ -607,12 +518,10 @@ body{
     color:var(--ink);
 
     white-space:nowrap;
-
 }
 
 
 .head{
-
     margin:
         10px
         var(--pad)
@@ -634,12 +543,10 @@ body{
     justify-content:space-between;
 
     gap:18px;
-
 }
 
 
 .headLeft{
-
     display:flex;
 
     align-items:flex-start;
@@ -647,12 +554,10 @@ body{
     gap:12px;
 
     min-width:0;
-
 }
 
 
 .headLeft img{
-
     width:54px;
 
     height:auto;
@@ -664,12 +569,10 @@ body{
     transform-origin:0% 100%;
 
     flex:0 0 auto;
-
 }
 
 
 .k{
-
     font-weight:850;
 
     letter-spacing:.08em;
@@ -687,12 +590,10 @@ body{
     align-items:baseline;
 
     gap:10px;
-
 }
 
 
 .counter{
-
     font-weight:900;
 
     letter-spacing:.08em;
@@ -702,14 +603,10 @@ body{
     color:rgba(255,255,255,.82);
 
     text-transform:uppercase;
-
-    white-space:nowrap;
-
 }
 
 
 .title{
-
     font-weight:800;
 
     letter-spacing:.02em;
@@ -721,14 +618,10 @@ body{
     color:var(--ink);
 
     margin-top:2px;
-
-    max-width:78ch;
-
 }
 
 
 .vfProgress{
-
     margin-top:10px;
 
     display:grid;
@@ -736,68 +629,49 @@ body{
     gap:8px;
 
     width:min(320px,100%);
-
 }
 
 
 .vfRow{
-
     display:grid;
 
     grid-template-columns:
         repeat(10,12px);
 
     gap:8px;
-
 }
 
 
 .vfP{
-
     width:10px;
     height:10px;
 
     border-radius:999px;
 
-    border:
-        1px solid
-        rgba(255,255,255,.62);
+    border:1px solid rgba(255,255,255,.62);
 
     background:transparent;
-
 }
 
 
 .vfP.ok{
+    border-color:rgba(31,138,91,.98);
 
-    border-color:
-        rgba(31,138,91,.98);
-
-    background:
-        rgba(31,138,91,.20);
-
+    background:rgba(31,138,91,.20);
 }
 
 
 .vfP.bad{
+    border-color:rgba(222,81,3,.98);
 
-    border-color:
-        rgba(222,81,3,.98);
-
-    background:
-        rgba(222,81,3,.20);
-
+    background:rgba(222,81,3,.20);
 }
 
 
 .vfP.cur{
+    border-color:rgba(255,255,255,.92);
 
-    border-color:
-        rgba(255,255,255,.92);
-
-    background:
-        rgba(255,255,255,.16);
-
+    background:rgba(255,255,255,.16);
 }
 
 
@@ -806,7 +680,6 @@ body{
 ========================================================= */
 
 .content{
-
     flex:1;
 
     overflow:hidden;
@@ -816,24 +689,17 @@ body{
         var(--pad)
         var(--pad);
 
-    transform:
-        translateY(var(--lift));
+    transform:translateY(var(--lift));
 
     display:flex;
 
     flex-direction:column;
 
     gap:12px;
-
 }
 
 
-/* =========================================================
-   INTRO TEXTE
-========================================================= */
-
 .intro{
-
     flex:1;
 
     display:flex;
@@ -845,27 +711,19 @@ body{
     gap:14px;
 
     padding-top:10px;
-
 }
 
 
 h2{
-
     font-size:16px;
-
-    letter-spacing:.02em;
 
     font-weight:750;
 
     margin-bottom:6px;
-
-    color:var(--ink);
-
 }
 
 
 .hint{
-
     font-size:13.5px;
 
     line-height:1.55;
@@ -873,32 +731,24 @@ h2{
     color:var(--muted);
 
     max-width:78ch;
-
 }
 
 
 .hint b{
-
     color:var(--ink);
-
 }
 
 
 .rappel{
-
     margin-top:6px;
 
     padding-left:14px;
 
-    border-left:
-        1px solid
-        var(--hair);
-
+    border-left:1px solid var(--hair);
 }
 
 
 .rappel .label{
-
     font-weight:800;
 
     letter-spacing:.08em;
@@ -907,23 +757,16 @@ h2{
 
     font-size:11px;
 
-    color:var(--ink);
-
     margin-bottom:8px;
-
 }
 
 
 .rappel .txt{
-
     font-size:15px;
 
     line-height:1.55;
 
-    color:var(--ink);
-
     max-width:78ch;
-
 }
 
 
@@ -932,21 +775,15 @@ h2{
 ========================================================= */
 
 button{
-
     appearance:none;
 
-    border:
-        1px solid
-        var(--hair);
+    border:1px solid var(--hair);
 
-    background:
-        rgba(255,255,255,.06);
+    background:rgba(255,255,255,.06);
 
     color:var(--ink);
 
-    padding:
-        10px
-        14px;
+    padding:10px 14px;
 
     font-weight:750;
 
@@ -958,47 +795,23 @@ button{
 
     cursor:pointer;
 
-    transition:
-        border-color .16s ease,
-        transform .16s ease,
-        opacity .16s ease,
-        background .16s ease;
-
     position:relative;
-
-}
-
-
-button:hover{
-
-    border-color:
-        rgba(255,255,255,.45);
-
-    transform:
-        translateY(-1px);
-
 }
 
 
 button:disabled{
-
     opacity:.45;
 
     cursor:not-allowed;
-
-    transform:none;
-
 }
 
 
 .navBar{
-
     width:100%;
 
     max-width:820px;
 
-    margin:
-        6px auto 0;
+    margin:6px auto 0;
 
     display:flex;
 
@@ -1008,41 +821,6 @@ button:disabled{
     gap:10px;
 
     flex-wrap:wrap;
-
-}
-
-
-.ctaStart{
-
-    z-index:0;
-
-}
-
-
-.ctaStart::after{
-
-    content:"";
-
-    position:absolute;
-
-    left:10px;
-    right:10px;
-
-    height:12px;
-
-    bottom:-10px;
-
-    background:
-        rgba(31,138,91,.92);
-
-    border-radius:999px;
-
-    box-shadow:
-        0 10px 18px
-        rgba(0,0,0,.16);
-
-    z-index:-1;
-
 }
 
 
@@ -1051,7 +829,6 @@ button:disabled{
 ========================================================= */
 
 .vfLayout{
-
     width:100%;
 
     display:grid;
@@ -1063,105 +840,68 @@ button:disabled{
 
     align-items:start;
 
-    justify-content:start;
-
     margin-top:6px;
-
-    overflow:visible;
-
 }
 
 
 .stackClip{
-
     position:relative;
 
     width:410px;
 
     aspect-ratio:3 / 4;
 
-    overflow:visible;
-
-    justify-self:start;
-
-    transform:
-        translateX(
-            var(--stackShiftX)
-        );
-
-    z-index:1;
-
+    transform:translateX(var(--stackShiftX));
 }
 
 
 .stackInner{
-
     position:absolute;
 
     inset:0;
 
     transform:
-        translateY(
-            var(--stackSafeTop)
-        )
-        scale(
-            var(--stackScale)
-        );
+        translateY(var(--stackSafeTop))
+        scale(var(--stackScale));
 
-    transform-origin:0% 0%;
-
-    overflow:visible;
-
+    transform-origin:0 0;
 }
 
 
 .cardLayer{
-
     position:absolute;
 
     inset:0;
 
-    transform-origin:0% 100%;
-
     pointer-events:none;
-
-    overflow:visible;
-
 }
 
 
 .cardLayer img{
-
     width:100%;
     height:100%;
 
     object-fit:contain;
 
     display:block;
-
 }
 
 
 .layerBack{
-
     transform:
         rotate(-6.8deg)
         translate(8px,-14px);
-
 }
 
 
 .layerFront{
-
     transform:
         rotate(var(--tiltE))
         translate(6px,8px);
-
 }
 
 
 .qOverlay{
-
     position:absolute;
 
     top:var(--qInsetTop);
@@ -1177,41 +917,23 @@ button:disabled{
     justify-content:center;
 
     text-align:center;
-
-    pointer-events:none;
-
 }
 
 
 .qTxt{
+    font-family:var(--school);
 
-    font-family:
-        var(--school);
-
-    font-size:
-        clamp(
-            22px,
-            2.6vw,
-            30px
-        );
+    font-size:clamp(22px,2.6vw,30px);
 
     line-height:1.15;
 
     color:#426576;
 
-    font-weight:400;
-
     white-space:pre-wrap;
-
-    text-shadow:
-        0 1px 0
-        rgba(0,0,0,.25);
-
 }
 
 
 .vfSide{
-
     display:flex;
 
     flex-direction:column;
@@ -1222,82 +944,51 @@ button:disabled{
 
     min-height:280px;
 
-    overflow:hidden;
+    overflow:auto;
 
+    max-height:570px;
+
+    padding-right:6px;
 }
 
 
 .chipsVF{
-
     width:min(520px,100%);
 
     display:grid;
 
     grid-template-columns:
-        repeat(
-            2,
-            minmax(0,1fr)
-        );
+        repeat(2,minmax(0,1fr));
 
     gap:10px;
-
-    margin-top:2px;
-
 }
 
 
 .chipVF{
+    border:1px solid var(--hair);
 
-    appearance:none;
-
-    border:
-        1px solid
-        var(--hair);
-
-    background:
-        rgba(255,255,255,.06);
+    background:rgba(255,255,255,.06);
 
     padding:12px;
-
-    cursor:pointer;
 
     text-align:center;
 
     position:relative;
-
-    color:var(--ink);
-
-    font-weight:850;
-
-    letter-spacing:.06em;
-
-    text-transform:uppercase;
-
-    font-size:12px;
-
 }
 
 
 .chipVF::before{
-
     content:"";
 
     position:absolute;
 
-    left:2px;
-    right:2px;
-    top:2px;
-    bottom:2px;
+    inset:2px;
 
     background:transparent;
-
-    z-index:0;
-
 }
 
 
 .chipVF .label{
-
     position:relative;
 
     z-index:1;
@@ -1305,20 +996,15 @@ button:disabled{
     display:block;
 
     padding:12px 10px;
-
 }
 
 
 .chipVF.selected::before{
-
-    background:
-        var(--c5);
-
+    background:var(--c5);
 }
 
 
 .corrWrap{
-
     width:min(820px,100%);
 
     display:flex;
@@ -1326,17 +1012,11 @@ button:disabled{
     flex-direction:column;
 
     gap:14px;
-
-    overflow:hidden;
-
 }
 
 
 .corrBlock{
-
-    border-top:
-        1px solid
-        var(--hair);
+    border-top:1px solid var(--hair);
 
     padding-top:12px;
 
@@ -1345,30 +1025,22 @@ button:disabled{
     flex-direction:column;
 
     gap:8px;
-
 }
 
 
 .corrHead{
-
     display:flex;
 
     gap:10px;
 
     align-items:center;
-
-    color:var(--ink);
-
 }
 
 
 .tag{
-
     display:inline-block;
 
-    padding:
-        6px
-        10px;
+    padding:6px 10px;
 
     font-weight:900;
 
@@ -1379,54 +1051,196 @@ button:disabled{
     font-size:11px;
 
     color:#fff;
-
-    line-height:1;
-
 }
 
 
 .tag.ok{
-
     background:var(--ok);
-
 }
 
 
 .tag.bad{
-
     background:var(--bad);
-
 }
 
 
 .tag.corr{
-
     background:var(--corr);
-
 }
 
 
 .corrText{
-
     font-size:13.5px;
 
     line-height:1.5;
-
-    color:var(--ink);
-
-    max-width:78ch;
-
 }
 
 
 .saveStatus{
-
     margin-top:7px;
 
     font-size:11px;
 
     color:rgba(255,255,255,.65);
+}
 
+
+/* =========================================================
+   RÉSULTAT PERSONNEL
+========================================================= */
+
+.personalResult{
+    width:min(820px,100%);
+
+    padding-bottom:15px;
+}
+
+
+.resultHero{
+    padding:18px 20px;
+
+    border-radius:16px;
+
+    background:rgba(255,255,255,.10);
+
+    border:1px solid rgba(255,255,255,.24);
+}
+
+
+.resultTitle{
+    font-size:12px;
+
+    font-weight:900;
+
+    text-transform:uppercase;
+
+    letter-spacing:.08em;
+
+    color:rgba(255,255,255,.75);
+
+    margin-bottom:8px;
+}
+
+
+.resultScore{
+    font-size:38px;
+
+    line-height:1;
+
+    font-weight:900;
+
+    color:#ffffff;
+}
+
+
+.resultInfos{
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:8px;
+
+    margin-top:14px;
+}
+
+
+.resultInfo{
+    padding:7px 10px;
+
+    border-radius:999px;
+
+    background:rgba(255,255,255,.12);
+
+    color:#ffffff;
+
+    font-size:12px;
+
+    font-weight:800;
+}
+
+
+.resultDetails{
+    margin-top:18px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:7px;
+}
+
+
+.resultDetailTitle{
+    margin-bottom:5px;
+
+    font-size:12px;
+
+    font-weight:900;
+
+    text-transform:uppercase;
+
+    letter-spacing:.07em;
+
+    color:rgba(255,255,255,.78);
+}
+
+
+.resultLine{
+    display:grid;
+
+    grid-template-columns:
+        34px 1fr auto;
+
+    gap:10px;
+
+    align-items:center;
+
+    padding:9px 10px;
+
+    border-top:1px solid rgba(255,255,255,.18);
+
+    font-size:12px;
+
+    line-height:1.3;
+}
+
+
+.resultNumber{
+    font-weight:900;
+
+    color:rgba(255,255,255,.65);
+}
+
+
+.resultQuestion{
+    color:#ffffff;
+}
+
+
+.resultState{
+    min-width:72px;
+
+    text-align:center;
+
+    padding:5px 7px;
+
+    font-size:10px;
+
+    font-weight:900;
+
+    text-transform:uppercase;
+
+    color:#ffffff;
+}
+
+
+.resultState.ok{
+    background:var(--ok);
+}
+
+
+.resultState.bad{
+    background:var(--bad);
 }
 
 
@@ -1437,43 +1251,13 @@ button:disabled{
 @media(max-width:980px){
 
     :root{
-
         --lift:-12px;
 
         --stackScale:.74;
-
-        --stackSafeTop:16px;
-
-        --stackShiftX:10px;
-
     }
-
-
-    .head{
-
-        flex-direction:column;
-
-    }
-
 
     .vfLayout{
-
         grid-template-columns:1fr;
-
-    }
-
-
-    .stackClip{
-
-        width:min(410px,92%);
-
-    }
-
-
-    .chipsVF{
-
-        grid-template-columns:1fr;
-
     }
 
 }
@@ -1482,93 +1266,32 @@ button:disabled{
 @media(max-width:620px){
 
     .registrationScreen{
-
         padding:18px;
-
     }
-
 
     .registrationBox{
-
         padding:24px 20px;
-
     }
-
 
     .formGrid{
-
         grid-template-columns:1fr;
-
     }
 
-}
-
-
-@media(max-width:520px){
-
-    :root{
-
-        --lift:-9px;
-
-        --stackScale:.72;
-
-        --stackSafeTop:14px;
-
+    .resultLine{
+        grid-template-columns:28px 1fr;
     }
 
+    .resultState{
+        grid-column:2;
 
-    .brand img{
-
-        height:72px;
-
-    }
-
-
-    .mid-ange img{
-
-        height:78px;
-
-    }
-
-
-    .headLeft img{
-
-        width:48px;
-
-    }
-
-
-    .title{
-
-        font-size:16px;
-
-    }
-
-
-    .vfRow{
-
-        gap:7px;
-
-        grid-template-columns:
-            repeat(10,11px);
-
-    }
-
-
-    .vfP{
-
-        width:9px;
-        height:9px;
-
+        justify-self:start;
     }
 
 }
 
 
 [hidden]{
-
     display:none !important;
-
 }
 
 </style>
@@ -1588,7 +1311,7 @@ button:disabled{
 
 
 <!-- =========================================================
-     ÉCRAN D'IDENTIFICATION
+     IDENTIFICATION
 ========================================================= -->
 
 <section
@@ -1604,25 +1327,19 @@ button:disabled{
             alt="REBOND"
         >
 
-
         <h1>
             Vrai / Faux
         </h1>
 
-
         <p class="registrationIntro">
-
             Avant de commencer,
             renseigne quelques informations.
-
         </p>
 
 
         <form id="registrationForm">
 
-
             <div class="formGrid">
-
 
                 <div class="field">
 
@@ -1633,8 +1350,6 @@ button:disabled{
                     <input
                         type="text"
                         id="prenom"
-                        name="prenom"
-                        autocomplete="given-name"
                         required
                     >
 
@@ -1650,8 +1365,6 @@ button:disabled{
                     <input
                         type="text"
                         id="nom"
-                        name="nom"
-                        autocomplete="family-name"
                         required
                     >
 
@@ -1667,9 +1380,7 @@ button:disabled{
                     <input
                         type="text"
                         id="structure"
-                        name="structure"
-                        autocomplete="organization"
-                        placeholder="Facultatif"
+                        required
                     >
 
                 </div>
@@ -1684,12 +1395,10 @@ button:disabled{
                     <input
                         type="text"
                         id="fonction"
-                        name="fonction"
-                        placeholder="Facultatif"
+                        required
                     >
 
                 </div>
-
 
             </div>
 
@@ -1712,7 +1421,6 @@ button:disabled{
 
             </div>
 
-
         </form>
 
     </div>
@@ -1721,7 +1429,7 @@ button:disabled{
 
 
 <!-- =========================================================
-     VIDÉO INTRO
+     VIDEO
 ========================================================= -->
 
 <section
@@ -1794,20 +1502,13 @@ button:disabled{
 </div>
 
 
-<!-- =========================================================
-     HEADER VRAI / FAUX
-========================================================= -->
-
-<div
-    class="head"
-    aria-label="Vrai / Faux"
->
+<div class="head">
 
     <div class="headLeft">
 
         <img
             src="https://avantpost-cpu.github.io/depot-quiz/cartes/e.png"
-            alt="Carte — Vrai/Faux"
+            alt=""
         >
 
 
@@ -1835,10 +1536,7 @@ button:disabled{
             </div>
 
 
-            <div
-                class="vfProgress"
-                aria-label="Progression"
-            >
+            <div class="vfProgress">
 
                 <div
                     class="vfRow"
@@ -1857,21 +1555,9 @@ button:disabled{
     </div>
 
 
-    <div
-        class="navBar"
-        style="
-            margin:0;
-            justify-content:flex-end;
-            max-width:none;
-            width:auto;
-        "
-    >
-
-        <button id="btn-restart">
-            Recommencer
-        </button>
-
-    </div>
+    <button id="btn-restart">
+        Recommencer
+    </button>
 
 </div>
 
@@ -1882,10 +1568,6 @@ button:disabled{
 
 <div class="content">
 
-
-<!-- =========================================================
-     INTRO
-========================================================= -->
 
 <section
     id="screen-intro"
@@ -1898,7 +1580,6 @@ button:disabled{
             Cadre de travail
         </h2>
 
-
         <p class="hint">
 
             Ce module est un
@@ -1910,7 +1591,7 @@ button:disabled{
             (protéger, tracer, orienter)
             et éviter les pratiques à risque.
 
-            <br>
+            <br><br>
 
             Personne n’est obligé de partager
             une expérience personnelle.
@@ -1918,26 +1599,19 @@ button:disabled{
         </p>
 
 
-        <div
-            class="rappel"
-            aria-label="Rappel"
-        >
+        <div class="rappel">
 
             <div class="label">
                 Rappel
             </div>
-
 
             <div class="txt">
 
                 Le rôle d’un encadrant
                 n’est pas d’enquêter,
                 mais de
-
                 <b>protéger</b>
-
                 et d’
-
                 <b>orienter</b>.
 
                 En cas de doute,
@@ -1955,7 +1629,6 @@ button:disabled{
 
         <button
             id="btn-start"
-            class="ctaStart"
         >
             Commencer
         </button>
@@ -1965,10 +1638,6 @@ button:disabled{
 </section>
 
 
-<!-- =========================================================
-     JEU
-========================================================= -->
-
 <section
     id="screen-game"
     hidden
@@ -1977,15 +1646,9 @@ button:disabled{
     <div class="vfLayout">
 
 
-        <!-- CARTES -->
-
-        <div
-            class="stackClip"
-            aria-label="Cartes empilées"
-        >
+        <div class="stackClip">
 
             <div class="stackInner">
-
 
                 <div
                     class="cardLayer layerBack"
@@ -1993,7 +1656,7 @@ button:disabled{
 
                     <img
                         src="https://avantpost-cpu.github.io/depot-quiz/cartes/e.png"
-                        alt="Dos carte Vrai/Faux"
+                        alt=""
                     >
 
                 </div>
@@ -2005,14 +1668,10 @@ button:disabled{
 
                     <img
                         src="https://avantpost-cpu.github.io/depot-quiz/cartes/e1.png"
-                        alt="Carte question Vrai/Faux"
+                        alt=""
                     >
 
-
-                    <div
-                        class="qOverlay"
-                        aria-hidden="true"
-                    >
+                    <div class="qOverlay">
 
                         <div
                             class="qTxt"
@@ -2023,18 +1682,12 @@ button:disabled{
 
                 </div>
 
-
             </div>
 
         </div>
 
 
-        <!-- RÉPONSES -->
-
-        <div
-            class="vfSide"
-            aria-label="Réponses"
-        >
+        <div class="vfSide">
 
 
             <div
@@ -2079,18 +1732,11 @@ button:disabled{
 
             <div
                 class="navBar"
-                style="
-                    justify-content:flex-start;
-                    margin-top:2px;
-                "
                 id="nextWrap"
                 hidden
             >
 
-                <button
-                    id="btn-next"
-                    class="nextBtn"
-                >
+                <button id="btn-next">
                     Suivante
                 </button>
 
@@ -2101,7 +1747,6 @@ button:disabled{
                 class="saveStatus"
                 id="saveStatus"
             ></div>
-
 
         </div>
 
@@ -2123,11 +1768,8 @@ button:disabled{
 
 
 /* ============================================================
-   CONFIGURATION SUPABASE
-
-   >>> REMPLACER UNIQUEMENT CES DEUX VALEURS <<<
+   SUPABASE
 ============================================================ */
-
 
 const SUPABASE_URL =
     "https://tdsrqmpfdvntybdlvejy.supabase.co";
@@ -2137,10 +1779,6 @@ const SUPABASE_ANON_KEY =
     "sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO";
 
 
-/* ============================================================
-   CLIENT SUPABASE
-============================================================ */
-
 const supabaseClient =
     window.supabase.createClient(
         SUPABASE_URL,
@@ -2148,29 +1786,18 @@ const supabaseClient =
     );
 
 
-/* ============================================================
-   RACCOURCI DOM
-============================================================ */
-
 const $ =
-    (id) =>
+    id =>
         document.getElementById(id);
 
 
 /* ============================================================
-   PARTIE SUPABASE
+   PARTIE
 ============================================================ */
 
 let partieId = null;
 
 let cleValidation = null;
-
-
-/*
-   On garde la liste des écritures en cours
-   pour s'assurer qu'elles sont terminées
-   avant de clôturer la partie.
-*/
 
 let pendingWrites = [];
 
@@ -2254,121 +1881,55 @@ const VF_Q = [
     },
 
     {
-        q:
-            "Dans 3 cas sur 10,\n" +
-            "la victime connaît\n" +
-            "son agresseur",
-
+        q:"Dans 3 cas sur 10,\nla victime connaît\nson agresseur",
         a:false,
-
-        exp:
-            "La bonne réponse :\n" +
-            "Dans 9 cas sur 10, la victime connaît son agresseur."
+        exp:"La bonne réponse :\nDans 9 cas sur 10, la victime connaît son agresseur."
     },
 
     {
-        q:
-            "1 enfant sur 10 est\n" +
-            "victime de violences\n" +
-            "dans sa vie\n" +
-            "(tous types de violences\n" +
-            "confondus)",
-
+        q:"1 enfant sur 10 est\nvictime de violences\ndans sa vie\n(tous types de violences\nconfondus)",
         a:false,
-
-        exp:
-            "La bonne réponse :\n" +
-            "1 enfant sur 5."
+        exp:"La bonne réponse :\n1 enfant sur 5."
     },
 
     {
-        q:
-            "Depuis le lancement de la\n" +
-            "cellule Signal-Sports en\n" +
-            "2020, 1284 personnes\n" +
-            "ont été mises en cause,\n" +
-            "donnant lieu à 624\n" +
-            "mesures administratives",
-
+        q:"Depuis le lancement de la\ncellule Signal-Sports en\n2020, 1284 personnes\nont été mises en cause,\ndonnant lieu à 624\nmesures administratives",
         a:true,
-
         exp:""
     },
 
     {
-        q:
-            "1 père sur 2\n" +
-            "cautionne\n" +
-            "les violences dans\n" +
-            "le sport",
-
+        q:"1 père sur 2\ncautionne\nles violences dans\nle sport",
         a:true,
-
         exp:""
     },
 
     {
-        q:
-            "Dans le cadre\n" +
-            "sportif, 80% des\n" +
-            "agresseurs se\n" +
-            "trouvent parmi les\n" +
-            "entraîneurs",
-
+        q:"Dans le cadre\nsportif, 80% des\nagresseurs se\ntrouvent parmi les\nentraîneurs",
         a:true,
-
         exp:""
     },
 
     {
-        q:
-            "10% des femmes\n" +
-            "autistes sont victimes\n" +
-            "de violences sexuelles\n" +
-            "au cours de leur vie",
-
+        q:"10% des femmes\nautistes sont victimes\nde violences sexuelles\nau cours de leur vie",
         a:false,
-
-        exp:
-            "La bonne réponse :\n" +
-            "80%."
+        exp:"La bonne réponse :\n80%."
     },
 
     {
-        q:
-            "1 sportif de haut niveau\n" +
-            "sur 7 est victime\n" +
-            "de violences sexuelles\n" +
-            "au cours de sa carrière\n" +
-            "sportive",
-
+        q:"1 sportif de haut niveau\nsur 7 est victime\nde violences sexuelles\nau cours de sa carrière\nsportive",
         a:false,
-
-        exp:
-            "La bonne réponse :\n" +
-            "1 sportif de haut niveau sur 3."
+        exp:"La bonne réponse :\n1 sportif de haut niveau sur 3."
     },
 
     {
-        q:
-            "31% des parents\n" +
-            "déclarent que leur enfant\n" +
-            "a été au moins une fois\n" +
-            "victime de cyber-violence\n" +
-            "au cours de sa vie\n" +
-            "numérique (2022).",
-
+        q:"31% des parents\ndéclarent que leur enfant\na été au moins une fois\nvictime de cyber-violence\nau cours de sa vie\nnumérique (2022).",
         a:true,
-
         exp:""
     }
 
 ];
 
-
-/* ============================================================
-   ÉTAT DU JEU
-============================================================ */
 
 const state = {
 
@@ -2408,7 +1969,7 @@ function setScreen(which){
 $("registrationForm")
 .addEventListener(
     "submit",
-    async (event) => {
+    async event => {
 
         event.preventDefault();
 
@@ -2421,8 +1982,6 @@ $("registrationForm")
 
 
         errorBox.classList.remove("show");
-
-        errorBox.textContent = "";
 
 
         const prenom =
@@ -2438,10 +1997,15 @@ $("registrationForm")
             $("fonction").value.trim();
 
 
-        if(!prenom || !nom){
+        if(
+            !prenom ||
+            !nom ||
+            !structure ||
+            !fonction
+        ){
 
             errorBox.textContent =
-                "Merci de renseigner ton prénom et ton nom.";
+                "Merci de renseigner les quatre champs.";
 
             errorBox.classList.add("show");
 
@@ -2459,7 +2023,7 @@ $("registrationForm")
         try{
 
 
-            const { data, error } =
+            const {data,error} =
                 await supabaseClient.rpc(
                     "vf_creer_partie",
                     {
@@ -2477,21 +2041,17 @@ $("registrationForm")
 
 
             if(error){
-
                 throw error;
-
             }
 
 
             if(
                 !data ||
-                !data.length ||
-                !data[0].partie_id ||
-                !data[0].cle_validation
+                !data.length
             ){
 
                 throw new Error(
-                    "Réponse Supabase incomplète."
+                    "Partie non créée."
                 );
 
             }
@@ -2508,6 +2068,7 @@ $("registrationForm")
                 "rebond_vf_partie_id",
                 partieId
             );
+
 
             sessionStorage.setItem(
                 "rebond_vf_cle_validation",
@@ -2526,7 +2087,6 @@ $("registrationForm")
 
 
             console.error(
-                "Erreur création partie :",
                 error
             );
 
@@ -2552,7 +2112,7 @@ $("registrationForm")
 
 
 /* ============================================================
-   VIDÉO INTRO
+   VIDEO
 ============================================================ */
 
 const introVideo =
@@ -2569,11 +2129,14 @@ const fallbackButton =
 
 async function lancerVideoIntro(){
 
-    videoScreen.hidden = false;
+    videoScreen.hidden =
+        false;
 
-    fallbackButton.hidden = true;
+    fallbackButton.hidden =
+        true;
 
-    introVideo.currentTime = 0;
+    introVideo.currentTime =
+        0;
 
 
     try{
@@ -2582,12 +2145,8 @@ async function lancerVideoIntro(){
 
     }catch(error){
 
-        /*
-          Certains navigateurs peuvent malgré tout
-          bloquer la lecture automatique.
-        */
-
-        fallbackButton.hidden = false;
+        fallbackButton.hidden =
+            false;
 
     }
 
@@ -2597,21 +2156,8 @@ async function lancerVideoIntro(){
 fallbackButton
 .addEventListener(
     "click",
-    async () => {
-
-        fallbackButton.hidden = true;
-
-        try{
-
-            await introVideo.play();
-
-        }catch(error){
-
-            fallbackButton.hidden = false;
-
-        }
-
-    }
+    () =>
+        introVideo.play()
 );
 
 
@@ -2639,7 +2185,8 @@ function fermerVideoIntro(){
     setTimeout(
         () => {
 
-            videoScreen.hidden = true;
+            videoScreen.hidden =
+                true;
 
             videoScreen.classList.remove(
                 "fadeOut"
@@ -2687,7 +2234,7 @@ async function toggleFullscreen(){
 
 
 /* ============================================================
-   CHOIX ACTIFS
+   PROGRESSION
 ============================================================ */
 
 function setChoicesEnabled(on){
@@ -2701,10 +2248,6 @@ function setChoicesEnabled(on){
 }
 
 
-/* ============================================================
-   PROGRESSION
-============================================================ */
-
 function updateDots(){
 
     const r1 =
@@ -2714,68 +2257,56 @@ function updateDots(){
         $("vfRow2");
 
 
-    r1.innerHTML = "";
+    r1.innerHTML =
+        "";
 
-    r2.innerHTML = "";
-
-
-    for(
-        let i=0;
-        i<VF_Q.length;
-        i++
-    ){
-
-        const d =
-            document.createElement(
-                "div"
-            );
+    r2.innerHTML =
+        "";
 
 
-        d.className =
-            "vfP";
+    VF_Q.forEach(
+        (_,i) => {
+
+            const d =
+                document.createElement(
+                    "div"
+                );
 
 
-        const mark =
-            state.marks[i];
+            d.className =
+                "vfP";
 
 
-        if(mark === true){
-
-            d.classList.add(
-                "ok"
-            );
-
-        }
+            const mark =
+                state.marks[i];
 
 
-        if(mark === false){
-
-            d.classList.add(
-                "bad"
-            );
-
-        }
+            if(mark === true){
+                d.classList.add("ok");
+            }
 
 
-        if(
-            state.idx === i &&
-            mark === null
-        ){
-
-            d.classList.add(
-                "cur"
-            );
-
-        }
+            if(mark === false){
+                d.classList.add("bad");
+            }
 
 
-        (
-            i < 10
+            if(
+                state.idx === i &&
+                mark === null
+            ){
+                d.classList.add("cur");
+            }
+
+
+            (
+                i < 10
                 ? r1
                 : r2
-        ).appendChild(d);
+            ).appendChild(d);
 
-    }
+        }
+    );
 
 
     $("vfCounter").textContent =
@@ -2785,7 +2316,7 @@ function updateDots(){
 
 
 /* ============================================================
-   AFFICHAGE
+   RENDER
 ============================================================ */
 
 function render(){
@@ -2817,9 +2348,6 @@ function render(){
         .remove("selected");
 
 
-    setChoicesEnabled(true);
-
-
     if(!qObj){
 
         afficherFin();
@@ -2833,8 +2361,7 @@ function render(){
         false;
 
 
-    $("btn-next").textContent =
-        "Suivante";
+    setChoicesEnabled(true);
 
 
     $("vfTitle").textContent =
@@ -2852,16 +2379,19 @@ function render(){
 
 
 /* ============================================================
-   DÉMARRER JEU
+   START
 ============================================================ */
 
 function start(){
 
-    state.idx = 0;
+    state.idx =
+        0;
 
-    state.locked = false;
+    state.score =
+        0;
 
-    state.score = 0;
+    state.locked =
+        false;
 
     state.marks =
         Array(VF_Q.length)
@@ -2870,8 +2400,8 @@ function start(){
     state.partieTerminee =
         false;
 
-
-    pendingWrites = [];
+    pendingWrites =
+        [];
 
 
     $("saveStatus").textContent =
@@ -2886,7 +2416,7 @@ function start(){
 
 
 /* ============================================================
-   ENREGISTRER UNE RÉPONSE
+   ENREGISTRER RÉPONSE
 ============================================================ */
 
 function enregistrerReponseSupabase(
@@ -2896,19 +2426,7 @@ function enregistrerReponseSupabase(
     bonneReponse
 ){
 
-    if(
-        !partieId ||
-        !cleValidation
-    ){
-
-        return Promise.resolve(
-            false
-        );
-
-    }
-
-
-    const writePromise =
+    const promise =
         supabaseClient.rpc(
             "vf_enregistrer_reponse",
             {
@@ -2937,30 +2455,18 @@ function enregistrerReponseSupabase(
             ({data,error}) => {
 
                 if(error){
-
                     throw error;
-
                 }
 
-
-                if(data !== true){
-
-                    throw new Error(
-                        "Réponse non enregistrée."
-                    );
-
-                }
-
-
-                return true;
+                return data;
 
             }
         )
         .catch(
-            (error) => {
+            error => {
 
                 console.error(
-                    "Erreur sauvegarde réponse :",
+                    "Erreur réponse :",
                     error
                 );
 
@@ -2971,11 +2477,11 @@ function enregistrerReponseSupabase(
 
 
     pendingWrites.push(
-        writePromise
+        promise
     );
 
 
-    return writePromise;
+    return promise;
 
 }
 
@@ -2984,25 +2490,17 @@ function enregistrerReponseSupabase(
    VALIDATION
 ============================================================ */
 
-function validateAnswer(
-    choiceBool
-){
+function validateAnswer(choice){
 
     const qObj =
-        VF_Q[state.idx] || null;
+        VF_Q[state.idx];
 
 
-    if(!qObj){
-
+    if(
+        !qObj ||
+        state.locked
+    ){
         return;
-
-    }
-
-
-    if(state.locked){
-
-        return;
-
     }
 
 
@@ -3010,7 +2508,7 @@ function validateAnswer(
         true;
 
 
-    if(choiceBool === true){
+    if(choice){
 
         $("pick-true")
             .classList
@@ -3029,13 +2527,11 @@ function validateAnswer(
 
 
     const isOk =
-        choiceBool === qObj.a;
+        choice === qObj.a;
 
 
     if(isOk){
-
         state.score++;
-
     }
 
 
@@ -3046,12 +2542,6 @@ function validateAnswer(
     updateDots();
 
 
-    /*
-       Enregistrement Supabase.
-       L'interface ne reste pas bloquée
-       pendant l'appel réseau.
-    */
-
     enregistrerReponseSupabase(
 
         state.idx + 1,
@@ -3061,7 +2551,7 @@ function validateAnswer(
             " "
         ),
 
-        choiceBool,
+        choice,
 
         qObj.a
 
@@ -3071,41 +2561,6 @@ function validateAnswer(
     const exp =
         (qObj.exp || "")
         .trim();
-
-
-    const expBlock =
-        exp
-        ? `
-
-            <div class="corrBlock">
-
-                <div class="corrHead">
-
-                    <div class="tag corr">
-                        PRÉCISION
-                    </div>
-
-                    <div class="h">
-                        Détail
-                    </div>
-
-                </div>
-
-                <div class="corrText">
-
-                    ${
-                        exp.replace(
-                            /\n/g,
-                            "<br>"
-                        )
-                    }
-
-                </div>
-
-            </div>
-
-        `
-        : "";
 
 
     $("vfCorr").hidden =
@@ -3133,17 +2588,6 @@ function validateAnswer(
 
                 </div>
 
-
-                <div class="h">
-
-                    ${
-                        isOk
-                        ? "Bonne réponse"
-                        : "Réponse incorrecte"
-                    }
-
-                </div>
-
             </div>
 
 
@@ -3159,11 +2603,17 @@ function validateAnswer(
                     }
                 </b>.
 
+                ${
+                    exp
+                    ?
+                    `<br><br>${exp.replace(/\n/g,"<br>")}`
+                    :
+                    ""
+                }
+
             </div>
 
         </div>
-
-        ${expBlock}
 
     `;
 
@@ -3175,7 +2625,7 @@ function validateAnswer(
 
 
 /* ============================================================
-   FIN DE PARTIE
+   TERMINER PARTIE
 ============================================================ */
 
 async function terminerPartieSupabase(){
@@ -3185,9 +2635,7 @@ async function terminerPartieSupabase(){
         !partieId ||
         !cleValidation
     ){
-
-        return;
-
+        return false;
     }
 
 
@@ -3198,11 +2646,6 @@ async function terminerPartieSupabase(){
     $("saveStatus").textContent =
         "Enregistrement du résultat…";
 
-
-    /*
-       On attend que toutes les réponses
-       aient terminé leur enregistrement.
-    */
 
     await Promise.allSettled(
         pendingWrites
@@ -3231,9 +2674,7 @@ async function terminerPartieSupabase(){
 
 
         if(error){
-
             throw error;
-
         }
 
 
@@ -3250,6 +2691,9 @@ async function terminerPartieSupabase(){
             "Résultat enregistré.";
 
 
+        return true;
+
+
     }catch(error){
 
 
@@ -3260,7 +2704,10 @@ async function terminerPartieSupabase(){
 
 
         $("saveStatus").textContent =
-            "Le score est affiché, mais son enregistrement a rencontré un problème.";
+            "Le résultat n'a pas pu être enregistré.";
+
+
+        return false;
 
     }
 
@@ -3268,10 +2715,343 @@ async function terminerPartieSupabase(){
 
 
 /* ============================================================
-   ÉCRAN FINAL
+   OUTILS RESULTAT
 ============================================================ */
 
-function afficherFin(){
+function escapeHTML(value){
+
+    return String(
+        value ?? ""
+    )
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+function formatDuree(seconds){
+
+    if(
+        seconds === null ||
+        seconds === undefined
+    ){
+        return "—";
+    }
+
+
+    const total =
+        Math.max(
+            0,
+            Math.round(
+                Number(seconds)
+            )
+        );
+
+
+    const minutes =
+        Math.floor(
+            total / 60
+        );
+
+
+    const secondes =
+        total % 60;
+
+
+    if(minutes === 0){
+        return `${secondes} s`;
+    }
+
+
+    return (
+        `${minutes} min ` +
+        `${String(secondes).padStart(2,"0")} s`
+    );
+
+}
+
+
+/* ============================================================
+   RESULTAT PERSONNEL
+============================================================ */
+
+async function afficherResultatPersonnel(){
+
+    try{
+
+
+        const [
+            resultatResponse,
+            reponsesResponse
+        ] =
+        await Promise.all([
+
+            supabaseClient.rpc(
+                "vf_mon_resultat",
+                {
+
+                    p_partie_id:
+                        partieId,
+
+                    p_cle_validation:
+                        cleValidation
+
+                }
+            ),
+
+
+            supabaseClient.rpc(
+                "vf_mes_reponses",
+                {
+
+                    p_partie_id:
+                        partieId,
+
+                    p_cle_validation:
+                        cleValidation
+
+                }
+            )
+
+        ]);
+
+
+        if(resultatResponse.error){
+            throw resultatResponse.error;
+        }
+
+
+        if(reponsesResponse.error){
+            throw reponsesResponse.error;
+        }
+
+
+        const resultat =
+            resultatResponse.data?.[0];
+
+
+        const reponses =
+            reponsesResponse.data || [];
+
+
+        if(!resultat){
+
+            throw new Error(
+                "Résultat introuvable."
+            );
+
+        }
+
+
+        const score =
+            Number(
+                resultat.score || 0
+            );
+
+
+        const total =
+            Number(
+                resultat.total || 20
+            );
+
+
+        const pourcentage =
+            total
+            ?
+            Math.round(
+                score /
+                total *
+                100
+            )
+            :
+            0;
+
+
+        const lignes =
+            reponses
+            .map(
+                row => {
+
+                    const correcte =
+                        row.correcte === true;
+
+
+                    return `
+
+                        <div class="resultLine">
+
+                            <div class="resultNumber">
+
+                                ${row.question_numero}
+
+                            </div>
+
+
+                            <div class="resultQuestion">
+
+                                ${escapeHTML(
+                                    row.question
+                                )}
+
+                            </div>
+
+
+                            <div
+                                class="
+                                    resultState
+                                    ${
+                                        correcte
+                                        ? "ok"
+                                        : "bad"
+                                    }
+                                "
+                            >
+
+                                ${
+                                    correcte
+                                    ? "Correct"
+                                    : "À revoir"
+                                }
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                }
+            )
+            .join("");
+
+
+        $("vfCorr").hidden =
+            false;
+
+
+        $("vfCorr").innerHTML = `
+
+            <div class="personalResult">
+
+
+                <div class="resultHero">
+
+                    <div class="resultTitle">
+
+                        Ton résultat
+
+                    </div>
+
+
+                    <div class="resultScore">
+
+                        ${score} / ${total}
+
+                    </div>
+
+
+                    <div class="resultInfos">
+
+                        <div class="resultInfo">
+
+                            ${pourcentage} % de réussite
+
+                        </div>
+
+
+                        <div class="resultInfo">
+
+                            Durée :
+                            ${escapeHTML(
+                                formatDuree(
+                                    resultat.duree_secondes
+                                )
+                            )}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="resultDetails">
+
+                    <div class="resultDetailTitle">
+
+                        Tes réponses
+
+                    </div>
+
+
+                    ${lignes}
+
+                </div>
+
+
+            </div>
+
+        `;
+
+
+    }catch(error){
+
+
+        console.error(
+            "Erreur résultat personnel :",
+            error
+        );
+
+
+        $("vfCorr").hidden =
+            false;
+
+
+        $("vfCorr").innerHTML = `
+
+            <div class="corrBlock">
+
+                <div class="corrHead">
+
+                    <div class="tag ok">
+                        TERMINÉ
+                    </div>
+
+                </div>
+
+
+                <div class="corrText">
+
+                    Ton score :
+
+                    <b>
+                        ${state.score}
+                    </b>
+
+                    /
+
+                    <b>
+                        ${VF_Q.length}
+                    </b>
+
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+/* ============================================================
+   FIN
+============================================================ */
+
+async function afficherFin(){
 
     $("vfTitle").textContent =
         "Terminé";
@@ -3299,62 +3079,9 @@ function afficherFin(){
                     TERMINÉ
                 </div>
 
-                <div class="h">
-                    Score
+                <div>
+                    Calcul de ton résultat…
                 </div>
-
-            </div>
-
-
-            <div class="corrText">
-
-                <b>
-                    ${state.score}
-                </b>
-
-                /
-
-                <b>
-                    ${VF_Q.length}
-                </b>
-
-                bonnes réponses.
-
-            </div>
-
-        </div>
-
-
-        <div class="corrBlock">
-
-            <div class="corrHead">
-
-                <div class="tag corr">
-                    RAPPEL
-                </div>
-
-                <div class="h">
-                    Ce qu’on retient
-                </div>
-
-            </div>
-
-
-            <div class="corrText">
-
-                On ne mène pas d’enquête :
-
-                on <b>protège</b>,
-
-                on <b>trace</b>,
-
-                on <b>oriente/alerte</b>.
-
-                En cas de doute,
-
-                la <b>protection du mineur</b>
-
-                prime.
 
             </div>
 
@@ -3364,25 +3091,35 @@ function afficherFin(){
 
 
     $("nextWrap").hidden =
+        true;
+
+
+    await terminerPartieSupabase();
+
+
+    await afficherResultatPersonnel();
+
+
+    $("nextWrap").hidden =
         false;
 
 
     $("btn-next").textContent =
         "Nouvelle partie";
 
-
-    terminerPartieSupabase();
-
 }
 
 
 /* ============================================================
-   QUESTION SUIVANTE
+   NEXT
 ============================================================ */
 
 function next(){
 
-    if(!VF_Q[state.idx]){
+    if(
+        state.idx >=
+        VF_Q.length
+    ){
 
         nouvelleParticipation();
 
@@ -3399,28 +3136,33 @@ function next(){
 
 
 /* ============================================================
-   NOUVELLE PARTICIPATION
+   NOUVELLE PARTIE
 ============================================================ */
 
 function nouvelleParticipation(){
 
-    partieId = null;
+    partieId =
+        null;
 
-    cleValidation = null;
+    cleValidation =
+        null;
 
-    pendingWrites = [];
+    pendingWrites =
+        [];
 
 
     sessionStorage.removeItem(
         "rebond_vf_partie_id"
     );
 
+
     sessionStorage.removeItem(
         "rebond_vf_cle_validation"
     );
 
 
-    $("registrationForm").reset();
+    $("registrationForm")
+        .reset();
 
 
     $("registrationError")
@@ -3432,11 +3174,14 @@ function nouvelleParticipation(){
         "";
 
 
-    state.idx = 0;
+    state.idx =
+        0;
 
-    state.score = 0;
+    state.score =
+        0;
 
-    state.locked = false;
+    state.locked =
+        false;
 
     state.partieTerminee =
         false;
@@ -3458,7 +3203,7 @@ function nouvelleParticipation(){
 
 
 /* ============================================================
-   ÉVÉNEMENTS
+   EVENTS
 ============================================================ */
 
 $("btn-fs")
@@ -3505,7 +3250,7 @@ $("btn-restart")
 
         if(
             confirm(
-                "Quitter cette partie et recommencer avec un nouvel enregistrement ?"
+                "Quitter cette partie et recommencer ?"
             )
         ){
 
@@ -3518,12 +3263,13 @@ $("btn-restart")
 
 
 /* ============================================================
-   INITIALISATION
+   INIT
 ============================================================ */
 
 setScreen("intro");
 
 render();
+
 
 })();
 </script>
