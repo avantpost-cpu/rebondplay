@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Devinez les raisons du silence</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+
+      background-image: url('https://avantpost-cpu.github.io/depot-quiz/fond.jpg');
+      background-repeat: repeat;
+      background-size: auto;
+    }
+
+    #instructions {
+      margin-bottom: 20px;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    /* ✔ Bloc question bleu */
+    .question {
+      margin-bottom: 25px;
+      padding: 15px;
+      border-radius: 8px;
+      background: #436f80; /* BLEU REBOND */
+      color: white;
+    }
+
+    .question p {
+      color: white; /* Texte de la question */
+      margin-bottom: 15px;
+      font-size: 17px;
+      font-weight: bold;
+    }
+
+    /* ✔ Boutons de réponses dans cartouches blancs */
+    .question button {
+      display: block;
+      margin: 8px 0;
+      padding: 10px;
+      width: 100%;
+      cursor: pointer;
+      border-radius: 5px;
+      border: none;
+      font-size: 15px;
+      background: white;
+      color: black;
+    }
+
+    .question button:hover {
+      background: #f0f0f0;
+    }
+
+    /* ✔ Boutons Start et Suivant sous forme d'images */
+    #startImage, #nextImage {
+      display: block;
+      margin: 20px auto;
+      max-width: 260px;
+      cursor: pointer;
+    }
+
+    #startImage:hover, #nextImage:hover {
+      opacity: 0.85;
+      transition: 0.2s;
+    }
+
+    .correct { color: #7cf57c; font-weight: bold; }
+    .wrong { color: #ff8a8a; font-weight: bold; }
+
+    #score {
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 20px;
+      display: none;
+    }
+
+    #progress {
+      text-align: center;
+      margin-bottom: 10px;
+      font-weight: bold;
+      display: none;
+    }
+
+    .result-img {
+      max-width: 50%;
+      height: auto;
+      display: block;
+      margin: 20px auto 0 auto;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ✔ IMAGE RAISONS -->
+  <div style="text-align:center; margin-bottom:20px;">
+    <img src="https://avantpost-cpu.github.io/depot-quiz/raisons.png"
+         alt="Raisons du silence"
+         style="max-width:100%; height:auto;">
+  </div>
+
+  <p id="instructions">
+    Ce quiz vous invite à comprendre pourquoi certaines victimes gardent le silence dans le milieu sportif.
+    Le temps de réponse et une correction apparaîtront après chaque question.
+  </p>
+
+  <!-- ✔ BOUTON START PAR IMAGE -->
+  <img id="startImage"
+       src="https://avantpost-cpu.github.io/depot-quiz/button.png"
+       alt="Commencer le quiz">
+
+  <div id="progress"></div>
+  <div id="quiz"></div>
+  <div id="score"></div>
+  <div id="resultImage"></div>
+
+  <!-- ✔ BOUTON SUIVANT PAR IMAGE -->
+  <img id="nextImage"
+       src="https://avantpost-cpu.github.io/depot-quiz/suivante.png"
+       alt="Question suivante"
+       style="display:none;">
+
+
+  <script>
+    /* ------------------------------------
+       QUESTIONS + CORRECTIONS
+    ------------------------------------ */
+    var questions = [
+      { text: "Quelles raisons peuvent conduire une victime à ne pas révéler ce qu’elle subit ?", answers: ["L’agresseur menace la carrière","Trop d’entraînements","Préférence pour la discrétion"], correct: 0 },
+
+      { text: "Pourquoi le sentiment de loyauté vis-à-vis du club peut pousser au silence ?", answers: ["Par peur de nuire à l’image ou l’ambiance du club","Veut devenir capitaine","Pense que personne n’écoute"], correct: 0 },
+
+      { text: "Lorsque l’agresseur dit à la victime « c’est de ta faute c’est toi qui provoque ça chez moi » quel sentiment fait il naître chez la victime ?", answers: ["La culpabilité","La reconnaissance","La confiance en soi"], correct: 0 },
+
+      { text: "En quoi une forme de pression exercée par la famille peut conduire au silence ?", answers: ["Peur de décevoir ou ne pas être cru","Famille encourage à parler","Famille indifférente"], correct: 0 },
+
+      { text: "Dans quelle mesure la “culture de l’effort” peut elle aussi contribuer à pousser au silence ?", answers: ["Violences perçues comme rite","Blessures toujours soignées","Douleur ignorée par coach"], correct: 0 },
+
+      { text: "Pourquoi le silence est-il renforcé dans une société qui valorise les valeurs de virilité ?", answers: ["Honte de montrer vulnérabilité","Veut prouver sa force","Personne ne remarquera"], correct: 0 },
+
+      { text: "Pourquoi certaines victimes gardent-elles le silence face aux institutions ?", answers: ["Par peur de plaintes mal traitées","Parce qu’elles préfèrent en parler d’abord à des proches","Parce qu’elles cherchent du soutien dans leur environnement sportif"], correct: 0 }
+    ];
+
+    var corrections = [
+      "De nombreuses victimes se taisent en raison de menaces liées à leur carrière, à des représailles ou au contrôle exercé par l’agresseur.",
+      "La peur de nuire au club, à ses membres ou à son entraîneur empêche parfois les victimes de parler.",
+      "En disant « c’est de ta faute », l’agresseur fait porter la responsabilité de la violence à la victime. Cette manipulation installe la culpabilité, fragilise la victime et peut l’empêcher de parler ou de demander de l’aide.",
+      "La crainte de décevoir la famille ou de ne pas être pris.e au sérieux contribue fortement au silence.",
+      "Les violences peuvent être perçues comme un rite ou une étape 'normale', banalisant la souffrance et rendant la parole difficile.",
+      "La vulnérabilité est perçue comme une faiblesse, renforçant un sentiment de honte et empêchant les victimes de parler.",
+      "La mauvaise prise en charge des plaintes, les lenteurs administratives ou judiciaires et la minimisation institutionnelle créent une victimisation secondaire."
+    ];
+
+    var currentQuestion = 0;
+    var score = 0;
+    var startTime = 0;
+
+    var quizContainer = document.getElementById("quiz");
+    var progressContainer = document.getElementById("progress");
+    var startImage = document.getElementById("startImage");
+    var nextImage = document.getElementById("nextImage");
+    var scoreContainer = document.getElementById("score");
+    var resultImage = document.getElementById("resultImage");
+
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    /* ------------------------------------
+       AFFICHAGE QUESTION
+    ------------------------------------ */
+    function showQuestion() {
+      nextImage.style.display = "none";
+
+      if (currentQuestion >= questions.length) {
+        quizContainer.innerHTML = "";
+        progressContainer.textContent = "";
+        scoreContainer.style.display = "block";
+        scoreContainer.textContent = "Résultat final : " + score + " / " + questions.length;
+
+        resultImage.innerHTML =
+          score >= 5
+            ? '<img src="bravo.png" class="result-img">'
+            : '<img src="progres.png" class="result-img">';
+
+        return;
+      }
+
+      var q = questions[currentQuestion];
+      var answers = q.answers.map((ans, index) => ({
+        text: ans,
+        isCorrect: index === q.correct
+      }));
+
+      shuffleArray(answers);
+
+      progressContainer.style.display = "block";
+      progressContainer.textContent =
+        "Question " + (currentQuestion + 1) + " / " + questions.length;
+
+      var html = '<div class="question"><p><strong>' + q.text + '</strong></p>';
+      answers.forEach(a => {
+        html += '<button onclick="checkAnswer(' + a.isCorrect + ')">' + a.text + '</button>';
+      });
+      html += '<p id="feedback"></p></div>';
+
+      quizContainer.innerHTML = html;
+      startTime = performance.now();
+    }
+
+    /* ------------------------------------
+       TRAITEMENT DE LA RÉPONSE
+    ------------------------------------ */
+    function checkAnswer(isCorrect) {
+      var endTime = performance.now();
+      var responseTime = Math.round((endTime - startTime) / 1000);
+
+      var feedback = document.getElementById("feedback");
+
+      feedback.innerHTML =
+        (isCorrect ? "✅ Bonne réponse !" : "❌ Mauvaise réponse.") +
+        "<br><span style='opacity:0.7;'>⏱ Temps : <strong>" + responseTime + " s</strong></span>" +
+        "<br><br><strong>Correction :</strong> " + corrections[currentQuestion];
+
+      if (isCorrect) score++;
+
+      nextImage.style.display = "block";
+    }
+
+    /* ------------------------------------
+       QUESTION SUIVANTE
+    ------------------------------------ */
+    nextImage.addEventListener("click", function () {
+      currentQuestion++;
+      showQuestion();
+    });
+
+    /* ------------------------------------
+       DÉMARRAGE DU QUIZ
+    ------------------------------------ */
+    startImage.addEventListener("click", function () {
+      startImage.style.display = "none";
+      showQuestion();
+    });
+
+  </script>
+
+</body>
+</html>

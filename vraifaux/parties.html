@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Parties — Vidéo avec caches latéraux</title>
+<style>
+  :root{
+    /* 🔧 Réglages personnalisables */
+    --mask-left: 160px;   /* largeur du cache gauche */
+    --mask-right: 160px;  /* largeur du cache droit  */
+    --global-scale: 1.36; /* ✅ homothétie globale (1 = normal, >1 = plus grand) */
+  }
+
+  html,body{
+    margin:0;
+    padding:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+  }
+
+  .stage{
+    position:relative;
+    transform-origin:center center;
+    transition:transform .3s ease;
+    background:#fff;
+  }
+
+  video{
+    display:block;
+    width:1600px; /* taille de référence avant auto-scale */
+    height:auto;
+    object-fit:contain;
+    object-position:center;
+    background:#fff;
+  }
+
+  .mask{
+    position:absolute;
+    pointer-events:none;
+    background:#fff;
+    z-index:5;
+  }
+
+  .mask-left{  left:0;  top:0; bottom:0; width:var(--mask-left);  }
+  .mask-right{ right:0; top:0; bottom:0; width:var(--mask-right); }
+
+</style>
+</head>
+<body>
+
+<div class="stage" id="stage">
+  <video id="film" playsinline autoplay muted>
+    <source src="https://avantpost-cpu.github.io/depot-quiz/parties.mp4" type="video/mp4">
+    Votre navigateur ne prend pas en charge la lecture vidéo.
+  </video>
+
+  <div class="mask mask-left"></div>
+  <div class="mask mask-right"></div>
+</div>
+
+<script>
+/* --- Auto-scale avec homothétie globale --- */
+function adjustScale(){
+  const stage = document.getElementById('stage');
+  const vid   = document.getElementById('film');
+  const globalScale = parseFloat(getComputedStyle(document.documentElement)
+                                 .getPropertyValue('--global-scale')) || 1;
+
+  if (!vid.videoWidth || !vid.videoHeight) return;
+
+  const scaleW = window.innerWidth  / vid.videoWidth;
+  const scaleH = window.innerHeight / vid.videoHeight;
+  const baseScale  = Math.min(scaleW, scaleH) * 0.95;
+  const finalScale = baseScale * globalScale; // ✅ homothétie appliquée
+  stage.style.transform = `scale(${finalScale})`;
+}
+
+const vid = document.getElementById('film');
+vid.addEventListener('loadedmetadata', adjustScale);
+vid.addEventListener('resize', adjustScale);
+window.addEventListener('resize', adjustScale);
+
+vid.addEventListener('ended', () => {
+  vid.pause();
+  vid.currentTime = vid.duration;
+});
+
+window.addEventListener('load', () => {
+  if (vid.readyState >= 1) adjustScale();
+});
+</script>
+
+</body>
+</html>
+    
+  </body>
+  
+</html>
