@@ -537,6 +537,7 @@ body{
 
 /* =========================================================
    CONTENU DES CASES
+   Calage d'après les zones vertes fournies.
 ========================================================= */
 
 .game-copy{
@@ -544,49 +545,107 @@ body{
 
     z-index:10;
 
-    display:flex;
-    flex-direction:column;
-
     color:#ffffff;
 
     pointer-events:none;
 }
 
 
-/* ESCAPE */
+/* =========================================================
+   ESCAPE GAME
+   La zone de texte est à droite du titre/illustration.
+   Les badges sont alignés en bas de la carte.
+========================================================= */
 
 .escape-copy{
-    left:11.2%;
-    top:68.9%;
+    left:4.6%;
+    top:45.5%;
 
-    width:34.8%;
-    height:14.3%;
+    width:44.4%;
+    height:41.0%;
 }
 
+.escape-copy .game-type{
+    position:absolute;
 
-/* VRAI / FAUX */
+    left:53.2%;
+    top:18.2%;
 
-.vf-copy{
-    left:70.4%;
-    top:58.0%;
+    width:43.5%;
+}
 
-    width:22.7%;
-    height:24.8%;
+.escape-copy .game-description{
+    position:absolute;
+
+    left:53.2%;
+    top:26.8%;
+
+    width:43.5%;
+}
+
+.escape-copy .game-meta{
+    position:absolute;
+
+    left:10.5%;
+    right:5.0%;
+    bottom:8.5%;
 }
 
 
 /* =========================================================
-   TYPE
+   VRAI / FAUX
+   La zone de texte occupe la partie droite de la carte.
+   Les badges sont alignés en bas à droite.
+========================================================= */
+
+.vf-copy{
+    left:51.5%;
+    top:45.5%;
+
+    width:44.0%;
+    height:41.0%;
+}
+
+.vf-copy .game-type{
+    position:absolute;
+
+    left:53.2%;
+    top:10.0%;
+
+    width:42.5%;
+}
+
+.vf-copy .game-description{
+    position:absolute;
+
+    left:53.2%;
+    top:19.0%;
+
+    width:42.5%;
+}
+
+.vf-copy .game-meta{
+    position:absolute;
+
+    left:53.2%;
+    right:4.0%;
+    bottom:8.5%;
+}
+
+
+/* =========================================================
+   TYPO
 ========================================================= */
 
 .game-type{
-    margin-bottom:4px;
+    margin:0;
 
-    font-size:clamp(
-        6px,
-        .78vw,
-        8.5px
-    );
+    font-size:
+        clamp(
+            6px,
+            .76vw,
+            8.5px
+        );
 
     line-height:1;
 
@@ -596,24 +655,22 @@ body{
 
     text-transform:uppercase;
 
-    opacity:.82;
+    opacity:.88;
 }
 
-
-/* =========================================================
-   DESCRIPTION
-========================================================= */
-
 .game-description{
-    font-size:clamp(
-        7px,
-        .92vw,
-        10px
-    );
+    margin:0;
 
-    line-height:1.24;
+    font-size:
+        clamp(
+            6.8px,
+            .86vw,
+            9.3px
+        );
 
-    font-weight:600;
+    line-height:1.25;
+
+    font-weight:650;
 
     text-shadow:
         0 1px 2px
@@ -627,25 +684,38 @@ body{
 
 .game-meta{
     display:flex;
-    flex-wrap:wrap;
 
-    gap:4px;
+    flex-wrap:nowrap;
 
-    margin-top:7px;
+    align-items:center;
+
+    gap:
+        clamp(
+            3px,
+            .42vw,
+            5px
+        );
+
+    margin:0;
 }
 
 .badge{
     display:inline-flex;
 
     align-items:center;
+    justify-content:center;
 
     padding:
         2px
-        6px;
+        clamp(
+            4px,
+            .48vw,
+            6px
+        );
 
     border:
         1px solid
-        rgba(255,255,255,.48);
+        rgba(255,255,255,.50);
 
     border-radius:999px;
 
@@ -654,31 +724,37 @@ body{
 
     color:#ffffff;
 
-    font-size:clamp(
-        5px,
-        .62vw,
-        6.8px
-    );
+    font-size:
+        clamp(
+            4.7px,
+            .56vw,
+            6.2px
+        );
+
+    line-height:1.15;
 
     font-weight:900;
 
-    letter-spacing:.035em;
+    letter-spacing:.03em;
 
     text-transform:uppercase;
 
     white-space:nowrap;
 }
 
-.vf-copy .game-meta{
-    max-width:100%;
+.escape-copy .badge{
+    flex:0 0 auto;
 }
 
 .vf-copy .badge{
-    font-size:clamp(
-        4.8px,
-        .56vw,
-        6.2px
-    );
+    flex:0 0 auto;
+
+    font-size:
+        clamp(
+            4.5px,
+            .52vw,
+            5.8px
+        );
 }
 
 
@@ -713,27 +789,7 @@ body{
 }
 
 
-@media(max-width:650px){
 
-    .escape-copy,
-    .vf-copy{
-        top:69.0%;
-        height:15.8%;
-    }
-
-    .game-description{
-        font-size:clamp(6px,1vw,8px);
-        line-height:1.18;
-    }
-
-    .game-type{
-        font-size:clamp(5px,.75vw,7px);
-    }
-
-    .badge{
-        font-size:clamp(4.5px,.60vw,6px);
-    }
-}
 
 
 
