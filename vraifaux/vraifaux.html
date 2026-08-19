@@ -260,8 +260,7 @@ window.REBONDPLAY_ACCESS_READY =
 :root{
 
     --bg:#1b5f6e;
-    --game-bg:#9ecbd2;
-    --pattern:url("https://avantpost-cpu.github.io/rebondplay/motifs.jpg");
+    --pattern:url("../motifs.jpg");
 
     --ink:#ffffff;
     --muted:rgba(255,255,255,.78);
@@ -417,18 +416,6 @@ body{
 /* Aucune ombre portée pendant l'écran d'identification */
 .board:has(.registrationScreen:not([hidden])){
     box-shadow:none;
-}
-
-
-/* =========================================================
-   FOND DU JEU UNIQUEMENT
-   Le tapis est sombre : pendant les questions, le plateau
-   passe sur le bleu clair. Le reste du site conserve le
-   bleu classique avec le motif.
-========================================================= */
-
-.board.game-active{
-    background:var(--game-bg);
 }
 
 /* =========================================================
@@ -2796,16 +2783,9 @@ function setScreen(which){
     $("screen-intro").hidden =
         which !== "intro";
 
+
     $("screen-game").hidden =
         which !== "game";
-
-    document
-        .querySelector(".board")
-        ?.classList
-        .toggle(
-            "game-active",
-            which === "game"
-        );
 
 }
 
