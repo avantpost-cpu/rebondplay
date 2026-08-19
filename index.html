@@ -502,24 +502,38 @@ body{
 .game-link-zone{
     position:absolute;
 
-    z-index:5;
+    z-index:20;
 
-    top:45.6%;
+    top:45.5%;
 
-    width:44.0%;
-    height:40.9%;
+    height:41.0%;
 
     border-radius:22px;
+
+    cursor:pointer;
+
+    background:transparent;
+
+    -webkit-tap-highlight-color:transparent;
 }
 
 .escape-link-zone{
-    left:5.0%;
+    left:4.6%;
+    width:44.4%;
 }
 
 .vf-link-zone{
-    left:51.6%;
+    left:51.5%;
+    width:44.0%;
 }
 
+.game-link-zone:hover{
+    background:rgba(255,255,255,.035);
+}
+
+.game-link-zone:active{
+    background:rgba(0,0,0,.025);
+}
 
 /* =========================================================
    CONTENU DES CASES
@@ -542,22 +556,22 @@ body{
 /* ESCAPE */
 
 .escape-copy{
-    left:11.8%;
-    top:69.2%;
+    left:11.2%;
+    top:68.9%;
 
     width:34.8%;
-    height:15.4%;
+    height:14.3%;
 }
 
 
 /* VRAI / FAUX */
 
 .vf-copy{
-    left:59.8%;
-    top:69.2%;
+    left:70.4%;
+    top:58.0%;
 
-    width:34.6%;
-    height:15.4%;
+    width:22.7%;
+    height:24.8%;
 }
 
 
@@ -566,19 +580,13 @@ body{
 ========================================================= */
 
 .game-type{
-    margin-bottom:
-        clamp(
-            2px,
-            .28vw,
-            4px
-        );
+    margin-bottom:4px;
 
-    font-size:
-        clamp(
-            6.5px,
-            .78vw,
-            8.5px
-        );
+    font-size:clamp(
+        6px,
+        .78vw,
+        8.5px
+    );
 
     line-height:1;
 
@@ -588,7 +596,7 @@ body{
 
     text-transform:uppercase;
 
-    opacity:.75;
+    opacity:.82;
 }
 
 
@@ -597,14 +605,13 @@ body{
 ========================================================= */
 
 .game-description{
-    font-size:
-        clamp(
-            7.5px,
-            1.00vw,
-            10.5px
-        );
+    font-size:clamp(
+        7px,
+        .92vw,
+        10px
+    );
 
-    line-height:1.22;
+    line-height:1.24;
 
     font-weight:600;
 
@@ -622,19 +629,9 @@ body{
     display:flex;
     flex-wrap:wrap;
 
-    gap:
-        clamp(
-            2px,
-            .32vw,
-            4px
-        );
+    gap:4px;
 
-    margin-top:
-        clamp(
-            3px,
-            .40vw,
-            5px
-        );
+    margin-top:7px;
 }
 
 .badge{
@@ -643,114 +640,45 @@ body{
     align-items:center;
 
     padding:
-        clamp(1px,.18vw,2px)
-        clamp(4px,.42vw,6px);
+        2px
+        6px;
 
     border:
         1px solid
-        rgba(255,255,255,.45);
+        rgba(255,255,255,.48);
 
     border-radius:999px;
 
     background:
-        rgba(255,255,255,.12);
+        rgba(255,255,255,.10);
 
     color:#ffffff;
 
-    font-size:
-        clamp(
-            5px,
-            .64vw,
-            7px
-        );
+    font-size:clamp(
+        5px,
+        .62vw,
+        6.8px
+    );
 
     font-weight:900;
 
-    letter-spacing:.04em;
+    letter-spacing:.035em;
 
     text-transform:uppercase;
 
     white-space:nowrap;
 }
 
-
-/* =========================================================
-   BOUTONS
-========================================================= */
-
-.play{
-    margin-top:auto;
-
-    width:max-content;
+.vf-copy .game-meta{
     max-width:100%;
-
-    display:inline-flex;
-
-    align-items:center;
-    justify-content:center;
-
-    min-height:
-        clamp(
-            20px,
-            2.7vw,
-            27px
-        );
-
-    padding:
-        3px
-        clamp(
-            7px,
-            .8vw,
-            10px
-        );
-
-    border-radius:7px;
-
-    background:#ffffff;
-
-    color:#155f72;
-
-    text-decoration:none;
-
-    font-size:
-        clamp(
-            5.8px,
-            .72vw,
-            8px
-        );
-
-    font-weight:900;
-
-    letter-spacing:.06em;
-
-    text-transform:uppercase;
-
-    box-shadow:
-        0 3px 8px
-        rgba(0,0,0,.14);
-
-    pointer-events:auto;
-
-    transition:
-        transform .15s ease,
-        background .15s ease;
 }
 
-.vf-copy .play{
-    color:#c74616;
-}
-
-.play::after{
-    content:"→";
-
-    margin-left:6px;
-
-    font-size:1.25em;
-}
-
-.play:hover{
-    transform:translateY(-2px);
-    background:#f7f7f5;
+.vf-copy .badge{
+    font-size:clamp(
+        4.8px,
+        .56vw,
+        6.2px
+    );
 }
 
 
@@ -805,13 +733,40 @@ body{
     .badge{
         font-size:clamp(4.5px,.60vw,6px);
     }
-
-    .play{
-        min-height:18px;
-        font-size:clamp(5px,.65vw,7px);
-    }
 }
 
+
+
+@media(max-width:650px){
+
+    .escape-copy{
+        left:11.0%;
+        top:68.8%;
+        width:35.2%;
+        height:14.5%;
+    }
+
+    .vf-copy{
+        left:69.8%;
+        top:57.7%;
+        width:23.2%;
+        height:25.2%;
+    }
+
+    .game-description{
+        font-size:clamp(5.8px,.92vw,8px);
+        line-height:1.18;
+    }
+
+    .game-type{
+        font-size:clamp(5px,.72vw,7px);
+    }
+
+    .badge{
+        padding:1px 4px;
+        font-size:clamp(4px,.54vw,5.5px);
+    }
+}
 
 @media(max-width:470px){
 
@@ -826,11 +781,6 @@ body{
 
     .badge{
         padding:1px 3px;
-    }
-
-    .play{
-        border-radius:4px;
-        padding:3px 5px;
     }
 
 }
@@ -1021,13 +971,6 @@ body{
 
             </div>
 
-            <a
-                class="play"
-                href="/escapegame/"
-            >
-                Lancer l’Escape Game
-            </a>
-
         </section>
 
 
@@ -1066,13 +1009,6 @@ body{
                 </span>
 
             </div>
-
-            <a
-                class="play"
-                href="/vraifaux/vraifaux.html"
-            >
-                Lancer le Vrai / Faux
-            </a>
 
         </section>
 
