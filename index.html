@@ -54,7 +54,7 @@ body{
 
 
 /* =========================================================
-   ÉCRAN CODE
+   ÉCRAN CODE — GABARIT popup1.png
 ========================================================= */
 
 .access-screen{
@@ -67,133 +67,232 @@ body{
     align-items:center;
     justify-content:center;
 
-    padding:24px;
+    padding:10px;
 
     background:#1b5f6e;
+
+    overflow:auto;
 }
+
+/*
+   popup1.png mesure 2048 × 1763.
+   On conserve exactement ce ratio afin que les zones HTML
+   restent calées sur les éléments dessinés dans l'image.
+*/
 
 .access-box{
-    width:min(520px,100%);
+    position:relative;
 
-    padding:34px;
+    width:min(
+        1100px,
+        calc(100vw - 20px)
+    );
 
-    border-radius:24px;
+    aspect-ratio:2048 / 1763;
 
-    background:rgba(255,255,255,.10);
+    flex:0 0 auto;
 
-    border:1px solid rgba(255,255,255,.26);
+    padding:0;
 
-    box-shadow:
-        0 20px 50px
-        rgba(0,0,0,.25);
+    border:0;
+    border-radius:0;
 
-    text-align:center;
+    background:transparent;
 
-    backdrop-filter:blur(6px);
+    box-shadow:none;
+
+    text-align:left;
+
+    backdrop-filter:none;
 }
 
-.access-logo{
-    width:190px;
-    max-width:70%;
+.access-background{
+    position:absolute;
+    inset:0;
 
-    height:auto;
+    display:block;
 
-    margin-bottom:24px;
+    width:100%;
+    height:100%;
+
+    object-fit:contain;
+
+    pointer-events:none;
+
+    user-select:none;
+    -webkit-user-drag:none;
 }
 
-.access-box h1{
-    font-size:28px;
-    margin-bottom:10px;
-}
+/*
+   CHAMP CODE
 
-.access-box p{
-    font-size:14px;
-    line-height:1.5;
-
-    color:rgba(255,255,255,.78);
-
-    margin-bottom:22px;
-}
+   Calé sur le grand rectangle blanc de popup1.png.
+*/
 
 .access-box input{
-    width:100%;
-    min-height:52px;
+    position:absolute;
 
-    padding:12px 14px;
+    left:23.3%;
+    top:45.1%;
 
-    border:1px solid rgba(255,255,255,.30);
-    border-radius:12px;
+    width:53.4%;
+    height:7.5%;
 
-    background:rgba(255,255,255,.10);
+    min-height:0;
 
-    color:#ffffff;
+    margin:0;
+    padding:0 3%;
 
-    font-size:17px;
+    border:0;
+    border-radius:0;
+
+    outline:none;
+
+    background:transparent;
+
+    color:#155f72;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    font-size:
+        clamp(
+            14px,
+            2vw,
+            25px
+        );
+
+    font-weight:700;
 
     text-align:center;
     text-transform:uppercase;
 
     letter-spacing:.08em;
-
-    outline:none;
 }
 
 .access-box input::placeholder{
-    color:rgba(255,255,255,.48);
+    color:rgba(21,95,114,.38);
 }
 
 .access-box input:focus{
-    border-color:#ffffff;
-    background:rgba(255,255,255,.14);
+    border:0;
+    background:rgba(255,255,255,.08);
+
+    box-shadow:
+        inset 0 0 0 2px
+        rgba(21,95,114,.16);
 }
 
-.access-button{
-    width:100%;
-    min-height:52px;
+/*
+   BOUTON
 
-    margin-top:14px;
+   L'image contient déjà le bouton orange et son texte.
+   Le bouton HTML devient donc une zone cliquable transparente.
+*/
+
+.access-button{
+    position:absolute;
+
+    left:31.8%;
+    top:55.0%;
+
+    width:38.5%;
+    height:8.6%;
+
+    min-height:0;
+
+    margin:0;
+    padding:0;
 
     border:0;
-    border-radius:12px;
+    border-radius:999px;
 
-    background:var(--yellow);
+    background:transparent;
 
-    color:#ffffff;
+    color:transparent;
 
-    font-size:13px;
-    font-weight:900;
-
-    text-transform:uppercase;
-    letter-spacing:.07em;
+    font-size:0;
 
     cursor:pointer;
+
+    -webkit-tap-highlight-color:transparent;
+}
+
+.access-button:hover{
+    background:rgba(255,255,255,.07);
+}
+
+.access-button:active{
+    background:rgba(0,0,0,.05);
+
+    transform:scale(.994);
 }
 
 .access-button:disabled{
     opacity:.55;
+
     cursor:wait;
 }
 
+/*
+   Message d'erreur.
+   Il est placé sous le bouton sans modifier le visuel.
+*/
+
 .access-error{
+    position:absolute;
+
+    left:27%;
+    top:65.5%;
+
+    width:46%;
+
     display:none;
 
-    margin-top:14px;
-
-    padding:10px;
+    padding:8px 12px;
 
     border-radius:9px;
 
-    background:rgba(192,57,43,.88);
+    background:rgba(192,57,43,.90);
 
     color:#ffffff;
 
-    font-size:13px;
+    font-size:
+        clamp(
+            9px,
+            1.1vw,
+            13px
+        );
+
+    line-height:1.3;
+
+    text-align:center;
 }
 
 .access-error.show{
     display:block;
 }
 
+
+/* =========================================================
+   RESPONSIVE ÉCRAN CODE
+========================================================= */
+
+@media(max-width:650px){
+
+    .access-screen{
+        align-items:flex-start;
+
+        padding-top:6px;
+    }
+
+    .access-box{
+        width:calc(100vw - 12px);
+    }
+
+}
 
 /* =========================================================
    PORTAIL
@@ -698,25 +797,36 @@ body{
     >
 
         <img
-            class="access-logo"
-            src="https://avantpost-cpu.github.io/depot-quiz/cartes/logo.png"
-            alt="Rebond"
+            class="access-background"
+            src="popup1.png"
+            alt="Bienvenue sur RebondPlay. Entrez le code d'accès associé à votre abonnement."
+            draggable="false"
         >
 
-        <h1>
-            Bienvenue sur RebondPlay
-        </h1>
-
-        <p>
-            Entre le code d’accès associé à ton abonnement
-            pour accéder aux outils.
-        </p>
+        <label
+            for="accessCode"
+            style="
+                position:absolute;
+                width:1px;
+                height:1px;
+                padding:0;
+                margin:-1px;
+                overflow:hidden;
+                clip:rect(0,0,0,0);
+                white-space:nowrap;
+                border:0;
+            "
+        >
+            Code d'accès
+        </label>
 
         <input
             type="text"
             id="accessCode"
-            placeholder="Code d’accès"
+            placeholder=""
             autocomplete="off"
+            autocapitalize="characters"
+            spellcheck="false"
             required
         >
 
@@ -724,6 +834,7 @@ body{
             class="access-button"
             id="accessButton"
             type="submit"
+            aria-label="Valider le code d'accès et accéder aux outils"
         >
             Accéder aux outils
         </button>
