@@ -259,7 +259,9 @@ window.REBONDPLAY_ACCESS_READY =
 
 :root{
 
-    --bg:#9ecbd2;
+    --bg:#1b5f6e;
+    --game-bg:#9ecbd2;
+    --pattern:url("https://avantpost-cpu.github.io/depot-quiz/cartes/motifs.jpg");
 
     --ink:#ffffff;
     --muted:rgba(255,255,255,.78);
@@ -340,7 +342,10 @@ body{
         Helvetica,
         Arial;
 
-    background:var(--bg);
+    background-color:var(--bg);
+    background-image:var(--pattern);
+    background-repeat:repeat;
+    background-size:870px auto;
 
     color:var(--ink);
 
@@ -414,6 +419,18 @@ body{
     box-shadow:none;
 }
 
+
+/* =========================================================
+   FOND DU JEU UNIQUEMENT
+   Le tapis est sombre : pendant les questions, le plateau
+   passe sur le bleu clair. Le reste du site conserve le
+   bleu classique avec le motif.
+========================================================= */
+
+.board.game-active{
+    background:var(--game-bg);
+}
+
 /* =========================================================
    IDENTIFICATION — acces1.png À 50 % EXACTS
 ========================================================= */
@@ -435,7 +452,10 @@ body{
 
     padding:0;
 
-    background:#9ecbd2;
+    background-color:var(--bg);
+    background-image:var(--pattern);
+    background-repeat:repeat;
+    background-size:870px auto;
 
     overflow:hidden;
 }
@@ -2776,9 +2796,16 @@ function setScreen(which){
     $("screen-intro").hidden =
         which !== "intro";
 
-
     $("screen-game").hidden =
         which !== "game";
+
+    document
+        .querySelector(".board")
+        ?.classList
+        .toggle(
+            "game-active",
+            which === "game"
+        );
 
 }
 
