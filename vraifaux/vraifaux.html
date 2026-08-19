@@ -408,6 +408,12 @@ body{
 
 
 
+
+/* Aucune ombre portée pendant l'écran d'identification */
+.board:has(.registrationScreen:not([hidden])){
+    box-shadow:none;
+}
+
 /* =========================================================
    IDENTIFICATION — acces1.png À 50 % EXACTS
 ========================================================= */
