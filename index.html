@@ -490,7 +490,7 @@ body{
     top:45.6%;
 
     width:44.0%;
-    height:40.8%;
+    height:40.9%;
 
     border-radius:22px;
 }
@@ -500,7 +500,7 @@ body{
 }
 
 .vf-link-zone{
-    left:51.7%;
+    left:51.6%;
 }
 
 
@@ -525,22 +525,22 @@ body{
 /* ESCAPE */
 
 .escape-copy{
-    left:8.5%;
-    top:77.7%;
+    left:11.8%;
+    top:69.2%;
 
-    width:37.0%;
-    height:12.6%;
+    width:34.8%;
+    height:15.4%;
 }
 
 
 /* VRAI / FAUX */
 
 .vf-copy{
-    left:61.0%;
-    top:77.7%;
+    left:59.8%;
+    top:69.2%;
 
-    width:34.5%;
-    height:12.6%;
+    width:34.6%;
+    height:15.4%;
 }
 
 
@@ -552,15 +552,15 @@ body{
     margin-bottom:
         clamp(
             2px,
-            .30vw,
+            .28vw,
             4px
         );
 
     font-size:
         clamp(
             6.5px,
-            .86vw,
-            9px
+            .78vw,
+            8.5px
         );
 
     line-height:1;
@@ -583,11 +583,11 @@ body{
     font-size:
         clamp(
             7.5px,
-            1.02vw,
-            11px
+            1.00vw,
+            10.5px
         );
 
-    line-height:1.18;
+    line-height:1.22;
 
     font-weight:600;
 
@@ -607,15 +607,15 @@ body{
 
     gap:
         clamp(
-            3px,
-            .45vw,
-            6px
+            2px,
+            .32vw,
+            4px
         );
 
     margin-top:
         clamp(
             3px,
-            .42vw,
+            .40vw,
             5px
         );
 }
@@ -626,8 +626,8 @@ body{
     align-items:center;
 
     padding:
-        clamp(1px,.20vw,2px)
-        clamp(4px,.45vw,6px);
+        clamp(1px,.18vw,2px)
+        clamp(4px,.42vw,6px);
 
     border:
         1px solid
@@ -642,9 +642,9 @@ body{
 
     font-size:
         clamp(
-            5.5px,
-            .68vw,
-            7.5px
+            5px,
+            .64vw,
+            7px
         );
 
     font-weight:900;
@@ -676,14 +676,14 @@ body{
         clamp(
             20px,
             2.7vw,
-            28px
+            27px
         );
 
     padding:
         3px
         clamp(
             7px,
-            .85vw,
+            .8vw,
             10px
         );
 
@@ -765,6 +765,34 @@ body{
         padding:5px 7px;
     }
 
+}
+
+
+@media(max-width:650px){
+
+    .escape-copy,
+    .vf-copy{
+        top:69.0%;
+        height:15.8%;
+    }
+
+    .game-description{
+        font-size:clamp(6px,1vw,8px);
+        line-height:1.18;
+    }
+
+    .game-type{
+        font-size:clamp(5px,.75vw,7px);
+    }
+
+    .badge{
+        font-size:clamp(4.5px,.60vw,6px);
+    }
+
+    .play{
+        min-height:18px;
+        font-size:clamp(5px,.65vw,7px);
+    }
 }
 
 
