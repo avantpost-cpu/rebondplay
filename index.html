@@ -537,7 +537,7 @@ body{
 
 /* =========================================================
    CONTENU DES CASES
-   Calage d'après les zones vertes fournies.
+   Calage précis d'après le dernier modèle vert fourni.
 ========================================================= */
 
 .game-copy{
@@ -553,47 +553,132 @@ body{
 
 /* =========================================================
    ESCAPE GAME
-   La zone de texte est à droite du titre/illustration.
-   Les badges sont alignés en bas de la carte.
+   Carte : x 4,6% / y 45,6% / l 44,1% / h 40,8%
+   Grand rectangle vert : partie haute droite
+   Ligne verte : domaines abordés en bas
 ========================================================= */
 
 .escape-copy{
     left:4.6%;
-    top:45.5%;
+    top:45.6%;
 
-    width:44.4%;
-    height:41.0%;
+    width:44.1%;
+    height:40.8%;
 }
 
 .escape-copy .game-type{
-    margin:0;
+    position:absolute;
 
+    left:56.4%;
+    top:8.0%;
+
+    width:37.4%;
+
+    margin:0;
+}
+
+.escape-copy .game-description{
+    position:absolute;
+
+    left:56.4%;
+    top:18.0%;
+
+    width:37.4%;
+
+    margin:0;
+}
+
+.escape-copy .game-meta{
+    position:absolute;
+
+    left:6.4%;
+    top:85.9%;
+
+    width:87.9%;
+    height:6.5%;
+
+    margin:0;
+}
+
+
+/* =========================================================
+   VRAI / FAUX
+   Grand rectangle vert : partie haute droite
+   Ligne verte : domaines abordés en bas
+========================================================= */
+
+.vf-copy{
+    left:51.6%;
+    top:45.6%;
+
+    width:44.1%;
+    height:40.8%;
+}
+
+.vf-copy .game-type{
+    position:absolute;
+
+    left:53.1%;
+    top:8.0%;
+
+    width:39.2%;
+
+    margin:0;
+}
+
+.vf-copy .game-description{
+    position:absolute;
+
+    left:53.1%;
+    top:18.0%;
+
+    width:39.2%;
+
+    margin:0;
+}
+
+.vf-copy .game-meta{
+    position:absolute;
+
+    left:5.6%;
+    top:85.9%;
+
+    width:86.9%;
+    height:6.5%;
+
+    margin:0;
+}
+
+
+/* =========================================================
+   TYPOGRAPHIE — HARMONISÉE
+========================================================= */
+
+.game-type{
     font-size:
         clamp(
             8px,
-            .96vw,
-            10.5px
+            .92vw,
+            10px
         );
 
     line-height:1.05;
 
     font-weight:900;
 
-    letter-spacing:.105em;
+    letter-spacing:.09em;
 
     text-transform:uppercase;
 
-    opacity:.92;
+    opacity:.94;
 }
 
-.escape-copy .game-description{
-    margin:0;
-
+.game-description{
     font-size:
         clamp(
-            8.8px,
-            1.08vw,
-            11.8px
+            9px,
+            1.02vw,
+            11px
         );
 
     line-height:1.24;
@@ -605,103 +690,9 @@ body{
         rgba(0,0,0,.14);
 }
 
-.escape-copy .game-meta{
-    position:absolute;
-
-    left:10.5%;
-    right:5.0%;
-    bottom:8.5%;
-}
-
 
 /* =========================================================
-   VRAI / FAUX
-   La zone de texte occupe la partie droite de la carte.
-   Les badges sont alignés en bas à droite.
-========================================================= */
-
-.vf-copy{
-    left:51.5%;
-    top:45.5%;
-
-    width:44.0%;
-    height:41.0%;
-}
-
-.vf-copy .game-type{
-    position:absolute;
-
-    left:53.0%;
-    top:9.4%;
-
-    width:43.2%;
-}
-
-.vf-copy .game-description{
-    position:absolute;
-
-    left:53.0%;
-    top:18.7%;
-
-    width:43.2%;
-}
-
-.vf-copy .game-meta{
-    position:absolute;
-
-    left:53.2%;
-    right:4.0%;
-    bottom:8.5%;
-}
-
-
-/* =========================================================
-   TYPO
-========================================================= */
-
-.game-type{
-    margin:0;
-
-    font-size:
-        clamp(
-            6px,
-            .76vw,
-            8.5px
-        );
-
-    line-height:1;
-
-    font-weight:900;
-
-    letter-spacing:.11em;
-
-    text-transform:uppercase;
-
-    opacity:.88;
-}
-
-.game-description{
-    margin:0;
-
-    font-size:
-        clamp(
-            6.8px,
-            .86vw,
-            9.3px
-        );
-
-    line-height:1.25;
-
-    font-weight:650;
-
-    text-shadow:
-        0 1px 2px
-        rgba(0,0,0,.14);
-}
-
-
-/* =========================================================
-   BADGES
+   DOMAINES ABORDÉS / BADGES
 ========================================================= */
 
 .game-meta{
@@ -711,14 +702,14 @@ body{
 
     align-items:center;
 
+    justify-content:flex-start;
+
     gap:
         clamp(
-            4px,
-            .50vw,
-            6px
+            3px,
+            .42vw,
+            5px
         );
-
-    margin:0;
 }
 
 .badge{
@@ -727,12 +718,14 @@ body{
     align-items:center;
     justify-content:center;
 
+    height:100%;
+
     padding:
-        3px
+        0
         clamp(
-            5px,
-            .58vw,
-            7px
+            4px,
+            .50vw,
+            6px
         );
 
     border:
@@ -748,27 +741,62 @@ body{
 
     font-size:
         clamp(
-            5.6px,
-            .68vw,
-            7.2px
+            5px,
+            .58vw,
+            6.4px
         );
 
-    line-height:1.15;
+    line-height:1;
 
     font-weight:900;
 
-    letter-spacing:.03em;
+    letter-spacing:.025em;
 
     text-transform:uppercase;
 
     white-space:nowrap;
 }
 
-.escape-copy .badge{
-    flex:0 0 auto;
+
+/* =========================================================
+   LA CARTE ENTIÈRE RESTE CLIQUABLE
+========================================================= */
+
+.game-link-zone{
+    position:absolute;
+
+    z-index:20;
+
+    top:45.6%;
+
+    height:40.8%;
+
+    border-radius:22px;
+
+    cursor:pointer;
+
+    background:transparent;
+
+    -webkit-tap-highlight-color:transparent;
 }
 
+.escape-link-zone{
+    left:4.6%;
+    width:44.1%;
+}
 
+.vf-link-zone{
+    left:51.6%;
+    width:44.1%;
+}
+
+.game-link-zone:hover{
+    background:rgba(255,255,255,.025);
+}
+
+.game-link-zone:active{
+    background:rgba(0,0,0,.025);
+}
 
 
 /* =========================================================
@@ -806,35 +834,42 @@ body{
 
 
 
+
+
+
 @media(max-width:650px){
 
-    .escape-copy{
-        left:11.0%;
-        top:68.8%;
-        width:35.2%;
-        height:14.5%;
-    }
-
-    .vf-copy{
-        left:69.8%;
-        top:57.7%;
-        width:23.2%;
-        height:25.2%;
+    .game-type{
+        font-size:
+            clamp(
+                5px,
+                .90vw,
+                7px
+            );
     }
 
     .game-description{
-        font-size:clamp(5.8px,.92vw,8px);
-        line-height:1.18;
-    }
+        font-size:
+            clamp(
+                5.6px,
+                .98vw,
+                8px
+            );
 
-    .game-type{
-        font-size:clamp(5px,.72vw,7px);
+        line-height:1.17;
     }
 
     .badge{
-        padding:1px 4px;
-        font-size:clamp(4px,.54vw,5.5px);
+        padding:0 3px;
+
+        font-size:
+            clamp(
+                3.8px,
+                .54vw,
+                5px
+            );
     }
+
 }
 
 @media(max-width:470px){
