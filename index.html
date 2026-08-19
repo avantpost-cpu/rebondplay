@@ -332,6 +332,9 @@ body{
     aspect-ratio:1000 / 717;
 
     flex:0 0 auto;
+
+    /* Espace réservé au bandeau de connexion au-dessus de l'image */
+    margin-top:42px;
 }
 
 .intro-image{
@@ -353,7 +356,7 @@ body{
 
 
 /* =========================================================
-   COMPTE CONNECTÉ
+   COMPTE CONNECTÉ — MODÈLE SUR FOND BLEU
 ========================================================= */
 
 .account{
@@ -361,46 +364,49 @@ body{
 
     z-index:30;
 
-    top:2.2%;
+    /*
+       Le compte est placé au-dessus de l'image,
+       directement sur le fond bleu de la page.
+    */
+    top:-38px;
     right:3.5%;
-
-    max-width:35%;
 
     display:flex;
     align-items:center;
 
-    gap:8px;
+    gap:10px;
 
-    padding:7px 9px 7px 11px;
+    padding:0;
 
-    border-radius:10px;
+    background:transparent;
 
-    background:rgba(255,255,255,.80);
+    color:#ffffff;
 
-    color:#15566a;
+    border:0;
+    border-radius:0;
 
-    box-shadow:
-        0 3px 10px
-        rgba(0,0,0,.10);
-
-    backdrop-filter:blur(5px);
+    box-shadow:none;
+    backdrop-filter:none;
 }
 
 .account-text{
     min-width:0;
+    text-align:left;
 }
 
 .account-name{
     font-size:
         clamp(
             9px,
-            1.15vw,
-            13px
+            1.05vw,
+            12px
         );
 
-    line-height:1.1;
+    line-height:1.08;
 
     font-weight:900;
+
+    color:#ffffff;
 
     white-space:nowrap;
 
@@ -413,49 +419,64 @@ body{
 
     font-size:
         clamp(
-            6px,
+            7px,
             .78vw,
             9px
         );
 
-    line-height:1.15;
+    line-height:1.05;
+
+    font-weight:500;
+
+    color:#ffffff;
 
     white-space:nowrap;
 
     overflow:hidden;
     text-overflow:ellipsis;
 
-    opacity:.72;
+    opacity:1;
 }
 
 .logout-button{
     flex:0 0 auto;
 
     border:0;
-    border-radius:7px;
+    border-radius:8px;
 
-    padding:6px 8px;
+    padding:
+        7px
+        11px;
 
-    background:#155f72;
+    background:#ff6f47;
 
     color:#ffffff;
 
     font-size:
         clamp(
-            6px,
-            .72vw,
-            8px
+            7px,
+            .78vw,
+            9px
         );
 
     font-weight:900;
 
-    letter-spacing:.05em;
+    letter-spacing:.03em;
 
     text-transform:uppercase;
 
     cursor:pointer;
+
+    box-shadow:none;
 }
 
+.logout-button:hover{
+    background:#f25f38;
+}
+
+.logout-button:active{
+    transform:translateY(1px);
+}
 
 /* =========================================================
    ZONES CLIQUABLES
@@ -727,21 +748,21 @@ body{
         padding-top:8px;
     }
 
+    .intro-board{
+        margin-top:40px;
+    }
+
     .account{
-        top:1.4%;
+        top:-34px;
         right:2%;
 
-        max-width:46%;
+        max-width:none;
 
-        padding:
-            5px
-            6px
-            5px
-            8px;
+        padding:0;
     }
 
     .logout-button{
-        padding:4px 5px;
+        padding:5px 7px;
     }
 
 }
