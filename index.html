@@ -1,33 +1,36 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
-
 <head>
 
 <meta charset="UTF-8">
 
 <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, viewport-fit=cover"
 >
 
-<title>RebondPlay</title>
+<meta
+  name="theme-color"
+  content="#f1f1ef"
+>
 
-
-<!-- =========================================================
-     SUPABASE
-========================================================= -->
+<title>RebondPlay — Outils de sensibilisation</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 
 <style>
 
 *{
-    box-sizing:border-box;
     margin:0;
     padding:0;
+    box-sizing:border-box;
 }
 
+:root{
+    --blue:#1b5f6e;
+    --yellow:#edb01a;
+    --white:#ffffff;
+}
 
 html,
 body{
@@ -35,9 +38,7 @@ body{
     min-height:100%;
 }
 
-
 body{
-
     min-height:100vh;
     min-height:100dvh;
 
@@ -46,59 +47,66 @@ body{
         Helvetica,
         sans-serif;
 
-    background:#9ecbd2;
+    background:#1b5f6e;
 
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    overflow:hidden;
+    color:#ffffff;
 }
 
 
 /* =========================================================
-   ÉCRANS
+   ÉCRAN CODE — GABARIT popup1.png
 ========================================================= */
 
-.screen{
-
+.access-screen{
     position:fixed;
     inset:0;
 
+    z-index:1000;
+
     display:flex;
     align-items:center;
     justify-content:center;
 
-    background:#9ecbd2;
+    padding:10px;
 
+    background:#1b5f6e;
+
+    overflow:auto;
 }
 
+/*
+   popup1.png mesure 2048 × 1763.
+   On conserve exactement ce ratio afin que les zones HTML
+   restent calées sur les éléments dessinés dans l'image.
+*/
 
-.screen[hidden]{
-    display:none !important;
-}
-
-
-/* =========================================================
-   ÉCRAN CODE D'ACCÈS
-========================================================= */
-
-.accessArt{
-
+.access-box{
     position:relative;
 
     width:min(
-        920px,
-        92vw
+        1100px,
+        calc(100vw - 20px)
     );
 
-    aspect-ratio:1400 / 1100;
+    aspect-ratio:2048 / 1763;
 
+    flex:0 0 auto;
+
+    padding:0;
+
+    border:0;
+    border-radius:0;
+
+    background:transparent;
+
+    box-shadow:none;
+
+    text-align:left;
+
+    backdrop-filter:none;
 }
 
-
-.accessArt img{
-
+.access-background{
     position:absolute;
     inset:0;
 
@@ -109,196 +117,224 @@ body{
 
     object-fit:contain;
 
-    user-select:none;
-    -webkit-user-drag:none;
-
     pointer-events:none;
 
+    user-select:none;
+    -webkit-user-drag:none;
 }
 
-
-/* =========================================================
+/*
    CHAMP CODE
-========================================================= */
 
-.codeInput{
+   Calé sur le grand rectangle blanc de popup1.png.
+*/
 
+.access-box input{
     position:absolute;
 
-    /*
-       Zone blanche de popup1.png
-    */
+    left:23.3%;
+    top:45.1%;
 
-    left:10.4%;
-    top:49.6%;
+    width:53.4%;
+    height:7.5%;
 
-    width:79.2%;
-    height:9.4%;
+    min-height:0;
+
+    margin:0;
+    padding:0 3%;
 
     border:0;
+    border-radius:0;
+
     outline:none;
 
     background:transparent;
 
     color:#155f72;
 
-    text-align:center;
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
-    font-size:clamp(
-        16px,
-        2vw,
-        27px
-    );
+    font-size:
+        clamp(
+            14px,
+            2vw,
+            25px
+        );
 
     font-weight:700;
 
+    text-align:center;
+    text-transform:uppercase;
+
     letter-spacing:.08em;
-
-    padding:0 20px;
-
-    border-radius:18px;
-
 }
 
-
-.codeInput:focus{
-
-    background:
-        rgba(
-            255,
-            255,
-            255,
-            .12
-        );
-
+.access-box input::placeholder{
+    color:rgba(21,95,114,.38);
 }
 
+.access-box input:focus{
+    border:0;
+    background:rgba(255,255,255,.08);
 
-/* =========================================================
-   BOUTON PARTEZ
-========================================================= */
+    box-shadow:
+        inset 0 0 0 2px
+        rgba(21,95,114,.16);
+}
 
-.accessButton{
+/*
+   BOUTON
 
+   L'image contient déjà le bouton orange et son texte.
+   Le bouton HTML devient donc une zone cliquable transparente.
+*/
+
+.access-button{
     position:absolute;
 
-    /*
-       Bouton orange déjà dessiné
-       dans popup1.png
-    */
+    left:31.8%;
+    top:55.0%;
 
-    left:23.5%;
-    top:62%;
+    width:38.5%;
+    height:8.6%;
 
-    width:55%;
-    height:11%;
+    min-height:0;
+
+    margin:0;
+    padding:0;
 
     border:0;
-
     border-radius:999px;
 
     background:transparent;
-
-    cursor:pointer;
 
     color:transparent;
 
     font-size:0;
 
+    cursor:pointer;
+
     -webkit-tap-highlight-color:transparent;
-
 }
 
-
-.accessButton:hover{
-
-    background:
-        rgba(
-            255,
-            255,
-            255,
-            .05
-        );
-
+.access-button:hover{
+    background:rgba(255,255,255,.07);
 }
 
+.access-button:active{
+    background:rgba(0,0,0,.05);
 
-.accessButton:active{
-
-    background:
-        rgba(
-            0,
-            0,
-            0,
-            .035
-        );
-
+    transform:scale(.994);
 }
 
+.access-button:disabled{
+    opacity:.55;
 
-/* =========================================================
-   ERREUR
-========================================================= */
+    cursor:wait;
+}
 
-.accessError{
+/*
+   Message d'erreur.
+   Il est placé sous le bouton sans modifier le visuel.
+*/
 
+.access-error{
     position:absolute;
 
-    left:18%;
-    right:18%;
+    left:27%;
+    top:65.5%;
 
-    top:59%;
+    width:46%;
 
     display:none;
 
-    padding:7px 10px;
+    padding:8px 12px;
 
-    border-radius:8px;
+    border-radius:9px;
 
-    background:
-        rgba(
-            192,
-            57,
-            43,
-            .94
-        );
+    background:rgba(192,57,43,.90);
 
     color:#ffffff;
 
+    font-size:
+        clamp(
+            9px,
+            1.1vw,
+            13px
+        );
+
+    line-height:1.3;
+
     text-align:center;
-
-    font-size:13px;
-
-    font-weight:700;
-
 }
 
-
-.accessError.show{
+.access-error.show{
     display:block;
 }
 
 
 /* =========================================================
-   PORTAIL DES OUTILS
+   RESPONSIVE ÉCRAN CODE
 ========================================================= */
 
-.portalArt{
+@media(max-width:650px){
 
+    .access-screen{
+        align-items:flex-start;
+
+        padding-top:6px;
+    }
+
+    .access-box{
+        width:calc(100vw - 12px);
+    }
+
+}
+
+/* =========================================================
+   PORTAIL
+========================================================= */
+
+.portal{
+    width:100%;
+
+    min-height:100vh;
+    min-height:100dvh;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:
+        calc(10px + env(safe-area-inset-top))
+        10px
+        calc(10px + env(safe-area-inset-bottom));
+
+    overflow:auto;
+}
+
+
+/* =========================================================
+   IMAGE / GABARIT
+========================================================= */
+
+.intro-board{
     position:relative;
 
     width:min(
         1000px,
-        96vw
+        calc(100vw - 20px)
     );
 
     aspect-ratio:1000 / 717;
 
+    flex:0 0 auto;
 }
 
-
-.portalImage{
-
+.intro-image{
     position:absolute;
     inset:0;
 
@@ -309,117 +345,374 @@ body{
 
     object-fit:contain;
 
-    user-select:none;
-    -webkit-user-drag:none;
-
     pointer-events:none;
 
+    user-select:none;
+    -webkit-user-drag:none;
 }
 
 
 /* =========================================================
-   NOM DE LA STRUCTURE CONNECTÉE
+   COMPTE CONNECTÉ
 ========================================================= */
 
-.connectedStructure{
-
+.account{
     position:absolute;
 
+    z-index:30;
+
     top:2.2%;
-    right:4%;
+    right:3.5%;
+
+    max-width:35%;
+
+    display:flex;
+    align-items:center;
+
+    gap:8px;
+
+    padding:7px 9px 7px 11px;
+
+    border-radius:10px;
+
+    background:rgba(255,255,255,.80);
+
+    color:#15566a;
+
+    box-shadow:
+        0 3px 10px
+        rgba(0,0,0,.10);
+
+    backdrop-filter:blur(5px);
+}
+
+.account-text{
+    min-width:0;
+}
+
+.account-name{
+    font-size:
+        clamp(
+            9px,
+            1.15vw,
+            13px
+        );
+
+    line-height:1.1;
+
+    font-weight:900;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.account-meta{
+    margin-top:2px;
+
+    font-size:
+        clamp(
+            6px,
+            .78vw,
+            9px
+        );
+
+    line-height:1.15;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+    text-overflow:ellipsis;
+
+    opacity:.72;
+}
+
+.logout-button{
+    flex:0 0 auto;
+
+    border:0;
+    border-radius:7px;
+
+    padding:6px 8px;
+
+    background:#155f72;
+
+    color:#ffffff;
+
+    font-size:
+        clamp(
+            6px,
+            .72vw,
+            8px
+        );
+
+    font-weight:900;
+
+    letter-spacing:.05em;
+
+    text-transform:uppercase;
+
+    cursor:pointer;
+}
+
+
+/* =========================================================
+   ZONES CLIQUABLES
+========================================================= */
+
+.game-link-zone{
+    position:absolute;
 
     z-index:5;
 
-    color:#155f72;
+    top:45.6%;
 
-    font-size:13px;
+    width:39.5%;
+    height:47.4%;
 
-    font-weight:700;
+    border-radius:22px;
+}
 
-    text-align:right;
+.escape-link-zone{
+    left:6.3%;
+}
 
-    background:
-        rgba(
-            255,
-            255,
-            255,
-            .75
-        );
-
-    padding:
-        7px
-        11px;
-
-    border-radius:999px;
-
+.vf-link-zone{
+    left:54.2%;
 }
 
 
 /* =========================================================
-   ZONES CLIQUABLES DES DEUX JEUX
+   CONTENU DES CASES
 ========================================================= */
 
-.toolLink{
-
+.game-copy{
     position:absolute;
 
-    display:block;
+    z-index:10;
 
-    z-index:3;
+    display:flex;
+    flex-direction:column;
 
-    background:transparent;
+    color:#ffffff;
 
-    border:0;
+    pointer-events:none;
+}
 
-    cursor:pointer;
+
+/* ESCAPE */
+
+.escape-copy{
+    left:9.4%;
+    top:66.3%;
+
+    width:33.4%;
+    height:23.5%;
+}
+
+
+/* VRAI / FAUX */
+
+.vf-copy{
+    left:57.3%;
+    top:66.3%;
+
+    width:33.4%;
+    height:23.5%;
+}
+
+
+/* =========================================================
+   TYPE
+========================================================= */
+
+.game-type{
+    margin-bottom:
+        clamp(
+            4px,
+            .55vw,
+            7px
+        );
+
+    font-size:
+        clamp(
+            7.5px,
+            1.02vw,
+            11px
+        );
+
+    line-height:1;
+
+    font-weight:900;
+
+    letter-spacing:.11em;
+
+    text-transform:uppercase;
+
+    opacity:.75;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+========================================================= */
+
+.game-description{
+    font-size:
+        clamp(
+            9px,
+            1.32vw,
+            14px
+        );
+
+    line-height:1.32;
+
+    font-weight:600;
+
+    text-shadow:
+        0 1px 2px
+        rgba(0,0,0,.14);
+}
+
+
+/* =========================================================
+   BADGES
+========================================================= */
+
+.game-meta{
+    display:flex;
+    flex-wrap:wrap;
+
+    gap:
+        clamp(
+            3px,
+            .45vw,
+            6px
+        );
+
+    margin-top:
+        clamp(
+            6px,
+            .8vw,
+            10px
+        );
+}
+
+.badge{
+    display:inline-flex;
+
+    align-items:center;
+
+    padding:
+        clamp(2px,.35vw,4px)
+        clamp(5px,.6vw,8px);
+
+    border:
+        1px solid
+        rgba(255,255,255,.45);
+
+    border-radius:999px;
+
+    background:
+        rgba(255,255,255,.12);
+
+    color:#ffffff;
+
+    font-size:
+        clamp(
+            6px,
+            .82vw,
+            9px
+        );
+
+    font-weight:900;
+
+    letter-spacing:.04em;
+
+    text-transform:uppercase;
+
+    white-space:nowrap;
+}
+
+
+/* =========================================================
+   BOUTONS
+========================================================= */
+
+.play{
+    margin-top:auto;
+
+    width:max-content;
+    max-width:100%;
+
+    display:inline-flex;
+
+    align-items:center;
+    justify-content:center;
+
+    min-height:
+        clamp(
+            24px,
+            3.5vw,
+            36px
+        );
+
+    padding:
+        5px
+        clamp(
+            9px,
+            1.15vw,
+            14px
+        );
+
+    border-radius:7px;
+
+    background:#ffffff;
+
+    color:#155f72;
 
     text-decoration:none;
 
-    -webkit-tap-highlight-color:transparent;
-
-}
-
-
-/*
-   CASE ESCAPE GAME
-*/
-
-.escapeLink{
-
-    left:6.4%;
-    top:45.7%;
-
-    width:39.5%;
-    height:46.5%;
-
-}
-
-
-/*
-   CASE VRAI / FAUX
-*/
-
-.vfLink{
-
-    left:54.2%;
-    top:45.7%;
-
-    width:39.5%;
-    height:46.5%;
-
-}
-
-
-.toolLink:hover{
-
-    background:
-        rgba(
-            255,
-            255,
-            255,
-            .04
+    font-size:
+        clamp(
+            6.5px,
+            .9vw,
+            10px
         );
 
+    font-weight:900;
+
+    letter-spacing:.06em;
+
+    text-transform:uppercase;
+
+    box-shadow:
+        0 3px 8px
+        rgba(0,0,0,.14);
+
+    pointer-events:auto;
+
+    transition:
+        transform .15s ease,
+        background .15s ease;
+}
+
+.vf-copy .play{
+    color:#c74616;
+}
+
+.play::after{
+    content:"→";
+
+    margin-left:6px;
+
+    font-size:1.25em;
+}
+
+.play:hover{
+    transform:translateY(-2px);
+    background:#f7f7f5;
 }
 
 
@@ -427,33 +720,58 @@ body{
    RESPONSIVE
 ========================================================= */
 
-@media(max-width:700px){
+@media(max-width:650px){
 
-    .accessArt{
-
-        width:96vw;
-
+    .portal{
+        align-items:flex-start;
+        padding-top:8px;
     }
 
+    .account{
+        top:1.4%;
+        right:2%;
 
-    .codeInput{
+        max-width:46%;
 
-        font-size:
-            clamp(
-                13px,
-                3vw,
-                20px
-            );
-
+        padding:
+            5px
+            6px
+            5px
+            8px;
     }
 
-
-    .connectedStructure{
-
-        font-size:10px;
-
+    .logout-button{
+        padding:4px 5px;
     }
 
+}
+
+
+@media(max-width:470px){
+
+    .game-description{
+        line-height:1.2;
+    }
+
+    .game-meta{
+        margin-top:3px;
+        gap:2px;
+    }
+
+    .badge{
+        padding:1px 3px;
+    }
+
+    .play{
+        border-radius:4px;
+        padding:3px 5px;
+    }
+
+}
+
+
+[hidden]{
+    display:none !important;
 }
 
 </style>
@@ -465,119 +783,246 @@ body{
 
 
 <!-- =========================================================
-     ÉCRAN 1
-     CODE GLOBAL REBONDPLAY
+     ACCÈS PAR CODE
 ========================================================= -->
 
 <section
-    class="screen"
+    class="access-screen"
     id="accessScreen"
 >
 
     <form
-        class="accessArt"
+        class="access-box"
         id="accessForm"
     >
 
         <img
+            class="access-background"
             src="popup1.png"
-            alt="Bienvenue sur RebondPlay. Entrez votre code d'accès."
+            alt="Bienvenue sur RebondPlay. Entrez le code d'accès associé à votre abonnement."
             draggable="false"
         >
 
+        <label
+            for="accessCode"
+            style="
+                position:absolute;
+                width:1px;
+                height:1px;
+                padding:0;
+                margin:-1px;
+                overflow:hidden;
+                clip:rect(0,0,0,0);
+                white-space:nowrap;
+                border:0;
+            "
+        >
+            Code d'accès
+        </label>
 
         <input
-            class="codeInput"
-            id="accessCode"
             type="text"
+            id="accessCode"
+            placeholder=""
             autocomplete="off"
             autocapitalize="characters"
             spellcheck="false"
-            aria-label="Code d'accès"
             required
         >
 
-
-        <div
-            class="accessError"
-            id="accessError"
-        ></div>
-
-
         <button
-            class="accessButton"
+            class="access-button"
             id="accessButton"
             type="submit"
-            aria-label="Accéder aux outils"
+            aria-label="Valider le code d'accès et accéder aux outils"
         >
-            Accéder
+            Accéder aux outils
         </button>
 
+        <div
+            class="access-error"
+            id="accessError"
+        ></div>
 
     </form>
 
 </section>
 
 
-
 <!-- =========================================================
-     ÉCRAN 2
-     CHOIX DES OUTILS
+     PORTAIL
 ========================================================= -->
 
-<section
-    class="screen"
-    id="portalScreen"
+<main
+    class="portal"
+    id="portal"
     hidden
 >
 
+    <div class="intro-board">
 
-    <div class="portalArt">
 
+        <!-- IMAGE -->
 
         <img
-            class="portalImage"
-            src="imageintro.jpg"
-            alt="RebondPlay — choisissez votre outil."
+            class="intro-image"
+            src="imageIntro.jpg"
+            alt="RebondPlay — Escape Game et Vrai ou Faux"
             draggable="false"
         >
 
 
-        <div
-            class="connectedStructure"
-            id="connectedStructure"
-        ></div>
+        <!-- COMPTE -->
+
+        <div class="account">
+
+            <div class="account-text">
+
+                <div
+                    class="account-name"
+                    id="accountName"
+                ></div>
+
+                <div
+                    class="account-meta"
+                    id="accountMeta"
+                ></div>
+
+            </div>
+
+            <button
+                class="logout-button"
+                id="logoutButton"
+                type="button"
+            >
+                Déconnexion
+            </button>
+
+        </div>
 
 
-        <!-- ESCAPE GAME -->
+        <!-- ZONE ESCAPE -->
 
         <a
-            class="toolLink escapeLink"
-            href="escape/"
-            aria-label="Accéder à l'Escape Game"
+            class="game-link-zone escape-link-zone"
+            href="/escapegame/"
+            aria-label="Lancer l'Escape Game"
         ></a>
 
 
-        <!-- VRAI / FAUX -->
+        <!-- ZONE VRAI FAUX -->
 
         <a
-            class="toolLink vfLink"
-            href="vraifaux/"
-            aria-label="Accéder au Vrai / Faux"
+            class="game-link-zone vf-link-zone"
+            href="/vraifaux/vraifaux.html"
+            aria-label="Lancer le Vrai ou Faux"
         ></a>
+
+
+        <!-- =================================================
+             ESCAPE GAME
+        ================================================== -->
+
+        <section class="game-copy escape-copy">
+
+            <div class="game-type">
+                Jeu d’enquête
+            </div>
+
+            <p class="game-description">
+
+                Un escape game de sensibilisation
+                à proposer aux jeunes pour aborder
+                la prévention des violences dans le sport
+                à travers des énigmes, des vidéos
+                et une aventure collective.
+
+            </p>
+
+            <div class="game-meta">
+
+                <span class="badge">
+                    Jeunes
+                </span>
+
+                <span class="badge">
+                    En équipe
+                </span>
+
+                <span class="badge">
+                    Animé par un encadrant
+                </span>
+
+            </div>
+
+            <a
+                class="play"
+                href="/escapegame/"
+            >
+                Lancer l’Escape Game
+            </a>
+
+        </section>
+
+
+        <!-- =================================================
+             VRAI / FAUX
+        ================================================== -->
+
+        <section class="game-copy vf-copy">
+
+            <div class="game-type">
+                Outil de sensibilisation
+            </div>
+
+            <p class="game-description">
+
+                Un quiz de 20 affirmations
+                pour questionner les idées reçues,
+                transmettre des repères essentiels
+                et ouvrir le dialogue autour
+                des violences dans le sport.
+
+            </p>
+
+            <div class="game-meta">
+
+                <span class="badge">
+                    20 questions
+                </span>
+
+                <span class="badge">
+                    Échanges
+                </span>
+
+                <span class="badge">
+                    Sensibilisation
+                </span>
+
+            </div>
+
+            <a
+                class="play"
+                href="/vraifaux/vraifaux.html"
+            >
+                Lancer le Vrai / Faux
+            </a>
+
+        </section>
 
 
     </div>
 
-
-</section>
-
+</main>
 
 
 <script>
 
+(() => {
+
+
 /* ============================================================
-   CONFIGURATION SUPABASE
+   SUPABASE
 ============================================================ */
 
 const SUPABASE_URL =
@@ -588,246 +1033,198 @@ const SUPABASE_KEY =
     "sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO";
 
 
-const supabaseClient =
+const client =
     window.supabase.createClient(
         SUPABASE_URL,
         SUPABASE_KEY
     );
 
 
+const $ =
+    id =>
+        document.getElementById(id);
+
 
 /* ============================================================
-   STOCKAGE REBONDPLAY
+   SESSION
 ============================================================ */
 
 const STORAGE_OK =
     "rebondplay_access_ok";
 
-
-const STORAGE_CODE =
-    "rebondplay_code";
-
-
 const STORAGE_ABONNEMENT =
     "rebondplay_abonnement_id";
-
 
 const STORAGE_STRUCTURE =
     "rebondplay_nom_structure";
 
+const STORAGE_CODE =
+    "rebondplay_code";
 
 const STORAGE_DATE_FIN =
     "rebondplay_date_fin";
 
+const STORAGE_PRENOM =
+    "rebondplay_prenom_contact";
+
+const STORAGE_NOM =
+    "rebondplay_nom_contact";
 
 
 /* ============================================================
-   ÉLÉMENTS
+   DATE
 ============================================================ */
 
-const accessScreen =
-    document.getElementById(
-        "accessScreen"
-    );
+function formatDate(value){
+
+    if(!value){
+        return "";
+    }
 
 
-const portalScreen =
-    document.getElementById(
-        "portalScreen"
-    );
+    try{
 
+        return new Intl.DateTimeFormat(
+            "fr-FR",
+            {
+                dateStyle:"long"
+            }
+        )
+        .format(
+            new Date(
+                value +
+                "T12:00:00"
+            )
+        );
 
-const accessForm =
-    document.getElementById(
-        "accessForm"
-    );
+    }catch{
 
+        return value;
 
-const accessCode =
-    document.getElementById(
-        "accessCode"
-    );
+    }
 
-
-const accessButton =
-    document.getElementById(
-        "accessButton"
-    );
-
-
-const accessError =
-    document.getElementById(
-        "accessError"
-    );
-
-
-const connectedStructure =
-    document.getElementById(
-        "connectedStructure"
-    );
-
+}
 
 
 /* ============================================================
-   AFFICHER LE PORTAIL
+   COMPTE
 ============================================================ */
 
-function afficherPortail(
-    nomStructure
-){
+function renderAccount(){
 
-    accessScreen.hidden =
+    const prenom =
+        sessionStorage.getItem(
+            STORAGE_PRENOM
+        ) || "";
+
+
+    const nom =
+        sessionStorage.getItem(
+            STORAGE_NOM
+        ) || "";
+
+
+    const structure =
+        sessionStorage.getItem(
+            STORAGE_STRUCTURE
+        ) || "";
+
+
+    const dateFin =
+        sessionStorage.getItem(
+            STORAGE_DATE_FIN
+        ) || "";
+
+
+    const fullName =
+        [
+            prenom,
+            nom
+        ]
+        .filter(Boolean)
+        .join(" ");
+
+
+    $("accountName").textContent =
+        fullName
+        ?
+        `Bonjour ${fullName}`
+        :
+        "Bienvenue";
+
+
+    const meta = [];
+
+
+    if(structure){
+
+        meta.push(
+            structure
+        );
+
+    }
+
+
+    if(dateFin){
+
+        meta.push(
+            "actif jusqu’au " +
+            formatDate(
+                dateFin
+            )
+        );
+
+    }
+
+
+    $("accountMeta").textContent =
+        meta.join(
+            " · "
+        );
+
+}
+
+
+/* ============================================================
+   PORTAIL
+============================================================ */
+
+function showPortal(){
+
+    $("accessScreen").hidden =
         true;
 
 
-    portalScreen.hidden =
+    $("portal").hidden =
         false;
 
 
-    if(nomStructure){
-
-        connectedStructure.textContent =
-            nomStructure;
-
-    }else{
-
-        connectedStructure.textContent =
-            "";
-
-    }
+    renderAccount();
 
 }
 
 
-
 /* ============================================================
-   EFFACER UNE SESSION INVALIDE
+   SESSION DÉJÀ VALIDÉE
 ============================================================ */
 
-function effacerSession(){
-
-    sessionStorage.removeItem(
+if(
+    sessionStorage.getItem(
         STORAGE_OK
-    );
-
-
-    sessionStorage.removeItem(
-        STORAGE_CODE
-    );
-
-
-    sessionStorage.removeItem(
-        STORAGE_ABONNEMENT
-    );
-
-
-    sessionStorage.removeItem(
-        STORAGE_STRUCTURE
-    );
-
-
-    sessionStorage.removeItem(
-        STORAGE_DATE_FIN
-    );
-
-}
-
-
-
-/* ============================================================
-   ENREGISTRER UNE SESSION VALIDE
-============================================================ */
-
-function enregistrerSession(
-    code,
-    abonnement
+    ) === "1"
 ){
 
-    sessionStorage.setItem(
-        STORAGE_OK,
-        "1"
-    );
-
-
-    sessionStorage.setItem(
-        STORAGE_CODE,
-        code
-    );
-
-
-    sessionStorage.setItem(
-        STORAGE_ABONNEMENT,
-        abonnement.abonnement_id || ""
-    );
-
-
-    sessionStorage.setItem(
-        STORAGE_STRUCTURE,
-        abonnement.nom_structure || ""
-    );
-
-
-    sessionStorage.setItem(
-        STORAGE_DATE_FIN,
-        abonnement.date_fin || ""
-    );
+    showPortal();
 
 }
 
 
-
 /* ============================================================
-   VÉRIFIER UN CODE
+   VALIDATION DU CODE
 ============================================================ */
 
-async function verifierCode(
-    code
-){
-
-    const {
-        data,
-        error
-    } =
-    await supabaseClient.rpc(
-        "rp_verifier_code",
-        {
-            p_code:code
-        }
-    );
-
-
-    if(error){
-
-        throw error;
-
-    }
-
-
-    const abonnement =
-        data?.[0];
-
-
-    if(
-        !abonnement ||
-        abonnement.valide !== true
-    ){
-
-        return null;
-
-    }
-
-
-    return abonnement;
-
-}
-
-
-
-/* ============================================================
-   CONNEXION
-============================================================ */
-
-accessForm.addEventListener(
+$("accessForm")
+.addEventListener(
     "submit",
     async event => {
 
@@ -835,95 +1232,170 @@ accessForm.addEventListener(
         event.preventDefault();
 
 
-        accessError.classList.remove(
-            "show"
-        );
+        const code =
+            $("accessCode")
+            .value
+            .trim()
+            .toUpperCase();
 
 
-        accessError.textContent =
+        const button =
+            $("accessButton");
+
+
+        const errorBox =
+            $("accessError");
+
+
+        errorBox
+            .classList
+            .remove(
+                "show"
+            );
+
+
+        errorBox.textContent =
             "";
 
 
-        const code =
-            accessCode
-                .value
-                .trim()
-                .toUpperCase();
-
-
         if(!code){
+
+            errorBox.textContent =
+                "Merci de renseigner ton code d’accès.";
+
+
+            errorBox
+                .classList
+                .add(
+                    "show"
+                );
+
 
             return;
 
         }
 
 
-        accessButton.disabled =
+        button.disabled =
             true;
+
+
+        button.textContent =
+            "Vérification…";
 
 
         try{
 
 
-            const abonnement =
-                await verifierCode(
-                    code
-                );
+            const {
+                data,
+                error
+            } =
+            await client.rpc(
+                "rp_verifier_code",
+                {
+                    p_code:code
+                }
+            );
 
 
-            if(!abonnement){
+            if(error){
 
-                effacerSession();
-
-
-                accessError.textContent =
-                    "Code d’accès invalide ou abonnement expiré.";
-
-
-                accessError.classList.add(
-                    "show"
-                );
-
-
-                return;
+                throw error;
 
             }
 
 
-            enregistrerSession(
-                code,
-                abonnement
+            const result =
+                data?.[0];
+
+
+            if(
+                !result ||
+                result.valide !== true
+            ){
+
+                throw new Error(
+                    "Code invalide"
+                );
+
+            }
+
+
+            sessionStorage.setItem(
+                STORAGE_OK,
+                "1"
             );
 
 
-            afficherPortail(
-                abonnement.nom_structure
+            sessionStorage.setItem(
+                STORAGE_ABONNEMENT,
+                result.abonnement_id || ""
             );
+
+
+            sessionStorage.setItem(
+                STORAGE_STRUCTURE,
+                result.nom_structure || ""
+            );
+
+
+            sessionStorage.setItem(
+                STORAGE_CODE,
+                code
+            );
+
+
+            sessionStorage.setItem(
+                STORAGE_DATE_FIN,
+                result.date_fin || ""
+            );
+
+
+            sessionStorage.setItem(
+                STORAGE_PRENOM,
+                result.prenom_contact || ""
+            );
+
+
+            sessionStorage.setItem(
+                STORAGE_NOM,
+                result.nom_contact || ""
+            );
+
+
+            showPortal();
 
 
         }catch(error){
 
 
             console.error(
-                "Erreur RebondPlay :",
+                "Erreur validation code :",
                 error
             );
 
 
-            accessError.textContent =
-                "Impossible de vérifier le code. Merci de réessayer.";
+            errorBox.textContent =
+                "Code invalide, inactif ou arrivé à expiration.";
 
 
-            accessError.classList.add(
-                "show"
-            );
+            errorBox
+                .classList
+                .add(
+                    "show"
+                );
 
 
         }finally{
 
 
-            accessButton.disabled =
+            button.disabled =
                 false;
+
+
+            button.textContent =
+                "Accéder aux outils";
 
         }
 
@@ -932,115 +1404,73 @@ accessForm.addEventListener(
 );
 
 
-
 /* ============================================================
-   SESSION DÉJÀ OUVERTE
+   DÉCONNEXION
 ============================================================ */
 
-(async () => {
+$("logoutButton")
+.addEventListener(
+    "click",
+    () => {
 
 
-    const accesOK =
-        sessionStorage.getItem(
+        sessionStorage.removeItem(
             STORAGE_OK
         );
 
 
-    const code =
-        sessionStorage.getItem(
+        sessionStorage.removeItem(
+            STORAGE_ABONNEMENT
+        );
+
+
+        sessionStorage.removeItem(
+            STORAGE_STRUCTURE
+        );
+
+
+        sessionStorage.removeItem(
             STORAGE_CODE
         );
 
 
-    if(
-        accesOK !== "1" ||
-        !code
-    ){
+        sessionStorage.removeItem(
+            STORAGE_DATE_FIN
+        );
 
-        effacerSession();
 
-        accessScreen.hidden =
-            false;
+        sessionStorage.removeItem(
+            STORAGE_PRENOM
+        );
 
-        portalScreen.hidden =
+
+        sessionStorage.removeItem(
+            STORAGE_NOM
+        );
+
+
+        $("portal").hidden =
             true;
 
-        return;
 
-    }
-
-
-    /*
-       Même si une session existe,
-       on revérifie le code auprès de Supabase.
-    */
-
-    try{
-
-
-        const abonnement =
-            await verifierCode(
-                code
-            );
-
-
-        if(!abonnement){
-
-            effacerSession();
-
-            accessScreen.hidden =
-                false;
-
-            portalScreen.hidden =
-                true;
-
-            return;
-
-        }
-
-
-        enregistrerSession(
-            code,
-            abonnement
-        );
-
-
-        afficherPortail(
-            abonnement.nom_structure
-        );
-
-
-    }catch(error){
-
-
-        console.error(
-            "Vérification de session impossible :",
-            error
-        );
-
-
-        /*
-           En cas de problème réseau,
-           on revient proprement à l'écran du code
-           au lieu de créer une boucle de redirection.
-        */
-
-        effacerSession();
-
-        accessScreen.hidden =
+        $("accessScreen").hidden =
             false;
 
-        portalScreen.hidden =
-            true;
+
+        $("accessCode").value =
+            "";
+
+
+        $("accessCode").focus();
+
 
     }
+);
 
 
 })();
 
 </script>
 
-
 </body>
-
 </html>
