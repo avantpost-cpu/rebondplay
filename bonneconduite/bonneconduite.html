@@ -91,6 +91,27 @@
       touch-action:manipulation;
     }
 
+    .accountStatus{
+      position:fixed;
+      z-index:1000;
+      top:max(7px, env(safe-area-inset-top));
+      left:50%;
+      transform:translateX(-50%);
+      max-width:calc(100vw - 24px);
+      padding:7px 14px;
+      border:1px solid rgba(255,255,255,.42);
+      border-radius:999px;
+      background:rgba(27,95,110,.92);
+      color:#fff;
+      box-shadow:0 3px 10px rgba(0,0,0,.22);
+      font-size:12px;
+      font-weight:750;
+      line-height:1.2;
+      text-align:center;
+      white-space:nowrap;
+      pointer-events:none;
+    }
+
     .app{
       width:100vw;
       height:100dvh;
@@ -145,8 +166,8 @@
 
     .board{
       position:relative;
-      width:min(98vw, 1200px);
-      aspect-ratio:64 / 33;
+      width:min(98vw, 1400px, calc((100dvh - 48px) * 1701 / 1326));
+      aspect-ratio:1701 / 1326;
       background-image:url('Montage_format-64x33_Jeu-web.jpg');
       background-size:contain;
       background-position:center;
@@ -226,31 +247,31 @@
       background:rgba(255,255,255,.08);
     }
 
-    .drop-target[data-color="green"]{left:30%; top:25.8%; width:10%; height:28%;}
-    .drop-target[data-color="orange"]{left:46%; top:25.5%; width:10%; height:28%;}
-    .drop-target[data-color="red"]{left:62%; top:25.2%; width:10%; height:28%;}
+    .drop-target[data-color="green"]{left:21.3%; top:27.5%; width:12.8%; height:25.2%;}
+    .drop-target[data-color="orange"]{left:44.8%; top:27.5%; width:12.8%; height:25.2%;}
+    .drop-target[data-color="red"]{left:68.5%; top:27.2%; width:12.8%; height:25.2%;}
 
     .slot.good{
-      left:25.2%;
-      top:79.9%;
-      width:16.3%;
-      height:12.1%;
+      left:14.3%;
+      top:75.7%;
+      width:20.7%;
+      height:18.5%;
       z-index:4;
     }
 
     .slot.bad{
-      left:59.25%;
-      top:79.9%;
-      width:14.4%;
-      height:12.1%;
+      left:66.2%;
+      top:75.7%;
+      width:20.7%;
+      height:18.5%;
       z-index:2;
     }
 
     .deck-zone{
-      left:41.85%;
-      top:78.15%;
-      width:16.8%;
-      height:12.2%;
+      left:40.5%;
+      top:75.1%;
+      width:20.2%;
+      height:18.5%;
       z-index:25;
       display:flex;
       align-items:center;
@@ -414,7 +435,7 @@
       }
 
       .board{
-        width:min(100vw, 1200px);
+        width:min(100vw, 1400px, calc((100dvh - 44px) * 1701 / 1326));
       }
 
       .hud{
@@ -437,22 +458,22 @@
       }
 
       .slot.good{
-        left:25.45%;
-        top:79.45%;
-        width:16.2%;
-        height:12%;
+        left:14.3%;
+        top:75.7%;
+        width:20.7%;
+        height:18.5%;
       }
 
       .slot.bad{
-        left:59.15%;
-        top:79.45%;
-        width:14.4%;
-        height:12%;
+        left:66.2%;
+        top:75.7%;
+        width:20.7%;
+        height:18.5%;
       }
 
       .deck-zone{
-        top:77.82%;
-        height:12%;
+        top:75.1%;
+        height:18.5%;
       }
     }
 
@@ -462,7 +483,7 @@
       }
 
       .board{
-        width:min(100vw, calc(100dvh * (64 / 33)));
+        width:min(100vw, calc((100dvh - 40px) * 1701 / 1326));
         height:auto;
       }
 
@@ -486,17 +507,17 @@
       }
 
       .slot.good{
-        left:25.55%;
-        top:79.38%;
+        left:14.3%;
+        top:75.7%;
       }
 
       .slot.bad{
-        left:59.1%;
-        top:79.38%;
+        left:66.2%;
+        top:75.7%;
       }
 
       .deck-zone{
-        top:77.75%;
+        top:75.1%;
       }
     }
 
@@ -513,6 +534,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
 </head>
 <body>
+  <div class="accountStatus" id="accountStatus" role="status" aria-live="polite"></div>
   <div class="app" id="app">
     <div id="rotateNotice" class="rotate-notice">
       <div class="rotate-box">
@@ -621,16 +643,38 @@
     let bad = 0;
     let audioUnlocked = false;
 
+    function showAccountStatus(){
+      const firstName = (sessionStorage.getItem('rebondplay_prenom_contact') || '').trim();
+      const lastName = (sessionStorage.getItem('rebondplay_nom_contact') || '').trim();
+      const structure = (sessionStorage.getItem('rebondplay_nom_structure') || '').trim();
+      const fullName = [firstName, lastName].filter(Boolean).join(' ');
+      const identity = fullName || structure || 'Compte RebondPlay';
+      const endValue = sessionStorage.getItem('rebondplay_date_fin');
+      let subscription = 'abonnement actif';
+
+      if(endValue){
+        const endDate = new Date(endValue);
+        if(!Number.isNaN(endDate.getTime())){
+          endDate.setHours(23, 59, 59, 999);
+          const days = Math.max(0, Math.ceil((endDate.getTime() - Date.now()) / 86400000));
+          subscription = `il vous reste ${days} jour${days > 1 ? 's' : ''} d’abonnement`;
+        }
+      }
+
+      document.getElementById('accountStatus').textContent =
+        `Bonjour ${identity} — vous êtes bien connecté · ${subscription}`;
+    }
+
     function updateBoardScale(){
       const boardRect = board.getBoundingClientRect();
       const boardWidth = boardRect.width;
 
       const isMobile = window.innerWidth <= 900;
 
-      const cardRatio = isMobile ? 0.112 : 0.105;
+      const cardRatio = isMobile ? 0.14 : 0.15;
       const deckRatio = isMobile ? 0.123 : 0.118;
 
-      const cardW = Math.max(isMobile ? 86 : 92, Math.min(boardWidth * cardRatio, isMobile ? 172 : 180));
+      const cardW = Math.max(isMobile ? 105 : 120, Math.min(boardWidth * cardRatio, isMobile ? 190 : 230));
       const deckW = Math.max(isMobile ? 94 : 100, Math.min(boardWidth * deckRatio, isMobile ? 205 : 220));
 
       root.style.setProperty('--card-w', `${cardW}px`);
@@ -1059,6 +1103,7 @@
     window.addEventListener('touchstart', unlockAudio, { once:true });
     window.addEventListener('click', unlockAudio, { once:true });
 
+    showAccountStatus();
     resetGame();
   </script>
 </body>
