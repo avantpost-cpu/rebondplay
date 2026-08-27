@@ -184,10 +184,6 @@
     }
 
     #currentCard:active { cursor: grabbing; }
-    #currentCard.waiting {
-      opacity:.32;
-      pointer-events:none;
-    }
     #currentCard.dragging {
       z-index: 100;
       transition: none;
@@ -332,7 +328,6 @@
       let locked = false;
       let drag = null;
       let card = null;
-      const preloadedCards = [];
 
       function playSound(audio) {
         audio.pause();
@@ -347,14 +342,6 @@
           [list[i], list[j]] = [list[j], list[i]];
         }
         return list;
-      };
-
-      const preload = () => {
-        for (let i = 1; i <= 60; i++) {
-          const image = new Image();
-          image.src = `questions/carte_VFP_${i}.jpg`;
-          preloadedCards.push(image);
-        }
       };
 
       function beginGame() {
@@ -382,8 +369,14 @@
         nextCard.id = "currentCard";
         nextCard.alt = `Carte ${index + 1} sur 60`;
         nextCard.draggable = false;
+        nextCard.decoding = "async";
+        nextCard.fetchPriority = "high";
+
+        let activated = false;
 
         const activateNextCard = () => {
+          if (activated) return;
+          activated = true;
           if (card) card.remove();
           deck.insertBefore(nextCard, counter);
           card = nextCard;
@@ -398,6 +391,11 @@
           nextCard.src = `${nextSource}?reload=${Date.now()}`;
         }, { once:true });
         nextCard.src = nextSource;
+
+        /* Certains navigateurs ne renvoient pas load pour une image déjà en cache. */
+        if (nextCard.complete && nextCard.naturalWidth > 0) {
+          activateNextCard();
+        }
       }
 
       function chosenZone(answer) { return answer ? trueZone : falseZone; }
@@ -424,7 +422,7 @@
         index++;
         if (index >= order.length) finish();
         else {
-          card.classList.add("waiting");
+          counter.textContent = "Chargement…";
           showCard();
         }
 
@@ -515,7 +513,6 @@
       video.addEventListener("ended", beginGame, { once: true });
       video.addEventListener("error", beginGame, { once: true });
       video.play().catch(() => { startButton.hidden = false; });
-      preload();
     })();
   </script>
 </body>
