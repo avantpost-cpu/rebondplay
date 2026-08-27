@@ -292,7 +292,7 @@
     <audio id="soundOK" src="sonok.mp3" preload="auto"></audio>
     <audio id="soundWrong" src="sonfaux.mp3" preload="auto"></audio>
     <audio id="backgroundMusic" src="loop.mp3" preload="auto" loop></audio>
-    <audio id="introSound" src="intro.mp3" preload="auto"></audio>
+    <audio id="instructionSound" src="consigne.mp3" preload="auto"></audio>
 
     <button class="startButton" id="startButton" type="button" hidden>Lancer le jeu avec le son</button>
   </main>
@@ -324,10 +324,10 @@
       const soundOK = $("soundOK");
       const soundWrong = $("soundWrong");
       const backgroundMusic = $("backgroundMusic");
-      const introSound = $("introSound");
+      const instructionSound = $("instructionSound");
 
       backgroundMusic.volume = .32;
-      introSound.volume = 1;
+      instructionSound.volume = 1;
 
       let order = [];
       let index = 0;
@@ -335,6 +335,7 @@
       let locked = false;
       let drag = null;
       let card = null;
+      let instructionPlayed = false;
 
       function playSound(audio) {
         audio.pause();
@@ -523,34 +524,54 @@
 
         video.currentTime = 0;
         backgroundMusic.currentTime = 0;
-        introSound.currentTime = 0;
+        instructionSound.currentTime = 0;
+        instructionSound.muted = true;
+        instructionPlayed = false;
 
         const starts = await Promise.allSettled([
           video.play(),
           backgroundMusic.play(),
-          introSound.play()
+          instructionSound.play()
         ]);
 
         if (starts.some(result => result.status === "rejected")) {
           video.pause();
           backgroundMusic.pause();
-          introSound.pause();
+          instructionSound.pause();
           video.currentTime = 0;
           backgroundMusic.currentTime = 0;
-          introSound.currentTime = 0;
+          instructionSound.currentTime = 0;
+          instructionSound.muted = false;
           startButton.hidden = false;
+        } else {
+          /* Le son est autorisé, mais attend les 2 secondes de la vidéo. */
+          instructionSound.pause();
+          instructionSound.currentTime = 0;
+          instructionSound.muted = false;
         }
       }
 
       startButton.addEventListener("click", startExperience);
 
+      function playInstruction() {
+        if (instructionPlayed) return;
+        instructionPlayed = true;
+        instructionSound.currentTime = 0;
+        instructionSound.play().catch(() => {});
+      }
+
+      video.addEventListener("timeupdate", () => {
+        if (video.currentTime >= 2) playInstruction();
+      });
+
       video.addEventListener("ended", () => {
-        introSound.pause();
+        /* La vidéo dure 2 s : la consigne continue sur le plateau figé. */
+        playInstruction();
         beginGame();
       }, { once:true });
 
       video.addEventListener("error", () => {
-        introSound.pause();
+        instructionSound.pause();
         beginGame();
       }, { once:true });
 
