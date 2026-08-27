@@ -291,8 +291,10 @@
     <audio id="soundCard" src="soncarte.mp3" preload="auto"></audio>
     <audio id="soundOK" src="sonok.mp3" preload="auto"></audio>
     <audio id="soundWrong" src="sonfaux.mp3" preload="auto"></audio>
+    <audio id="backgroundMusic" src="loop.mp3" preload="auto" loop></audio>
+    <audio id="introSound" src="intro.mp3" preload="auto"></audio>
 
-    <button class="startButton" id="startButton" type="button" hidden>Lancer le jeu</button>
+    <button class="startButton" id="startButton" type="button" hidden>Lancer le jeu avec le son</button>
   </main>
 
   <script>
@@ -321,6 +323,11 @@
       const soundCard = $("soundCard");
       const soundOK = $("soundOK");
       const soundWrong = $("soundWrong");
+      const backgroundMusic = $("backgroundMusic");
+      const introSound = $("introSound");
+
+      backgroundMusic.volume = .32;
+      introSound.volume = 1;
 
       let order = [];
       let index = 0;
@@ -511,14 +518,43 @@
         } catch (error) { console.warn("Plein écran indisponible", error); }
       });
 
-      startButton.addEventListener("click", async () => {
+      async function startExperience() {
         startButton.hidden = true;
-        try { await video.play(); } catch (_) { beginGame(); }
-      });
 
-      video.addEventListener("ended", beginGame, { once: true });
-      video.addEventListener("error", beginGame, { once: true });
-      video.play().catch(() => { startButton.hidden = false; });
+        video.currentTime = 0;
+        backgroundMusic.currentTime = 0;
+        introSound.currentTime = 0;
+
+        const starts = await Promise.allSettled([
+          video.play(),
+          backgroundMusic.play(),
+          introSound.play()
+        ]);
+
+        if (starts.some(result => result.status === "rejected")) {
+          video.pause();
+          backgroundMusic.pause();
+          introSound.pause();
+          video.currentTime = 0;
+          backgroundMusic.currentTime = 0;
+          introSound.currentTime = 0;
+          startButton.hidden = false;
+        }
+      }
+
+      startButton.addEventListener("click", startExperience);
+
+      video.addEventListener("ended", () => {
+        introSound.pause();
+        beginGame();
+      }, { once:true });
+
+      video.addEventListener("error", () => {
+        introSound.pause();
+        beginGame();
+      }, { once:true });
+
+      startExperience();
     })();
   </script>
 </body>
