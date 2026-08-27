@@ -187,7 +187,7 @@
     #currentCard.dragging {
       z-index: 100;
       transition: none;
-      pointer-events: none;
+      pointer-events: auto;
       filter: drop-shadow(-6px 10px 10px rgba(0,0,0,.42));
     }
 
@@ -460,6 +460,7 @@
 
       function moveDrag(event) {
         if (!drag || event.pointerId !== drag.id) return;
+        event.preventDefault();
         card.style.transform = `translate(${event.clientX - drag.startX}px, ${event.clientY - drag.startY}px) rotate(-1deg) scale(1.03)`;
         const over = zoneAt(event.clientX, event.clientY);
         zones.forEach(zone => zone.classList.toggle("over", zone === over));
@@ -488,10 +489,15 @@
 
       function bindCardEvents(element) {
         element.addEventListener("pointerdown", startDrag);
-        element.addEventListener("pointermove", moveDrag);
-        element.addEventListener("pointerup", endDrag);
-        element.addEventListener("pointercancel", cancelDrag);
       }
+
+      /*
+        Le suivi se fait sur toute la fenêtre : le relâchement est reçu
+        même si le pointeur quitte la carte ou passe au-dessus d'une zone.
+      */
+      window.addEventListener("pointermove", moveDrag, { passive:false });
+      window.addEventListener("pointerup", endDrag);
+      window.addEventListener("pointercancel", cancelDrag);
 
       $("restartButton").addEventListener("click", () => {
         if (!game.hidden && index > 0 && !confirm("Recommencer toute la partie ?")) return;
