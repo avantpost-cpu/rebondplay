@@ -671,11 +671,11 @@
 
       const isMobile = window.innerWidth <= 900;
 
-      const cardRatio = isMobile ? 0.14 : 0.15;
-      const deckRatio = isMobile ? 0.123 : 0.118;
+      const cardRatio = isMobile ? 0.20 : 0.22;
+      const deckRatio = isMobile ? 0.18 : 0.19;
 
-      const cardW = Math.max(isMobile ? 105 : 120, Math.min(boardWidth * cardRatio, isMobile ? 190 : 230));
-      const deckW = Math.max(isMobile ? 94 : 100, Math.min(boardWidth * deckRatio, isMobile ? 205 : 220));
+      const cardW = Math.max(isMobile ? 145 : 170, Math.min(boardWidth * cardRatio, isMobile ? 260 : 340));
+      const deckW = Math.max(isMobile ? 135 : 150, Math.min(boardWidth * deckRatio, isMobile ? 250 : 300));
 
       root.style.setProperty('--card-w', `${cardW}px`);
       root.style.setProperty('--card-h', `${cardW * 1.45}px`);
