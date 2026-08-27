@@ -277,7 +277,6 @@
       <div class="dropZone" id="falseZone" data-answer="false" aria-label="C’est faux"></div>
 
       <div class="deck" id="deck">
-        <img id="currentCard" alt="Carte question à classer" draggable="false">
         <div class="counter" id="counter" aria-live="polite"></div>
       </div>
 
@@ -312,7 +311,6 @@
       const video = $("boardVideo");
       const game = $("game");
       const deck = $("deck");
-      const card = $("currentCard");
       const counter = $("counter");
       const trueZone = $("trueZone");
       const falseZone = $("falseZone");
@@ -328,6 +326,7 @@
       let score = 0;
       let locked = false;
       let drag = null;
+      let card = null;
 
       function playSound(audio) {
         audio.pause();
@@ -363,10 +362,23 @@
       function showCard() {
         if (index >= order.length) return finish();
         const nextSource = `questions/carte_VFP_${order[index]}.jpg`;
-        card.alt = `Carte ${index + 1} sur 60`;
-        card.style.removeProperty("transform");
-        card.classList.remove("dragging");
-        card.src = nextSource;
+
+        /*
+          Une nouvelle image est créée pour chaque tour.
+          Aucun état de glissement de l'ancienne carte ne peut ainsi
+          rester accroché à la suivante.
+        */
+        if (card) card.remove();
+
+        const nextCard = new Image();
+        nextCard.id = "currentCard";
+        nextCard.alt = `Carte ${index + 1} sur 60`;
+        nextCard.draggable = false;
+        nextCard.src = nextSource;
+        deck.insertBefore(nextCard, counter);
+        card = nextCard;
+        bindCardEvents(card);
+
         counter.textContent = `${index + 1} / 60`;
       }
 
@@ -419,21 +431,21 @@
         });
       }
 
-      card.addEventListener("pointerdown", event => {
+      function startDrag(event) {
         if (locked) return;
         event.preventDefault();
         playSound(soundCard);
         drag = { id: event.pointerId, startX: event.clientX, startY: event.clientY };
         card.setPointerCapture(event.pointerId);
         card.classList.add("dragging");
-      });
+      }
 
-      card.addEventListener("pointermove", event => {
+      function moveDrag(event) {
         if (!drag || event.pointerId !== drag.id) return;
         card.style.transform = `translate(${event.clientX - drag.startX}px, ${event.clientY - drag.startY}px) rotate(-1deg) scale(1.03)`;
         const over = zoneAt(event.clientX, event.clientY);
         zones.forEach(zone => zone.classList.toggle("over", zone === over));
-      });
+      }
 
       function endDrag(event) {
         if (!drag || event.pointerId !== drag.id) return;
@@ -448,8 +460,21 @@
         if (over) submit(over.dataset.answer === "true");
       }
 
-      card.addEventListener("pointerup", endDrag);
-      card.addEventListener("pointercancel", endDrag);
+      function cancelDrag(event) {
+        if (!drag || event.pointerId !== drag.id) return;
+        drag = null;
+        card.classList.remove("dragging");
+        card.style.removeProperty("transform");
+        zones.forEach(zone => zone.classList.remove("over"));
+      }
+
+      function bindCardEvents(element) {
+        element.addEventListener("pointerdown", startDrag);
+        element.addEventListener("pointermove", moveDrag);
+        element.addEventListener("pointerup", endDrag);
+        element.addEventListener("pointercancel", cancelDrag);
+      }
+
       $("restartButton").addEventListener("click", () => {
         if (!game.hidden && index > 0 && !confirm("Recommencer toute la partie ?")) return;
         beginGame();
