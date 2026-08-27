@@ -161,6 +161,7 @@
       background: var(--paper);
       box-shadow: -3px 4px 8px rgba(0,0,0,.3);
       pointer-events: none;
+      z-index: 0;
     }
 
     .deck::before { transform: translate(-2.2%, 2.5%) rotate(-1.6deg); }
@@ -168,7 +169,7 @@
 
     #currentCard {
       position: absolute;
-      z-index: 3;
+      z-index: 10;
       inset: 0;
       width: 100%;
       height: 100%;
@@ -183,6 +184,10 @@
     }
 
     #currentCard:active { cursor: grabbing; }
+    #currentCard.waiting {
+      opacity:.32;
+      pointer-events:none;
+    }
     #currentCard.dragging {
       z-index: 100;
       transition: none;
@@ -192,7 +197,7 @@
 
     .counter {
       position: absolute;
-      z-index: 5;
+      z-index: 20;
       left: 50%;
       top: 105%;
       transform: translateX(-50%);
@@ -327,6 +332,7 @@
       let locked = false;
       let drag = null;
       let card = null;
+      const preloadedCards = [];
 
       function playSound(audio) {
         audio.pause();
@@ -344,14 +350,18 @@
       };
 
       const preload = () => {
-        for (let i = 1; i <= 60; i++) (new Image()).src = `questions/carte_VFP_${i}.jpg`;
+        for (let i = 1; i <= 60; i++) {
+          const image = new Image();
+          image.src = `questions/carte_VFP_${i}.jpg`;
+          preloadedCards.push(image);
+        }
       };
 
       function beginGame() {
         order = shuffle(Array.from({ length: 60 }, (_, i) => i + 1));
         index = 0;
         score = 0;
-        locked = false;
+        locked = true;
         zones.forEach(zone => zone.replaceChildren());
         result.hidden = true;
         deck.hidden = false;
@@ -368,18 +378,26 @@
           Aucun état de glissement de l'ancienne carte ne peut ainsi
           rester accroché à la suivante.
         */
-        if (card) card.remove();
-
         const nextCard = new Image();
         nextCard.id = "currentCard";
         nextCard.alt = `Carte ${index + 1} sur 60`;
         nextCard.draggable = false;
-        nextCard.src = nextSource;
-        deck.insertBefore(nextCard, counter);
-        card = nextCard;
-        bindCardEvents(card);
 
-        counter.textContent = `${index + 1} / 60`;
+        const activateNextCard = () => {
+          if (card) card.remove();
+          deck.insertBefore(nextCard, counter);
+          card = nextCard;
+          bindCardEvents(card);
+          counter.textContent = `${index + 1} / 60`;
+          locked = false;
+        };
+
+        nextCard.addEventListener("load", activateNextCard, { once:true });
+        nextCard.addEventListener("error", () => {
+          /* Une seconde tentative contourne un éventuel cache incomplet. */
+          nextCard.src = `${nextSource}?reload=${Date.now()}`;
+        }, { once:true });
+        nextCard.src = nextSource;
       }
 
       function chosenZone(answer) { return answer ? trueZone : falseZone; }
@@ -405,8 +423,10 @@
 
         index++;
         if (index >= order.length) finish();
-        else showCard();
-        locked = false;
+        else {
+          card.classList.add("waiting");
+          showCard();
+        }
 
         /* Le retour visuel s'efface sans bloquer la carte suivante. */
         setTimeout(() => {
