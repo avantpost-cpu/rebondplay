@@ -71,8 +71,8 @@
 
     .stage {
       position: relative;
-      width: min(100vw, calc(100dvh * 2108 / 1524));
-      height: min(100dvh, calc(100vw * 1524 / 2108));
+      width: min(999px, 100vw, calc(100dvh * 2108 / 1524));
+      height: auto;
       aspect-ratio: var(--board-ratio);
       overflow: hidden;
       background: #008d87;
@@ -360,10 +360,13 @@
 
       function showCard() {
         if (index >= order.length) return finish();
-        card.src = `questions/carte_VFP_${order[index]}.jpg`;
+        const nextSource = `questions/carte_VFP_${order[index]}.jpg`;
         card.alt = `Carte ${index + 1} sur 60`;
-        card.style.cssText = "";
+        card.style.removeProperty("transform");
+        card.style.removeProperty("opacity");
+        card.style.removeProperty("visibility");
         card.classList.remove("dragging");
+        card.src = nextSource;
         counter.textContent = `${index + 1} / 60`;
       }
 
@@ -388,14 +391,13 @@
         zone.appendChild(placed);
         zone.classList.add(isCorrect ? "correct" : "wrong");
 
-        card.style.opacity = "0";
-        card.style.transform = "scale(.86)";
+        card.style.visibility = "hidden";
 
         setTimeout(() => {
           zone.classList.remove("correct", "wrong", "over");
           index++;
-          locked = false;
           showCard();
+          locked = false;
         }, 330);
       }
 
@@ -437,7 +439,7 @@
         const over = zoneAt(event.clientX, event.clientY);
         drag = null;
         card.classList.remove("dragging");
-        card.style.cssText = "";
+        card.style.removeProperty("transform");
         zones.forEach(zone => zone.classList.remove("over"));
         if (over) submit(over.dataset.answer === "true");
       }
