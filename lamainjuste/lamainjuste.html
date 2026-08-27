@@ -135,15 +135,15 @@
       display:flex;
       justify-content:center;
       align-items:center;
-      width:min(999px, 100vw, calc(100dvh * 925 / 649));
-      aspect-ratio:925 / 649;
+      width:min(999px, 100vw, calc(100dvh * 973 / 717));
+      aspect-ratio:973 / 717;
       padding:0;
       position:relative;
     }
 
     .app{
       width:999px;
-      height:701px;
+      height:736px;
       display:flex;
       flex-direction:column;
       align-items:center;
@@ -155,7 +155,7 @@
 
     .board{
       width:999px;
-      height:701px;
+      height:736px;
       border-radius: var(--boardRadius);
       overflow:hidden;
       position:relative;
@@ -164,7 +164,7 @@
       background-color:#0b5966;
       background:
         url("tapis.png")
-        center center / 105.2% auto no-repeat,
+        center center / 100% 100% no-repeat,
         #0b5966;
       box-shadow: var(--boardStroke), var(--boardShadow2), var(--boardShadow1);
     }
@@ -1105,7 +1105,7 @@
       function fitGame(){
         const outer = document.querySelector(".outer");
         if(!outer) return;
-        const scale = Math.min(outer.clientWidth / 999, outer.clientHeight / 701);
+        const scale = Math.min(outer.clientWidth / 999, outer.clientHeight / 736);
         document.documentElement.style.setProperty("--game-scale", String(scale));
       }
 
