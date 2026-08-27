@@ -67,11 +67,33 @@
       color: white;
       user-select: none;
       -webkit-user-select: none;
+      padding-top: 40px;
+    }
+
+    .accountStatus {
+      position: fixed;
+      z-index: 1000;
+      top: max(7px, env(safe-area-inset-top));
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: calc(100vw - 24px);
+      padding: 7px 14px;
+      border: 1px solid rgba(255,255,255,.42);
+      border-radius: 999px;
+      background: rgba(27,95,110,.92);
+      color: #fff;
+      box-shadow: 0 3px 10px rgba(0,0,0,.22);
+      font-size: 12px;
+      font-weight: 750;
+      line-height: 1.2;
+      text-align: center;
+      white-space: nowrap;
+      pointer-events: none;
     }
 
     .stage {
       position: relative;
-      width: min(999px, 100vw, calc(100dvh * 999 / 714));
+      width: min(999px, 100vw, calc((100dvh - 40px) * 999 / 714));
       height: auto;
       aspect-ratio: var(--board-ratio);
       overflow: hidden;
@@ -263,6 +285,7 @@
 </head>
 
 <body>
+  <div class="accountStatus" id="accountStatus" role="status" aria-live="polite"></div>
   <main class="stage" id="stage" aria-label="Jeu Vrai ou faux pour les jeunes">
     <video id="boardVideo" autoplay muted playsinline preload="auto">
       <source src="plateauVFP.mp4" type="video/mp4">
@@ -311,6 +334,29 @@
       };
 
       const $ = id => document.getElementById(id);
+
+      function showAccountStatus() {
+        const firstName = (sessionStorage.getItem("rebondplay_prenom_contact") || "").trim();
+        const lastName = (sessionStorage.getItem("rebondplay_nom_contact") || "").trim();
+        const structure = (sessionStorage.getItem("rebondplay_nom_structure") || "").trim();
+        const fullName = [firstName, lastName].filter(Boolean).join(" ");
+        const identity = fullName || structure || "Compte RebondPlay";
+        const endValue = sessionStorage.getItem("rebondplay_date_fin");
+        let subscription = "abonnement actif";
+
+        if (endValue) {
+          const endDate = new Date(endValue);
+          if (!Number.isNaN(endDate.getTime())) {
+            endDate.setHours(23, 59, 59, 999);
+            const days = Math.max(0, Math.ceil((endDate.getTime() - Date.now()) / 86400000));
+            subscription = `il vous reste ${days} jour${days > 1 ? "s" : ""} d’abonnement`;
+          }
+        }
+
+        $("accountStatus").textContent =
+          `Bonjour ${identity} — vous êtes bien connecté · ${subscription}`;
+      }
+
       const video = $("boardVideo");
       const game = $("game");
       const deck = $("deck");
@@ -575,6 +621,7 @@
         beginGame();
       }, { once:true });
 
+      showAccountStatus();
       startExperience();
     })();
   </script>
