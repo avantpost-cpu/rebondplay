@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="fr" class="access-pending">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>REBONDPLAY — Vrai ou faux ?</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    window.REBONDPLAY_ACCESS_READY = (async () => {
+      if (["localhost", "127.0.0.1"].includes(location.hostname)) {
+        document.documentElement.classList.remove("access-pending");
+        return true;
+      }
+
+      const refuse = () => {
+        ["rebondplay_access_ok", "rebondplay_code", "rebondplay_abonnement_id",
+         "rebondplay_nom_structure", "rebondplay_date_fin"]
+          .forEach(key => sessionStorage.removeItem(key));
+        location.replace("/");
+        return false;
+      };
+
+      const code = sessionStorage.getItem("rebondplay_code");
+      if (sessionStorage.getItem("rebondplay_access_ok") !== "1" || !code) return refuse();
+
+      try {
+        const client = window.supabase.createClient(
+          "https://tdsrqmpfdvntybdlvejy.supabase.co",
+          "sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO"
+        );
+        const { data, error } = await client.rpc("rp_verifier_code", { p_code: code });
+        if (error || !data?.[0]?.valide) return refuse();
+        document.documentElement.classList.remove("access-pending");
+        return true;
+      } catch (error) {
+        console.error("REBONDPLAY — vérification d’accès impossible :", error);
+        return refuse();
+      }
+    })();
+  </script>
+
+  <style>
+    :root {
+      --rebond-blue: #1b5f6e;
+      --coral: #e45a57;
+      --paper: #f6f3eb;
+      --board-ratio: 2108 / 2304;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; }
+    html.access-pending body { visibility: hidden; }
+
+    body {
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      background: var(--rebond-blue);
+      font-family: "Trebuchet MS", system-ui, sans-serif;
+      color: white;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .stage {
+      position: relative;
+      width: min(100vw, calc(100dvh * 2108 / 2304));
+      height: min(100dvh, calc(100vw * 2304 / 2108));
+      aspect-ratio: var(--board-ratio);
+      overflow: hidden;
+      background: #008d87;
+      touch-action: none;
+    }
+
+    #boardVideo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      pointer-events: none;
+    }
+
+    .controls {
+      position: absolute;
+      z-index: 50;
+      top: 1.4%;
+      right: 1.8%;
+      display: flex;
+      gap: 8px;
+    }
+
+    .iconButton {
+      width: clamp(32px, 4.2vmin, 46px);
+      aspect-ratio: 1;
+      border: 1px solid rgba(255,255,255,.55);
+      border-radius: 50%;
+      background: rgba(27,95,110,.78);
+      color: white;
+      font-size: clamp(16px, 2.2vmin, 23px);
+      cursor: pointer;
+      backdrop-filter: blur(3px);
+    }
+
+    .game { position: absolute; inset: 0; z-index: 10; }
+    .game[hidden] { display: none; }
+
+    .dropZone {
+      position: absolute;
+      z-index: 11;
+      top: 31.3%;
+      width: 27.2%;
+      height: 20.4%;
+      border-radius: 9%;
+      transition: filter .16s ease, box-shadow .16s ease;
+    }
+
+    #trueZone { left: 6.9%; transform: rotate(-6deg); }
+    #falseZone { right: 7.7%; transform: rotate(6deg); }
+    .dropZone.over { box-shadow: 0 0 0 clamp(3px, .55vmin, 7px) #fff, 0 0 26px #fff; }
+    .dropZone.correct { filter: brightness(1.18) saturate(1.25); }
+    .dropZone.wrong { animation: shake .34s ease; filter: brightness(.7); }
+
+    .placedCard {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 6%;
+      box-shadow: -2px 3px 7px rgba(0,0,0,.32);
+      pointer-events: none;
+    }
+
+    .deck {
+      position: absolute;
+      z-index: 20;
+      left: 50%;
+      top: 66.1%;
+      width: 31.2%;
+      aspect-ratio: 693 / 496;
+      transform: translateX(-50%);
+    }
+
+    .deck::before, .deck::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 5%;
+      background: var(--paper);
+      box-shadow: -3px 4px 8px rgba(0,0,0,.3);
+      pointer-events: none;
+    }
+
+    .deck::before { transform: translate(-2.2%, 2.5%) rotate(-1.6deg); }
+    .deck::after { transform: translate(1.8%, 1.2%) rotate(1deg); }
+
+    #currentCard {
+      position: absolute;
+      z-index: 3;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      border-radius: 5%;
+      box-shadow: -4px 6px 11px rgba(0,0,0,.38);
+      cursor: grab;
+      -webkit-user-drag: none;
+      touch-action: none;
+      transition: transform .16s ease, opacity .16s ease;
+    }
+
+    #currentCard:active { cursor: grabbing; }
+    #currentCard.dragging {
+      z-index: 100;
+      transition: none;
+      pointer-events: none;
+      filter: drop-shadow(-6px 10px 10px rgba(0,0,0,.42));
+    }
+
+    .counter {
+      position: absolute;
+      z-index: 5;
+      left: 50%;
+      top: 105%;
+      transform: translateX(-50%);
+      padding: .26em .72em;
+      border-radius: 999px;
+      background: rgba(27,95,110,.78);
+      font-size: clamp(11px, 1.55vmin, 18px);
+      font-weight: 800;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    .tapChoices {
+      position: absolute;
+      z-index: 21;
+      left: 50%;
+      top: 88.4%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: clamp(8px, 1.3vmin, 15px);
+    }
+
+    .choice {
+      border: 2px solid rgba(255,255,255,.8);
+      border-radius: 999px;
+      padding: .55em 1.05em;
+      color: white;
+      font-weight: 900;
+      font-size: clamp(12px, 1.8vmin, 19px);
+      cursor: pointer;
+      box-shadow: 0 3px 7px rgba(0,0,0,.22);
+    }
+
+    .choice.true { background: #f2eee4; color: #df5654; }
+    .choice.false { background: #df5654; }
+
+    .result {
+      position: absolute;
+      z-index: 30;
+      left: 50%;
+      top: 66.1%;
+      width: 38%;
+      min-height: 16%;
+      transform: translateX(-50%) rotate(-1deg);
+      display: grid;
+      place-items: center;
+      align-content: center;
+      gap: .25em;
+      padding: 5% 3%;
+      border-radius: 7%;
+      background: var(--paper);
+      color: var(--rebond-blue);
+      text-align: center;
+      box-shadow: -5px 7px 12px rgba(0,0,0,.33);
+    }
+
+    .result[hidden] { display: none; }
+    .result strong { color: var(--coral); font-size: clamp(29px, 6vmin, 64px); line-height: .9; }
+    .result span { font-size: clamp(13px, 2.2vmin, 23px); font-weight: 900; }
+
+    .startButton {
+      position: absolute;
+      z-index: 60;
+      left: 50%;
+      bottom: 5%;
+      transform: translateX(-50%);
+      border: 2px solid white;
+      border-radius: 999px;
+      padding: .75em 1.35em;
+      background: rgba(27,95,110,.92);
+      color: white;
+      font-size: clamp(14px, 2.2vmin, 23px);
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    .startButton[hidden] { display: none; }
+
+    @keyframes shake {
+      25% { translate: -2.5% 0; }
+      50% { translate: 2.5% 0; }
+      75% { translate: -1.2% 0; }
+    }
+
+    @media (pointer: fine) { .tapChoices { opacity: .83; } }
+    @media (max-width: 520px) { .controls { gap: 4px; } }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="stage" id="stage" aria-label="Jeu Vrai ou faux pour les jeunes">
+    <video id="boardVideo" autoplay muted playsinline preload="auto">
+      <source src="plateauVFP.mp4" type="video/mp4">
+    </video>
+
+    <div class="controls">
+      <button class="iconButton" id="restartButton" type="button" title="Recommencer" aria-label="Recommencer">↻</button>
+      <button class="iconButton" id="fullscreenButton" type="button" title="Plein écran" aria-label="Afficher en plein écran">⛶</button>
+    </div>
+
+    <section class="game" id="game" hidden>
+      <div class="dropZone" id="trueZone" data-answer="true" aria-label="C’est vrai"></div>
+      <div class="dropZone" id="falseZone" data-answer="false" aria-label="C’est faux"></div>
+
+      <div class="deck" id="deck">
+        <img id="currentCard" alt="Carte question à classer" draggable="false">
+        <div class="counter" id="counter" aria-live="polite"></div>
+      </div>
+
+      <div class="tapChoices" id="tapChoices">
+        <button class="choice true" type="button" data-answer="true">C’est vrai !</button>
+        <button class="choice false" type="button" data-answer="false">C’est faux !</button>
+      </div>
+
+      <div class="result" id="result" hidden aria-live="polite">
+        <span>Ton résultat</span>
+        <strong id="scoreText">0 / 60</strong>
+        <span id="resultMessage"></span>
+      </div>
+    </section>
+
+    <button class="startButton" id="startButton" type="button" hidden>Lancer le jeu</button>
+  </main>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const answers = {
+        1:true, 2:false, 3:true, 4:true, 5:false, 6:true, 7:true, 8:false, 9:true, 10:true,
+        11:false, 12:true, 13:true, 14:false, 15:true, 16:true, 17:false, 18:true, 19:true, 20:false,
+        21:true, 22:true, 23:true, 24:false, 25:true, 26:false, 27:true, 28:true, 29:false, 30:true,
+        31:true, 32:false, 33:true, 34:true, 35:false, 36:true, 37:true, 38:false, 39:true, 40:true,
+        41:true, 42:false, 43:true, 44:false, 45:true, 46:true, 47:true, 48:false, 49:true, 50:false,
+        51:true, 52:true, 53:true, 54:false, 55:true, 56:true, 57:false, 58:true, 59:true, 60:true
+      };
+
+      const $ = id => document.getElementById(id);
+      const video = $("boardVideo");
+      const game = $("game");
+      const deck = $("deck");
+      const card = $("currentCard");
+      const counter = $("counter");
+      const trueZone = $("trueZone");
+      const falseZone = $("falseZone");
+      const zones = [trueZone, falseZone];
+      const tapChoices = $("tapChoices");
+      const result = $("result");
+      const startButton = $("startButton");
+
+      let order = [];
+      let index = 0;
+      let score = 0;
+      let locked = false;
+      let drag = null;
+
+      const shuffle = values => {
+        const list = [...values];
+        for (let i = list.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [list[i], list[j]] = [list[j], list[i]];
+        }
+        return list;
+      };
+
+      const preload = () => {
+        for (let i = 1; i <= 60; i++) (new Image()).src = `questions/carte_VFP_${i}.jpg`;
+      };
+
+      function beginGame() {
+        order = shuffle(Array.from({ length: 60 }, (_, i) => i + 1));
+        index = 0;
+        score = 0;
+        locked = false;
+        zones.forEach(zone => zone.replaceChildren());
+        result.hidden = true;
+        deck.hidden = false;
+        tapChoices.hidden = false;
+        game.hidden = false;
+        showCard();
+      }
+
+      function showCard() {
+        if (index >= order.length) return finish();
+        card.src = `questions/carte_VFP_${order[index]}.jpg`;
+        card.alt = `Carte ${index + 1} sur 60`;
+        card.style.cssText = "";
+        card.classList.remove("dragging");
+        counter.textContent = `${index + 1} / 60`;
+      }
+
+      function chosenZone(answer) { return answer ? trueZone : falseZone; }
+
+      function submit(answer) {
+        if (locked || index >= order.length) return;
+        locked = true;
+
+        const number = order[index];
+        const zone = chosenZone(answer);
+        const isCorrect = answers[number] === answer;
+        if (isCorrect) score++;
+
+        const placed = new Image();
+        placed.src = card.src;
+        placed.alt = "";
+        placed.className = "placedCard";
+        const spread = Math.min(zone.childElementCount, 7);
+        placed.style.transform = `translate(${spread * .38}%, ${spread * .32}%) rotate(${(Math.random() - .5) * 2.2}deg)`;
+        zone.appendChild(placed);
+        zone.classList.add(isCorrect ? "correct" : "wrong");
+
+        card.style.opacity = "0";
+        card.style.transform = "scale(.86)";
+
+        setTimeout(() => {
+          zone.classList.remove("correct", "wrong", "over");
+          index++;
+          locked = false;
+          showCard();
+        }, 330);
+      }
+
+      function finish() {
+        deck.hidden = true;
+        tapChoices.hidden = true;
+        $("scoreText").textContent = `${score} / 60`;
+        $("resultMessage").textContent = score === 60 ? "Bravo, sans faute !" :
+          score >= 48 ? "Bravo, tu maîtrises très bien le sujet !" :
+          score >= 36 ? "Bien joué ! Continue à apprendre." :
+          "Continue à t’informer et parles-en avec un adulte de confiance.";
+        result.hidden = false;
+      }
+
+      function zoneAt(x, y) {
+        return zones.find(zone => {
+          const r = zone.getBoundingClientRect();
+          return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
+        });
+      }
+
+      card.addEventListener("pointerdown", event => {
+        if (locked) return;
+        event.preventDefault();
+        drag = { id: event.pointerId, startX: event.clientX, startY: event.clientY };
+        card.setPointerCapture(event.pointerId);
+        card.classList.add("dragging");
+      });
+
+      card.addEventListener("pointermove", event => {
+        if (!drag || event.pointerId !== drag.id) return;
+        card.style.transform = `translate(${event.clientX - drag.startX}px, ${event.clientY - drag.startY}px) rotate(-1deg) scale(1.03)`;
+        const over = zoneAt(event.clientX, event.clientY);
+        zones.forEach(zone => zone.classList.toggle("over", zone === over));
+      });
+
+      function endDrag(event) {
+        if (!drag || event.pointerId !== drag.id) return;
+        const over = zoneAt(event.clientX, event.clientY);
+        drag = null;
+        card.classList.remove("dragging");
+        card.style.cssText = "";
+        zones.forEach(zone => zone.classList.remove("over"));
+        if (over) submit(over.dataset.answer === "true");
+      }
+
+      card.addEventListener("pointerup", endDrag);
+      card.addEventListener("pointercancel", endDrag);
+      tapChoices.addEventListener("click", event => {
+        const button = event.target.closest("[data-answer]");
+        if (button) submit(button.dataset.answer === "true");
+      });
+
+      $("restartButton").addEventListener("click", () => {
+        if (!game.hidden && index > 0 && !confirm("Recommencer toute la partie ?")) return;
+        beginGame();
+      });
+
+      $("fullscreenButton").addEventListener("click", async () => {
+        try {
+          if (!document.fullscreenElement) await $("stage").requestFullscreen();
+          else await document.exitFullscreen();
+        } catch (error) { console.warn("Plein écran indisponible", error); }
+      });
+
+      startButton.addEventListener("click", async () => {
+        startButton.hidden = true;
+        try { await video.play(); } catch (_) { beginGame(); }
+      });
+
+      video.addEventListener("ended", beginGame, { once: true });
+      video.addEventListener("error", beginGame, { once: true });
+      video.play().catch(() => { startButton.hidden = false; });
+      preload();
+    })();
+  </script>
+</body>
+</html>
