@@ -8,7 +8,12 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
     window.REBONDPLAY_ACCESS_READY = (async () => {
-      if (["localhost", "127.0.0.1"].includes(location.hostname)) {
+      const isLocalPreview =
+        location.protocol === "file:" ||
+        ["localhost", "127.0.0.1", "0.0.0.0"].includes(location.hostname) ||
+        location.hostname.endsWith(".sandbox.local");
+
+      if (isLocalPreview) {
         document.documentElement.classList.remove("access-pending");
         return true;
       }
@@ -45,7 +50,8 @@
       --rebond-blue: #1b5f6e;
       --coral: #e45a57;
       --paper: #f6f3eb;
-      --board-ratio: 2108 / 2304;
+      /* Recadrage utile de la vidéo : suppression des bandes noires intégrées. */
+      --board-ratio: 2108 / 1524;
     }
 
     * { box-sizing: border-box; }
@@ -65,8 +71,8 @@
 
     .stage {
       position: relative;
-      width: min(100vw, calc(100dvh * 2108 / 2304));
-      height: min(100dvh, calc(100vw * 2304 / 2108));
+      width: min(100vw, calc(100dvh * 2108 / 1524));
+      height: min(100dvh, calc(100vw * 1524 / 2108));
       aspect-ratio: var(--board-ratio);
       overflow: hidden;
       background: #008d87;
@@ -80,6 +86,7 @@
       height: 100%;
       display: block;
       object-fit: cover;
+      object-position: center center;
       pointer-events: none;
     }
 
@@ -110,15 +117,15 @@
     .dropZone {
       position: absolute;
       z-index: 11;
-      top: 31.3%;
+      top: 36.5%;
       width: 27.2%;
-      height: 20.4%;
+      aspect-ratio: 693 / 496;
       border-radius: 9%;
       transition: filter .16s ease, box-shadow .16s ease;
     }
 
-    #trueZone { left: 6.9%; transform: rotate(-6deg); }
-    #falseZone { right: 7.7%; transform: rotate(6deg); }
+    #trueZone { left: 7.2%; transform: rotate(-6deg); }
+    #falseZone { right: 8.0%; transform: rotate(6deg); }
     .dropZone.over { box-shadow: 0 0 0 clamp(3px, .55vmin, 7px) #fff, 0 0 26px #fff; }
     .dropZone.correct { filter: brightness(1.18) saturate(1.25); }
     .dropZone.wrong { animation: shake .34s ease; filter: brightness(.7); }
@@ -138,7 +145,7 @@
       position: absolute;
       z-index: 20;
       left: 50%;
-      top: 66.1%;
+      top: 67.2%;
       width: 31.2%;
       aspect-ratio: 693 / 496;
       transform: translateX(-50%);
@@ -196,35 +203,11 @@
       pointer-events: none;
     }
 
-    .tapChoices {
-      position: absolute;
-      z-index: 21;
-      left: 50%;
-      top: 88.4%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: clamp(8px, 1.3vmin, 15px);
-    }
-
-    .choice {
-      border: 2px solid rgba(255,255,255,.8);
-      border-radius: 999px;
-      padding: .55em 1.05em;
-      color: white;
-      font-weight: 900;
-      font-size: clamp(12px, 1.8vmin, 19px);
-      cursor: pointer;
-      box-shadow: 0 3px 7px rgba(0,0,0,.22);
-    }
-
-    .choice.true { background: #f2eee4; color: #df5654; }
-    .choice.false { background: #df5654; }
-
     .result {
       position: absolute;
       z-index: 30;
       left: 50%;
-      top: 66.1%;
+      top: 67.2%;
       width: 38%;
       min-height: 16%;
       transform: translateX(-50%) rotate(-1deg);
@@ -268,7 +251,6 @@
       75% { translate: -1.2% 0; }
     }
 
-    @media (pointer: fine) { .tapChoices { opacity: .83; } }
     @media (max-width: 520px) { .controls { gap: 4px; } }
 
     @media (prefers-reduced-motion: reduce) {
@@ -297,17 +279,16 @@
         <div class="counter" id="counter" aria-live="polite"></div>
       </div>
 
-      <div class="tapChoices" id="tapChoices">
-        <button class="choice true" type="button" data-answer="true">C’est vrai !</button>
-        <button class="choice false" type="button" data-answer="false">C’est faux !</button>
-      </div>
-
       <div class="result" id="result" hidden aria-live="polite">
         <span>Ton résultat</span>
         <strong id="scoreText">0 / 60</strong>
         <span id="resultMessage"></span>
       </div>
     </section>
+
+    <audio id="soundCard" src="soncarte.mp3" preload="auto"></audio>
+    <audio id="soundOK" src="sonok.mp3" preload="auto"></audio>
+    <audio id="soundWrong" src="sonfaux.mp3" preload="auto"></audio>
 
     <button class="startButton" id="startButton" type="button" hidden>Lancer le jeu</button>
   </main>
@@ -322,7 +303,7 @@
         21:true, 22:true, 23:true, 24:false, 25:true, 26:false, 27:true, 28:true, 29:false, 30:true,
         31:true, 32:false, 33:true, 34:true, 35:false, 36:true, 37:true, 38:false, 39:true, 40:true,
         41:true, 42:false, 43:true, 44:false, 45:true, 46:true, 47:true, 48:false, 49:true, 50:false,
-        51:true, 52:true, 53:true, 54:false, 55:true, 56:true, 57:false, 58:true, 59:true, 60:true
+        51:true, 52:true, 53:true, 54:false, 55:true, 56:true, 57:false, 58:false, 59:true, 60:true
       };
 
       const $ = id => document.getElementById(id);
@@ -334,15 +315,23 @@
       const trueZone = $("trueZone");
       const falseZone = $("falseZone");
       const zones = [trueZone, falseZone];
-      const tapChoices = $("tapChoices");
       const result = $("result");
       const startButton = $("startButton");
+      const soundCard = $("soundCard");
+      const soundOK = $("soundOK");
+      const soundWrong = $("soundWrong");
 
       let order = [];
       let index = 0;
       let score = 0;
       let locked = false;
       let drag = null;
+
+      function playSound(audio) {
+        audio.pause();
+        audio.currentTime = 0;
+        audio.play().catch(() => {});
+      }
 
       const shuffle = values => {
         const list = [...values];
@@ -365,7 +354,6 @@
         zones.forEach(zone => zone.replaceChildren());
         result.hidden = true;
         deck.hidden = false;
-        tapChoices.hidden = false;
         game.hidden = false;
         showCard();
       }
@@ -389,6 +377,7 @@
         const zone = chosenZone(answer);
         const isCorrect = answers[number] === answer;
         if (isCorrect) score++;
+        playSound(isCorrect ? soundOK : soundWrong);
 
         const placed = new Image();
         placed.src = card.src;
@@ -412,7 +401,6 @@
 
       function finish() {
         deck.hidden = true;
-        tapChoices.hidden = true;
         $("scoreText").textContent = `${score} / 60`;
         $("resultMessage").textContent = score === 60 ? "Bravo, sans faute !" :
           score >= 48 ? "Bravo, tu maîtrises très bien le sujet !" :
@@ -431,6 +419,7 @@
       card.addEventListener("pointerdown", event => {
         if (locked) return;
         event.preventDefault();
+        playSound(soundCard);
         drag = { id: event.pointerId, startX: event.clientX, startY: event.clientY };
         card.setPointerCapture(event.pointerId);
         card.classList.add("dragging");
@@ -455,11 +444,6 @@
 
       card.addEventListener("pointerup", endDrag);
       card.addEventListener("pointercancel", endDrag);
-      tapChoices.addEventListener("click", event => {
-        const button = event.target.closest("[data-answer]");
-        if (button) submit(button.dataset.answer === "true");
-      });
-
       $("restartButton").addEventListener("click", () => {
         if (!game.hidden && index > 0 && !confirm("Recommencer toute la partie ?")) return;
         beginGame();
