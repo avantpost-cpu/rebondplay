@@ -109,20 +109,41 @@
       place-items:center;
     }
 
+    .accountStatus{
+      position:fixed;
+      z-index:1000;
+      top:max(7px, env(safe-area-inset-top));
+      left:50%;
+      transform:translateX(-50%);
+      max-width:calc(100vw - 24px);
+      padding:7px 14px;
+      border:1px solid rgba(255,255,255,.42);
+      border-radius:999px;
+      background:rgba(27,95,110,.92);
+      color:#fff;
+      box-shadow:0 3px 10px rgba(0,0,0,.22);
+      font-size:12px;
+      font-weight:750;
+      line-height:1.2;
+      text-align:center;
+      white-space:nowrap;
+      pointer-events:none;
+    }
+
     .outer{
       width:100%;
       display:flex;
       justify-content:center;
       align-items:center;
-      width:min(999px, 100vw, calc(100dvh * 999 / 714));
-      aspect-ratio:999 / 714;
+      width:min(999px, 100vw, calc(100dvh * 925 / 649));
+      aspect-ratio:925 / 649;
       padding:0;
       position:relative;
     }
 
     .app{
       width:999px;
-      height:714px;
+      height:701px;
       display:flex;
       flex-direction:column;
       align-items:center;
@@ -134,15 +155,17 @@
 
     .board{
       width:999px;
-      height:714px;
+      height:701px;
       border-radius: var(--boardRadius);
       overflow:hidden;
       position:relative;
       display:flex;
       flex-direction:column;
+      background-color:#0b5966;
       background:
         url("tapis.png")
-        center center / cover no-repeat;
+        center center / 105.2% auto no-repeat,
+        #0b5966;
       box-shadow: var(--boardStroke), var(--boardShadow2), var(--boardShadow1);
     }
 
@@ -873,6 +896,7 @@
 </head>
 
 <body>
+  <div class="accountStatus" id="accountStatus" role="status" aria-live="polite"></div>
   <div class="outer">
     <div class="app" role="application" aria-label="REBONDPLAY — La main juste">
       <div class="board">
@@ -1081,8 +1105,29 @@
       function fitGame(){
         const outer = document.querySelector(".outer");
         if(!outer) return;
-        const scale = Math.min(outer.clientWidth / 999, outer.clientHeight / 714);
+        const scale = Math.min(outer.clientWidth / 999, outer.clientHeight / 701);
         document.documentElement.style.setProperty("--game-scale", String(scale));
+      }
+
+      function showAccountStatus(){
+        const firstName = (sessionStorage.getItem("rebondplay_prenom_contact") || "").trim();
+        const lastName = (sessionStorage.getItem("rebondplay_nom_contact") || "").trim();
+        const structure = (sessionStorage.getItem("rebondplay_nom_structure") || "").trim();
+        const fullName = [firstName, lastName].filter(Boolean).join(" ");
+        const identity = fullName || structure || "Compte RebondPlay";
+        const endValue = sessionStorage.getItem("rebondplay_date_fin");
+        let subscription = "abonnement actif";
+
+        if(endValue){
+          const endDate = new Date(endValue);
+          if(!Number.isNaN(endDate.getTime())){
+            endDate.setHours(23, 59, 59, 999);
+            const days = Math.max(0, Math.ceil((endDate.getTime() - Date.now()) / 86400000));
+            subscription = `il vous reste ${days} jour${days > 1 ? "s" : ""} d’abonnement`;
+          }
+        }
+
+        $("accountStatus").textContent = `Bonjour ${identity} — vous êtes bien connecté · ${subscription}`;
       }
 
       const IMG = {
@@ -1632,6 +1677,7 @@
       });
 
       fitGame();
+      showAccountStatus();
       setScreen("intro");
       setActiveStep(1);
     })();
