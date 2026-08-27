@@ -50,8 +50,8 @@
       --rebond-blue: #1b5f6e;
       --coral: #e45a57;
       --paper: #f6f3eb;
-      /* Recadrage utile de la vidéo : suppression des bandes noires intégrées. */
-      --board-ratio: 2108 / 1524;
+      --board-ratio: 999 / 716;
+      --board-radius: 28px;
     }
 
     * { box-sizing: border-box; }
@@ -71,11 +71,13 @@
 
     .stage {
       position: relative;
-      width: min(999px, 100vw, calc(100dvh * 2108 / 1524));
+      width: min(999px, 100vw, calc(100dvh * 999 / 716));
       height: auto;
       aspect-ratio: var(--board-ratio);
       overflow: hidden;
+      border-radius: var(--board-radius);
       background: #008d87;
+      box-shadow: -5px 5px 10px rgba(0,0,0,.55);
       touch-action: none;
     }
 
@@ -363,8 +365,6 @@
         const nextSource = `questions/carte_VFP_${order[index]}.jpg`;
         card.alt = `Carte ${index + 1} sur 60`;
         card.style.removeProperty("transform");
-        card.style.removeProperty("opacity");
-        card.style.removeProperty("visibility");
         card.classList.remove("dragging");
         card.src = nextSource;
         counter.textContent = `${index + 1} / 60`;
@@ -391,13 +391,14 @@
         zone.appendChild(placed);
         zone.classList.add(isCorrect ? "correct" : "wrong");
 
-        card.style.visibility = "hidden";
+        index++;
+        if (index >= order.length) finish();
+        else showCard();
+        locked = false;
 
+        /* Le retour visuel s'efface sans bloquer la carte suivante. */
         setTimeout(() => {
           zone.classList.remove("correct", "wrong", "over");
-          index++;
-          showCard();
-          locked = false;
         }, 330);
       }
 
@@ -437,6 +438,9 @@
       function endDrag(event) {
         if (!drag || event.pointerId !== drag.id) return;
         const over = zoneAt(event.clientX, event.clientY);
+        if (card.hasPointerCapture(event.pointerId)) {
+          card.releasePointerCapture(event.pointerId);
+        }
         drag = null;
         card.classList.remove("dragging");
         card.style.removeProperty("transform");
