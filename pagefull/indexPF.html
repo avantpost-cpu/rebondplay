@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#c99ac8">
+  <title>RebondPlay Full</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --ink:#073e55;
+      --blue:#064e61;
+      --orange:#ff7048;
+      --lavender:#c99ac8;
+      --aqua:#86d9dc;
+      --paper:#f7f4ef;
+      --shadow:0 12px 26px rgba(3,40,54,.2);
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      min-height:100vh;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at 12% 20%,rgba(255,255,255,.16),transparent 24%),
+        linear-gradient(145deg,#d5a9d2 0%,#c08fc2 100%);
+      font-family:"Nunito",Arial,sans-serif;
+    }
+
+    button,a{font:inherit}
+    a{color:inherit}
+    img{display:block;max-width:100%}
+
+    .topbar{
+      min-height:122px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:32px;
+      padding:20px clamp(22px,4vw,74px);
+      background:rgba(208,164,205,.92);
+      border-bottom:1px solid rgba(7,62,85,.09);
+    }
+
+    .brand{
+      display:flex;
+      align-items:flex-end;
+      gap:9px;
+      color:white;
+      text-decoration:none;
+      line-height:.86;
+    }
+    .brand-main{font-family:"Patrick Hand",cursive;font-size:clamp(35px,4vw,60px)}
+    .brand-play{font-family:"Patrick Hand",cursive;font-size:clamp(31px,3.5vw,54px);color:#ff8a4c}
+    .brand-full{display:block;margin-top:9px;font-size:13px;font-weight:900;letter-spacing:.22em;text-align:center}
+
+    .account{display:flex;align-items:center;gap:20px;min-width:0}
+    .avatar{
+      width:56px;height:56px;flex:none;border-radius:50%;
+      display:grid;place-items:center;background:var(--ink);color:#d8afd5;font-size:31px;
+    }
+    .account-copy{min-width:0}
+    .account-name{font-size:18px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .account-meta{margin-top:3px;font-size:14px;font-weight:700}
+    .logout{
+      min-height:44px;padding:0 19px;border:0;border-left:1px solid rgba(7,62,85,.25);
+      background:transparent;color:var(--ink);font-weight:900;cursor:pointer;
+    }
+    .logout:hover{color:#9a2e36}
+
+    .hero{
+      padding:42px 20px 38px;text-align:center;color:white;
+      background:
+        linear-gradient(rgba(4,62,80,.91),rgba(4,62,80,.91)),
+        url("../motifs.jpg") center/650px auto repeat;
+    }
+    .hero h1{
+      margin:0;color:var(--orange);font-family:"Patrick Hand",cursive;
+      font-size:clamp(38px,5vw,72px);font-weight:400;line-height:1.02;
+    }
+    .hero p{margin:22px auto 0;max-width:1100px;font-size:clamp(17px,2vw,26px);font-weight:700}
+
+    .slider-section{position:relative;background:#063f52}
+    .slider{
+      position:relative;overflow:hidden;width:100%;aspect-ratio:2982/625;
+      min-height:190px;max-height:625px;background:#063f52;touch-action:pan-y;
+    }
+    .track{height:100%;display:flex;transition:transform .75s cubic-bezier(.22,.7,.22,1);will-change:transform}
+    .slide{position:relative;flex:0 0 100%;height:100%;overflow:hidden}
+    .slide img{width:100%;height:100%;object-fit:cover}
+    .slide-link{position:absolute;inset:0;z-index:2}
+    .slide-link:focus-visible{outline:5px solid #fff;outline-offset:-8px}
+
+    .slider-button{
+      position:absolute;z-index:5;top:50%;translate:0 -50%;width:48px;height:48px;
+      border:0;border-radius:50%;background:rgba(255,255,255,.9);color:var(--ink);
+      font-size:28px;font-weight:900;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.25);
+    }
+    .slider-button:hover{background:#fff;scale:1.06}
+    .slider-button.prev{left:18px}.slider-button.next{right:18px}
+    .dots{position:absolute;z-index:6;left:50%;bottom:13px;translate:-50% 0;display:flex;gap:9px}
+    .dot{width:12px;height:12px;padding:0;border:2px solid white;border-radius:50%;background:transparent;cursor:pointer}
+    .dot.active{background:white}
+
+    .main-nav{
+      position:sticky;top:0;z-index:20;display:grid;grid-template-columns:repeat(5,1fr);
+      max-width:1500px;margin:auto;padding:0 24px;background:rgba(202,153,201,.96);
+      backdrop-filter:blur(12px);box-shadow:0 6px 18px rgba(7,62,85,.08);
+    }
+    .main-nav a{
+      min-height:88px;display:flex;align-items:center;justify-content:center;gap:11px;
+      text-decoration:none;font-size:17px;font-weight:900;border-bottom:4px solid transparent;
+    }
+    .main-nav a:hover,.main-nav a.active{color:white;border-bottom-color:white}
+    .nav-icon{font-size:27px}
+
+    .content{max-width:1500px;margin:auto;padding:28px 5% 70px}
+    .feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
+    .feature{
+      position:relative;min-height:310px;overflow:hidden;border-radius:24px;color:white;
+      text-decoration:none;box-shadow:var(--shadow);isolation:isolate;transition:translate .25s,box-shadow .25s;
+    }
+    .feature:hover{translate:0 -5px;box-shadow:0 18px 34px rgba(3,40,54,.28)}
+    .feature::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,transparent 40%,rgba(2,35,48,.58))}
+    .feature h2{margin:23px 27px;font-family:"Patrick Hand",cursive;font-size:34px;font-weight:400}
+    .feature img{position:absolute;left:50%;bottom:-5%;width:min(75%,420px);max-height:80%;object-fit:contain;translate:-50% 0;mix-blend-mode:multiply}
+    .feature-adults{background:#056478}.feature-young{background:#f47b48}.feature-expo{background:#69ced1}
+    .feature-expo .empty-mark{position:absolute;inset:0;display:grid;place-items:center;font-size:86px;opacity:.35}
+
+    .section-title{margin:34px 0 18px 5px;color:white;font-family:"Patrick Hand",cursive;font-size:32px;font-weight:400}
+    .resources{display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
+    .resource{
+      min-height:150px;display:flex;align-items:center;gap:22px;padding:22px;border-radius:22px;
+      background:rgba(255,255,255,.9);text-decoration:none;box-shadow:0 8px 20px rgba(3,40,54,.12);
+    }
+    .resource-icon{width:76px;height:76px;flex:none;border-radius:17px;display:grid;place-items:center;color:white;font-size:36px;font-weight:900}
+    .resource h3{margin:0;font-size:20px}.resource p{margin:4px 0 0;line-height:1.35}
+    .video .resource-icon{background:#d45f48}.info .resource-icon{background:#08758a}.book .resource-icon{background:#eab218}
+
+    @media(max-width:850px){
+      .topbar{min-height:96px;align-items:flex-start}.account{gap:10px}.avatar{width:42px;height:42px}.account-name{font-size:14px}.account-meta{font-size:11px}.logout{padding:0 8px;font-size:12px}
+      .feature-grid,.resources{grid-template-columns:1fr}.feature{min-height:270px}
+      .main-nav{overflow-x:auto;grid-template-columns:repeat(5,minmax(130px,1fr));padding:0}.main-nav a{min-height:70px;font-size:14px}
+      .slider-button{width:40px;height:40px;font-size:22px}.slider-button.prev{left:9px}.slider-button.next{right:9px}
+    }
+    @media(max-width:560px){
+      .topbar{display:block}.account{margin-top:18px}.account-copy{flex:1}.hero{padding:30px 16px}.slider{min-height:150px}.dots{bottom:7px}.dot{width:10px;height:10px}
+    }
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.track,.feature{transition:none}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="../index.html" aria-label="RebondPlay Full">
+      <span><span class="brand-main">REBOND</span><span class="brand-full">FULL</span></span>
+      <span class="brand-play">play</span>
+    </a>
+    <div class="account">
+      <div class="avatar" aria-hidden="true">●</div>
+      <div class="account-copy">
+        <div class="account-name" id="accountName">Bonjour</div>
+        <div class="account-meta" id="accountMeta"></div>
+      </div>
+      <button class="logout" id="logoutButton" type="button">Se déconnecter</button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1>Bienvenue dans votre espace RebondPlay</h1>
+    <p>Retrouvez ici tous les outils pour sensibiliser jeunes et adultes à un sport plus sûr.</p>
+  </section>
+
+  <section class="slider-section" aria-label="Outils à la une">
+    <div class="slider" id="slider">
+      <div class="track" id="sliderTrack">
+        <article class="slide">
+          <img src="slide_MJ.jpg" alt="La Main Juste">
+          <a class="slide-link" href="../lamainjuste/lamainjuste.html" aria-label="Découvrir La Main Juste"></a>
+        </article>
+        <article class="slide">
+          <img src="slide_BC.jpg" alt="La Bonne Conduite">
+          <a class="slide-link" href="../bonneconduite/bonneconduite.html" aria-label="Découvrir La Bonne Conduite"></a>
+        </article>
+      </div>
+      <button class="slider-button prev" id="prevSlide" type="button" aria-label="Slide précédente">‹</button>
+      <button class="slider-button next" id="nextSlide" type="button" aria-label="Slide suivante">›</button>
+      <div class="dots" id="sliderDots" aria-label="Choisir une slide"></div>
+    </div>
+  </section>
+
+  <nav class="main-nav" aria-label="Navigation principale">
+    <a class="active" href="#accueil"><span class="nav-icon">⌂</span>Accueil</a>
+    <a href="#adultes"><span class="nav-icon">♙</span>Adultes</a>
+    <a href="#jeunes"><span class="nav-icon">♙</span>Jeunes</a>
+    <a href="#expositions"><span class="nav-icon">▣</span>Expositions</a>
+    <a href="#ressources"><span class="nav-icon">▤</span>Ressources</a>
+  </nav>
+
+  <main class="content" id="accueil">
+    <div class="feature-grid">
+      <a class="feature feature-adults" id="adultes" href="../lamainjuste/lamainjuste.html">
+        <h2>Pour les ADULTES</h2>
+        <img src="../lamainjuste/ange.png" alt="">
+      </a>
+      <a class="feature feature-young" id="jeunes" href="../vraifauxjeunes/vraifauxjeunes.html">
+        <h2>Pour les JEUNES</h2>
+        <img src="../personnages.jpg" alt="">
+      </a>
+      <a class="feature feature-expo" id="expositions" href="#ressources">
+        <h2>EXPOSITIONS</h2>
+        <span class="empty-mark" aria-hidden="true">▣</span>
+      </a>
+    </div>
+
+    <h2 class="section-title" id="ressources">Ressources pédagogiques</h2>
+    <div class="resources">
+      <a class="resource video" href="#"><span class="resource-icon">▶</span><span><h3>Vidéos</h3><p>Des contenus vidéo pour comprendre, expliquer et sensibiliser.</p></span></a>
+      <a class="resource info" href="#"><span class="resource-icon">◔</span><span><h3>Infographies</h3><p>Des synthèses visuelles claires et percutantes.</p></span></a>
+      <a class="resource book" href="#"><span class="resource-icon">▤</span><span><h3>Livrets</h3><p>Des livrets pratiques à télécharger et à partager.</p></span></a>
+    </div>
+  </main>
+
+  <script>
+    (() => {
+      const STORAGE_KEYS = [
+        "rebondplay_access_ok","rebondplay_abonnement_id","rebondplay_nom_structure",
+        "rebondplay_code","rebondplay_date_fin","rebondplay_prenom_contact","rebondplay_nom_contact"
+      ];
+      const get = key => sessionStorage.getItem(key) || "";
+
+      if(get("rebondplay_access_ok") !== "1"){
+        window.location.replace("../index.html");
+        return;
+      }
+
+      const firstName = get("rebondplay_prenom_contact");
+      const lastName = get("rebondplay_nom_contact");
+      const structure = get("rebondplay_nom_structure");
+      const fullName = [firstName,lastName].filter(Boolean).join(" ");
+      document.getElementById("accountName").textContent = `Bonjour ${fullName || structure || ""}`.trim();
+
+      const endDateValue = get("rebondplay_date_fin");
+      let meta = structure;
+      if(endDateValue){
+        const endDate = new Date(`${endDateValue}T23:59:59`);
+        const remaining = Math.max(0,Math.ceil((endDate-Date.now())/86400000));
+        meta = `Votre abonnement est encore valable ${remaining} jour${remaining > 1 ? "s" : ""}`;
+      }
+      document.getElementById("accountMeta").textContent = meta;
+
+      document.getElementById("logoutButton").addEventListener("click",() => {
+        STORAGE_KEYS.forEach(key => sessionStorage.removeItem(key));
+        window.location.replace("../index.html");
+      });
+
+      const slider = document.getElementById("slider");
+      const track = document.getElementById("sliderTrack");
+      const slides = [...track.children];
+      const dotsBox = document.getElementById("sliderDots");
+      const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      let index = 0;
+      let timer = null;
+      let touchStart = 0;
+
+      const dots = slides.map((_,i) => {
+        const button = document.createElement("button");
+        button.className = "dot";
+        button.type = "button";
+        button.setAttribute("aria-label",`Afficher la slide ${i+1}`);
+        button.addEventListener("click",() => { show(i); restart(); });
+        dotsBox.append(button);
+        return button;
+      });
+
+      function show(next){
+        index = (next + slides.length) % slides.length;
+        track.style.transform = `translateX(-${index * 100}%)`;
+        dots.forEach((dot,i) => dot.classList.toggle("active",i === index));
+      }
+      function stop(){ if(timer){ clearInterval(timer); timer = null; } }
+      function start(){ if(!reduceMotion && !timer){ timer = setInterval(() => show(index + 1),3000); } }
+      function restart(){ stop(); start(); }
+
+      document.getElementById("prevSlide").addEventListener("click",() => { show(index - 1); restart(); });
+      document.getElementById("nextSlide").addEventListener("click",() => { show(index + 1); restart(); });
+      slider.addEventListener("mouseenter",stop);
+      slider.addEventListener("mouseleave",start);
+      slider.addEventListener("focusin",stop);
+      slider.addEventListener("focusout",start);
+      slider.addEventListener("touchstart",event => { touchStart = event.changedTouches[0].clientX; stop(); },{passive:true});
+      slider.addEventListener("touchend",event => {
+        const distance = event.changedTouches[0].clientX - touchStart;
+        if(Math.abs(distance) > 45) show(index + (distance < 0 ? 1 : -1));
+        start();
+      },{passive:true});
+      document.addEventListener("visibilitychange",() => document.hidden ? stop() : start());
+
+      show(0);
+      start();
+    })();
+  </script>
+</body>
+</html>
