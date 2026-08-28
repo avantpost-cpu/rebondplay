@@ -1,306 +1,71 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#c99ac8">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#c697c7">
   <title>RebondPlay Full</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
   <style>
-    :root{
-      --ink:#073e55;
-      --blue:#064e61;
-      --orange:#ff7048;
-      --lavender:#c99ac8;
-      --aqua:#86d9dc;
-      --paper:#f7f4ef;
-      --shadow:0 12px 26px rgba(3,40,54,.2);
-    }
-
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      min-height:100vh;
-      color:var(--ink);
-      background:
-        radial-gradient(circle at 12% 20%,rgba(255,255,255,.16),transparent 24%),
-        linear-gradient(145deg,#d5a9d2 0%,#c08fc2 100%);
-      font-family:"Nunito",Arial,sans-serif;
-    }
-
-    button,a{font:inherit}
-    a{color:inherit}
-    img{display:block;max-width:100%}
-
-    .topbar{
-      min-height:122px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:32px;
-      padding:20px clamp(22px,4vw,74px);
-      background:rgba(208,164,205,.92);
-      border-bottom:1px solid rgba(7,62,85,.09);
-    }
-
-    .brand{
-      display:flex;
-      align-items:flex-end;
-      gap:9px;
-      color:white;
-      text-decoration:none;
-      line-height:.86;
-    }
-    .brand-main{font-family:"Patrick Hand",cursive;font-size:clamp(35px,4vw,60px)}
-    .brand-play{font-family:"Patrick Hand",cursive;font-size:clamp(31px,3.5vw,54px);color:#ff8a4c}
-    .brand-full{display:block;margin-top:9px;font-size:13px;font-weight:900;letter-spacing:.22em;text-align:center}
-
-    .account{display:flex;align-items:center;gap:20px;min-width:0}
-    .avatar{
-      width:56px;height:56px;flex:none;border-radius:50%;
-      display:grid;place-items:center;background:var(--ink);color:#d8afd5;font-size:31px;
-    }
-    .account-copy{min-width:0}
-    .account-name{font-size:18px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .account-meta{margin-top:3px;font-size:14px;font-weight:700}
-    .logout{
-      min-height:44px;padding:0 19px;border:0;border-left:1px solid rgba(7,62,85,.25);
-      background:transparent;color:var(--ink);font-weight:900;cursor:pointer;
-    }
-    .logout:hover{color:#9a2e36}
-
-    .hero{
-      padding:42px 20px 38px;text-align:center;color:white;
-      background:
-        linear-gradient(rgba(4,62,80,.91),rgba(4,62,80,.91)),
-        url("../motifs.jpg") center/650px auto repeat;
-    }
-    .hero h1{
-      margin:0;color:var(--orange);font-family:"Patrick Hand",cursive;
-      font-size:clamp(38px,5vw,72px);font-weight:400;line-height:1.02;
-    }
-    .hero p{margin:22px auto 0;max-width:1100px;font-size:clamp(17px,2vw,26px);font-weight:700}
-
-    .slider-section{position:relative;background:#063f52}
-    .slider{
-      position:relative;overflow:hidden;width:100%;aspect-ratio:2982/625;
-      min-height:190px;max-height:625px;background:#063f52;touch-action:pan-y;
-    }
-    .track{height:100%;display:flex;transition:transform .75s cubic-bezier(.22,.7,.22,1);will-change:transform}
-    .slide{position:relative;flex:0 0 100%;height:100%;overflow:hidden}
-    .slide img{width:100%;height:100%;object-fit:cover}
-    .slide-link{position:absolute;inset:0;z-index:2}
-    .slide-link:focus-visible{outline:5px solid #fff;outline-offset:-8px}
-
-    .slider-button{
-      position:absolute;z-index:5;top:50%;translate:0 -50%;width:48px;height:48px;
-      border:0;border-radius:50%;background:rgba(255,255,255,.9);color:var(--ink);
-      font-size:28px;font-weight:900;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.25);
-    }
-    .slider-button:hover{background:#fff;scale:1.06}
-    .slider-button.prev{left:18px}.slider-button.next{right:18px}
-    .dots{position:absolute;z-index:6;left:50%;bottom:13px;translate:-50% 0;display:flex;gap:9px}
-    .dot{width:12px;height:12px;padding:0;border:2px solid white;border-radius:50%;background:transparent;cursor:pointer}
-    .dot.active{background:white}
-
-    .main-nav{
-      position:sticky;top:0;z-index:20;display:grid;grid-template-columns:repeat(5,1fr);
-      max-width:1500px;margin:auto;padding:0 24px;background:rgba(202,153,201,.96);
-      backdrop-filter:blur(12px);box-shadow:0 6px 18px rgba(7,62,85,.08);
-    }
-    .main-nav a{
-      min-height:88px;display:flex;align-items:center;justify-content:center;gap:11px;
-      text-decoration:none;font-size:17px;font-weight:900;border-bottom:4px solid transparent;
-    }
-    .main-nav a:hover,.main-nav a.active{color:white;border-bottom-color:white}
-    .nav-icon{font-size:27px}
-
-    .content{max-width:1500px;margin:auto;padding:28px 5% 70px}
-    .feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
-    .feature{
-      position:relative;min-height:310px;overflow:hidden;border-radius:24px;color:white;
-      text-decoration:none;box-shadow:var(--shadow);isolation:isolate;transition:translate .25s,box-shadow .25s;
-    }
-    .feature:hover{translate:0 -5px;box-shadow:0 18px 34px rgba(3,40,54,.28)}
-    .feature::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,transparent 40%,rgba(2,35,48,.58))}
-    .feature h2{margin:23px 27px;font-family:"Patrick Hand",cursive;font-size:34px;font-weight:400}
-    .feature img{position:absolute;left:50%;bottom:-5%;width:min(75%,420px);max-height:80%;object-fit:contain;translate:-50% 0;mix-blend-mode:multiply}
-    .feature-adults{background:#056478}.feature-young{background:#f47b48}.feature-expo{background:#69ced1}
-    .feature-expo .empty-mark{position:absolute;inset:0;display:grid;place-items:center;font-size:86px;opacity:.35}
-
-    .section-title{margin:34px 0 18px 5px;color:white;font-family:"Patrick Hand",cursive;font-size:32px;font-weight:400}
-    .resources{display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
-    .resource{
-      min-height:150px;display:flex;align-items:center;gap:22px;padding:22px;border-radius:22px;
-      background:rgba(255,255,255,.9);text-decoration:none;box-shadow:0 8px 20px rgba(3,40,54,.12);
-    }
-    .resource-icon{width:76px;height:76px;flex:none;border-radius:17px;display:grid;place-items:center;color:white;font-size:36px;font-weight:900}
-    .resource h3{margin:0;font-size:20px}.resource p{margin:4px 0 0;line-height:1.35}
-    .video .resource-icon{background:#d45f48}.info .resource-icon{background:#08758a}.book .resource-icon{background:#eab218}
-
-    @media(max-width:850px){
-      .topbar{min-height:96px;align-items:flex-start}.account{gap:10px}.avatar{width:42px;height:42px}.account-name{font-size:14px}.account-meta{font-size:11px}.logout{padding:0 8px;font-size:12px}
-      .feature-grid,.resources{grid-template-columns:1fr}.feature{min-height:270px}
-      .main-nav{overflow-x:auto;grid-template-columns:repeat(5,minmax(130px,1fr));padding:0}.main-nav a{min-height:70px;font-size:14px}
-      .slider-button{width:40px;height:40px;font-size:22px}.slider-button.prev{left:9px}.slider-button.next{right:9px}
-    }
-    @media(max-width:560px){
-      .topbar{display:block}.account{margin-top:18px}.account-copy{flex:1}.hero{padding:30px 16px}.slider{min-height:150px}.dots{bottom:7px}.dot{width:10px;height:10px}
-    }
-    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.track,.feature{transition:none}}
+    :root{--ink:#063e54;--blue:#064e61;--orange:#ff764b;--pink:#c697c7;--aqua:#79d3d7;--paper:#f7f4ef;--yellow:#efb416;--shadow:0 12px 22px rgba(3,42,56,.22);--content:min(90vw,2680px)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-width:300px;color:var(--ink);background:#bd8fbe url("fondfull.png") center top/cover fixed;font-family:"Nunito",Arial,sans-serif}img{display:block;max-width:100%}a{color:inherit}button{font:inherit}.hand{font-family:"Patrick Hand",cursive;font-weight:400}
+    .topbar{min-height:clamp(88px,6.15vw,183px);display:flex;align-items:center;justify-content:space-between;gap:34px;padding:14px 4.7%;background:rgba(206,166,206,.55)}
+    .brand{width:clamp(225px,15vw,445px);flex:none}.brand img{width:100%;height:auto}.account{display:flex;align-items:center;justify-content:flex-end;gap:clamp(10px,1.2vw,30px);min-width:0;color:#082f4a}.avatar{width:clamp(42px,3.25vw,76px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;flex:none;background:#082f4a;color:var(--pink)}.avatar svg{width:62%;height:62%;fill:currentColor}.account-copy{min-width:0}.account-name{font-size:clamp(14px,1.15vw,27px);font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.account-meta{margin-top:3px;font-size:clamp(10px,.83vw,20px);font-weight:700;white-space:nowrap}.logout{min-height:50px;padding:0 clamp(12px,1.7vw,38px);border:0;border-left:1px solid rgba(8,47,74,.28);background:transparent;color:inherit;font-weight:900;cursor:pointer;white-space:nowrap}.logout:hover{color:#a23445}
+    .slider{position:relative;width:100%;aspect-ratio:2982/625;min-height:220px;overflow:hidden;background:var(--blue);touch-action:pan-y}.slider-track{display:flex;width:100%;height:100%;transition:transform .7s cubic-bezier(.22,.72,.25,1);will-change:transform}.slide{position:relative;flex:0 0 100%;height:100%;overflow:hidden}.slide-image{width:100%;height:100%;object-fit:cover}.slide-link{position:absolute;inset:0;z-index:2}.slide-link:focus-visible{outline:6px solid white;outline-offset:-10px}.welcome-slide{display:grid;place-items:center;text-align:center;color:white;background:linear-gradient(rgba(5,74,91,.91),rgba(5,74,91,.91)),url("../motifs.jpg") center/760px auto repeat}.welcome-slide::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 52%,rgba(57,147,158,.34),transparent 38%);pointer-events:none}.welcome-content{position:relative;z-index:1;padding:28px 6%}.welcome-content h1{margin:0;color:var(--orange);font-size:clamp(38px,4.7vw,124px);line-height:.98}.welcome-content p{margin:clamp(12px,1.7vw,38px) auto 0;max-width:2100px;font-size:clamp(15px,1.5vw,39px);font-weight:700}.slider-arrow{position:absolute;z-index:4;top:50%;translate:0 -50%;width:clamp(40px,3vw,66px);aspect-ratio:1;border:0;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.9);color:var(--blue);font-size:clamp(24px,2vw,43px);font-weight:900;box-shadow:0 5px 15px rgba(0,0,0,.23);cursor:pointer}.slider-arrow:hover{background:white;scale:1.06}.slider-arrow.prev{left:clamp(10px,1.3vw,35px)}.slider-arrow.next{right:clamp(10px,1.3vw,35px)}.slider-dots{position:absolute;z-index:5;left:50%;bottom:clamp(9px,1vw,23px);translate:-50%;display:flex;gap:10px}.slider-dot{width:13px;height:13px;padding:0;border:2px solid white;border-radius:50%;background:transparent;box-shadow:0 1px 4px rgba(0,0,0,.25);cursor:pointer}.slider-dot.active{background:white}
+    .main-nav{position:sticky;top:0;z-index:20;display:grid;grid-template-columns:repeat(5,1fr);padding:0 8%;background:rgba(199,151,200,.94);backdrop-filter:blur(10px);box-shadow:0 5px 12px rgba(5,51,66,.12)}.main-nav a{min-height:clamp(68px,5.9vw,126px);display:flex;align-items:center;justify-content:center;gap:clamp(7px,.9vw,18px);border-bottom:4px solid transparent;text-decoration:none;font-size:clamp(13px,1.15vw,26px);font-weight:900;white-space:nowrap}.main-nav svg{width:clamp(22px,1.8vw,40px);height:clamp(22px,1.8vw,40px);fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.main-nav a:hover,.main-nav a.active{color:white;border-bottom-color:white}
+    .content{width:var(--content);margin:auto;padding:clamp(32px,3.7vw,80px) 0 clamp(55px,6vw,120px)}.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(22px,2.2vw,54px)}.feature{position:relative;min-height:clamp(260px,20vw,510px);overflow:hidden;border-radius:clamp(18px,1.25vw,30px);color:white;text-decoration:none;box-shadow:var(--shadow);isolation:isolate;transition:translate .25s,box-shadow .25s}.feature:hover{translate:0 -6px;box-shadow:0 18px 35px rgba(3,42,56,.28)}.feature h2{position:relative;z-index:3;margin:clamp(20px,2vw,42px);font-size:clamp(25px,2vw,48px);line-height:1}.feature img{position:absolute;z-index:2;left:50%;bottom:0;translate:-50% 0;width:auto;height:auto;object-fit:contain}.feature-adults{background:#056276}.feature-adults img{max-width:78%;max-height:83%}.feature-young{background:#f47c4b}.feature-young img{max-width:73%;max-height:82%}.feature-expo{background:#75d3d6}.feature-expo::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 72% 75%,rgba(255,255,255,.22),transparent 34%)}.feature-expo svg{position:absolute;left:50%;top:55%;translate:-50% -50%;width:22%;fill:none;stroke:white;stroke-width:1.5;opacity:.42}
+    .section-title{margin:clamp(34px,3.4vw,74px) 0 clamp(18px,1.8vw,40px);color:white;font-size:clamp(27px,2.1vw,50px);line-height:1}.resources{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(22px,2.2vw,54px)}.resource{position:relative;min-height:clamp(135px,10.2vw,245px);display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:clamp(14px,1.45vw,34px);padding:clamp(18px,1.7vw,38px);border-radius:clamp(18px,1.25vw,30px);background:rgba(250,249,245,.93);text-decoration:none;box-shadow:0 8px 18px rgba(3,42,56,.13);transition:translate .25s}.resource:hover{translate:0 -4px}.resource-icon{width:clamp(65px,6vw,135px);aspect-ratio:1;border-radius:clamp(13px,1vw,23px);display:grid;place-items:center;color:white}.resource-icon svg{width:58%;height:58%;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.resource h3{margin:0;font-size:clamp(17px,1.35vw,31px)}.resource p{margin:5px 0 0;font-size:clamp(11px,.92vw,21px);line-height:1.3}.resource-arrow{width:clamp(35px,2.7vw,62px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;color:white;font-size:clamp(20px,1.6vw,36px);font-weight:900}.video .resource-icon,.video .resource-arrow{background:#d9634c}.info .resource-icon,.info .resource-arrow{background:#08788a}.book .resource-icon,.book .resource-arrow{background:var(--yellow)}
+    @media(max-width:900px){.topbar{padding-inline:24px}.brand{width:210px}.account-meta{white-space:normal}.logout{font-size:12px;padding-inline:10px}.slider{aspect-ratio:16/4.7}.slide-image{object-fit:cover}.main-nav{padding:0;overflow-x:auto;grid-template-columns:repeat(5,minmax(128px,1fr))}.main-nav a{min-height:68px}.feature-grid,.resources{grid-template-columns:1fr}.feature{min-height:330px}.feature img{max-height:84%}.resource{min-height:140px}}
+    @media(max-width:580px){.topbar{align-items:flex-start;gap:16px;flex-wrap:wrap;padding:16px 18px}.brand{width:185px}.account{width:100%;justify-content:flex-start}.account-copy{flex:1}.logout{min-height:42px}.slider{min-height:240px;aspect-ratio:auto}.slide-image{object-position:center;object-fit:cover}.welcome-content h1{font-size:42px}.welcome-content p{font-size:16px;max-width:330px}.slider-arrow{width:38px;font-size:23px}.feature{min-height:270px}.feature h2{font-size:29px}.resource{grid-template-columns:auto 1fr}.resource-arrow{display:none}.resource p{font-size:12px}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.slider-track,.feature,.resource{transition:none}}
   </style>
 </head>
 <body>
   <header class="topbar">
-    <a class="brand" href="../index.html" aria-label="RebondPlay Full">
-      <span><span class="brand-main">REBOND</span><span class="brand-full">FULL</span></span>
-      <span class="brand-play">play</span>
-    </a>
-    <div class="account">
-      <div class="avatar" aria-hidden="true">●</div>
-      <div class="account-copy">
-        <div class="account-name" id="accountName">Bonjour</div>
-        <div class="account-meta" id="accountMeta"></div>
-      </div>
-      <button class="logout" id="logoutButton" type="button">Se déconnecter</button>
-    </div>
+    <a class="brand" href="#accueil" aria-label="RebondPlay Full — accueil"><img src="logo_RPF.png" alt="RebondPlay Full"></a>
+    <div class="account" aria-label="Compte connecté"><span class="avatar" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0z"/></svg></span><div class="account-copy"><div class="account-name" id="accountName">Bonjour</div><div class="account-meta" id="accountMeta"></div></div><button class="logout" id="logoutButton" type="button">Se déconnecter</button></div>
   </header>
-
-  <section class="hero">
-    <h1>Bienvenue dans votre espace RebondPlay</h1>
-    <p>Retrouvez ici tous les outils pour sensibiliser jeunes et adultes à un sport plus sûr.</p>
-  </section>
-
-  <section class="slider-section" aria-label="Outils à la une">
-    <div class="slider" id="slider">
-      <div class="track" id="sliderTrack">
-        <article class="slide">
-          <img src="slide_MJ.jpg" alt="La Main Juste">
-          <a class="slide-link" href="../lamainjuste/lamainjuste.html" aria-label="Découvrir La Main Juste"></a>
-        </article>
-        <article class="slide">
-          <img src="slide_BC.jpg" alt="La Bonne Conduite">
-          <a class="slide-link" href="../bonneconduite/bonneconduite.html" aria-label="Découvrir La Bonne Conduite"></a>
-        </article>
-      </div>
-      <button class="slider-button prev" id="prevSlide" type="button" aria-label="Slide précédente">‹</button>
-      <button class="slider-button next" id="nextSlide" type="button" aria-label="Slide suivante">›</button>
-      <div class="dots" id="sliderDots" aria-label="Choisir une slide"></div>
+  <section class="slider" id="slider" aria-label="Outils à la une">
+    <div class="slider-track" id="sliderTrack">
+      <article class="slide welcome-slide"><div class="welcome-content"><h1 class="hand">Bienvenue dans votre espace RebondPlay</h1><p>Retrouvez ici tous les outils pour sensibiliser jeunes et adultes à un sport plus sûr.</p></div></article>
+      <article class="slide"><img class="slide-image" src="slide_MJ.jpg" alt="La Main Juste"><a class="slide-link" href="../lamainjuste/lamainjuste.html" aria-label="Ouvrir La Main Juste"></a></article>
+      <article class="slide"><img class="slide-image" src="slide_BC.jpg" alt="La Bonne Conduite"><a class="slide-link" href="../bonneconduite/bonneconduite.html" aria-label="Ouvrir La Bonne Conduite"></a></article>
     </div>
+    <button class="slider-arrow prev" id="prevSlide" type="button" aria-label="Slide précédente">‹</button><button class="slider-arrow next" id="nextSlide" type="button" aria-label="Slide suivante">›</button><div class="slider-dots" id="sliderDots"></div>
   </section>
-
   <nav class="main-nav" aria-label="Navigation principale">
-    <a class="active" href="#accueil"><span class="nav-icon">⌂</span>Accueil</a>
-    <a href="#adultes"><span class="nav-icon">♙</span>Adultes</a>
-    <a href="#jeunes"><span class="nav-icon">♙</span>Jeunes</a>
-    <a href="#expositions"><span class="nav-icon">▣</span>Expositions</a>
-    <a href="#ressources"><span class="nav-icon">▤</span>Ressources</a>
+    <a class="active" href="#accueil"><svg viewBox="0 0 24 24"><path d="m3 11 9-8 9 8v10h-6v-6H9v6H3z"/></svg>Accueil</a>
+    <a href="#adultes"><svg viewBox="0 0 24 24"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9" r="3"/><path d="M2 21v-2a6 6 0 0 1 12 0v2M14 15a6 6 0 0 1 8 6"/></svg>Adultes</a>
+    <a href="#jeunes"><svg viewBox="0 0 24 24"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9" r="3"/><path d="M2 21v-2a6 6 0 0 1 12 0v2M14 15a6 6 0 0 1 8 6"/></svg>Jeunes</a>
+    <a href="#expositions"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="1"/><circle cx="9" cy="9" r="2"/><path d="m5 17 5-5 3 3 2-2 4 4"/></svg>Expositions</a>
+    <a href="#ressources"><svg viewBox="0 0 24 24"><path d="M4 4h7a3 3 0 0 1 3 3v13a3 3 0 0 0-3-3H4zM20 4h-3a3 3 0 0 0-3 3v13a3 3 0 0 1 3-3h3z"/></svg>Ressources</a>
   </nav>
-
   <main class="content" id="accueil">
-    <div class="feature-grid">
-      <a class="feature feature-adults" id="adultes" href="../lamainjuste/lamainjuste.html">
-        <h2>Pour les ADULTES</h2>
-        <img src="../lamainjuste/ange.png" alt="">
-      </a>
-      <a class="feature feature-young" id="jeunes" href="../vraifauxjeunes/vraifauxjeunes.html">
-        <h2>Pour les JEUNES</h2>
-        <img src="../personnages.jpg" alt="">
-      </a>
-      <a class="feature feature-expo" id="expositions" href="#ressources">
-        <h2>EXPOSITIONS</h2>
-        <span class="empty-mark" aria-hidden="true">▣</span>
-      </a>
-    </div>
-
-    <h2 class="section-title" id="ressources">Ressources pédagogiques</h2>
-    <div class="resources">
-      <a class="resource video" href="#"><span class="resource-icon">▶</span><span><h3>Vidéos</h3><p>Des contenus vidéo pour comprendre, expliquer et sensibiliser.</p></span></a>
-      <a class="resource info" href="#"><span class="resource-icon">◔</span><span><h3>Infographies</h3><p>Des synthèses visuelles claires et percutantes.</p></span></a>
-      <a class="resource book" href="#"><span class="resource-icon">▤</span><span><h3>Livrets</h3><p>Des livrets pratiques à télécharger et à partager.</p></span></a>
-    </div>
+    <section class="feature-grid" aria-label="Espaces RebondPlay">
+      <a class="feature feature-adults" id="adultes" href="../lamainjuste/lamainjuste.html"><h2 class="hand">Pour les ADULTES</h2><img src="imageadultes.png" alt="Deux adultes encadrants"></a>
+      <a class="feature feature-young" id="jeunes" href="../vraifauxjeunes/vraifauxjeunes.html"><h2 class="hand">Pour les JEUNES</h2><img src="imageenfants.png" alt="Trois jeunes sportifs"></a>
+      <a class="feature feature-expo" id="expositions" href="#ressources"><h2 class="hand">EXPOSITIONS</h2><svg viewBox="0 0 100 82" aria-hidden="true"><rect x="5" y="8" width="90" height="68" rx="4"/><circle cx="33" cy="30" r="9"/><path d="m12 68 27-28 17 17 12-13 20 24"/></svg></a>
+    </section>
+    <h2 class="section-title hand" id="ressources">Ressources pédagogiques</h2>
+    <section class="resources" aria-label="Ressources pédagogiques">
+      <a class="resource video" href="#"><span class="resource-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m10 8 6 4-6 4z"/></svg></span><span><h3>Vidéos</h3><p>Des contenus vidéo pour comprendre, expliquer et sensibiliser.</p></span><span class="resource-arrow">→</span></a>
+      <a class="resource info" href="#"><span class="resource-icon"><svg viewBox="0 0 24 24"><path d="M12 3v9h9A9 9 0 1 1 12 3z"/><path d="M15 3.5A9 9 0 0 1 20.5 9H15z"/></svg></span><span><h3>Infographies</h3><p>Des synthèses visuelles claires et percutantes.</p></span><span class="resource-arrow">→</span></a>
+      <a class="resource book" href="#"><span class="resource-icon"><svg viewBox="0 0 24 24"><path d="M4 4h6a3 3 0 0 1 3 3v13a3 3 0 0 0-3-3H4zM20 4h-4a3 3 0 0 0-3 3v13a3 3 0 0 1 3-3h4z"/></svg></span><span><h3>Livrets</h3><p>Des livrets pratiques à télécharger et à partager.</p></span><span class="resource-arrow">→</span></a>
+    </section>
   </main>
-
   <script>
-    (() => {
-      const STORAGE_KEYS = [
-        "rebondplay_access_ok","rebondplay_abonnement_id","rebondplay_nom_structure",
-        "rebondplay_code","rebondplay_date_fin","rebondplay_prenom_contact","rebondplay_nom_contact"
-      ];
-      const get = key => sessionStorage.getItem(key) || "";
-
-      if(get("rebondplay_access_ok") !== "1"){
-        window.location.replace("../index.html");
-        return;
-      }
-
-      const firstName = get("rebondplay_prenom_contact");
-      const lastName = get("rebondplay_nom_contact");
-      const structure = get("rebondplay_nom_structure");
-      const fullName = [firstName,lastName].filter(Boolean).join(" ");
-      document.getElementById("accountName").textContent = `Bonjour ${fullName || structure || ""}`.trim();
-
-      const endDateValue = get("rebondplay_date_fin");
-      let meta = structure;
-      if(endDateValue){
-        const endDate = new Date(`${endDateValue}T23:59:59`);
-        const remaining = Math.max(0,Math.ceil((endDate-Date.now())/86400000));
-        meta = `Votre abonnement est encore valable ${remaining} jour${remaining > 1 ? "s" : ""}`;
-      }
-      document.getElementById("accountMeta").textContent = meta;
-
-      document.getElementById("logoutButton").addEventListener("click",() => {
-        STORAGE_KEYS.forEach(key => sessionStorage.removeItem(key));
-        window.location.replace("../index.html");
-      });
-
-      const slider = document.getElementById("slider");
-      const track = document.getElementById("sliderTrack");
-      const slides = [...track.children];
-      const dotsBox = document.getElementById("sliderDots");
-      const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
-      let index = 0;
-      let timer = null;
-      let touchStart = 0;
-
-      const dots = slides.map((_,i) => {
-        const button = document.createElement("button");
-        button.className = "dot";
-        button.type = "button";
-        button.setAttribute("aria-label",`Afficher la slide ${i+1}`);
-        button.addEventListener("click",() => { show(i); restart(); });
-        dotsBox.append(button);
-        return button;
-      });
-
-      function show(next){
-        index = (next + slides.length) % slides.length;
-        track.style.transform = `translateX(-${index * 100}%)`;
-        dots.forEach((dot,i) => dot.classList.toggle("active",i === index));
-      }
-      function stop(){ if(timer){ clearInterval(timer); timer = null; } }
-      function start(){ if(!reduceMotion && !timer){ timer = setInterval(() => show(index + 1),3000); } }
-      function restart(){ stop(); start(); }
-
-      document.getElementById("prevSlide").addEventListener("click",() => { show(index - 1); restart(); });
-      document.getElementById("nextSlide").addEventListener("click",() => { show(index + 1); restart(); });
-      slider.addEventListener("mouseenter",stop);
-      slider.addEventListener("mouseleave",start);
-      slider.addEventListener("focusin",stop);
-      slider.addEventListener("focusout",start);
-      slider.addEventListener("touchstart",event => { touchStart = event.changedTouches[0].clientX; stop(); },{passive:true});
-      slider.addEventListener("touchend",event => {
-        const distance = event.changedTouches[0].clientX - touchStart;
-        if(Math.abs(distance) > 45) show(index + (distance < 0 ? 1 : -1));
-        start();
-      },{passive:true});
-      document.addEventListener("visibilitychange",() => document.hidden ? stop() : start());
-
-      show(0);
-      start();
+    (()=>{
+      const storageKeys=["rebondplay_access_ok","rebondplay_abonnement_id","rebondplay_nom_structure","rebondplay_code","rebondplay_date_fin","rebondplay_prenom_contact","rebondplay_nom_contact"],get=key=>sessionStorage.getItem(key)||"";
+      if(get("rebondplay_access_ok")!=="1"){location.replace("../index.html");return}
+      const name=[get("rebondplay_prenom_contact"),get("rebondplay_nom_contact")].filter(Boolean).join(" ")||get("rebondplay_nom_structure");document.getElementById("accountName").textContent=`Bonjour ${name}`.trim();
+      const endValue=get("rebondplay_date_fin");let meta=get("rebondplay_nom_structure");if(endValue){const end=new Date(`${endValue}T23:59:59`),days=Math.max(0,Math.ceil((end-Date.now())/86400000));meta=`Votre abonnement est encore valable ${days} jour${days>1?"s":""}`}document.getElementById("accountMeta").textContent=meta;
+      document.getElementById("logoutButton").addEventListener("click",()=>{storageKeys.forEach(key=>sessionStorage.removeItem(key));location.replace("../index.html")});
+      const slider=document.getElementById("slider"),track=document.getElementById("sliderTrack"),slides=[...track.children],dotsBox=document.getElementById("sliderDots"),reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;let current=0,timer=0,touchStart=0;
+      const dots=slides.map((_,index)=>{const dot=document.createElement("button");dot.type="button";dot.className="slider-dot";dot.setAttribute("aria-label",`Afficher la slide ${index+1}`);dot.addEventListener("click",()=>{show(index);restart()});dotsBox.append(dot);return dot});
+      function show(index){current=(index+slides.length)%slides.length;track.style.transform=`translateX(-${current*100}%)`;dots.forEach((dot,i)=>dot.classList.toggle("active",i===current))}function stop(){clearInterval(timer);timer=0}function start(){if(!reduced&&!timer)timer=setInterval(()=>show(current+1),3000)}function restart(){stop();start()}
+      document.getElementById("prevSlide").addEventListener("click",()=>{show(current-1);restart()});document.getElementById("nextSlide").addEventListener("click",()=>{show(current+1);restart()});slider.addEventListener("mouseenter",stop);slider.addEventListener("mouseleave",start);slider.addEventListener("focusin",stop);slider.addEventListener("focusout",start);slider.addEventListener("touchstart",event=>{touchStart=event.changedTouches[0].clientX;stop()},{passive:true});slider.addEventListener("touchend",event=>{const distance=event.changedTouches[0].clientX-touchStart;if(Math.abs(distance)>45)show(current+(distance<0?1:-1));start()},{passive:true});document.addEventListener("visibilitychange",()=>document.hidden?stop():start());show(0);start();
     })();
   </script>
 </body>
