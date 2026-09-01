@@ -83,7 +83,7 @@
       const storageKeys=["rebondplay_access_ok","rebondplay_abonnement_id","rebondplay_nom_structure","rebondplay_code","rebondplay_date_fin","rebondplay_prenom_contact","rebondplay_nom_contact"],get=key=>sessionStorage.getItem(key)||"";
       if(get("rebondplay_access_ok")!=="1"){location.replace("../index.html");return}
       const name=[get("rebondplay_prenom_contact"),get("rebondplay_nom_contact")].filter(Boolean).join(" ")||get("rebondplay_nom_structure");document.getElementById("accountName").textContent=`Bonjour ${name}`.trim();
-      const endValue=get("rebondplay_date_fin");let meta=get("rebondplay_nom_structure");if(endValue){const end=new Date(`${endValue}T23:59:59`),days=Math.max(0,Math.ceil((end-Date.now())/86400000));meta=`Votre abonnement est encore valable ${days} jour${days>1?"s":""}`}document.getElementById("accountMeta").textContent=meta;
+      const endValue=get("rebondplay_date_fin"),metaElement=document.getElementById("accountMeta");let meta=get("rebondplay_nom_structure");if(endValue){const end=new Date(`${endValue}T23:59:59`),days=Math.max(0,Math.ceil((end-Date.now())/86400000));metaElement.innerHTML=`Votre abonnement est encore valable<br>${days} jour${days>1?"s":""}`}else{metaElement.textContent=meta}
       document.getElementById("logoutButton").addEventListener("click",()=>{storageKeys.forEach(key=>sessionStorage.removeItem(key));location.replace("../index.html")});
       document.querySelectorAll("[data-missing]").forEach(link=>link.addEventListener("click",event=>{event.preventDefault();alert("Le document PDF sera disponible ici dès son ajout.")}));
     })();
