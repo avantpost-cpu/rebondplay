@@ -20,6 +20,7 @@
     .video-modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:clamp(16px,3vw,52px);background:rgba(5,28,39,.72);backdrop-filter:blur(5px)}.video-modal.is-open{display:flex}.video-modal-panel{position:relative;width:min(100%,1180px);min-height:760px;max-height:92vh;overflow:auto;border-radius:26px;background:#f47c4b;box-shadow:0 18px 55px rgba(0,0,0,.42)}.video-modal-head{position:absolute;top:0;left:0;width:44%;height:auto;max-width:520px}.video-modal-hotspot{position:absolute;top:clamp(12px,2vw,28px);right:clamp(12px,2vw,28px);width:clamp(28px,4vw,58px);height:clamp(28px,4vw,58px);padding:0;border:0;background:transparent;cursor:pointer}.video-modal-hotspot img{width:100%;height:100%;object-fit:contain}.video-modal-content{display:none}.video-frame{position:relative;width:63%;aspect-ratio:16/9;margin:18% 5% 24px 32%;padding:0;background:white}.video-frame + .video-frame{margin-top:24px}.video-frame-title{width:63%;margin:0 5% 8px 32%;color:#063e54;font-size:clamp(15px,1.4vw,24px);font-weight:900}.video-frame iframe,.video-frame video{display:block;width:100%;height:100%;border:0}.video-modal-content h2{margin:0 0 12px;font-size:clamp(22px,2.2vw,38px)}.video-modal-content p{margin:0;font-size:clamp(14px,1.2vw,20px)}
     .video-layout{display:grid;grid-template-columns:28% 1fr;gap:clamp(20px,3vw,42px);align-items:center;padding:18% 5% 7%}.video-menu{color:#063e54}.video-menu h2{margin:0 0 18px;font-size:clamp(20px,2vw,32px)}.video-choice{display:block;width:100%;margin:0 0 12px;padding:13px 14px;border:0;border-radius:12px;background:rgba(255,255,255,.78);color:#063e54;text-align:left;font:inherit;font-size:clamp(12px,1vw,17px);font-weight:800;cursor:pointer}.video-choice:hover,.video-choice.is-active{background:#063e54;color:white}.video-stage{width:100%;aspect-ratio:16/9;background:white}.video-stage video{display:block;width:100%;height:100%;object-fit:contain}
     .video-theme{margin:18px 0 9px;color:#063e54;font-size:clamp(14px,1.15vw,20px);font-weight:900}
+    .video-subtheme{margin:14px 0 7px;color:#063e54;font-size:clamp(13px,1vw,18px);font-weight:900}.video-choice-row{display:flex;gap:6px}.video-choice-row .video-choice{margin:0;flex:1;padding:9px 6px;text-align:center;font-size:clamp(10px,.8vw,14px)}
     @media(max-width:900px){.topbar{padding-inline:24px}.brand{width:210px}.account-meta{white-space:normal}.logout{font-size:12px;padding-inline:10px}.slider{aspect-ratio:16/4.7}.slide-image{object-fit:cover}.main-nav{padding:0;overflow-x:auto;grid-template-columns:repeat(5,minmax(128px,1fr))}.main-nav a{min-height:68px}.feature-grid,.resources{grid-template-columns:1fr}.feature{min-height:330px}.feature-adults .feature-illustration{width:58%}.feature-young .feature-illustration{width:55%}.resource{min-height:140px}}
     @media(max-width:580px){.topbar{align-items:flex-start;gap:16px;flex-wrap:wrap;padding:16px 18px}.brand{width:185px}.account{width:100%;justify-content:flex-start}.account-copy{flex:1}.logout{min-height:42px}.slider{min-height:240px;aspect-ratio:auto}.slide-image{object-position:center;object-fit:cover}.slider-arrow{width:38px;font-size:23px}.feature{min-height:300px}.feature-title{height:30px}.feature-adults .feature-illustration{right:-7%;width:56%}.feature-young .feature-illustration{right:-7%;width:56%}.resource{grid-template-columns:auto 1fr}.resource-arrow{display:none}.resource p{font-size:12px}.video-modal-panel{min-height:620px}.video-frame,.video-frame-title{width:86%;margin-left:7%;margin-right:7%}.video-frame{margin-top:30%;margin-bottom:16px}.video-frame + .video-frame{margin-top:16px}.video-layout{grid-template-columns:1fr;gap:18px;padding:30% 7% 7%}.video-stage{order:-1}.video-menu h2{margin-bottom:10px}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.slider-track,.feature,.resource{transition:none}}
@@ -60,14 +61,20 @@
         <nav class="video-menu" aria-label="Liste des vidéos">
           <h2 id="videoModalTitle">Vidéos</h2>
           <h3 class="video-theme">Exposition (é)preuves</h3>
-          <button class="video-choice is-active" type="button" data-video="../pagevideo/Film_Expo-e-preuves_bdf2.mp4">Exposition (é)preuves</button>
+          <div class="video-choice-row"><button class="video-choice is-active" type="button" data-video="../pagevideo/Film_Expo-e-preuves_bdf2.mp4">Voir la vidéo</button></div>
           <h3 class="video-theme">Témoignage A. Cauchy</h3>
-          <button class="video-choice" type="button" data-video="../pagevideo/Angie_emprise1.mp4">L’emprise — partie 1</button>
-          <button class="video-choice" type="button" data-video="../pagevideo/Angie_emprise2.mp4">L’emprise — partie 2</button>
-          <button class="video-choice" type="button" data-video="../pagevideo/Angie_emprise3.mp4">L’emprise — partie 3</button>
-          <button class="video-choice" type="button" data-video="../pagevideo/Angie_raisonsilence1.mp4">Les raisons du silence — partie 1</button>
-          <button class="video-choice" type="button" data-video="../pagevideo/Angie_raisonsilence2.mp4">Les raisons du silence — partie 2</button>
-          <button class="video-choice" type="button" data-video="../pagevideo/Angie_raisonsilence3.mp4">Les raisons du silence — partie 3</button>
+          <div class="video-subtheme">L’emprise</div>
+          <div class="video-choice-row">
+            <button class="video-choice" type="button" data-video="../pagevideo/Angie_emprise1.mp4">Partie 1</button>
+            <button class="video-choice" type="button" data-video="../pagevideo/Angie_emprise2.mp4">Partie 2</button>
+            <button class="video-choice" type="button" data-video="../pagevideo/Angie_emprise3.mp4">Partie 3</button>
+          </div>
+          <div class="video-subtheme">Les raisons du silence</div>
+          <div class="video-choice-row">
+            <button class="video-choice" type="button" data-video="../pagevideo/Angie_raisonsilence1.mp4">Partie 1</button>
+            <button class="video-choice" type="button" data-video="../pagevideo/Angie_raisonsilence2.mp4">Partie 2</button>
+            <button class="video-choice" type="button" data-video="../pagevideo/Angie_raisonsilence3.mp4">Partie 3</button>
+          </div>
         </nav>
         <div class="video-stage"><video id="popupVideo" controls playsinline preload="metadata"><source src="../pagevideo/Film_Expo-e-preuves_bdf2.mp4" type="video/mp4">Votre navigateur ne peut pas lire cette vidéo.</video></div>
       </div>
