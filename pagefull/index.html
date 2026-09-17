@@ -29,7 +29,7 @@
     .resource:hover,.resource.video:hover{translate:0 0;filter:drop-shadow(0 8px 7px rgba(3,42,56,.28))}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.slider-track,.feature,.resource{transition:none}}
   </style>
-<style id="resource-hover-fix">.resource,.resource:hover,.resource.video,.resource.video:hover{position:relative;z-index:1;translate:0 0!important;filter:none!important;box-shadow:none!important;overflow:visible!important;transition:transform .22s ease!important}.resource::after{content:"";position:absolute;z-index:-1;left:0;right:0;bottom:-7px;height:7px;border-radius:0 0 22px 22px;background:rgba(3,42,56,.32);pointer-events:none;transform:none!important}.resource:hover{z-index:10!important;transform:scale(1.07) translateY(-4px)!important}.resource-image,.resource-inner{transition:none!important;transform:none!important}</style></head>
+<style id="resource-hover-fix">.resource,.resource:hover,.resource.video,.resource.video:hover{position:relative;z-index:1;translate:0 0!important;filter:none!important;overflow:visible!important;box-shadow:0 8px 0 rgba(3,42,56,.28)!important;transition:transform .22s ease,box-shadow .22s ease!important}.resource:hover{z-index:10!important;transform:scale(1.07) translateY(-4px)!important;box-shadow:0 8px 0 rgba(3,42,56,.28)!important}.resource-image,.resource-inner{transition:none!important;transform:none!important}</style></head>
 <body>
   <header class="topbar">
     <a class="brand" href="#accueil" aria-label="RebondPlay Full — accueil"><img src="Logo_RebondPlay_full2.png" alt="RebondPlay Full"></a>
