@@ -36,10 +36,17 @@
       </div>
     </div>
   </div>
+  <div class="expo-modal" id="pedagogiqueModal" role="dialog" aria-modal="true" aria-label="Exposition pédagogique">
+    <div class="expo-modal-panel">
+      <button class="expo-modal-close" id="pedagogiqueModalClose" type="button" aria-label="Fermer">×</button>
+      <div class="expo-modal-body"><img src="popupexpopeda.jpg" alt="Exposition pédagogique Rebond"></div>
+    </div>
+  </div>
   <a class="back" href="../pagefull/index.html">← Accueil</a>
   <script>
     (()=>{const keys=["rebondplay_access_ok","rebondplay_nom_structure","rebondplay_date_fin","rebondplay_prenom_contact","rebondplay_nom_contact"],get=k=>sessionStorage.getItem(k)||"";if(get("rebondplay_access_ok")!=="1"){location.replace("../index.html");return}const name=[get("rebondplay_prenom_contact"),get("rebondplay_nom_contact")].filter(Boolean).join(" ")||get("rebondplay_nom_structure");document.getElementById("accountName").textContent=`Bonjour ${name}`.trim();const end=get("rebondplay_date_fin");if(end){const days=Math.max(0,Math.ceil((new Date(`${end}T23:59:59`)-Date.now())/86400000));document.getElementById("accountMeta").textContent=`Votre abonnement est encore valable ${days} jour${days>1?"s":""}`}document.getElementById("logoutButton").onclick=()=>{keys.forEach(k=>sessionStorage.removeItem(k));location.replace("../index.html")};document.querySelectorAll(".expo-tab").forEach(tab=>tab.addEventListener("click",()=>{document.querySelectorAll(".expo-tab").forEach(item=>item.classList.toggle("is-active",item===tab));document.querySelectorAll(".panel").forEach(panel=>panel.classList.toggle("is-active",panel.id===`panel-${tab.dataset.panel}`))}))})();
     const sportTab=document.querySelector('.expo-tab[href="#sport"]'),sportModal=document.getElementById('sportModal'),sportClose=document.getElementById('sportModalClose');function closeSportModal(){sportModal.classList.remove('is-open');document.body.style.overflow=''}sportTab.addEventListener('click',event=>{event.preventDefault();sportModal.classList.add('is-open');document.body.style.overflow='hidden';sportClose.focus()});sportClose.addEventListener('click',closeSportModal);sportModal.addEventListener('click',event=>{if(event.target===sportModal)closeSportModal()});document.addEventListener('keydown',event=>{if(event.key==='Escape'&&sportModal.classList.contains('is-open'))closeSportModal()});
+    const pedagogiqueTab=document.querySelector('.expo-tab[href="#pedagogique"]'),pedagogiqueModal=document.getElementById('pedagogiqueModal'),pedagogiqueClose=document.getElementById('pedagogiqueModalClose');function closePedagogiqueModal(){pedagogiqueModal.classList.remove('is-open');document.body.style.overflow=''}pedagogiqueTab.addEventListener('click',event=>{event.preventDefault();pedagogiqueModal.classList.add('is-open');document.body.style.overflow='hidden';pedagogiqueClose.focus()});pedagogiqueClose.addEventListener('click',closePedagogiqueModal);pedagogiqueModal.addEventListener('click',event=>{if(event.target===pedagogiqueModal)closePedagogiqueModal()});document.addEventListener('keydown',event=>{if(event.key==='Escape'&&pedagogiqueModal.classList.contains('is-open'))closePedagogiqueModal()});
   </script>
 </body>
 </html>
