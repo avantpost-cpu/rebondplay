@@ -31,9 +31,9 @@
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.slider-track,.feature,.resource{transition:none}}
   </style>
 <style id="resource-hover-fix">
-.resource,.resource:hover,.resource.video,.resource.video:hover{position:relative;z-index:1;translate:0 0!important;overflow:visible!important;box-shadow:none!important;filter:none!important;transition:transform .22s ease!important}
+.resource,.resource:hover,.resource.video,.resource.video:hover{position:relative;z-index:1;translate:0 0!important;overflow:hidden!important;box-shadow:none!important;filter:none!important;transition:none!important}
 .resource-image,.resource-inner{transition:none!important;transform:none!important;filter:none!important}
-.resource:hover{z-index:10!important;transform:scale(1.07) translateY(-4px)!important;box-shadow:none!important;filter:none!important}
+.resource:hover{z-index:1!important;transform:none!important;box-shadow:none!important;filter:none!important}
 <style id="video-close-size-fix">.video-modal-hotspot{width:clamp(28px,4vw,58px)!important;height:clamp(28px,4vw,58px)!important}.video-modal-hotspot img{width:50%!important;height:50%!important;display:block;margin:auto}</style></style></head>
 <body>
   <header class="topbar">
