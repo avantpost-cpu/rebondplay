@@ -33,8 +33,8 @@
 <style id="resource-hover-fix">
 .resource,.resource:hover,.resource.video,.resource.video:hover{position:relative;z-index:1;overflow:hidden!important;transition:none!important}
 .resource{translate:0 0!important;box-shadow:none!important;filter:none!important}
-.resource.video{translate:0 0!important;box-shadow:0 8px 18px rgba(3,42,56,.22)!important;filter:none!important;transition:translate .25s,box-shadow .25s!important}
-.resource.video:hover{z-index:2!important;translate:0 -6px!important;box-shadow:0 12px 24px rgba(3,42,56,.32)!important}
+.resource.video{translate:0 0!important;overflow:visible!important;box-shadow:none!important;filter:drop-shadow(0 8px 7px rgba(3,42,56,.28))!important;transition:translate .25s,filter .25s!important}
+.resource.video:hover{z-index:2!important;translate:0 -6px!important;filter:drop-shadow(0 11px 9px rgba(3,42,56,.34))!important}
 .resource-image,.resource-inner{transition:none!important;transform:none!important;filter:none!important}
 .resource:hover{transform:none!important}
 <style id="video-close-size-fix">.video-modal-hotspot{width:clamp(28px,4vw,58px)!important;height:clamp(28px,4vw,58px)!important}.video-modal-hotspot img{width:50%!important;height:50%!important;display:block;margin:auto}</style></style></head>
