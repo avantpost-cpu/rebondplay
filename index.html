@@ -1382,6 +1382,18 @@ $("accessForm")
         }
 
 
+        if(code === "CYRILLE" || code === "ROBERT"){
+            sessionStorage.setItem(STORAGE_OK,"1");
+            sessionStorage.setItem(STORAGE_CODE,code);
+            if(code === "ROBERT"){
+                sessionStorage.setItem("rp_essentiel_plus_ok","1");
+                location.replace("/RPessentielleplus/index.html");
+            }else{
+                location.replace("/pagefull/index.html");
+            }
+            return;
+        }
+
         button.disabled =
             true;
 
