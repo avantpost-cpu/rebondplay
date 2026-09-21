@@ -46,7 +46,7 @@
     @media(max-width:620px){.topbar{display:flex;flex-wrap:wrap;padding:16px 18px}.brand{width:180px}.account{order:2;width:100%;justify-content:flex-start}.page-title{order:3;width:100%}.page-title img{width:min(86vw,430px)}.resources{display:flex;flex-direction:column;width:min(91vw,440px);margin-top:30px}.sports .copy,.cocotte .copy{font-size:clamp(12px,3.6vw,17px)}.fresque .copy{font-size:clamp(10px,2.8vw,15px)}.back{position:static;width:max-content;margin:0 auto 34px}.logout{margin-left:auto}}
     @media(prefers-reduced-motion:reduce){.card{transition:none}}
   </style>
-</head>
+<style>.rp-footer{width:min(90vw,1540px);margin:clamp(35px,5vw,80px) auto 0;padding:22px 0 28px;border-top:1px solid rgba(7,62,85,.22);display:flex;justify-content:space-between;align-items:center;gap:16px;color:#073e55;font-size:clamp(11px,.8vw,15px)}.rp-footer strong{font-weight:900}.rp-footer a{text-decoration:none;font-weight:800}.rp-footer a:hover{text-decoration:underline}@media(max-width:600px){.rp-footer{flex-direction:column;text-align:center}}</style></head>
 <body>
   <header class="topbar">
     <a class="brand" href="index.html" aria-label="Retour à l’accueil RebondPlay Essentiel+"><img src="Logo_RebondPlay_essentielplus.png" alt="RebondPlay Essentiel+"></a>
@@ -94,5 +94,5 @@
       document.querySelectorAll("[data-missing]").forEach(link=>link.addEventListener("click",event=>{event.preventDefault();alert("Le document PDF sera disponible ici dès son ajout.")}));
     })();
   </script>
-<script>if(sessionStorage.getItem("rp_essentiel_plus_ok")!=="1"){location.replace("../index.html")}</script></body>
+<script>if(sessionStorage.getItem("rp_essentiel_plus_ok")!=="1"){location.replace("../index.html")}</script><footer class="rp-footer"><span><strong>Rebond</strong> · Association de lutte contre les violences dans le sport</span><span><a href="mailto:contact@assorebond.com">contact@assorebond.com</a> · RebondPlay Essentiel+ · © 2026</span></footer></body>
 </html>
