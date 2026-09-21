@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
   <style>
     :root{--ink:#063e54;--blue:#064e61;--orange:#ff764b;--pink:#c697c7;--aqua:#79d3d7;--paper:#f7f4ef;--yellow:#efb416;--shadow:0 8px 12px rgba(0,0,0,.32);--content:min(90vw,2680px)}
-    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-width:300px;color:var(--ink);background:#bd8fbe url("../ressources/fond.jpg") center top/cover fixed;font-family:"Nunito",Arial,sans-serif}img{display:block;max-width:100%}a{color:inherit}button{font:inherit}.hand{font-family:"Patrick Hand",cursive;font-weight:400}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-width:300px;color:var(--ink);background:#cb8095 url("../ressources/fond.jpg") center top/cover fixed;font-family:"Nunito",Arial,sans-serif}img{display:block;max-width:100%}a{color:inherit}button{font:inherit}.hand{font-family:"Patrick Hand",cursive;font-weight:400}
     .topbar{min-height:clamp(88px,6.15vw,183px);display:flex;align-items:center;justify-content:space-between;gap:34px;padding:14px 4.7%;background-image:url("../fond.jpg");background-position:center;background-size:cover;background-repeat:repeat;box-shadow:0 5px 14px rgba(0,0,0,.16);position:relative;z-index:2}.topbar::before{content:none}.topbar>*{position:relative;z-index:1}
     .brand{width:clamp(225px,15vw,445px);flex:none}.brand img{width:100%;height:auto;filter:none}.account{display:flex;align-items:center;justify-content:flex-end;gap:clamp(10px,1.2vw,30px);min-width:0;color:#126176}.avatar{width:clamp(42px,3.25vw,76px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;flex:none;background:#126176;color:#f7f4ef}.avatar svg{width:62%;height:62%;fill:currentColor}.account-copy{min-width:0}.account-name{font-size:clamp(14px,1.15vw,27px);font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.account-meta{margin-top:3px;font-size:clamp(10px,.83vw,20px);font-weight:700;white-space:nowrap}.logout{min-height:50px;padding:0 clamp(12px,1.7vw,38px);border:0;border-left:1px solid rgba(8,47,74,.28);background:transparent;color:inherit;font-weight:900;cursor:pointer;white-space:nowrap}.logout:hover{color:#a23445}
     .expo-slide{position:relative;background:#e4ae0b url("../pagefull/slide_expo.jpg") center/cover no-repeat}.expo-slide-link{position:absolute;inset:0;z-index:2}@media(max-width:700px){.expo-slide{background-position:center center}}
@@ -57,14 +57,13 @@
   </section>
   <main class="content" id="accueil">
     <section class="feature-grid" aria-label="Espaces RebondPlay">
-      <a class="feature feature-adults" id="adultes" href="../pageadultes/index.html"><img class="feature-block" src="blocadultes.png" alt="Pour les adultes"></a>
-      <a class="feature feature-young" id="jeunes" href="../pagejeunes/index.html"><img class="feature-block" src="blocajeunes.png" alt="Pour les jeunes"></a>
-      <a class="feature feature-expo" id="ressources-link" href="../ressources/index.html"><img class="feature-block" src="blocressources.png" alt="Ressources"></a>
+      <a class="feature feature-adults" id="adultes" href="../pageadultes/index.html"><img class="feature-block" src="../pagefull/blocadultes.png alt="Pour les adultes"></a>
+      <a class="feature feature-expo" id="ressources-link" href="../ressources/index.html"><img class="feature-block" src="../pagefull/blocressources.png alt="Ressources"></a>
     </section>
-    <div class="section-title" id="ressources"><img src="titre1.png" alt="Ressources pédagogiques"></div>
+    <div class="section-title" id="ressources"><img src="../pagefull/titre1.png alt="Ressources pédagogiques"></div>
     <section class="resources" aria-label="Ressources pédagogiques">
-      <a class="resource video" href="#" aria-label="Ouvrir les vidéos"><img class="resource-image" src="bouton_video.png" alt="Vidéos — des contenus vidéo pour comprendre, expliquer et sensibiliser."></a>
-      <a class="resource video" href="expositions.html" aria-label="Ouvrir les expositions"><img class="resource-image" src="bouton_expo.png" alt="Expos — des expositions pour ouvrir les regards et faire émerger la parole autour des violences dans le sport."></a>
+      <a class="resource video" href="#" aria-label="Ouvrir les vidéos"><img class="resource-image" src="../pagefull/bouton_video.png alt="Vidéos — des contenus vidéo pour comprendre, expliquer et sensibiliser."></a>
+      <a class="resource video" href="expositions.html" aria-label="Ouvrir les expositions"><img class="resource-image" src="../pagefull/bouton_expo.png alt="Expos — des expositions pour ouvrir les regards et faire émerger la parole autour des violences dans le sport."></a>
     </section>
   </main>
   <div class="video-modal" id="videoModal" role="dialog" aria-modal="true" aria-labelledby="videoModalTitle">
