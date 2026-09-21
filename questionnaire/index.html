@@ -1,32 +1,507 @@
 <!doctype html>
-<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Questionnaire Rebond</title>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Questionnaire Rebond</title>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-*{box-sizing:border-box}body{margin:0;min-height:100vh;background:#cb8095 url("../RPessentielleplus/motifsplus.jpg") center/cover fixed;font-family:Arial,sans-serif;color:#073e55}.shell{width:min(720px,92vw);margin:6vh auto;padding:clamp(24px,5vw,52px);border-radius:28px;background:#fff url("../fond.jpg") center/cover fixed;box-shadow:0 15px 40px #073e5540}h1{margin:0 0 12px;font-size:clamp(28px,5vw,46px)}h2{font-size:clamp(20px,3vw,28px);line-height:1.25}.intro{line-height:1.55}.field{display:grid;gap:7px;margin:16px 0}.field input{padding:13px;border:2px solid #cb8095;border-radius:12px;font:inherit}.btn{border:0;border-radius:999px;padding:14px 24px;background:#073e55;color:#fff;font-weight:800;cursor:pointer}.muted{font-size:13px;color:#48616a}.hidden{display:none}.progress{font-weight:800;color:#cb8095}.choice{display:block;margin:12px 0;padding:15px;border:2px solid #d7b0bb;border-radius:14px;cursor:pointer}.choice input{margin-right:10px;accent-color:#073e55}.choice.selected{border-color:#073e55;background:#eef5f6}.feedback{margin:18px 0;padding:16px;border-radius:15px;background:#eef5f6;line-height:1.45}.good{color:#14733f}.bad{color:#a83c3c}.error{color:#a83c3c;margin:10px 0}.result{text-align:center}.score{font-size:46px;font-weight:900;color:#cb8095}#intro{background:url("imagequestionnaire.png") center/100% 100% no-repeat;padding:190px 52px 48px;border-radius:28px;min-height:705px}#intro .intro{font-size:16px;line-height:1.45;margin:0 0 16px}
-</style></head><body><main class="shell">
-<section id="intro"><p class="intro">Ce questionnaire vous permet de revenir sur les notions abordées pendant la sensibilisation aux violences dans le sport.</p><p class="intro"><strong>Attention :</strong> certaines questions peuvent comporter plusieurs bonnes réponses. Lorsque c’est le cas, sélectionnez toutes les réponses qui vous semblent justes.</p><form id="identity"><div class="field"><label for="first">Prénom</label><input id="first" required></div><div class="field"><label for="last">Nom</label><input id="last" required></div><div class="field"><label for="email">Adresse e-mail</label><input id="email" type="email" required></div><label class="muted"><input id="consent" type="checkbox" required> J’accepte que mes réponses soient enregistrées pour l’évaluation de cette sensibilisation.</label><p id="startError" class="error"></p><button class="btn" type="submit">Commencer</button></form></section>
-<section id="quiz" class="hidden"><div class="progress" id="progress"></div><h2 id="question"></h2><div id="choices"></div><button class="btn" id="validate">Valider</button><div id="feedback"></div></section>
-<section id="result" class="hidden result"><h1>Merci pour votre participation</h1><div class="score" id="score"></div><p id="resultText"></p><button class="btn" onclick="location.reload()">Recommencer</button></section>
+*{
+  box-sizing:border-box
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  background:#cb8095 url("../RPessentielleplus/motifsplus.jpg") center/cover fixed;
+  font-family:Arial,sans-serif;
+  color:#073e55
+}
+
+.shell{
+  width:min(680px,92vw);
+  margin:6vh auto;
+  padding:clamp(20px,4vw,42px);
+  border-radius:24px;
+  background:#fff url("../fond.jpg") center/cover fixed;
+  box-shadow:0 15px 40px #073e5540
+}
+
+h1{
+  margin:0 0 12px;
+  font-size:clamp(28px,5vw,46px)
+}
+
+h2{
+  font-size:clamp(20px,3vw,28px);
+  line-height:1.25
+}
+
+.intro{
+  line-height:1.55
+}
+
+.field{
+  display:grid;
+  gap:7px;
+  margin:16px 0
+}
+
+.field input{
+  padding:13px;
+  border:2px solid #cb8095;
+  border-radius:12px;
+  font:inherit
+}
+
+.btn{
+  border:0;
+  border-radius:999px;
+  padding:14px 24px;
+  background:#073e55;
+  color:#fff;
+  font-weight:800;
+  cursor:pointer
+}
+
+.muted{
+  font-size:13px;
+  color:#48616a
+}
+
+.hidden{
+  display:none
+}
+
+.progress{
+  font-weight:800;
+  color:#cb8095
+}
+
+.choice{
+  display:block;
+  margin:12px 0;
+  padding:15px;
+  border:2px solid #d7b0bb;
+  border-radius:14px;
+  cursor:pointer
+}
+
+.choice input{
+  margin-right:10px;
+  accent-color:#073e55
+}
+
+.choice.selected{
+  border-color:#073e55;
+  background:#eef5f6
+}
+
+.feedback{
+  margin:18px 0;
+  padding:16px;
+  border-radius:15px;
+  background:#eef5f6;
+  line-height:1.45
+}
+
+.good{
+  color:#14733f
+}
+
+.bad{
+  color:#a83c3c
+}
+
+.error{
+  color:#a83c3c;
+  margin:10px 0
+}
+
+.result{
+  text-align:center
+}
+
+.score{
+  font-size:46px;
+  font-weight:900;
+  color:#cb8095
+}
+
+#intro{
+  background-image:url("imagequestionnaire.png");
+  background-repeat:no-repeat;
+  background-position:center top;
+  background-size:100% auto;
+  padding:170px 44px 38px;
+  border-radius:24px;
+  min-height:660px
+}
+
+#intro .intro{
+  font-size:16px;
+  line-height:1.45;
+  margin:0 0 16px
+}
+</style>
+</head>
+
+<body>
+
+<main class="shell">
+
+<section id="intro">
+
+<p class="intro">
+Ce questionnaire vous permet de revenir sur les notions abordées pendant la sensibilisation aux violences dans le sport.
+</p>
+
+<p class="intro">
+<strong>Attention :</strong> certaines questions peuvent comporter plusieurs bonnes réponses. Lorsque c’est le cas, sélectionnez toutes les réponses qui vous semblent justes.
+</p>
+
+<form id="identity">
+
+<div class="field">
+<label for="first">Prénom</label>
+<input id="first" required>
+</div>
+
+<div class="field">
+<label for="last">Nom</label>
+<input id="last" required>
+</div>
+
+<div class="field">
+<label for="email">Adresse e-mail</label>
+<input id="email" type="email" required>
+</div>
+
+<label class="muted">
+<input id="consent" type="checkbox" required>
+J’accepte que mes réponses soient enregistrées pour l’évaluation de cette sensibilisation.
+</label>
+
+<p id="startError" class="error"></p>
+
+<button class="btn" type="submit">
+Commencer
+</button>
+
+</form>
+
+</section>
+
+<section id="quiz" class="hidden">
+
+<div class="progress" id="progress"></div>
+
+<h2 id="question"></h2>
+
+<div id="choices"></div>
+
+<button class="btn" id="validate">
+Valider
+</button>
+
+<div id="feedback"></div>
+
+</section>
+
+<section id="result" class="hidden result">
+
+<h1>Merci pour votre participation</h1>
+
+<div class="score" id="score"></div>
+
+<p id="resultText"></p>
+
+<button class="btn" onclick="location.reload()">
+Recommencer
+</button>
+
+</section>
+
 </main>
+
 <script>
-const SUPABASE_URL="https://tdsrqmpfdvntybdlvejy.supabase.co",SUPABASE_KEY="sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO",db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const SUPABASE_URL="https://tdsrqmpfdvntybdlvejy.supabase.co",
+SUPABASE_KEY="sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO",
+db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
 const questions=[
-{q:"Après une compétition ratée, un coach force un athlète à s’excuser publiquement devant l’équipe et lui interdit de s’entraîner avec les autres pendant une semaine. Selon vous, cette réaction est-elle bénéfique pour la performance ?",o:["Oui, ça renforce son mental et lui donne le sens des responsabilités","Non, cela peut briser sa motivation et son estime de soi"],a:[1],e:"Une humiliation publique et une mise à l’écart peuvent fragiliser la motivation, l’estime de soi et la confiance."},
-{q:"Quels sont les facteurs aggravants individuels dans le sport ?",o:["La minorité","Être une fille","Être un enfant peu sportif","Avoir des parents qui n'ont jamais fait de sport à haut niveau","Pratiquer plusieurs sports","La situation de handicap de l'enfant"],a:[0,1,2,5],e:"Certaines caractéristiques peuvent augmenter l’exposition aux violences ou rendre la parole plus difficile."},
-{q:"Pourquoi le fait de nommer clairement les différentes formes de violence est-il une étape essentielle de la prévention ?",o:["Parce que cela permet de classer les situations selon leur gravité","Parce que cela empêche leur banalisation et facilite la prise de conscience","Parce la loi exige une terminologie précise","Parce que cela aide à les gérer sur le plan juridique"],a:[1],e:"Nommer les violences permet de les reconnaître, de les rendre visibles et de mieux agir."},
-{q:"Parmi les exemples suivants, lequel illustre le mieux une violence psychologique dans le cadre sportif ?",o:["Un coéquipier pousse un autre pendant un match","Un éducateur ridiculise régulièrement un enfant devant l’équipe","Le club n’a pas de vestiaire séparé pour les jeunes","Un entraîneur impose un rythme d’entraînement très intense"],a:[1],e:"Ridiculiser ou humilier régulièrement un enfant constitue une violence psychologique."},
-{q:"Quels signes doivent vous alerter sur la situation de danger d'un mineur ?",o:["Un changement brutal de comportement (isolement, agressivité, repli sur soi, peur d’un adulte, etc.)","Des blessures répétées ou inexpliquées, ou des explications incohérentes sur leur origine","Une progression spectaculaire des performances sportives en peu de temps","Des propos ou attitudes évoquant un mal-être, une peur ou une gêne face à certaines personnes","Un manque de motivation ponctuel à l’entraînement"],a:[0,1,3],e:"Les changements de comportement, blessures inexpliquées et signes de peur ou de mal-être doivent être pris au sérieux."},
-{q:"Quelles sont les attitudes à adopter lorsqu'un enfant libère sa parole ?",o:["Lui promettre de garder son secret s'il le demande","Mettre en doute sa parole si son discours est peu clair","Le féliciter d'avoir libéré sa parole","Lui rappeler qu'il est une victime et pas responsable des abus qu'il a subi"],a:[2,3],e:"Il faut accueillir la parole, remercier l’enfant et lui rappeler qu’il n’est jamais responsable des violences subies."},
-{q:"A partir du 19 novembre 2025, quels sont les documents qui doivent être obligatoirement affichés dans les lieux sportifs pour garantir la prévention des violences ?",o:["Un affichage sur le numéro d'appel 119","La liste du personnel médical du lieu sportif","Une information sur les dispositifs permettant de recueillir les témoignages, orienter et accompagner les victimes ou les témoins de violences ou de discrimination","La liste nominative de chaque personne travaillant sur le lieu"],a:[2],e:"L’affichage doit informer sur les dispositifs de recueil, d’orientation et d’accompagnement."},
-{q:"Parmi ces exemples, lesquels sont des violences par négligence ?",o:["Obliger un athlète à reprendre l'entraîneur malgré une blessure en cours","Encourager un athlète à sacrifier ses études pour réussir en haut niveau","Utilisation de l’enfant comme bouc émissaire","Encourager des actes humiliants ou dégradants dans une équipe"],a:[0,1],e:"La négligence consiste notamment à ignorer la santé, la sécurité ou les besoins fondamentaux du jeune."},
-{q:"Quels comportements peuvent être considérés comme des violences psychologiques envers un mineur dans le cadre sportif ?",o:["Encourager un jeune à se dépasser lors d’un entraînement exigeant","Isoler volontairement un enfant du reste de l’équipe","Menacer un enfant ou lui faire peur pour le motiver","Donner à un enfant un feedback technique après une erreur"],a:[1,2],e:"L’isolement et les menaces sont des moyens de pression qui peuvent constituer des violences psychologiques."},
-{q:"Quelle attitude adopter si vous suspectez qu’un mineur est victime de violences ?",o:["En parler immédiatement au responsable/relayeur/référent intégrité de la structure","Attendre le temps de vérifier soi-même les faits avant de signaler","Accueillir la parole du mineur sans le forcer à parler","Signaler aux autorités compétences (police, gendarmerie, 119, cellule signal-sports...)","Ne rien dire car j'ai peur de me tromper"],a:[0,2,3],e:"Il faut écouter sans enquêter soi-même, transmettre l’alerte et solliciter les dispositifs compétents."}
+
+{
+q:"Après une compétition ratée, un coach force un athlète à s’excuser publiquement devant l’équipe et lui interdit de s’entraîner avec les autres pendant une semaine. Selon vous, cette réaction est-elle bénéfique pour la performance ?",
+o:[
+"Oui, ça renforce son mental et lui donne le sens des responsabilités",
+"Non, cela peut briser sa motivation et son estime de soi"
+],
+a:[1],
+e:"Une humiliation publique et une mise à l’écart peuvent fragiliser la motivation, l’estime de soi et la confiance."
+},
+
+{
+q:"Quels sont les facteurs aggravants individuels dans le sport ?",
+o:[
+"La minorité",
+"Être une fille",
+"Être un enfant peu sportif",
+"Avoir des parents qui n'ont jamais fait de sport à haut niveau",
+"Pratiquer plusieurs sports",
+"La situation de handicap de l'enfant"
+],
+a:[0,1,2,5],
+e:"Certaines caractéristiques peuvent augmenter l’exposition aux violences ou rendre la parole plus difficile."
+},
+
+{
+q:"Pourquoi le fait de nommer clairement les différentes formes de violence est-il une étape essentielle de la prévention ?",
+o:[
+"Parce que cela permet de classer les situations selon leur gravité",
+"Parce que cela empêche leur banalisation et facilite la prise de conscience",
+"Parce la loi exige une terminologie précise",
+"Parce que cela aide à les gérer sur le plan juridique"
+],
+a:[1],
+e:"Nommer les violences permet de les reconnaître, de les rendre visibles et de mieux agir."
+},
+
+{
+q:"Parmi les exemples suivants, lequel illustre le mieux une violence psychologique dans le cadre sportif ?",
+o:[
+"Un coéquipier pousse un autre pendant un match",
+"Un éducateur ridiculise régulièrement un enfant devant l’équipe",
+"Le club n’a pas de vestiaire séparé pour les jeunes",
+"Un entraîneur impose un rythme d’entraînement très intense"
+],
+a:[1],
+e:"Ridiculiser ou humilier régulièrement un enfant constitue une violence psychologique."
+},
+
+{
+q:"Quels signes doivent vous alerter sur la situation de danger d'un mineur ?",
+o:[
+"Un changement brutal de comportement (isolement, agressivité, repli sur soi, peur d’un adulte, etc.)",
+"Des blessures répétées ou inexpliquées, ou des explications incohérentes sur leur origine",
+"Une progression spectaculaire des performances sportives en peu de temps",
+"Des propos ou attitudes évoquant un mal-être, une peur ou une gêne face à certaines personnes",
+"Un manque de motivation ponctuel à l’entraînement"
+],
+a:[0,1,3],
+e:"Les changements de comportement, blessures inexpliquées et signes de peur ou de mal-être doivent être pris au sérieux."
+},
+
+{
+q:"Quelles sont les attitudes à adopter lorsqu'un enfant libère sa parole ?",
+o:[
+"Lui promettre de garder son secret s'il le demande",
+"Mettre en doute sa parole si son discours est peu clair",
+"Le féliciter d'avoir libéré sa parole",
+"Lui rappeler qu'il est une victime et pas responsable des abus qu'il a subi"
+],
+a:[2,3],
+e:"Il faut accueillir la parole, remercier l’enfant et lui rappeler qu’il n’est jamais responsable des violences subies."
+},
+
+{
+q:"A partir du 19 novembre 2025, quels sont les documents qui doivent être obligatoirement affichés dans les lieux sportifs pour garantir la prévention des violences ?",
+o:[
+"Un affichage sur le numéro d'appel 119",
+"La liste du personnel médical du lieu sportif",
+"Une information sur les dispositifs permettant de recueillir les témoignages, orienter et accompagner les victimes ou les témoins de violences ou de discrimination",
+"La liste nominative de chaque personne travaillant sur le lieu"
+],
+a:[2],
+e:"L’affichage doit informer sur les dispositifs de recueil, d’orientation et d’accompagnement."
+},
+
+{
+q:"Parmi ces exemples, lesquels sont des violences par négligence ?",
+o:[
+"Obliger un athlète à reprendre l'entraîneur malgré une blessure en cours",
+"Encourager un athlète à sacrifier ses études pour réussir en haut niveau",
+"Utilisation de l’enfant comme bouc émissaire",
+"Encourager des actes humiliants ou dégradants dans une équipe"
+],
+a:[0,1],
+e:"La négligence consiste notamment à ignorer la santé, la sécurité ou les besoins fondamentaux du jeune."
+},
+
+{
+q:"Quels comportements peuvent être considérés comme des violences psychologiques envers un mineur dans le cadre sportif ?",
+o:[
+"Encourager un jeune à se dépasser lors d’un entraînement exigeant",
+"Isoler volontairement un enfant du reste de l’équipe",
+"Menacer un enfant ou lui faire peur pour le motiver",
+"Donner à un enfant un feedback technique après une erreur"
+],
+a:[1,2],
+e:"L’isolement et les menaces sont des moyens de pression qui peuvent constituer des violences psychologiques."
+},
+
+{
+q:"Quelle attitude adopter si vous suspectez qu’un mineur est victime de violences ?",
+o:[
+"En parler immédiatement au responsable/relayeur/référent intégrité de la structure",
+"Attendre le temps de vérifier soi-même les faits avant de signaler",
+"Accueillir la parole du mineur sans le forcer à parler",
+"Signaler aux autorités compétences (police, gendarmerie, 119, cellule signal-sports...)",
+"Ne rien dire car j'ai peur de me tromper"
+],
+a:[0,2,3],
+e:"Il faut écouter sans enquêter soi-même, transmettre l’alerte et solliciter les dispositifs compétents."
+}
+
 ];
-let participant=null,index=0,score=0,startedAt=null,locked=false;
-const $=id=>document.getElementById(id),same=(a,b)=>a.length===b.length&&a.every(x=>b.includes(x));
-$("identity").onsubmit=e=>{e.preventDefault();participant={first:$("first").value.trim(),last:$("last").value.trim(),email:$("email").value.trim()};startedAt=Date.now();$("intro").classList.add("hidden");$("quiz").classList.remove("hidden");render()};
-function render(){locked=false;$("validate").onclick=validate;$("feedback").innerHTML="";$("validate").disabled=false;const x=questions[index];$("progress").textContent=`Question ${index+1} sur ${questions.length}`;$("question").textContent=x.q;$("choices").innerHTML=x.o.map((v,i)=>`<label class="choice"><input type="checkbox" value="${i}"> <strong>${String.fromCharCode(65+i)}.</strong> ${v}</label>`).join("")}
-$("choices").onclick=e=>{const l=e.target.closest(".choice");if(l)l.classList.toggle("selected")};
-async function validate(){if(locked)return;locked=true;const answer=[...document.querySelectorAll("#choices input:checked")].map(x=>+x.value);const x=questions[index],ok=same(answer,x.a);if(ok)score++;$("feedback").innerHTML=`<div class="feedback"><strong class="${ok?"good":"bad"}">${ok?"Bonne réponse":"À revoir"}</strong><br>${x.e}</div>`;$("validate").textContent=index===questions.length-1?"Voir mon résultat":"Question suivante";$("validate").onclick=next;};
-async function next(){const x=questions[index];await db.from("questionnaire_answers").insert({participant_id:participant.email,question_index:index+1,selected_answers:[...document.querySelectorAll("#choices input:checked")].map(x=>+x.value),correct:same([...document.querySelectorAll("#choices input:checked")].map(x=>+x.value),x.a)});if(index<questions.length-1){index++;$("validate").textContent="Valider";$("validate").onclick=()=>{};render()}else{await db.from("questionnaire_participants").insert({first_name:participant.first,last_name:participant.last,email:participant.email,score,total_questions:questions.length,duration_seconds:Math.round((Date.now()-startedAt)/1000)});$("quiz").classList.add("hidden");$("result").classList.remove("hidden");$("score").textContent=`${score} / ${questions.length}`;$("resultText").textContent=score===questions.length?"Bravo, toutes les notions sont maîtrisées.":"Merci. Ce résultat peut vous aider à poursuivre la réflexion."}}
-</script></body></html>
+
+let participant=null,
+index=0,
+score=0,
+startedAt=null,
+locked=false;
+
+const $=id=>document.getElementById(id),
+same=(a,b)=>a.length===b.length&&a.every(x=>b.includes(x));
+
+$("identity").onsubmit=e=>{
+  e.preventDefault();
+
+  participant={
+    first:$("first").value.trim(),
+    last:$("last").value.trim(),
+    email:$("email").value.trim()
+  };
+
+  startedAt=Date.now();
+
+  $("intro").classList.add("hidden");
+  $("quiz").classList.remove("hidden");
+
+  render();
+};
+
+function render(){
+
+  locked=false;
+
+  $("validate").onclick=validate;
+  $("feedback").innerHTML="";
+  $("validate").disabled=false;
+
+  const x=questions[index];
+
+  $("progress").textContent=`Question ${index+1} sur ${questions.length}`;
+  $("question").textContent=x.q;
+
+  $("choices").innerHTML=x.o.map((v,i)=>`
+    <label class="choice">
+      <input type="checkbox" value="${i}">
+      <strong>${String.fromCharCode(65+i)}.</strong> ${v}
+    </label>
+  `).join("");
+}
+
+$("choices").onclick=e=>{
+  const l=e.target.closest(".choice");
+
+  if(l){
+    l.classList.toggle("selected");
+  }
+};
+
+async function validate(){
+
+  if(locked){
+    return;
+  }
+
+  locked=true;
+
+  const answer=[
+    ...document.querySelectorAll("#choices input:checked")
+  ].map(x=>+x.value);
+
+  const x=questions[index];
+  const ok=same(answer,x.a);
+
+  if(ok){
+    score++;
+  }
+
+  $("feedback").innerHTML=`
+    <div class="feedback">
+      <strong class="${ok?"good":"bad"}">
+        ${ok?"Bonne réponse":"À revoir"}
+      </strong>
+      <br>
+      ${x.e}
+    </div>
+  `;
+
+  $("validate").textContent=
+    index===questions.length-1
+      ?"Voir mon résultat"
+      :"Question suivante";
+
+  $("validate").onclick=next;
+}
+
+async function next(){
+
+  const x=questions[index];
+
+  const selected=[
+    ...document.querySelectorAll("#choices input:checked")
+  ].map(x=>+x.value);
+
+  await db
+    .from("questionnaire_answers")
+    .insert({
+      participant_id:participant.email,
+      question_index:index+1,
+      selected_answers:selected,
+      correct:same(selected,x.a)
+    });
+
+  if(index<questions.length-1){
+
+    index++;
+
+    $("validate").textContent="Valider";
+    $("validate").onclick=()=>{};
+
+    render();
+
+  }else{
+
+    await db
+      .from("questionnaire_participants")
+      .insert({
+        first_name:participant.first,
+        last_name:participant.last,
+        email:participant.email,
+        score,
+        total_questions:questions.length,
+        duration_seconds:Math.round(
+          (Date.now()-startedAt)/1000
+        )
+      });
+
+    $("quiz").classList.add("hidden");
+    $("result").classList.remove("hidden");
+
+    $("score").textContent=`${score} / ${questions.length}`;
+
+    $("resultText").textContent=
+      score===questions.length
+        ?"Bravo, toutes les notions sont maîtrisées."
+        :"Merci. Ce résultat peut vous aider à poursuivre la réflexion.";
+  }
+}
+</script>
+
+</body>
+</html>
