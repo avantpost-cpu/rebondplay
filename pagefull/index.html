@@ -37,7 +37,7 @@
 .resource.video:hover{z-index:2!important;translate:0 -6px!important;filter:drop-shadow(0 11px 9px rgba(3,42,56,.34))!important}
 .resource-image,.resource-inner{transition:none!important;transform:none!important;filter:none!important}
 .resource:hover{transform:none!important}
-<style id="video-close-size-fix">.video-modal-hotspot{width:clamp(28px,4vw,58px)!important;height:clamp(28px,4vw,58px)!important}.video-modal-hotspot img{width:50%!important;height:50%!important;display:block;margin:auto}</style></style></head>
+<style id="video-close-size-fix">.video-modal-hotspot{width:clamp(28px,4vw,58px)!important;height:clamp(28px,4vw,58px)!important}.video-modal-hotspot img{width:50%!important;height:50%!important;display:block;margin:auto}</style></style><style>.rp-footer{width:min(90vw,1540px);margin:clamp(18px,2vw,32px) auto 0;padding:22px 0 28px;display:flex;justify-content:space-between;align-items:center;gap:16px;color:inherit;font-size:clamp(11px,.8vw,15px)}.rp-footer strong{font-weight:900}.rp-footer a{text-decoration:none;font-weight:800;color:inherit}.rp-footer a:hover{text-decoration:underline}@media(max-width:600px){.rp-footer{flex-direction:column;text-align:center}}</style></head>
 <body>
   <header class="topbar">
     <a class="brand" href="#accueil" aria-label="RebondPlay Full — accueil"><img src="Logo_RebondPlay_full2.png" alt="RebondPlay Full"></a>
@@ -107,5 +107,5 @@
       const videoLink=document.querySelector(".resource.video"),videoModal=document.getElementById("videoModal"),videoClose=document.getElementById("videoModalClose");function closeVideoModal(){videoModal.classList.remove("is-open");popupVideo.pause();document.body.style.overflow=""}videoLink.addEventListener("click",event=>{event.preventDefault();videoModal.classList.add("is-open");document.body.style.overflow="hidden";videoClose.focus()});videoClose.addEventListener("click",closeVideoModal);videoModal.addEventListener("click",event=>{if(event.target===videoModal)closeVideoModal()});document.addEventListener("keydown",event=>{if(event.key==="Escape"&&videoModal.classList.contains("is-open"))closeVideoModal()});
       const popupVideo=document.getElementById("popupVideo"),videoChoices=[...document.querySelectorAll(".video-choice")];videoChoices.forEach(choice=>choice.addEventListener("click",()=>{popupVideo.pause();popupVideo.querySelector("source").src=choice.dataset.video;popupVideo.load();document.getElementById("videoDescription").textContent=choice.dataset.description||"";popupVideo.play().catch(()=>{});videoChoices.forEach(item=>item.classList.toggle("is-active",item===choice))}));
   </script>
-</body>
+<footer class="rp-footer"><span><strong>Rebond</strong> · Association de lutte contre les violences dans le sport</span><span><a href="mailto:contact@assorebond.com">contact@assorebond.com</a> · RebondPlay Full · © 2026</span></footer></body>
 </html>
