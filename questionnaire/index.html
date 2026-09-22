@@ -438,7 +438,7 @@ async function validate(){
       </strong>
       <br>
       ${x.e}
-    </div>
+    <br><strong>Réponses correctes : ${x.a.map(i=>String.fromCharCode(65+i)).join(", ")}</strong></div>
   `;
 
   $("validate").textContent=
