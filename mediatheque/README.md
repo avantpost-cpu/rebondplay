@@ -5,17 +5,13 @@ Cette page reprend le principe visuel de la bibliothèque de référence : bande
 ## Fichiers
 
 - `index.html` : page autonome à placer dans le dossier `mediatheque/` du dépôt `avantpost-cpu/rebondplay`.
-- `ressources.json` : catalogue initial des 26 modules repris de `depot-quiz/bibliotheque.html`.
+- `ressources.json` : catalogue initial des 30 modules repris de `depot-quiz/bibliotheque.html`.
 
 Les entrées du catalogue disposent de `themes` et `documents` pour indexer plusieurs occurrences ou fichiers liés à un sujet. Les liens actuels pointent encore vers les modules hébergés sur GitHub Pages de `depot-quiz`; ils ne copient pas leur contenu. Les fichiers de chaque ressource pourront être ajoutés dans `mediatheque/fichiers/` et référencés dans `documents`.
 
 ## Intégration au dépôt
 
-1. Ajouter ce dossier à la racine du dépôt RebondPlay.
-2. Ajouter un bouton ou bloc « Médiathèque » sur les deux accueils :
-   - Full : `pagefull/index.html`, lien `../mediatheque/index.html`.
-   - Essentiel+ : `RPessentielleplus/index.html`, lien `../mediatheque/index.html`.
-3. Cette page est actuellement une maquette autonome. Le contrôle d’abonnement doit être appliqué selon le mécanisme d’accès déjà utilisé par les pages RebondPlay avant publication.
+Le dossier est intégré à la racine du dépôt. Le lien « Médiathèque » figure dans la zone Ressources pédagogiques des deux accueils : `pagefull/index.html` et `RPessentielleplus/index.html`.
 
 ## Ajouter une ressource
 
