@@ -3,31 +3,39 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#1b5e6f">
+<meta name="theme-color" content="#f7f4ef">
 <title>Médiathèque — RebondPlay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box} :root{--blue:#1b5e6f;--yellow:#edb01a;--paper:#f4f4f4;--ink:#222}
-body{margin:0;background:var(--paper);font-family:Arial,sans-serif;color:var(--ink)}
-header{background:var(--blue);color:#fff;text-align:center;padding:34px 20px 28px}
-header h1{margin:0 0 9px;font-size:clamp(25px,3vw,34px)}header p{margin:0 auto;max-width:850px;line-height:1.5}
-.search-wrap{background:#fff;padding:20px;display:flex;justify-content:center;border-bottom:1px solid #ddd}
-.search-box{width:min(760px,100%);position:relative}.search-box label{display:block;font-weight:700;color:var(--blue);margin:0 0 8px}
-#search{width:100%;padding:14px 16px;border:2px solid var(--blue);border-radius:10px;font:inherit;font-size:17px;outline:none}#search:focus{box-shadow:0 0 0 4px #1b5e6f22}
-#searchHint{margin:7px 0 0;color:#666;font-size:13px}
-.alphabet{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:18px 20px;background:#fff;border-bottom:1px solid #ddd}
-.alphabet a{color:var(--blue);text-decoration:none;font-weight:bold;padding:6px 10px;border-radius:6px;border:1px solid var(--blue);font-size:14px}.alphabet a.disabled{opacity:.3;pointer-events:none}
-.status{max-width:1400px;margin:24px auto 0;padding:0 20px;color:#4d4d4d;font-size:14px}
-.grid{max-width:1400px;margin:18px auto 40px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:25px;padding:0 20px 50px}
-.card{background:#fff;border-radius:14px;padding:18px;box-shadow:0 10px 25px #00000014;min-width:0}.card h2{margin:0;color:var(--blue);font-size:20px;line-height:1.25}.card p{font-size:14px;line-height:1.5;margin:10px 0}
+*{box-sizing:border-box}:root{--ink:#063e54;--blue:#065269;--orange:#ff764b;--pink:#c697c7;--aqua:#79d3d7;--paper:#f7f4ef;--yellow:#efb416;--shadow:0 8px 18px rgba(3,42,56,.18);--content:min(92vw,1800px)}
+html{scroll-behavior:smooth}body{margin:0;min-width:300px;background:#bd8fbe url("../ressources/fond.jpg") center top/cover fixed;font-family:"Nunito",Arial,sans-serif;color:var(--ink)}
+.topbar{min-height:clamp(88px,6.15vw,150px);display:flex;align-items:center;justify-content:space-between;gap:24px;padding:12px 4.7%;background-image:url("../fond.jpg");background-position:center;background-size:cover;background-repeat:repeat;box-shadow:0 5px 14px rgba(0,0,0,.16);position:relative;z-index:2}.brand{width:clamp(205px,15vw,360px);flex:none}.brand img{width:100%;height:auto;display:block}.topbar-copy{text-align:right;color:var(--blue)}.topbar-copy strong{display:block;font-size:clamp(15px,1.45vw,28px);font-weight:900}.topbar-copy span{display:block;margin-top:4px;font-size:clamp(11px,.9vw,17px);font-weight:700}
+.main-nav{position:sticky;top:0;z-index:20;display:flex;justify-content:center;gap:clamp(20px,3vw,54px);padding:0 5%;background:rgba(199,151,200,.95);backdrop-filter:blur(10px);box-shadow:0 5px 12px rgba(5,51,66,.12)}.main-nav a{min-height:clamp(56px,4.5vw,78px);display:flex;align-items:center;justify-content:center;gap:9px;border-bottom:4px solid transparent;text-decoration:none;font-size:clamp(13px,1.05vw,19px);font-weight:900;white-space:nowrap}.main-nav a:hover,.main-nav a.active{color:white;border-bottom-color:white}
+.hero{width:var(--content);margin:clamp(24px,3vw,52px) auto 0;padding:clamp(25px,3vw,52px);border-radius:clamp(18px,1.25vw,30px);background:rgba(250,249,245,.94);box-shadow:var(--shadow);text-align:center}.hero h1{margin:0 0 8px;color:var(--blue);font-size:clamp(28px,3vw,52px);font-weight:900;line-height:1.08}.hero p{max-width:900px;margin:0 auto;color:var(--ink);font-size:clamp(14px,1.05vw,19px);line-height:1.5;font-weight:700}.hand{font-family:"Patrick Hand",cursive;font-weight:400}
+.search-wrap{width:var(--content);margin:clamp(18px,2vw,34px) auto 0;padding:clamp(20px,2.2vw,38px);display:flex;justify-content:center;border-radius:clamp(18px,1.25vw,30px);background:rgba(250,249,245,.94);box-shadow:var(--shadow)}
+.search-box{width:min(900px,100%);position:relative}.search-box label{display:block;font-size:clamp(17px,1.25vw,23px);font-weight:900;color:var(--blue);margin:0 0 9px}
+#search{width:100%;padding:15px 18px;border:2px solid var(--blue);border-radius:13px;background:white;color:var(--ink);font:inherit;font-size:clamp(16px,1.1vw,20px);outline:none}#search:focus{box-shadow:0 0 0 4px #06526925}
+#searchHint{margin:8px 0 0;color:#52666b;font-size:clamp(12px,.82vw,15px)}
+.alphabet{width:var(--content);margin:clamp(16px,1.5vw,26px) auto 0;display:flex;flex-wrap:wrap;gap:9px;justify-content:center;padding:clamp(15px,1.5vw,25px);border-radius:clamp(16px,1.1vw,24px);background:rgba(199,151,200,.94);box-shadow:var(--shadow)}
+.alphabet a{min-width:39px;text-align:center;color:var(--blue);text-decoration:none;font-weight:900;padding:7px 10px;border-radius:9px;border:2px solid rgba(6,82,105,.55);background:rgba(255,255,255,.83);font-size:15px;transition:transform .18s,background .18s,color .18s}.alphabet a:hover,.alphabet a.active{background:var(--blue);border-color:var(--blue);color:white;transform:translateY(-2px)}.alphabet a.disabled{opacity:.3;pointer-events:none}
+.status{width:var(--content);margin:clamp(23px,2.2vw,40px) auto 0;padding:0 4px;color:var(--ink);font-size:clamp(14px,.9vw,17px);font-weight:900}
+.grid{width:var(--content);margin:16px auto 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(330px,100%),1fr));gap:clamp(18px,1.7vw,32px);padding:0 0 clamp(55px,6vw,100px)}
+.card{background:rgba(250,249,245,.96);border-radius:clamp(18px,1.25vw,30px);padding:clamp(18px,1.5vw,28px);box-shadow:var(--shadow);min-width:0;transition:translate .22s,box-shadow .22s}.card:hover{translate:0 -4px;box-shadow:0 12px 22px rgba(3,42,56,.24)}.card h2{margin:0;color:var(--blue);font-size:clamp(19px,1.35vw,25px);line-height:1.25;font-weight:900}.card p{font-size:clamp(13px,.92vw,16px);line-height:1.5;margin:10px 0}
 .preview{margin:15px 0;border-radius:10px;overflow:hidden;border:1px solid #ddd;background:#000;height:260px}.preview iframe{width:100%;height:100%;border:0;background:white}
-.actions{display:flex;gap:10px;flex-wrap:wrap}.actions a,.actions button{border:0;text-decoration:none;padding:9px 14px;border-radius:6px;font:inherit;font-size:14px;cursor:pointer}.open{background:var(--blue);color:#fff}.copy{background:var(--yellow);color:#111;font-weight:bold}.helper{font-size:12px;color:#666;margin-top:6px}
-.docs{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}.tag{display:inline-block;background:#edf4f5;color:var(--blue);border-radius:99px;padding:5px 9px;font-size:12px}.doc-list{display:grid;gap:8px;margin:12px 0}.doc-list strong{color:var(--blue);font-size:14px}.doc-list a.document-download{display:block;padding:10px 12px;border-radius:7px;background:var(--yellow);color:#171717;font-size:14px;font-weight:700;text-decoration:none}.doc-list a.document-download:hover{background:#d39c16}.preview-file{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:20px;background:#fff;color:var(--blue);text-align:center}.preview-file .file-icon{width:60px;height:60px;border-radius:50%;display:grid;place-items:center;background:#edf4f5;font-size:30px;font-weight:700}.preview-file strong{font-size:18px}.preview-file small{color:#666;font-size:13px}
+.actions{display:flex;gap:10px;flex-wrap:wrap}.actions a,.actions button{border:0;text-decoration:none;padding:10px 16px;border-radius:9px;font:inherit;font-size:14px;cursor:pointer;transition:translate .18s,filter .18s}.actions a:hover,.actions button:hover{translate:0 -2px;filter:brightness(.96)}.open{background:var(--blue);color:#fff;font-weight:900}.copy{background:var(--yellow);color:#111;font-weight:900}.helper{font-size:12px;color:#52666b;margin-top:7px}
+.docs{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}.tag{display:inline-block;background:#e8f1f1;color:var(--blue);border-radius:99px;padding:5px 10px;font-size:12px;font-weight:800}.doc-list{display:grid;gap:8px;margin:12px 0}.doc-list strong{color:var(--blue);font-size:14px}.doc-list a.document-download{display:block;padding:11px 14px;border-radius:9px;background:var(--yellow);color:#171717;font-size:14px;font-weight:900;text-decoration:none}.doc-list a.document-download:hover{background:#dca50e}.preview-file{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:20px;background:#fff;color:var(--blue);text-align:center}.preview-file .file-icon{width:60px;height:60px;border-radius:50%;display:grid;place-items:center;background:#e8f1f1;font-size:30px;font-weight:900}.preview-file strong{font-size:18px}.preview-file small{color:#52666b;font-size:13px}
 .empty{grid-column:1/-1;background:white;padding:28px;border-radius:12px;text-align:center;color:#555}.hidden{display:none!important}
-@media(max-width:520px){header{padding:28px 18px}.preview{height:220px}.grid{gap:16px;padding-inline:14px}.card{padding:15px}}
+.rp-footer{width:var(--content);margin:0 auto;padding:22px 0 30px;display:flex;justify-content:space-between;align-items:center;gap:16px;color:#fff;font-size:clamp(11px,.8vw,15px)}.rp-footer strong{font-weight:900}.rp-footer a{color:inherit;text-decoration:none;font-weight:800}.rp-footer a:hover{text-decoration:underline}
+@media(max-width:760px){.topbar{padding:14px 18px;flex-wrap:wrap;gap:8px}.brand{width:190px}.topbar-copy{text-align:left}.main-nav{justify-content:flex-start;overflow-x:auto;gap:26px;padding-inline:18px}.main-nav a{min-height:58px}.hero,.search-wrap,.alphabet,.status,.grid{width:calc(100% - 28px)}.hero{text-align:left;padding:23px}.hero h1{font-size:30px}.preview{height:220px}.grid{gap:16px;padding-bottom:50px}.card{padding:16px}}
+@media(max-width:600px){.rp-footer{flex-direction:column;text-align:center;padding-inline:10px}}
 </style>
 </head>
 <body>
-<header><h1>Médiathèque RebondPlay</h1><p>Retrouvez les outils et documents disponibles. Parcourez la bibliothèque ou recherchez un thème pour voir toutes les ressources qui s’y rapportent.</p></header>
+<header class="topbar"><a class="brand" href="../pagefull/index.html" aria-label="RebondPlay Full, accueil"><img src="../pagefull/Logo_RebondPlay_full2.png" alt="RebondPlay Full"></a><div class="topbar-copy"><strong>Médiathèque RebondPlay</strong><span>Les ressources de votre espace Full</span></div></header>
+<nav class="main-nav" aria-label="Navigation principale"><a href="../pagefull/index.html">Accueil Full</a><a class="active" href="./index.html" aria-current="page">Médiathèque</a><a href="../ressources/index.html">Ressources</a></nav>
+<section class="hero"><h1>Médiathèque</h1><p>Retrouvez les outils et documents disponibles. Parcourez la bibliothèque ou recherchez un thème pour voir toutes les ressources qui s’y rapportent.</p></section>
 <section class="search-wrap"><div class="search-box"><label for="search">Rechercher un outil, un document ou un thème</label><input id="search" type="search" placeholder="Ex. : emprise, prévention, affiches…" autocomplete="off"><p id="searchHint">La recherche porte sur les titres, descriptions, thèmes, mots-clés et documents associés.</p></div></section>
 <nav class="alphabet" aria-label="Filtrer par première lettre"></nav>
 <div class="status" id="status" aria-live="polite"></div><main class="grid" id="grid"></main>
@@ -44,5 +52,6 @@ function render(){const q=norm(search.value.trim());let filtered=resources.filte
 search.addEventListener('input',()=>render());
 fetch('./ressources.json').then(r=>{if(!r.ok)throw new Error('Catalogue absent');return r.json()}).then(data=>{resources=data.sort((a,b)=>a.title.localeCompare(b.title,'fr'));buildAlphabet();render()}).catch(()=>{grid.innerHTML='<div class="empty">Le catalogue des ressources n’a pas pu être chargé.</div>'});
 </script>
+<footer class="rp-footer"><span><strong>Rebond</strong> · Association de lutte contre les violences dans le sport</span><span><a href="mailto:contact@assorebond.com">contact@assorebond.com</a> · RebondPlay Full · © 2026</span></footer>
 </body>
 </html>
