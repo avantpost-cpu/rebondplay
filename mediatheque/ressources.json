@@ -3,240 +3,1162 @@
     "title": "A — Affiches",
     "url": "https://avantpost-cpu.github.io/depot-quiz/affiches/affiches.html",
     "type": "Module interactif",
-    "summary": "Module interactif de la bibliothèque Rebond.",
-    "themes": [],
-    "documents": []
+    "summary": "Diaporama de visuels RègloSport à faire défiler.",
+    "themes": [
+      "RègloSport",
+      "Repères sportifs"
+    ],
+    "documents": [],
+    "keywords": [
+      "affiche",
+      "affiches",
+      "visuel",
+      "diaporama",
+      "règles sportives",
+      "règlement sportif",
+      "repères",
+      "sport"
+    ]
   },
   {
-    "title": "A — Âges",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/ages/agesretravail.html",
-    "type": "Module interactif",
-    "summary": "Module interactif de la bibliothèque Rebond.",
-    "themes": [],
-    "documents": []
+    "title": "A — Affiches SignalSport",
+    "type": "Affiches PDF",
+    "summary": "Deux affiches Rebond SignalSport au format A3, dont une déclinaison dédiée au tennis.",
+    "themes": [
+      "SignalSport",
+      "Prévention"
+    ],
+    "keywords": [
+      "SignalSport",
+      "affiche",
+      "affiches",
+      "A3",
+      "tennis",
+      "sport",
+      "signalement",
+      "repères visuels"
+    ],
+    "documents": [
+      {
+        "label": "Affiche SignalSport — Tennis (A3)",
+        "url": "../ressources/Affiches%20A3%20Rebond_SignalSport-Tennis.pdf",
+        "type": "PDF",
+        "keywords": [
+          "tennis",
+          "SignalSport",
+          "affiche"
+        ]
+      },
+      {
+        "label": "Affiche SignalSport — HD (A3)",
+        "url": "../ressources/Affiches%20A3%20Rebond_SignalSport_HD.pdf",
+        "type": "PDF",
+        "keywords": [
+          "SignalSport",
+          "affiche",
+          "haute définition"
+        ]
+      }
+    ],
+    "source": "Dépôt RebondPlay : ressources/Affiches A3 Rebond_SignalSport*.pdf"
   },
   {
     "title": "A — Autobiographie / Témoignage",
     "url": "https://avantpost-cpu.github.io/depot-quiz/autobio/autobio.html",
     "type": "Module interactif",
-    "summary": "Module interactif de la bibliothèque Rebond.",
-    "themes": [],
-    "documents": []
+    "summary": "Sélection de récits autobiographiques et de témoignages sur les violences sexuelles dans le sport, l’emprise, le silence et la reconstruction.",
+    "themes": [
+      "Témoignages",
+      "Violences sexuelles",
+      "Emprise"
+    ],
+    "documents": [],
+    "keywords": [
+      "autobiographie",
+      "récit de vie",
+      "témoignage",
+      "victime",
+      "violences sexuelles",
+      "abus sexuels",
+      "sport",
+      "emprise",
+      "abus de pouvoir",
+      "silence",
+      "libération de la parole",
+      "reconstruction",
+      "parcours de victime"
+    ]
+  },
+  {
+    "title": "A — Âges",
+    "url": "https://avantpost-cpu.github.io/depot-quiz/ages/agesretravail.html",
+    "type": "Module interactif",
+    "summary": "Mosaïque visuelle interactive consacrée aux âges.",
+    "themes": [
+      "Âges"
+    ],
+    "documents": [],
+    "keywords": [
+      "âge",
+      "âges",
+      "enfant",
+      "adolescent",
+      "adolescence",
+      "adulte",
+      "majeur",
+      "majeure",
+      "mineur",
+      "mineure"
+    ]
   },
   {
     "title": "C — Chiffres",
     "url": "https://avantpost-cpu.github.io/depot-quiz/chiffres/chiffres.html",
     "type": "Module interactif",
-    "summary": "Module interactif de la bibliothèque Rebond.",
-    "themes": [],
-    "documents": []
+    "summary": "Mosaïque interactive de cinq visuels chiffrés.",
+    "themes": [
+      "Chiffres clés"
+    ],
+    "documents": [],
+    "keywords": [
+      "chiffre",
+      "chiffres",
+      "statistique",
+      "statistiques",
+      "donnée",
+      "données",
+      "repère chiffré",
+      "sensibilisation"
+    ]
+  },
+  {
+    "title": "C — Cocot’éthik",
+    "type": "Jeu à imprimer",
+    "summary": "Jeu de sensibilisation en forme de cocotte en papier pour parler de respect, de consentement et de violences dans le sport.",
+    "themes": [
+      "Respect",
+      "Consentement",
+      "Violences dans le sport"
+    ],
+    "keywords": [
+      "Cocot’etik",
+      "Cocot’éthik",
+      "cocotte en papier",
+      "jeu",
+      "sensibilisation",
+      "respect",
+      "consentement",
+      "accord",
+      "violences dans le sport",
+      "réflexion",
+      "échange",
+      "discussion"
+    ],
+    "documents": [
+      {
+        "label": "Cocot’éthik — modèle 1",
+        "url": "../ressources/A4_Cocotte_Rebond_ge%CC%81ne%CC%81rique_1.pdf",
+        "type": "PDF",
+        "keywords": [
+          "modèle 1",
+          "respect",
+          "consentement"
+        ]
+      },
+      {
+        "label": "Cocot’éthik — modèle 2",
+        "url": "../ressources/A4_Cocotte_Rebond_ge%CC%81ne%CC%81rique_2.pdf",
+        "type": "PDF",
+        "keywords": [
+          "modèle 2",
+          "respect",
+          "consentement"
+        ]
+      }
+    ],
+    "source": "Kit du relayeur, annexe Cocot’éthik; deux modèles PDF du dépôt RebondPlay."
   },
   {
     "title": "C — Communication",
     "url": "https://avantpost-cpu.github.io/depot-quiz/com/com.html",
     "type": "Module interactif",
-    "summary": "Module interactif de la bibliothèque Rebond.",
-    "themes": [],
-    "documents": []
+    "summary": "Deux séquences vidéo et des visuels pour observer la communication verbale et non verbale.",
+    "themes": [
+      "Communication",
+      "Écoute"
+    ],
+    "documents": [],
+    "keywords": [
+      "communication verbale",
+      "communication non verbale",
+      "parole",
+      "expression orale",
+      "langage corporel",
+      "gestes",
+      "attitudes",
+      "écoute",
+      "dialogue",
+      "observer",
+      "signes non verbaux"
+    ]
   },
   {
     "title": "C — Comparaison",
     "url": "https://avantpost-cpu.github.io/depot-quiz/comparaison/comparaison.html",
     "type": "Module interactif",
-    "summary": "Module interactif de la bibliothèque Rebond.",
-    "themes": [],
-    "documents": []
+    "summary": "Mise en regard de qualificatifs stéréotypés associés au féminin et au masculin.",
+    "themes": [
+      "Stéréotypes de genre",
+      "Égalité"
+    ],
+    "documents": [],
+    "keywords": [
+      "comparaison",
+      "stéréotype",
+      "stéréotypes de genre",
+      "stéréotypes sexistes",
+      "sexisme",
+      "idées reçues",
+      "féminin",
+      "masculin",
+      "filles",
+      "garçons",
+      "égalité",
+      "discrimination",
+      "rôles de genre"
+    ]
   },
   {
     "title": "C — Course",
     "url": "https://avantpost-cpu.github.io/depot-quiz/course/course.html",
     "type": "Module interactif",
-    "summary": "Module interactif de la bibliothèque Rebond.",
-    "themes": [],
-    "documents": []
+    "summary": "Quiz ludique sur la protection des enfants, les obligations de signalement et les conduites à tenir face à une situation de violence.",
+    "themes": [
+      "Protection de l’enfance",
+      "Signalement"
+    ],
+    "documents": [],
+    "keywords": [
+      "quiz",
+      "protection des enfants",
+      "protection de l’enfance",
+      "violences dans le sport",
+      "signaler",
+      "signalement",
+      "information préoccupante",
+      "IP",
+      "CRIP",
+      "procureur",
+      "danger immédiat",
+      "17",
+      "police",
+      "gendarmerie",
+      "article 40",
+      "obligation légale",
+      "interdiction d’exercer",
+      "encadrement sportif"
+    ]
   },
   {
     "title": "E — Essai",
     "url": "https://avantpost-cpu.github.io/depot-quiz/essai/essai.html",
     "type": "Module interactif",
-    "summary": "Module interactif de la bibliothèque Rebond.",
-    "themes": [],
-    "documents": []
+    "summary": "Essais et ouvrages d’analyse sur les violences sexuelles dans le sport, les rapports d’autorité, la pression de la performance et le silence institutionnel.",
+    "themes": [
+      "Violences dans le sport",
+      "Analyse",
+      "Prévention"
+    ],
+    "documents": [],
+    "keywords": [
+      "essai",
+      "analyse",
+      "violences sexuelles",
+      "abus",
+      "emprise",
+      "relation d’autorité",
+      "entraîneur",
+      "enfant",
+      "mineur",
+      "sport de haut niveau",
+      "performance",
+      "pression de la performance",
+      "silence institutionnel",
+      "violences systémiques",
+      "responsabilité collective",
+      "prévenir",
+      "agir",
+      "repères juridiques"
+    ]
+  },
+  {
+    "title": "E — Exposition (é)preuves",
+    "type": "Exposition PDF",
+    "summary": "Exposition documentaire et pédagogique sur le parcours d’Angélique Cauchy, les mécanismes de l’emprise et la protection de l’enfance dans le sport.",
+    "themes": [
+      "Emprise",
+      "Violences sexuelles",
+      "Protection de l’enfance"
+    ],
+    "keywords": [
+      "épreuves",
+      "épreuves exposition",
+      "Angélique Cauchy",
+      "Astrid di Crollalanza",
+      "témoignage",
+      "enfance",
+      "mineur",
+      "sport",
+      "violences sexuelles",
+      "emprise",
+      "isolement",
+      "contrôle",
+      "peur",
+      "silence",
+      "sidération",
+      "traumatisme",
+      "signaux d’alerte",
+      "parole",
+      "libération de la parole",
+      "reconstruction",
+      "parcours judiciaire",
+      "protection de l’enfance",
+      "témoin actif",
+      "performance",
+      "autorité",
+      "respect",
+      "intégrité",
+      "bienveillance",
+      "empathie"
+    ],
+    "documents": [
+      {
+        "label": "Exposition (é)preuves — fichier PDF (40 × 30)",
+        "url": "../pageexpo/Version_40x30_neutre_2109206.pdf",
+        "type": "PDF",
+        "keywords": [
+          "exposition",
+          "emprise",
+          "violences sexuelles",
+          "enfance"
+        ]
+      }
+    ],
+    "source": "PDF pageexpo/Version_40x30_neutre_2109206.pdf; résumé introductif de l’exposition."
+  },
+  {
+    "title": "E — Exposition Pour un sport sûr",
+    "type": "Exposition à télécharger",
+    "summary": "Kit numérique de l’exposition Rebond « Pour un sport sûr » pour sensibiliser à la prévention des violences dans le sport.",
+    "themes": [
+      "Sport sûr",
+      "Prévention",
+      "Violences dans le sport"
+    ],
+    "keywords": [
+      "pour un sport sûr",
+      "sport sûr",
+      "exposition",
+      "kit numérique",
+      "violences dans le sport",
+      "prévention",
+      "protection",
+      "enfants",
+      "club",
+      "sensibilisation",
+      "repères"
+    ],
+    "documents": [
+      {
+        "label": "Exposition Pour un sport sûr — kit numérique",
+        "url": "../pageexpo/exposportsur_full.zip",
+        "type": "ZIP",
+        "keywords": [
+          "exposition",
+          "prévention",
+          "sport sûr"
+        ]
+      }
+    ],
+    "source": "Page pageexpo/index.html et page Essentiel+ expositions.html; fichier pageexpo/exposportsur_full.zip."
+  },
+  {
+    "title": "E — Exposition pédagogique",
+    "type": "Exposition à télécharger",
+    "summary": "Matériel numérique d’exposition pédagogique, conçu pour sensibiliser et transmettre des repères adaptés aux jeunes et aux adolescents.",
+    "themes": [
+      "Prévention",
+      "Sensibilisation",
+      "Jeunes"
+    ],
+    "keywords": [
+      "exposition pédagogique",
+      "violences dans le sport",
+      "prévenir",
+      "repérer",
+      "signaler",
+      "enfants",
+      "jeunes",
+      "adolescents",
+      "sensibilisation",
+      "support visuel",
+      "pédagogie",
+      "club",
+      "éducation"
+    ],
+    "documents": [
+      {
+        "label": "Exposition pédagogique — kit numérique",
+        "url": "../pageexpo/expopeda_full.zip",
+        "type": "ZIP",
+        "keywords": [
+          "exposition",
+          "pédagogie",
+          "jeunes",
+          "adolescents"
+        ]
+      }
+    ],
+    "source": "Page pageexpo/index.html; fichier pageexpo/expopeda_full.zip; deux formats jeunes/ados documentés dans les échanges de projet."
   },
   {
     "title": "F — Films",
     "url": "https://avantpost-cpu.github.io/depot-quiz/films/films.html",
     "type": "Module interactif",
-    "summary": "Module interactif de la bibliothèque Rebond.",
-    "themes": [],
-    "documents": []
+    "summary": "Sélection de fictions, téléfilms et documentaires sur l’emprise, les violences sexuelles, la pression de la performance et le silence dans le sport.",
+    "themes": [
+      "Films",
+      "Emprise",
+      "Violences dans le sport"
+    ],
+    "documents": [],
+    "keywords": [
+      "film",
+      "fiction",
+      "documentaire",
+      "cinéma",
+      "Julie se tait",
+      "Slalom",
+      "Lilia",
+      "Whiplash",
+      "Le Colosse aux pieds d’argile",
+      "Service volé",
+      "Un si long silence",
+      "Futurs champions",
+      "violences sexuelles",
+      "emprise",
+      "sidération",
+      "silence",
+      "abus d’autorité",
+      "humiliation",
+      "pression de la performance",
+      "sport de haut niveau",
+      "témoignage",
+      "enquête",
+      "prévention"
+    ]
+  },
+  {
+    "title": "F — Fresque à colorier",
+    "type": "Fresque PDF",
+    "summary": "Fresque Rebond à assembler et à colorier en deux parties A3.",
+    "themes": [
+      "Activité collective",
+      "Sport"
+    ],
+    "keywords": [
+      "fresque",
+      "coloriage",
+      "colorier",
+      "dessin",
+      "activité collective",
+      "atelier",
+      "A3",
+      "sport",
+      "valeurs du sport",
+      "sensibilisation"
+    ],
+    "documents": [
+      {
+        "label": "Fresque — partie A",
+        "url": "../ressources/fresque_A3_A.pdf",
+        "type": "PDF",
+        "keywords": [
+          "partie A",
+          "A3",
+          "fresque"
+        ]
+      },
+      {
+        "label": "Fresque — partie B",
+        "url": "../ressources/fresque_A3_B.pdf",
+        "type": "PDF",
+        "keywords": [
+          "partie B",
+          "A3",
+          "fresque"
+        ]
+      }
+    ],
+    "source": "Fichiers ressources/fresque_A3_A.pdf et fresque_A3_B.pdf; ressource Fresque A3/A_B du portail."
   },
   {
     "title": "H — Honorabilité",
     "url": "https://avantpost-cpu.github.io/depot-quiz/hono/hono.html",
     "type": "Module interactif",
-    "summary": "Module interactif de la bibliothèque Rebond.",
-    "themes": [],
-    "documents": []
+    "summary": "Repères illustrés sur le contrôle d’honorabilité dans les structures sportives.",
+    "themes": [
+      "Honorabilité",
+      "Sécurité des clubs"
+    ],
+    "documents": [],
+    "keywords": [
+      "contrôle d’honorabilité",
+      "honorabilité",
+      "vérification",
+      "encadrant",
+      "encadrante",
+      "dirigeant",
+      "bénévole",
+      "salarié",
+      "club sportif",
+      "interdiction d’exercer",
+      "protection des mineurs",
+      "prévention",
+      "sécurité"
+    ]
   },
   {
     "title": "I — Infra",
     "url": "https://avantpost-cpu.github.io/depot-quiz/infra/infra.html",
     "type": "Module interactif",
-    "summary": "Module interactif de la bibliothèque Rebond.",
-    "themes": [],
-    "documents": []
+    "summary": "Mosaïque interactive de repères sur les infractions et les violences dans le sport, dont le bizutage.",
+    "themes": [
+      "Infractions",
+      "Violences dans le sport"
+    ],
+    "documents": [],
+    "keywords": [
+      "infraction",
+      "infractions",
+      "droit pénal",
+      "qualification pénale",
+      "violences",
+      "bizutage",
+      "agression",
+      "protection des mineurs",
+      "repères juridiques",
+      "cadre légal"
+    ]
+  },
+  {
+    "title": "K — Kit du relayeur",
+    "type": "Guide PDF",
+    "summary": "Guide pratique pour les relayeurs Rebond : écouter et accompagner la parole, réagir, effectuer un signalement et organiser la prévention dans la structure sportive.",
+    "themes": [
+      "Écoute",
+      "Signalement",
+      "Prévention dans les clubs"
+    ],
+    "keywords": [
+      "relayeur",
+      "relayeuse",
+      "référent",
+      "référente",
+      "club",
+      "structure sportive",
+      "adhérents",
+      "bénévoles",
+      "dirigeants",
+      "parents",
+      "accueillir la parole",
+      "parole de la victime",
+      "écoute",
+      "retranscrire",
+      "réagir",
+      "témoin",
+      "signalement judiciaire",
+      "signalement administratif",
+      "signalement fédération",
+      "procédure disciplinaire",
+      "contrôle d’honorabilité",
+      "contacts utiles",
+      "119",
+      "3018",
+      "CRIP",
+      "procureur",
+      "prévention",
+      "sensibilisation",
+      "exposition",
+      "jeux",
+      "bibliothèque de ressources"
+    ],
+    "documents": [
+      {
+        "label": "Kit du relayeur — format A5",
+        "url": "../ressources/Kit%20du%20relayeur_Print_A5_18052026.pdf",
+        "type": "PDF",
+        "keywords": [
+          "guide pratique",
+          "relayeur",
+          "signalement",
+          "club"
+        ]
+      }
+    ],
+    "source": "PDF ressources/Kit du relayeur_Print_A5_18052026.pdf, sommaire et annexes."
   },
   {
     "title": "L — Livre",
     "url": "https://avantpost-cpu.github.io/depot-quiz/livre/livre.html",
     "type": "Module interactif",
-    "summary": "Module interactif de la bibliothèque Rebond.",
-    "themes": [],
-    "documents": []
+    "summary": "Feuilletage visuel de pages d’un livre et de sa couverture.",
+    "themes": [
+      "Livre",
+      "Lecture"
+    ],
+    "documents": [],
+    "keywords": [
+      "livre",
+      "lecture",
+      "pages",
+      "couverture",
+      "ouvrage",
+      "extrait",
+      "récit"
+    ]
   },
   {
     "title": "L — Livres jeunesse",
     "url": "https://avantpost-cpu.github.io/depot-quiz/livresj/livresj.html",
     "type": "Module interactif",
-    "summary": "Module interactif de la bibliothèque Rebond.",
-    "themes": [],
-    "documents": []
+    "summary": "Sélection de livres pour aborder avec les enfants les violences, le respect du corps, le consentement et le droit de demander de l’aide.",
+    "themes": [
+      "Livres jeunesse",
+      "Protection de l’enfance"
+    ],
+    "documents": [],
+    "keywords": [
+      "livre jeunesse",
+      "album jeunesse",
+      "enfant",
+      "jeune",
+      "adolescent",
+      "violences faites aux enfants",
+      "violences dans le sport",
+      "violences physiques",
+      "violences psychologiques",
+      "violences sexuelles",
+      "consentement",
+      "corps",
+      "intimité",
+      "dire non",
+      "personne de confiance",
+      "parler",
+      "handicap",
+      "prévention",
+      "parents",
+      "professionnels"
+    ]
   },
   {
     "title": "M — Majeure",
     "url": "https://avantpost-cpu.github.io/depot-quiz/majeure/majeure.html",
     "type": "Module interactif",
-    "summary": "Module interactif de la bibliothèque Rebond.",
-    "themes": [],
-    "documents": []
+    "summary": "Séquence visuelle interactive associée à la situation d’une personne majeure.",
+    "themes": [
+      "Majeur",
+      "Âge"
+    ],
+    "documents": [],
+    "keywords": [
+      "majeur",
+      "majeure",
+      "majorité",
+      "adulte",
+      "âge",
+      "personne adulte"
+    ]
   },
   {
     "title": "M — Mineure",
     "url": "https://avantpost-cpu.github.io/depot-quiz/mineure/mineure.html",
     "type": "Module interactif",
-    "summary": "Module interactif de la bibliothèque Rebond.",
-    "themes": [],
-    "documents": []
+    "summary": "Séquence visuelle interactive associée à la situation d’une personne mineure.",
+    "themes": [
+      "Mineur",
+      "Protection de l’enfance"
+    ],
+    "documents": [],
+    "keywords": [
+      "mineur",
+      "mineure",
+      "minorité",
+      "enfant",
+      "adolescent",
+      "jeune",
+      "âge",
+      "protection de l’enfance"
+    ]
   },
   {
     "title": "M — Miroir (outil)",
     "url": "https://avantpost-cpu.github.io/depot-quiz/outil/miroir.html",
     "type": "Module interactif",
-    "summary": "Module interactif de la bibliothèque Rebond.",
-    "themes": [],
-    "documents": []
+    "summary": "Baromètre du climat éthique composé de vingt situations pour réfléchir à sa pratique sportive ou éducative et repérer les situations à risque.",
+    "themes": [
+      "Climat éthique",
+      "Prévention",
+      "Protection"
+    ],
+    "documents": [],
+    "keywords": [
+      "baromètre",
+      "climat éthique",
+      "encadrement",
+      "éducateur",
+      "éducatrice",
+      "sport",
+      "consentement",
+      "contact physique",
+      "intimité",
+      "vestiaires",
+      "inclusion",
+      "égalité",
+      "discrimination",
+      "sexisme",
+      "homophobie",
+      "racisme",
+      "autorité",
+      "confiance",
+      "conflit",
+      "formation",
+      "obligations légales",
+      "réseaux sociaux",
+      "numérique",
+      "signaux faibles",
+      "mal-être",
+      "isolement",
+      "huis clos",
+      "droit à l’image",
+      "données personnelles",
+      "pression",
+      "chantage",
+      "signalement",
+      "protection",
+      "réaction immédiate",
+      "CRIP",
+      "procureur"
+    ]
   },
   {
     "title": "P — Phrases",
     "url": "https://avantpost-cpu.github.io/depot-quiz/phrases/phrases.html",
     "type": "Module interactif",
-    "summary": "Module interactif de la bibliothèque Rebond.",
-    "themes": [],
-    "documents": []
+    "summary": "Deux séquences vidéo et des séries d’images autour de phrases et d’échanges entre majeurs et mineurs.",
+    "themes": [
+      "Communication",
+      "Dialogue"
+    ],
+    "documents": [],
+    "keywords": [
+      "phrase",
+      "phrases",
+      "paroles",
+      "dialogue",
+      "communication",
+      "échange",
+      "adulte",
+      "majeur",
+      "enfant",
+      "mineur",
+      "écoute",
+      "parler",
+      "question",
+      "expression"
+    ]
   },
   {
     "title": "P — Puzzle (définition)",
     "url": "https://avantpost-cpu.github.io/depot-quiz/puzzledef/puzzledef.html",
     "type": "Module interactif",
-    "summary": "Module interactif de la bibliothèque Rebond.",
-    "themes": [],
-    "documents": []
+    "summary": "Puzzle interactif organisé autour de définitions et de zones à explorer.",
+    "themes": [
+      "Définitions",
+      "Repères"
+    ],
+    "documents": [],
+    "keywords": [
+      "puzzle",
+      "définition",
+      "définitions",
+      "vocabulaire",
+      "notion",
+      "repère",
+      "activité pédagogique",
+      "jeu interactif"
+    ]
   },
   {
     "title": "Q — Question",
     "url": "https://avantpost-cpu.github.io/depot-quiz/question/question1.html",
     "type": "Module interactif",
-    "summary": "Module interactif de la bibliothèque Rebond.",
-    "themes": [],
-    "documents": []
-  },
-  {
-    "title": "R — Réglo’Sport",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/reglosport/reglosport.html",
-    "type": "Module interactif",
-    "summary": "Module interactif de la bibliothèque Rebond.",
-    "themes": [],
-    "documents": []
+    "summary": "Exemples de questions ouvertes pour accueillir la parole d’un enfant quand un changement, un symptôme ou une blessure inquiète.",
+    "themes": [
+      "Écoute",
+      "Libération de la parole"
+    ],
+    "documents": [],
+    "keywords": [
+      "question ouverte",
+      "questions ouvertes",
+      "écouter un enfant",
+      "accueillir la parole",
+      "parler à un enfant",
+      "personne de confiance",
+      "blessure",
+      "symptôme",
+      "stress",
+      "mal-être",
+      "changement de comportement",
+      "refus d’aller à l’entraînement",
+      "violence suspectée",
+      "ne pas suggérer la réponse",
+      "dialogue"
+    ]
   },
   {
     "title": "R — Retenir",
     "url": "https://avantpost-cpu.github.io/depot-quiz/retenir/retenir.html",
     "type": "Module interactif",
-    "summary": "Module interactif de la bibliothèque Rebond.",
-    "themes": [],
-    "documents": []
+    "summary": "Repères pour réagir avec justesse lorsqu’une victime parle : croire, écouter, soutenir, ne pas culpabiliser et ne pas minimiser.",
+    "themes": [
+      "Accueil de la parole",
+      "Soutien aux victimes"
+    ],
+    "documents": [],
+    "keywords": [
+      "libération de la parole",
+      "révélation",
+      "victime",
+      "croire la victime",
+      "écoute",
+      "soutien",
+      "compassion",
+      "culpabilité",
+      "ne pas culpabiliser",
+      "ne pas minimiser",
+      "ne pas dramatiser",
+      "ne pas mettre en doute",
+      "remercier",
+      "courage",
+      "accueillir la parole",
+      "réaction adaptée"
+    ]
+  },
+  {
+    "title": "R — Réglo’Sport",
+    "url": "https://avantpost-cpu.github.io/depot-quiz/reglosport/reglosport.html",
+    "type": "Module interactif",
+    "summary": "Situations illustrées pour repérer les limites, les comportements inappropriés et les ressources d’aide dans le sport.",
+    "themes": [
+      "Respect et consentement",
+      "Prévention",
+      "Inclusion"
+    ],
+    "documents": [],
+    "keywords": [
+      "RègloSport",
+      "consentement",
+      "accord",
+      "contact physique",
+      "corps",
+      "intimité",
+      "vestiaire",
+      "nudité",
+      "aide à la personne",
+      "handicap",
+      "accessibilité",
+      "adaptation",
+      "identité de genre",
+      "orientation sexuelle",
+      "homophobie",
+      "racisme",
+      "discrimination",
+      "remarque sexiste",
+      "réseaux sociaux",
+      "violence numérique",
+      "sextos",
+      "nudes",
+      "harcèlement",
+      "bizutage",
+      "isolement",
+      "huis clos",
+      "pression",
+      "chantage",
+      "personne de confiance",
+      "signaler",
+      "tchat",
+      "protection"
+    ]
   },
   {
     "title": "S — Signalement",
     "url": "https://avantpost-cpu.github.io/depot-quiz/signalement/signalement.html",
     "type": "Module interactif",
-    "summary": "Module interactif de la bibliothèque Rebond.",
-    "themes": [],
-    "documents": []
+    "summary": "Présentation de trois voies de signalement : judiciaire, administrative et disciplinaire.",
+    "themes": [
+      "Signalement",
+      "Procédures"
+    ],
+    "documents": [],
+    "keywords": [
+      "signaler",
+      "signalement",
+      "judiciaire",
+      "administratif",
+      "administrative",
+      "disciplinaire",
+      "procureur",
+      "police",
+      "gendarmerie",
+      "fédération",
+      "ministère",
+      "violences dans le sport",
+      "victime mineure",
+      "obligation de signaler",
+      "procédure",
+      "protection"
+    ]
+  },
+  {
+    "title": "S — Sports en Cool’eurs",
+    "type": "Coloriages PDF",
+    "summary": "Coloriages Rebond à utiliser comme activité ludique ou comme point de départ d’un atelier d’écriture sur le sport et ses valeurs.",
+    "themes": [
+      "Activité jeunesse",
+      "Valeurs du sport"
+    ],
+    "keywords": [
+      "Sports en Cool’eurs",
+      "coloriage",
+      "coloriages",
+      "dessin",
+      "atelier écriture",
+      "poème",
+      "acrostiche",
+      "texte",
+      "sport",
+      "valeurs",
+      "jeu",
+      "activité jeunesse",
+      "sensibilisation"
+    ],
+    "documents": [
+      {
+        "label": "Coloriages Sports en Cool’eurs",
+        "url": "../ressources/coloriages_15x21.pdf",
+        "type": "PDF",
+        "keywords": [
+          "coloriage",
+          "sport",
+          "atelier écriture"
+        ]
+      }
+    ],
+    "source": "PDF ressources/coloriages_15x21.pdf et annexe correspondante du Kit du relayeur."
   },
   {
     "title": "T — Tableau",
     "url": "https://avantpost-cpu.github.io/depot-quiz/tableau/tableau.html",
     "type": "Module interactif",
-    "summary": "Module interactif de la bibliothèque Rebond.",
-    "themes": [],
-    "documents": []
+    "summary": "Tableau de repères et définitions sur les infractions sexuelles et les atteintes aux personnes.",
+    "themes": [
+      "Infractions",
+      "Droit pénal"
+    ],
+    "documents": [],
+    "keywords": [
+      "infraction",
+      "infractions sexuelles",
+      "viol",
+      "agression sexuelle",
+      "atteinte sexuelle",
+      "harcèlement sexuel",
+      "violence",
+      "contrainte",
+      "qualification pénale",
+      "définition",
+      "droit pénal",
+      "protection des mineurs"
+    ]
   },
   {
     "title": "T — Tableau 1",
     "url": "https://avantpost-cpu.github.io/depot-quiz/tableau1/tableau1.html",
     "type": "Module interactif",
-    "summary": "Module interactif de la bibliothèque Rebond.",
-    "themes": [],
-    "documents": []
+    "summary": "Repères illustrés sur les violences physiques et psychologiques et leurs conséquences.",
+    "themes": [
+      "Violences physiques",
+      "Violences psychologiques"
+    ],
+    "documents": [],
+    "keywords": [
+      "violence physique",
+      "violences physiques",
+      "violence psychologique",
+      "violences psychologiques",
+      "atteinte à la santé mentale",
+      "humiliation",
+      "incapacité",
+      "mutilation",
+      "infirmité",
+      "infraction",
+      "définition",
+      "droit pénal"
+    ]
   },
   {
     "title": "T — Tableau 2",
     "url": "https://avantpost-cpu.github.io/depot-quiz/tableau2/tableau2.html",
     "type": "Module interactif",
-    "summary": "Module interactif de la bibliothèque Rebond.",
-    "themes": [],
-    "documents": []
+    "summary": "Repères juridiques sur l’obligation de signaler certains mauvais traitements ou atteintes sexuelles, notamment envers un mineur.",
+    "themes": [
+      "Obligation de signalement",
+      "Protection des mineurs"
+    ],
+    "documents": [],
+    "keywords": [
+      "obligation de signaler",
+      "obligation de dénonciation",
+      "non-dénonciation",
+      "mauvais traitements",
+      "atteinte sexuelle",
+      "mineur",
+      "moins de 15 ans",
+      "procureur",
+      "article 40",
+      "signalement de bonne foi",
+      "protection juridique",
+      "infraction"
+    ]
   },
   {
     "title": "T — Tableau 3",
     "url": "https://avantpost-cpu.github.io/depot-quiz/tableau3/tableau3.html",
     "type": "Module interactif",
-    "summary": "Module interactif de la bibliothèque Rebond.",
-    "themes": [],
-    "documents": []
+    "summary": "Présentation de différentes infractions sexuelles visant les mineurs, y compris les sollicitations et images à caractère sexuel en ligne.",
+    "themes": [
+      "Infractions sexuelles",
+      "Violences numériques"
+    ],
+    "documents": [],
+    "keywords": [
+      "infraction sexuelle",
+      "violences sexuelles",
+      "mineur",
+      "proposition sexuelle",
+      "sollicitation sexuelle en ligne",
+      "message sexuel",
+      "image sexuelle",
+      "image pornographique",
+      "diffusion d’image",
+      "communication électronique",
+      "internet",
+      "droit pénal",
+      "peine"
+    ]
   },
   {
     "title": "T — Tâches",
     "url": "https://avantpost-cpu.github.io/depot-quiz/taches/taches.html",
     "type": "Module interactif",
-    "summary": "Module interactif de la bibliothèque Rebond.",
-    "themes": [],
-    "documents": []
+    "summary": "Module interactif Rebond intitulé « Tâches ».",
+    "themes": [
+      "Activité interactive"
+    ],
+    "documents": [],
+    "keywords": [
+      "tâche",
+      "tâches",
+      "activité",
+      "interaction",
+      "module Rebond"
+    ]
   },
   {
     "title": "U — Urgence",
     "url": "https://avantpost-cpu.github.io/depot-quiz/urgence/urgence.html",
     "type": "Module interactif",
-    "summary": "Module interactif de la bibliothèque Rebond.",
-    "themes": [],
-    "documents": []
+    "summary": "Repères visuels pour trouver les contacts à appeler en cas de danger ou de besoin d’aide.",
+    "themes": [
+      "Urgence",
+      "Contacts utiles"
+    ],
+    "documents": [],
+    "keywords": [
+      "urgence",
+      "danger immédiat",
+      "enfant en danger",
+      "112",
+      "17",
+      "114",
+      "PNAV",
+      "police",
+      "gendarmerie",
+      "aide",
+      "secours",
+      "victime",
+      "violences",
+      "numéro d’urgence",
+      "signalement"
+    ]
   },
   {
     "title": "U — Urgence 2",
     "url": "https://avantpost-cpu.github.io/depot-quiz/urgence2/urgence2.html",
     "type": "Module interactif",
-    "summary": "Module interactif de la bibliothèque Rebond.",
-    "themes": [],
-    "documents": []
+    "summary": "Séquence vidéo et visuels autour d’une situation d’urgence et des actions à entreprendre.",
+    "themes": [
+      "Urgence",
+      "Protection"
+    ],
+    "documents": [],
+    "keywords": [
+      "urgence",
+      "danger",
+      "réagir",
+      "agir",
+      "protéger",
+      "aide",
+      "secours",
+      "situation préoccupante",
+      "violence",
+      "victime"
+    ]
   },
   {
     "title": "V — Violences",
     "url": "https://avantpost-cpu.github.io/depot-quiz/violences/violences.html",
     "type": "Module interactif",
-    "summary": "Module interactif de la bibliothèque Rebond.",
-    "themes": [],
-    "documents": []
+    "summary": "Mosaïque interactive de sensibilisation consacrée aux violences.",
+    "themes": [
+      "Violences",
+      "Prévention"
+    ],
+    "documents": [],
+    "keywords": [
+      "violence",
+      "violences",
+      "violences dans le sport",
+      "violence physique",
+      "violence psychologique",
+      "violence sexuelle",
+      "prévenir",
+      "repérer",
+      "protection",
+      "victime",
+      "comportement inapproprié"
+    ]
   }
 ]

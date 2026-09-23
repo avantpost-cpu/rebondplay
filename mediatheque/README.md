@@ -7,7 +7,7 @@ Cette page reprend le principe visuel de la bibliothèque de référence : bande
 - `index.html` : page autonome à placer dans le dossier `mediatheque/` du dépôt `avantpost-cpu/rebondplay`.
 - `ressources.json` : catalogue initial des 30 modules repris de `depot-quiz/bibliotheque.html`.
 
-Les entrées du catalogue disposent de `themes` et `documents` pour indexer plusieurs occurrences ou fichiers liés à un sujet. Les liens actuels pointent encore vers les modules hébergés sur GitHub Pages de `depot-quiz`; ils ne copient pas leur contenu. Les fichiers de chaque ressource pourront être ajoutés dans `mediatheque/fichiers/` et référencés dans `documents`.
+Les entrées du catalogue disposent de `themes`, `keywords` et `documents`. Les thèmes donnent des repères visibles; les mots-clés incluent formulations et synonymes qui servent à la recherche sans encombrer les cartes. Les documents associés peuvent être indexés séparément ou regroupés dans une même fiche. Les liens actuels pointent encore vers les modules hébergés sur GitHub Pages de `depot-quiz`; ils ne copient pas leur contenu. Les fichiers de chaque ressource pourront être ajoutés dans `mediatheque/fichiers/` et référencés dans `documents`.
 
 ## Intégration au dépôt
 
@@ -23,11 +23,12 @@ Ajouter un objet dans `ressources.json` :
   "url": "https://…",
   "type": "Module interactif",
   "summary": "Description courte",
-  "themes": ["emprise", "prévention", "sport"],
+  "themes": ["Emprise", "Prévention"],
+  "keywords": ["emprise", "abus de pouvoir", "violences dans le sport", "protection"],
   "documents": [
-    { "label": "Support PDF", "url": "fichiers/support.pdf", "type": "PDF" }
+    { "label": "Support PDF", "url": "fichiers/support.pdf", "type": "PDF", "keywords": ["témoin", "signalement"] }
   ]
 }
 ```
 
-Un même document peut être retrouvé par plusieurs thèmes en listant ceux-ci dans `themes`. Plusieurs documents associés sont affichés dans la fiche de la ressource.
+Un même document peut être retrouvé par plusieurs mots ou formulations en les ajoutant dans `keywords` ou dans les `keywords` du document. Plusieurs fichiers associés sont téléchargeables depuis une seule fiche. Les mots-clés publiés doivent rester fondés sur le contenu ou la fonction décrite de la ressource.
