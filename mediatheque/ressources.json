@@ -1162,9 +1162,10 @@
     ]
   },
   {
-    "title": "A — Animations vidéo",
-    "type": "Vidéos MP4 à télécharger",
-    "summary": "Animations vidéo de sensibilisation et de prévention : consentement, repérage, témoignages, violences sexuelles, emprise, signalement et protection de l’enfance.",
+    "title": "A — Animations sensibilisation — 1 enfant sur 7",
+    "url": "../pagevideo/animations/1%20enfant%20sur%207.mp4",
+    "type": "Animation vidéo (MP4)",
+    "summary": "Vidéo de sensibilisation à télécharger : 1 enfant sur 7.",
     "themes": [
       "Prévention",
       "Violences sexuelles",
@@ -1173,9 +1174,9 @@
     ],
     "documents": [
       {
-        "label": "1 enfant sur 7",
+        "label": "Télécharger — 1 enfant sur 7",
         "url": "../pagevideo/animations/1%20enfant%20sur%207.mp4",
-        "type": "Vidéo MP4",
+        "type": "MP4",
         "keywords": [
           "enfants",
           "statistiques",
@@ -1185,164 +1186,10 @@
           "sport",
           "1 enfant sur 7"
         ]
-      },
-      {
-        "label": "Exemple Franck Nicotra",
-        "url": "../pagevideo/animations/Exemple%20Franck%20Nicotra.mp4",
-        "type": "Vidéo MP4",
-        "keywords": [
-          "témoignage",
-          "Franck Nicotra",
-          "entretien",
-          "parole",
-          "violences sexuelles",
-          "prévention",
-          "Exemple Franck Nicotra"
-        ]
-      },
-      {
-        "label": "Exemple de question sans signes d'alerte",
-        "url": "../pagevideo/animations/Exemple%20de%20question%20sans%20signes%20d'alerte.mp4",
-        "type": "Vidéo MP4",
-        "keywords": [
-          "questionnement",
-          "entretien",
-          "repérage",
-          "sans signe d'alerte",
-          "prévention",
-          "Exemple de question sans signes d'alerte"
-        ]
-      },
-      {
-        "label": "Exemple de questions avec signes d'alerte",
-        "url": "../pagevideo/animations/Exemple%20de%20questions%20avec%20signes%20d'alerte.mp4",
-        "type": "Vidéo MP4",
-        "keywords": [
-          "questionnement",
-          "entretien",
-          "repérage",
-          "signes d'alerte",
-          "prévention",
-          "Exemple de questions avec signes d'alerte"
-        ]
-      },
-      {
-        "label": "La France en 2023…",
-        "url": "../pagevideo/animations/La%20France%20en%202023%E2%80%A6.mp4",
-        "type": "Vidéo MP4",
-        "keywords": [
-          "France",
-          "2023",
-          "statistiques",
-          "enquête",
-          "violences sexuelles",
-          "La France en 2023…"
-        ]
-      },
-      {
-        "label": "Le consentement",
-        "url": "../pagevideo/animations/Le%20consentement.mp4",
-        "type": "Vidéo MP4",
-        "keywords": [
-          "consentement",
-          "accord",
-          "limites",
-          "respect",
-          "prévention",
-          "Le consentement"
-        ]
-      },
-      {
-        "label": "Le secret",
-        "url": "../pagevideo/animations/Le%20secret.mp4",
-        "type": "Vidéo MP4",
-        "keywords": [
-          "secret",
-          "parole",
-          "révélation",
-          "confidence",
-          "protection de l'enfance",
-          "Le secret"
-        ]
-      },
-      {
-        "label": "Les auteurs",
-        "url": "../pagevideo/animations/Les%20auteurs.mp4",
-        "type": "Vidéo MP4",
-        "keywords": [
-          "auteurs de violences",
-          "agresseur",
-          "responsabilité",
-          "violences sexuelles",
-          "Les auteurs"
-        ]
-      },
-      {
-        "label": "Les facteurs aggravants",
-        "url": "../pagevideo/animations/Les%20facteurs%20aggravants.mp4",
-        "type": "Vidéo MP4",
-        "keywords": [
-          "facteurs aggravants",
-          "circonstances aggravantes",
-          "violences sexuelles",
-          "droit",
-          "Les facteurs aggravants"
-        ]
-      },
-      {
-        "label": "Profil de l'agresseur",
-        "url": "../pagevideo/animations/Profil%20de%20l'agresseur.mp4",
-        "type": "Vidéo MP4",
-        "keywords": [
-          "profil de l'agresseur",
-          "auteur",
-          "agresseur",
-          "comportement",
-          "Profil de l'agresseur"
-        ]
-      },
-      {
-        "label": "Résultat enquête",
-        "url": "../pagevideo/animations/Re%CC%81sultat%20enque%CC%82te.mp4",
-        "type": "Vidéo MP4",
-        "keywords": [
-          "résultats d'enquête",
-          "statistiques",
-          "violences sexuelles",
-          "sport",
-          "prévention",
-          "Résultat enquête"
-        ]
-      },
-      {
-        "label": "Signaler n'est pas dénoncer",
-        "url": "../pagevideo/animations/Signaler%20n'est%20pas%20de%CC%81noncer.mp4",
-        "type": "Vidéo MP4",
-        "keywords": [
-          "signalement",
-          "signaler",
-          "dénonciation",
-          "protection",
-          "obligation de signalement",
-          "enfant en danger",
-          "Signaler n'est pas dénoncer"
-        ]
-      },
-      {
-        "label": "Stratégie de l'agresseur",
-        "url": "../pagevideo/animations/Strate%CC%81gie%20de%20l'agresseur.mp4",
-        "type": "Vidéo MP4",
-        "keywords": [
-          "stratégie de l'agresseur",
-          "emprise",
-          "manipulation",
-          "isolement",
-          "violences sexuelles",
-          "Stratégie de l'agresseur"
-        ]
       }
     ],
     "keywords": [
+      "1 enfant sur 7",
       "animation",
       "animations",
       "vidéo",
@@ -1357,7 +1204,590 @@
       "signes d’alerte",
       "signalement",
       "violences sexuelles",
-      "protection de l’enfance"
+      "protection de l’enfance",
+      "enfants",
+      "sport"
+    ]
+  },
+  {
+    "title": "A — Animations sensibilisation — Exemple Franck Nicotra",
+    "url": "../pagevideo/animations/Exemple%20Franck%20Nicotra.mp4",
+    "type": "Animation vidéo (MP4)",
+    "summary": "Vidéo de sensibilisation à télécharger : Exemple Franck Nicotra.",
+    "themes": [
+      "Prévention",
+      "Violences sexuelles",
+      "Protection de l’enfance",
+      "Ressources vidéo"
+    ],
+    "documents": [
+      {
+        "label": "Télécharger — Exemple Franck Nicotra",
+        "url": "../pagevideo/animations/Exemple%20Franck%20Nicotra.mp4",
+        "type": "MP4",
+        "keywords": [
+          "témoignage",
+          "Franck Nicotra",
+          "entretien",
+          "parole",
+          "violences sexuelles",
+          "prévention",
+          "Exemple Franck Nicotra"
+        ]
+      }
+    ],
+    "keywords": [
+      "Exemple Franck Nicotra",
+      "animation",
+      "animations",
+      "vidéo",
+      "vidéos",
+      "MP4",
+      "sensibilisation",
+      "prévention",
+      "consentement",
+      "emprise",
+      "témoignage",
+      "statistiques",
+      "signes d’alerte",
+      "signalement",
+      "violences sexuelles",
+      "protection de l’enfance",
+      "Franck Nicotra",
+      "entretien",
+      "parole"
+    ]
+  },
+  {
+    "title": "A — Animations sensibilisation — Exemple de question sans signes d'alerte",
+    "url": "../pagevideo/animations/Exemple%20de%20question%20sans%20signes%20d'alerte.mp4",
+    "type": "Animation vidéo (MP4)",
+    "summary": "Vidéo de sensibilisation à télécharger : Exemple de question sans signes d'alerte.",
+    "themes": [
+      "Prévention",
+      "Violences sexuelles",
+      "Protection de l’enfance",
+      "Ressources vidéo"
+    ],
+    "documents": [
+      {
+        "label": "Télécharger — Exemple de question sans signes d'alerte",
+        "url": "../pagevideo/animations/Exemple%20de%20question%20sans%20signes%20d'alerte.mp4",
+        "type": "MP4",
+        "keywords": [
+          "questionnement",
+          "entretien",
+          "repérage",
+          "sans signe d'alerte",
+          "prévention",
+          "Exemple de question sans signes d'alerte"
+        ]
+      }
+    ],
+    "keywords": [
+      "Exemple de question sans signes d'alerte",
+      "animation",
+      "animations",
+      "vidéo",
+      "vidéos",
+      "MP4",
+      "sensibilisation",
+      "prévention",
+      "consentement",
+      "emprise",
+      "témoignage",
+      "statistiques",
+      "signes d’alerte",
+      "signalement",
+      "violences sexuelles",
+      "protection de l’enfance",
+      "questionnement",
+      "entretien",
+      "repérage",
+      "sans signe d'alerte"
+    ]
+  },
+  {
+    "title": "A — Animations sensibilisation — Exemple de questions avec signes d'alerte",
+    "url": "../pagevideo/animations/Exemple%20de%20questions%20avec%20signes%20d'alerte.mp4",
+    "type": "Animation vidéo (MP4)",
+    "summary": "Vidéo de sensibilisation à télécharger : Exemple de questions avec signes d'alerte.",
+    "themes": [
+      "Prévention",
+      "Violences sexuelles",
+      "Protection de l’enfance",
+      "Ressources vidéo"
+    ],
+    "documents": [
+      {
+        "label": "Télécharger — Exemple de questions avec signes d'alerte",
+        "url": "../pagevideo/animations/Exemple%20de%20questions%20avec%20signes%20d'alerte.mp4",
+        "type": "MP4",
+        "keywords": [
+          "questionnement",
+          "entretien",
+          "repérage",
+          "signes d'alerte",
+          "prévention",
+          "Exemple de questions avec signes d'alerte"
+        ]
+      }
+    ],
+    "keywords": [
+      "Exemple de questions avec signes d'alerte",
+      "animation",
+      "animations",
+      "vidéo",
+      "vidéos",
+      "MP4",
+      "sensibilisation",
+      "prévention",
+      "consentement",
+      "emprise",
+      "témoignage",
+      "statistiques",
+      "signes d’alerte",
+      "signalement",
+      "violences sexuelles",
+      "protection de l’enfance",
+      "questionnement",
+      "entretien",
+      "repérage",
+      "signes d'alerte"
+    ]
+  },
+  {
+    "title": "A — Animations sensibilisation — La France en 2023…",
+    "url": "../pagevideo/animations/La%20France%20en%202023%E2%80%A6.mp4",
+    "type": "Animation vidéo (MP4)",
+    "summary": "Vidéo de sensibilisation à télécharger : La France en 2023….",
+    "themes": [
+      "Prévention",
+      "Violences sexuelles",
+      "Protection de l’enfance",
+      "Ressources vidéo"
+    ],
+    "documents": [
+      {
+        "label": "Télécharger — La France en 2023…",
+        "url": "../pagevideo/animations/La%20France%20en%202023%E2%80%A6.mp4",
+        "type": "MP4",
+        "keywords": [
+          "France",
+          "2023",
+          "statistiques",
+          "enquête",
+          "violences sexuelles",
+          "La France en 2023…"
+        ]
+      }
+    ],
+    "keywords": [
+      "La France en 2023…",
+      "animation",
+      "animations",
+      "vidéo",
+      "vidéos",
+      "MP4",
+      "sensibilisation",
+      "prévention",
+      "consentement",
+      "emprise",
+      "témoignage",
+      "statistiques",
+      "signes d’alerte",
+      "signalement",
+      "violences sexuelles",
+      "protection de l’enfance",
+      "France",
+      "2023",
+      "enquête"
+    ]
+  },
+  {
+    "title": "A — Animations sensibilisation — Le consentement",
+    "url": "../pagevideo/animations/Le%20consentement.mp4",
+    "type": "Animation vidéo (MP4)",
+    "summary": "Vidéo de sensibilisation à télécharger : Le consentement.",
+    "themes": [
+      "Prévention",
+      "Violences sexuelles",
+      "Protection de l’enfance",
+      "Ressources vidéo"
+    ],
+    "documents": [
+      {
+        "label": "Télécharger — Le consentement",
+        "url": "../pagevideo/animations/Le%20consentement.mp4",
+        "type": "MP4",
+        "keywords": [
+          "consentement",
+          "accord",
+          "limites",
+          "respect",
+          "prévention",
+          "Le consentement"
+        ]
+      }
+    ],
+    "keywords": [
+      "Le consentement",
+      "animation",
+      "animations",
+      "vidéo",
+      "vidéos",
+      "MP4",
+      "sensibilisation",
+      "prévention",
+      "consentement",
+      "emprise",
+      "témoignage",
+      "statistiques",
+      "signes d’alerte",
+      "signalement",
+      "violences sexuelles",
+      "protection de l’enfance",
+      "accord",
+      "limites",
+      "respect"
+    ]
+  },
+  {
+    "title": "A — Animations sensibilisation — Le secret",
+    "url": "../pagevideo/animations/Le%20secret.mp4",
+    "type": "Animation vidéo (MP4)",
+    "summary": "Vidéo de sensibilisation à télécharger : Le secret.",
+    "themes": [
+      "Prévention",
+      "Violences sexuelles",
+      "Protection de l’enfance",
+      "Ressources vidéo"
+    ],
+    "documents": [
+      {
+        "label": "Télécharger — Le secret",
+        "url": "../pagevideo/animations/Le%20secret.mp4",
+        "type": "MP4",
+        "keywords": [
+          "secret",
+          "parole",
+          "révélation",
+          "confidence",
+          "protection de l'enfance",
+          "Le secret"
+        ]
+      }
+    ],
+    "keywords": [
+      "Le secret",
+      "animation",
+      "animations",
+      "vidéo",
+      "vidéos",
+      "MP4",
+      "sensibilisation",
+      "prévention",
+      "consentement",
+      "emprise",
+      "témoignage",
+      "statistiques",
+      "signes d’alerte",
+      "signalement",
+      "violences sexuelles",
+      "protection de l’enfance",
+      "secret",
+      "parole",
+      "révélation",
+      "confidence",
+      "protection de l'enfance"
+    ]
+  },
+  {
+    "title": "A — Animations sensibilisation — Les auteurs",
+    "url": "../pagevideo/animations/Les%20auteurs.mp4",
+    "type": "Animation vidéo (MP4)",
+    "summary": "Vidéo de sensibilisation à télécharger : Les auteurs.",
+    "themes": [
+      "Prévention",
+      "Violences sexuelles",
+      "Protection de l’enfance",
+      "Ressources vidéo"
+    ],
+    "documents": [
+      {
+        "label": "Télécharger — Les auteurs",
+        "url": "../pagevideo/animations/Les%20auteurs.mp4",
+        "type": "MP4",
+        "keywords": [
+          "auteurs de violences",
+          "agresseur",
+          "responsabilité",
+          "violences sexuelles",
+          "Les auteurs"
+        ]
+      }
+    ],
+    "keywords": [
+      "Les auteurs",
+      "animation",
+      "animations",
+      "vidéo",
+      "vidéos",
+      "MP4",
+      "sensibilisation",
+      "prévention",
+      "consentement",
+      "emprise",
+      "témoignage",
+      "statistiques",
+      "signes d’alerte",
+      "signalement",
+      "violences sexuelles",
+      "protection de l’enfance",
+      "auteurs de violences",
+      "agresseur",
+      "responsabilité"
+    ]
+  },
+  {
+    "title": "A — Animations sensibilisation — Les facteurs aggravants",
+    "url": "../pagevideo/animations/Les%20facteurs%20aggravants.mp4",
+    "type": "Animation vidéo (MP4)",
+    "summary": "Vidéo de sensibilisation à télécharger : Les facteurs aggravants.",
+    "themes": [
+      "Prévention",
+      "Violences sexuelles",
+      "Protection de l’enfance",
+      "Ressources vidéo"
+    ],
+    "documents": [
+      {
+        "label": "Télécharger — Les facteurs aggravants",
+        "url": "../pagevideo/animations/Les%20facteurs%20aggravants.mp4",
+        "type": "MP4",
+        "keywords": [
+          "facteurs aggravants",
+          "circonstances aggravantes",
+          "violences sexuelles",
+          "droit",
+          "Les facteurs aggravants"
+        ]
+      }
+    ],
+    "keywords": [
+      "Les facteurs aggravants",
+      "animation",
+      "animations",
+      "vidéo",
+      "vidéos",
+      "MP4",
+      "sensibilisation",
+      "prévention",
+      "consentement",
+      "emprise",
+      "témoignage",
+      "statistiques",
+      "signes d’alerte",
+      "signalement",
+      "violences sexuelles",
+      "protection de l’enfance",
+      "facteurs aggravants",
+      "circonstances aggravantes",
+      "droit"
+    ]
+  },
+  {
+    "title": "A — Animations sensibilisation — Profil de l'agresseur",
+    "url": "../pagevideo/animations/Profil%20de%20l'agresseur.mp4",
+    "type": "Animation vidéo (MP4)",
+    "summary": "Vidéo de sensibilisation à télécharger : Profil de l'agresseur.",
+    "themes": [
+      "Prévention",
+      "Violences sexuelles",
+      "Protection de l’enfance",
+      "Ressources vidéo"
+    ],
+    "documents": [
+      {
+        "label": "Télécharger — Profil de l'agresseur",
+        "url": "../pagevideo/animations/Profil%20de%20l'agresseur.mp4",
+        "type": "MP4",
+        "keywords": [
+          "profil de l'agresseur",
+          "auteur",
+          "agresseur",
+          "comportement",
+          "Profil de l'agresseur"
+        ]
+      }
+    ],
+    "keywords": [
+      "Profil de l'agresseur",
+      "animation",
+      "animations",
+      "vidéo",
+      "vidéos",
+      "MP4",
+      "sensibilisation",
+      "prévention",
+      "consentement",
+      "emprise",
+      "témoignage",
+      "statistiques",
+      "signes d’alerte",
+      "signalement",
+      "violences sexuelles",
+      "protection de l’enfance",
+      "profil de l'agresseur",
+      "auteur",
+      "agresseur",
+      "comportement"
+    ]
+  },
+  {
+    "title": "A — Animations sensibilisation — Résultat enquête",
+    "url": "../pagevideo/animations/Re%CC%81sultat%20enque%CC%82te.mp4",
+    "type": "Animation vidéo (MP4)",
+    "summary": "Vidéo de sensibilisation à télécharger : Résultat enquête.",
+    "themes": [
+      "Prévention",
+      "Violences sexuelles",
+      "Protection de l’enfance",
+      "Ressources vidéo"
+    ],
+    "documents": [
+      {
+        "label": "Télécharger — Résultat enquête",
+        "url": "../pagevideo/animations/Re%CC%81sultat%20enque%CC%82te.mp4",
+        "type": "MP4",
+        "keywords": [
+          "résultats d'enquête",
+          "statistiques",
+          "violences sexuelles",
+          "sport",
+          "prévention",
+          "Résultat enquête"
+        ]
+      }
+    ],
+    "keywords": [
+      "Résultat enquête",
+      "animation",
+      "animations",
+      "vidéo",
+      "vidéos",
+      "MP4",
+      "sensibilisation",
+      "prévention",
+      "consentement",
+      "emprise",
+      "témoignage",
+      "statistiques",
+      "signes d’alerte",
+      "signalement",
+      "violences sexuelles",
+      "protection de l’enfance",
+      "résultats d'enquête",
+      "sport"
+    ]
+  },
+  {
+    "title": "A — Animations sensibilisation — Signaler n'est pas dénoncer",
+    "url": "../pagevideo/animations/Signaler%20n'est%20pas%20de%CC%81noncer.mp4",
+    "type": "Animation vidéo (MP4)",
+    "summary": "Vidéo de sensibilisation à télécharger : Signaler n'est pas dénoncer.",
+    "themes": [
+      "Prévention",
+      "Violences sexuelles",
+      "Protection de l’enfance",
+      "Ressources vidéo"
+    ],
+    "documents": [
+      {
+        "label": "Télécharger — Signaler n'est pas dénoncer",
+        "url": "../pagevideo/animations/Signaler%20n'est%20pas%20de%CC%81noncer.mp4",
+        "type": "MP4",
+        "keywords": [
+          "signalement",
+          "signaler",
+          "dénonciation",
+          "protection",
+          "obligation de signalement",
+          "enfant en danger",
+          "Signaler n'est pas dénoncer"
+        ]
+      }
+    ],
+    "keywords": [
+      "Signaler n'est pas dénoncer",
+      "animation",
+      "animations",
+      "vidéo",
+      "vidéos",
+      "MP4",
+      "sensibilisation",
+      "prévention",
+      "consentement",
+      "emprise",
+      "témoignage",
+      "statistiques",
+      "signes d’alerte",
+      "signalement",
+      "violences sexuelles",
+      "protection de l’enfance",
+      "signaler",
+      "dénonciation",
+      "protection",
+      "obligation de signalement",
+      "enfant en danger"
+    ]
+  },
+  {
+    "title": "A — Animations sensibilisation — Stratégie de l'agresseur",
+    "url": "../pagevideo/animations/Strate%CC%81gie%20de%20l'agresseur.mp4",
+    "type": "Animation vidéo (MP4)",
+    "summary": "Vidéo de sensibilisation à télécharger : Stratégie de l'agresseur.",
+    "themes": [
+      "Prévention",
+      "Violences sexuelles",
+      "Protection de l’enfance",
+      "Ressources vidéo"
+    ],
+    "documents": [
+      {
+        "label": "Télécharger — Stratégie de l'agresseur",
+        "url": "../pagevideo/animations/Strate%CC%81gie%20de%20l'agresseur.mp4",
+        "type": "MP4",
+        "keywords": [
+          "stratégie de l'agresseur",
+          "emprise",
+          "manipulation",
+          "isolement",
+          "violences sexuelles",
+          "Stratégie de l'agresseur"
+        ]
+      }
+    ],
+    "keywords": [
+      "Stratégie de l'agresseur",
+      "animation",
+      "animations",
+      "vidéo",
+      "vidéos",
+      "MP4",
+      "sensibilisation",
+      "prévention",
+      "consentement",
+      "emprise",
+      "témoignage",
+      "statistiques",
+      "signes d’alerte",
+      "signalement",
+      "violences sexuelles",
+      "protection de l’enfance",
+      "stratégie de l'agresseur",
+      "manipulation",
+      "isolement"
     ]
   }
 ]
