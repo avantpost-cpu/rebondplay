@@ -1167,10 +1167,8 @@
     "type": "Animation vidéo (MP4)",
     "summary": "Vidéo de sensibilisation à télécharger : 1 enfant sur 7.",
     "themes": [
-      "Prévention",
-      "Violences sexuelles",
-      "Protection de l’enfance",
-      "Ressources vidéo"
+      "Statistiques",
+      "Protection de l’enfance"
     ],
     "documents": [
       {
@@ -1191,22 +1189,23 @@
     "keywords": [
       "1 enfant sur 7",
       "animation",
-      "animations",
       "vidéo",
-      "vidéos",
-      "MP4",
       "sensibilisation",
-      "prévention",
-      "consentement",
-      "emprise",
-      "témoignage",
-      "statistiques",
-      "signes d’alerte",
-      "signalement",
-      "violences sexuelles",
-      "protection de l’enfance",
       "enfants",
-      "sport"
+      "statistiques",
+      "violences sexuelles",
+      "prévention",
+      "sport",
+      "un enfant sur sept",
+      "prévalence",
+      "fréquence",
+      "chiffres clés"
+    ],
+    "aliases": [
+      "un enfant sur sept",
+      "prévalence",
+      "fréquence",
+      "chiffres clés"
     ]
   },
   {
@@ -1215,10 +1214,8 @@
     "type": "Animation vidéo (MP4)",
     "summary": "Vidéo de sensibilisation à télécharger : Exemple Franck Nicotra.",
     "themes": [
-      "Prévention",
-      "Violences sexuelles",
-      "Protection de l’enfance",
-      "Ressources vidéo"
+      "Témoignage",
+      "Accueil de la parole"
     ],
     "documents": [
       {
@@ -1239,20 +1236,16 @@
     "keywords": [
       "Exemple Franck Nicotra",
       "animation",
-      "animations",
       "vidéo",
-      "vidéos",
-      "MP4",
       "sensibilisation",
-      "prévention",
-      "consentement",
-      "emprise",
       "témoignage",
-      "statistiques",
-      "signes d’alerte",
-      "signalement",
+      "Franck Nicotra",
+      "entretien",
+      "parole",
       "violences sexuelles",
-      "protection de l’enfance",
+      "prévention"
+    ],
+    "aliases": [
       "Franck Nicotra",
       "entretien",
       "parole"
@@ -1264,10 +1257,9 @@
     "type": "Animation vidéo (MP4)",
     "summary": "Vidéo de sensibilisation à télécharger : Exemple de question sans signes d'alerte.",
     "themes": [
-      "Prévention",
-      "Violences sexuelles",
-      "Protection de l’enfance",
-      "Ressources vidéo"
+      "Questionnement",
+      "Écoute",
+      "Repérage"
     ],
     "documents": [
       {
@@ -1287,24 +1279,21 @@
     "keywords": [
       "Exemple de question sans signes d'alerte",
       "animation",
-      "animations",
       "vidéo",
-      "vidéos",
-      "MP4",
       "sensibilisation",
-      "prévention",
-      "consentement",
-      "emprise",
-      "témoignage",
-      "statistiques",
-      "signes d’alerte",
-      "signalement",
-      "violences sexuelles",
-      "protection de l’enfance",
       "questionnement",
       "entretien",
       "repérage",
-      "sans signe d'alerte"
+      "sans signe d'alerte",
+      "prévention",
+      "question ouverte",
+      "absence de signe visible",
+      "comment poser une question"
+    ],
+    "aliases": [
+      "question ouverte",
+      "absence de signe visible",
+      "comment poser une question"
     ]
   },
   {
@@ -1313,10 +1302,9 @@
     "type": "Animation vidéo (MP4)",
     "summary": "Vidéo de sensibilisation à télécharger : Exemple de questions avec signes d'alerte.",
     "themes": [
-      "Prévention",
-      "Violences sexuelles",
-      "Protection de l’enfance",
-      "Ressources vidéo"
+      "Questionnement",
+      "Écoute",
+      "Repérage"
     ],
     "documents": [
       {
@@ -1336,24 +1324,21 @@
     "keywords": [
       "Exemple de questions avec signes d'alerte",
       "animation",
-      "animations",
       "vidéo",
-      "vidéos",
-      "MP4",
       "sensibilisation",
-      "prévention",
-      "consentement",
-      "emprise",
-      "témoignage",
-      "statistiques",
-      "signes d’alerte",
-      "signalement",
-      "violences sexuelles",
-      "protection de l’enfance",
       "questionnement",
       "entretien",
       "repérage",
-      "signes d'alerte"
+      "signes d'alerte",
+      "prévention",
+      "question ouverte",
+      "signes préoccupants",
+      "comment poser une question"
+    ],
+    "aliases": [
+      "question ouverte",
+      "signes préoccupants",
+      "comment poser une question"
     ]
   },
   {
@@ -1362,10 +1347,8 @@
     "type": "Animation vidéo (MP4)",
     "summary": "Vidéo de sensibilisation à télécharger : La France en 2023….",
     "themes": [
-      "Prévention",
-      "Violences sexuelles",
-      "Protection de l’enfance",
-      "Ressources vidéo"
+      "Statistiques",
+      "Enquête"
     ],
     "documents": [
       {
@@ -1385,23 +1368,21 @@
     "keywords": [
       "La France en 2023…",
       "animation",
-      "animations",
       "vidéo",
-      "vidéos",
-      "MP4",
       "sensibilisation",
-      "prévention",
-      "consentement",
-      "emprise",
-      "témoignage",
-      "statistiques",
-      "signes d’alerte",
-      "signalement",
-      "violences sexuelles",
-      "protection de l’enfance",
       "France",
       "2023",
-      "enquête"
+      "statistiques",
+      "enquête",
+      "violences sexuelles",
+      "chiffres France",
+      "résultats d'enquête",
+      "prévalence"
+    ],
+    "aliases": [
+      "chiffres France",
+      "résultats d'enquête",
+      "prévalence"
     ]
   },
   {
@@ -1410,10 +1391,8 @@
     "type": "Animation vidéo (MP4)",
     "summary": "Vidéo de sensibilisation à télécharger : Le consentement.",
     "themes": [
-      "Prévention",
-      "Violences sexuelles",
-      "Protection de l’enfance",
-      "Ressources vidéo"
+      "Consentement",
+      "Respect"
     ],
     "documents": [
       {
@@ -1433,23 +1412,21 @@
     "keywords": [
       "Le consentement",
       "animation",
-      "animations",
       "vidéo",
-      "vidéos",
-      "MP4",
       "sensibilisation",
-      "prévention",
       "consentement",
-      "emprise",
-      "témoignage",
-      "statistiques",
-      "signes d’alerte",
-      "signalement",
-      "violences sexuelles",
-      "protection de l’enfance",
       "accord",
       "limites",
-      "respect"
+      "respect",
+      "prévention",
+      "refus",
+      "respect du corps"
+    ],
+    "aliases": [
+      "accord",
+      "refus",
+      "limites",
+      "respect du corps"
     ]
   },
   {
@@ -1458,10 +1435,9 @@
     "type": "Animation vidéo (MP4)",
     "summary": "Vidéo de sensibilisation à télécharger : Le secret.",
     "themes": [
-      "Prévention",
-      "Violences sexuelles",
+      "Secret",
       "Protection de l’enfance",
-      "Ressources vidéo"
+      "Parole"
     ],
     "documents": [
       {
@@ -1481,25 +1457,21 @@
     "keywords": [
       "Le secret",
       "animation",
-      "animations",
       "vidéo",
-      "vidéos",
-      "MP4",
       "sensibilisation",
-      "prévention",
-      "consentement",
-      "emprise",
-      "témoignage",
-      "statistiques",
-      "signes d’alerte",
-      "signalement",
-      "violences sexuelles",
-      "protection de l’enfance",
       "secret",
       "parole",
       "révélation",
       "confidence",
-      "protection de l'enfance"
+      "protection de l'enfance",
+      "parler",
+      "garder le silence"
+    ],
+    "aliases": [
+      "confidence",
+      "révélation",
+      "parler",
+      "garder le silence"
     ]
   },
   {
@@ -1508,10 +1480,8 @@
     "type": "Animation vidéo (MP4)",
     "summary": "Vidéo de sensibilisation à télécharger : Les auteurs.",
     "themes": [
-      "Prévention",
-      "Violences sexuelles",
-      "Protection de l’enfance",
-      "Ressources vidéo"
+      "Auteurs de violences",
+      "Responsabilité"
     ],
     "documents": [
       {
@@ -1530,23 +1500,19 @@
     "keywords": [
       "Les auteurs",
       "animation",
-      "animations",
       "vidéo",
-      "vidéos",
-      "MP4",
       "sensibilisation",
-      "prévention",
-      "consentement",
-      "emprise",
-      "témoignage",
-      "statistiques",
-      "signes d’alerte",
-      "signalement",
-      "violences sexuelles",
-      "protection de l’enfance",
       "auteurs de violences",
       "agresseur",
-      "responsabilité"
+      "responsabilité",
+      "violences sexuelles",
+      "auteur de violences",
+      "responsabilité de l'auteur"
+    ],
+    "aliases": [
+      "auteur de violences",
+      "agresseur",
+      "responsabilité de l'auteur"
     ]
   },
   {
@@ -1555,10 +1521,8 @@
     "type": "Animation vidéo (MP4)",
     "summary": "Vidéo de sensibilisation à télécharger : Les facteurs aggravants.",
     "themes": [
-      "Prévention",
-      "Violences sexuelles",
-      "Protection de l’enfance",
-      "Ressources vidéo"
+      "Droit",
+      "Violences sexuelles"
     ],
     "documents": [
       {
@@ -1577,23 +1541,19 @@
     "keywords": [
       "Les facteurs aggravants",
       "animation",
-      "animations",
       "vidéo",
-      "vidéos",
-      "MP4",
       "sensibilisation",
-      "prévention",
-      "consentement",
-      "emprise",
-      "témoignage",
-      "statistiques",
-      "signes d’alerte",
-      "signalement",
-      "violences sexuelles",
-      "protection de l’enfance",
       "facteurs aggravants",
       "circonstances aggravantes",
-      "droit"
+      "violences sexuelles",
+      "droit",
+      "facteurs de gravité",
+      "droit pénal"
+    ],
+    "aliases": [
+      "circonstances aggravantes",
+      "facteurs de gravité",
+      "droit pénal"
     ]
   },
   {
@@ -1602,10 +1562,8 @@
     "type": "Animation vidéo (MP4)",
     "summary": "Vidéo de sensibilisation à télécharger : Profil de l'agresseur.",
     "themes": [
-      "Prévention",
-      "Violences sexuelles",
-      "Protection de l’enfance",
-      "Ressources vidéo"
+      "Auteurs de violences",
+      "Prévention"
     ],
     "documents": [
       {
@@ -1624,24 +1582,19 @@
     "keywords": [
       "Profil de l'agresseur",
       "animation",
-      "animations",
       "vidéo",
-      "vidéos",
-      "MP4",
       "sensibilisation",
-      "prévention",
-      "consentement",
-      "emprise",
-      "témoignage",
-      "statistiques",
-      "signes d’alerte",
-      "signalement",
-      "violences sexuelles",
-      "protection de l’enfance",
       "profil de l'agresseur",
       "auteur",
       "agresseur",
-      "comportement"
+      "comportement",
+      "profil de l'auteur",
+      "comportement de l'auteur"
+    ],
+    "aliases": [
+      "profil de l'auteur",
+      "agresseur",
+      "comportement de l'auteur"
     ]
   },
   {
@@ -1650,10 +1603,8 @@
     "type": "Animation vidéo (MP4)",
     "summary": "Vidéo de sensibilisation à télécharger : Résultat enquête.",
     "themes": [
-      "Prévention",
-      "Violences sexuelles",
-      "Protection de l’enfance",
-      "Ressources vidéo"
+      "Statistiques",
+      "Enquête"
     ],
     "documents": [
       {
@@ -1673,22 +1624,20 @@
     "keywords": [
       "Résultat enquête",
       "animation",
-      "animations",
       "vidéo",
-      "vidéos",
-      "MP4",
       "sensibilisation",
-      "prévention",
-      "consentement",
-      "emprise",
-      "témoignage",
-      "statistiques",
-      "signes d’alerte",
-      "signalement",
-      "violences sexuelles",
-      "protection de l’enfance",
       "résultats d'enquête",
-      "sport"
+      "statistiques",
+      "violences sexuelles",
+      "sport",
+      "prévention",
+      "chiffres clés",
+      "données"
+    ],
+    "aliases": [
+      "résultats d'enquête",
+      "chiffres clés",
+      "données"
     ]
   },
   {
@@ -1697,10 +1646,8 @@
     "type": "Animation vidéo (MP4)",
     "summary": "Vidéo de sensibilisation à télécharger : Signaler n'est pas dénoncer.",
     "themes": [
-      "Prévention",
-      "Violences sexuelles",
-      "Protection de l’enfance",
-      "Ressources vidéo"
+      "Signalement",
+      "Protection"
     ],
     "documents": [
       {
@@ -1721,25 +1668,22 @@
     "keywords": [
       "Signaler n'est pas dénoncer",
       "animation",
-      "animations",
       "vidéo",
-      "vidéos",
-      "MP4",
       "sensibilisation",
-      "prévention",
-      "consentement",
-      "emprise",
-      "témoignage",
-      "statistiques",
-      "signes d’alerte",
       "signalement",
-      "violences sexuelles",
-      "protection de l’enfance",
       "signaler",
       "dénonciation",
       "protection",
       "obligation de signalement",
-      "enfant en danger"
+      "enfant en danger",
+      "dénoncer",
+      "transmettre une information"
+    ],
+    "aliases": [
+      "signaler",
+      "dénoncer",
+      "transmettre une information",
+      "obligation de signalement"
     ]
   },
   {
@@ -1748,10 +1692,9 @@
     "type": "Animation vidéo (MP4)",
     "summary": "Vidéo de sensibilisation à télécharger : Stratégie de l'agresseur.",
     "themes": [
-      "Prévention",
-      "Violences sexuelles",
-      "Protection de l’enfance",
-      "Ressources vidéo"
+      "Emprise",
+      "Manipulation",
+      "Violences sexuelles"
     ],
     "documents": [
       {
@@ -1771,23 +1714,23 @@
     "keywords": [
       "Stratégie de l'agresseur",
       "animation",
-      "animations",
       "vidéo",
-      "vidéos",
-      "MP4",
       "sensibilisation",
-      "prévention",
-      "consentement",
-      "emprise",
-      "témoignage",
-      "statistiques",
-      "signes d’alerte",
-      "signalement",
-      "violences sexuelles",
-      "protection de l’enfance",
       "stratégie de l'agresseur",
+      "emprise",
       "manipulation",
-      "isolement"
+      "isolement",
+      "violences sexuelles",
+      "stratégie de l'auteur",
+      "contrôle",
+      "grooming"
+    ],
+    "aliases": [
+      "stratégie de l'auteur",
+      "manipulation",
+      "isolement",
+      "contrôle",
+      "grooming"
     ]
   }
 ]
