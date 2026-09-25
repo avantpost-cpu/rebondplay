@@ -123,6 +123,20 @@ html{background-color:#064e61}
 body{background-color:#064e61;background-image:url("./motifs.png");background-size:100% auto;background-position:center top;background-repeat:repeat-y}
 body::before{content:none}
 .interactive-embed{background:transparent;border:0;box-shadow:none}.interactive-embed iframe{background:transparent}
+/* Quiz de fin de chapitre, isolé dans un grand cartouche bleu RebondPlay. */
+.quiz-panel{max-width:1240px;margin:32px auto 70px;padding:clamp(25px,4vw,48px);background:#064e61 url("../pagefull/fondfull.png") center/cover;color:#fffefa}
+.quiz-panel[hidden]{display:none}
+.quiz-panel .lesson-kicker{color:#ffb29a;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.quiz-panel>h2{color:#fffefa;font-size:clamp(32px,4vw,46px);line-height:1.05;margin:8px 0 18px}
+.quiz-panel>p{max-width:850px;color:#e8f4f1;font-size:16px;line-height:1.6}
+.quiz-panel .divider{width:72px;height:4px;background:var(--coral);margin:24px 0}
+.quiz-panel .quiz{background:#fffefa;color:var(--ink);border:0;border-left:6px solid var(--coral);border-radius:0;padding:20px 24px;box-shadow:none;margin:16px 0}
+.quiz-panel .quiz h3{color:#064e61;font-size:20px;line-height:1.25;margin:0 0 14px}
+.quiz-panel .quiz label{line-height:1.7}
+.quiz-panel .quiz p{color:#294e5d;line-height:1.55}
+.quiz-panel .quiz input{accent-color:#08798e}
+.quiz-panel .actions{margin-top:24px}
+@media(max-width:760px){.quiz-panel{margin:24px 0 50px;padding:24px 18px}.quiz-panel .quiz{padding:17px 16px}.quiz-panel .quiz h3{font-size:18px}}
 </style>
 </head>
 <body>
@@ -132,6 +146,7 @@ body::before{content:none}
 <section class="hero"><div class="hero-main"><div class="eyebrow">Votre parcours de sensibilisation</div><h1>Comprendre et prévenir les violences dans le sport</h1><p>Un parcours pour repérer les situations à risque et contribuer à un environnement sportif plus sûr.</p><div class="dates">13 août 2026 <span style="color:#b8e5df">→</span> 30 septembre 2026</div></div><aside class="sequence-panel"><div class="sequence-stack" id="seqGrid"></div><div class="sequence-duration"><b>Durée totale</b><br>2 h 25 · 4 séquences</div></aside></section>
 <section class="overview-grid"><div class="chapter-progress" id="chapterProgress"><div class="progress-head"><h2>Progression dans le chapitre 1</h2><small id="progressText">0 % parcouru</small></div><div class="track"><div class="fill" id="progressFill"></div></div><div class="progress-caption"><span>Début du chapitre</span><span id="percent">0 %</span><span>Fin du chapitre</span></div></div></section>
 <section class="content"><article class="lesson" id="lesson"></article></section>
+<section class="quiz-panel" id="chapterQuiz" hidden></section>
 <p class="footer-note">Prototype de démonstration · RebondPlay</p>
 </main>
 <script>
@@ -146,13 +161,21 @@ const seqs=[['1. Comprendre les violences – Sensibilisation Rebond','25 min','
 function renderCards(){document.getElementById('seqGrid').innerHTML=seqs.map((s,i)=>`<div class="seq ${i===activeSeq?'selected':''}" onclick="selectSeq(${i})"><div class="seq-top"><span class="seq-num">Séquence ${i+1}</span><span class="seq-icon">${s[2]}</span></div><h3>${s[0]}</h3><div class="seq-foot"><span class="pill">${s[1]}</span><span class="${done.has(i)?'done':''}">${done.has(i)?'✓ Terminée':i===activeSeq?'En cours':'À découvrir'}</span></div></div>`).join('')}
 function renderLesson(){
  const isFirst=activeSeq===0;
- const arr=isFirst?sections:[{title:'Présentation de la séquence',icon:seqs[activeSeq][2],html:`<div class="lesson-kicker">Séquence ${activeSeq+1} · ${seqs[activeSeq][1]}</div><h2>${seqs[activeSeq][0]}</h2><p class="lead">Cette partie du parcours sera construite à partir de son contenu Digiforma.</p><div class="divider"></div><div class="callout"><b>Prototype de navigation</b><br>La séquence s’ouvre ici dans le même espace apprenant. Son contenu, ses activités et ses éventuels quiz seront intégrés à partir de vos supports.</div><button class="primary" onclick="completeSequence()">Marquer comme terminée ✓</button>`}];
+ const quizPanel=document.getElementById('chapterQuiz');
  if(isFirst){
-   document.getElementById('lesson').innerHTML=arr.map((a,i)=>`<section class="course-part" id="part-${i}">${a.html}</section>`).join('');
- } else { document.getElementById('lesson').innerHTML=arr[0].html; }
+   const lessonSections=sections.filter(a=>a.title!=='Quiz de fin de chapitre');
+   const quizSection=sections.find(a=>a.title==='Quiz de fin de chapitre');
+   document.getElementById('lesson').innerHTML=lessonSections.map((a,i)=>`<section class="course-part" id="part-${i}">${a.html}</section>`).join('');
+   quizPanel.innerHTML=quizSection.html;
+   quizPanel.hidden=false;
+ } else {
+   document.getElementById('lesson').innerHTML=`<div class="lesson-kicker">Séquence ${activeSeq+1} · ${seqs[activeSeq][1]}</div><h2>${seqs[activeSeq][0]}</h2><p class="lead">Cette partie du parcours sera construite à partir de son contenu Digiforma.</p><div class="divider"></div><div class="callout"><b>Prototype de navigation</b><br>La séquence s’ouvre ici dans le même espace apprenant. Son contenu, ses activités et ses éventuels quiz seront intégrés à partir de vos supports.</div><button class="primary" onclick="completeSequence()">Marquer comme terminée ✓</button>`;
+   quizPanel.innerHTML='';
+   quizPanel.hidden=true;
+ }
 }
 
-function updateChapterProgress(){const panel=document.getElementById('chapterProgress');panel.hidden=activeSeq!==0;if(activeSeq!==0)return;const article=document.getElementById('lesson');const rect=article.getBoundingClientRect();const articleTop=window.scrollY+rect.top;const articleHeight=article.scrollHeight;const readingLine=window.scrollY+window.innerHeight*.72;let pct=Math.round(Math.max(0,Math.min(1,(readingLine-articleTop)/articleHeight))*100);if(done.has(0))pct=100;document.getElementById('progressFill').style.width=pct+'%';document.getElementById('percent').textContent=pct+' %';document.getElementById('progressText').textContent=pct+' % parcouru'}
+function updateChapterProgress(){const panel=document.getElementById('chapterProgress');panel.hidden=activeSeq!==0;if(activeSeq!==0)return;const article=document.getElementById('lesson');const rect=article.getBoundingClientRect();const articleTop=window.scrollY+rect.top;const quiz=document.getElementById('chapterQuiz');const quizBottom=window.scrollY+quiz.getBoundingClientRect().bottom;const articleHeight=Math.max(article.scrollHeight,quizBottom-articleTop);const readingLine=window.scrollY+window.innerHeight*.72;let pct=Math.round(Math.max(0,Math.min(1,(readingLine-articleTop)/articleHeight))*100);if(done.has(0))pct=100;document.getElementById('progressFill').style.width=pct+'%';document.getElementById('percent').textContent=pct+' %';document.getElementById('progressText').textContent=pct+' % parcouru'}
 function selectSeq(i){activeSeq=i;renderCards();renderLesson();updateChapterProgress();document.querySelector('.content').scrollIntoView({behavior:'smooth',block:'start'})}function showSection(i){document.getElementById('part-'+i)?.scrollIntoView({behavior:'smooth',block:'start'})}function completeSequence(){done.add(activeSeq);renderCards();if(activeSeq===0)updateChapterProgress();alert('Séquence marquée comme terminée dans cette démonstration.')}
 renderCards();renderLesson();updateChapterProgress();window.addEventListener('scroll',updateChapterProgress,{passive:true});window.addEventListener('resize',updateChapterProgress);
 </script></body></html>
