@@ -348,6 +348,10 @@ body{line-height:1.5}
 .example-block,.legal-example{display:block;margin:14px 0 18px 1cm!important;padding:0!important;background:transparent!important;border:0!important;color:#4b9eaa!important;text-align:left!important;font-style:normal}
 .example-block p,.legal-example p{margin:0 0 6px!important;color:inherit!important;text-align:left!important;line-height:1.25}
 .example-block b,.legal-example b{color:inherit!important}
+
+/* Titre courant sous E, centré verticalement dans le repère gris. */
+.chapter-nav-current{display:block;max-width:34px;margin:9px auto 0;color:#ff764b;font:700 11px/1.25 Poppins,Arial,sans-serif;text-align:center;writing-mode:vertical-rl;transform:rotate(180deg);text-orientation:mixed}
+@media(max-width:760px){.chapter-nav-current{max-width:28px;margin-top:7px;font-size:10px}}
 </style>
 </head>
 <body>
@@ -356,7 +360,7 @@ body{line-height:1.5}
 <div class="breadcrumb">Accueil&nbsp; / &nbsp;Espace formation&nbsp; / &nbsp;Sensibilisation Rebond</div>
 <section class="hero"><div class="hero-main"><div class="eyebrow">Votre parcours de sensibilisation</div><h1>Comprendre et prévenir les violences dans le sport</h1><p>Un parcours pour repérer les situations à risque et contribuer à un environnement sportif plus sûr.</p><div class="dates">13 août 2026 <span style="color:#b8e5df">→</span> 30 septembre 2026</div></div><aside class="sequence-panel"><div class="sequence-stack" id="seqGrid"></div><div class="sequence-duration"><b>Durée totale</b><br>2 h 25 · 4 séquences</div></aside></section>
 <section class="overview-grid"><div class="chapter-progress" id="chapterProgress"><div class="progress-head"><h2>Progression dans le chapitre 1</h2><small id="progressText">0 % parcouru</small></div><div class="track"><div class="fill" id="progressFill"></div></div><div class="progress-caption"><span>Début du chapitre</span><span id="percent">0 %</span><span>Fin du chapitre</span></div></div></section>
-<section class="content"><nav class="chapter-nav" id="chapterNav" aria-label="Accès direct aux parties du chapitre"><span class="chapter-nav-label">PARTIES</span><button type="button" onclick="showSection(1)" aria-label="Aller à la partie A">A</button><button type="button" onclick="showSection(2)" aria-label="Aller à la partie B">B</button><button type="button" onclick="showSection(3)" aria-label="Aller à la partie C">C</button><button type="button" onclick="showSection(4)" aria-label="Aller à la partie D">D</button><button type="button" onclick="showSection(5)" aria-label="Aller à la partie E">E</button></nav><article class="lesson" id="lesson"></article></section>
+<section class="content"><nav class="chapter-nav" id="chapterNav" aria-label="Accès direct aux parties du chapitre"><span class="chapter-nav-label">PARTIES</span><button type="button" onclick="showSection(1)" aria-label="Aller à la partie A">A</button><button type="button" onclick="showSection(2)" aria-label="Aller à la partie B">B</button><button type="button" onclick="showSection(3)" aria-label="Aller à la partie C">C</button><button type="button" onclick="showSection(4)" aria-label="Aller à la partie D">D</button><button type="button" onclick="showSection(5)" aria-label="Aller à la partie E">E</button><span class="chapter-nav-current" id="chapterNavCurrent" aria-live="polite"></span></nav><article class="lesson" id="lesson"></article></section>
 <section class="quiz-panel" id="chapterQuiz" hidden></section>
 <p class="footer-note">Prototype de démonstration · RebondPlay</p>
 </main>
@@ -393,9 +397,11 @@ function renderLesson(){
    quizPanel.innerHTML='';
    quizPanel.hidden=true;
  }
+ updateChapterNavTitle();
 }
 
 function updateChapterProgress(){const panel=document.getElementById('chapterProgress');panel.hidden=activeSeq!==0;if(activeSeq!==0)return;const article=document.getElementById('lesson');const rect=article.getBoundingClientRect();const articleTop=window.scrollY+rect.top;const quiz=document.getElementById('chapterQuiz');const quizBottom=window.scrollY+quiz.getBoundingClientRect().bottom;const articleHeight=Math.max(article.scrollHeight,quizBottom-articleTop);const readingLine=window.scrollY+window.innerHeight*.72;let pct=Math.round(Math.max(0,Math.min(1,(readingLine-articleTop)/articleHeight))*100);if(done.has(0))pct=100;document.getElementById('progressFill').style.width=pct+'%';document.getElementById('percent').textContent=pct+' %';document.getElementById('progressText').textContent=pct+' % parcouru'}
-function selectSeq(i){activeSeq=i;renderCards();renderLesson();updateChapterProgress();document.querySelector('.content').scrollIntoView({behavior:'smooth',block:'start'})}function showSection(i){document.getElementById('part-'+i)?.scrollIntoView({behavior:'smooth',block:'start'})}function completeSequence(){done.add(activeSeq);renderCards();if(activeSeq===0)updateChapterProgress();alert('Séquence marquée comme terminée dans cette démonstration.')}
-renderCards();renderLesson();updateChapterProgress();window.addEventListener('scroll',updateChapterProgress,{passive:true});window.addEventListener('resize',updateChapterProgress);
+function selectSeq(i){activeSeq=i;renderCards();renderLesson();updateChapterProgress();document.querySelector('.content').scrollIntoView({behavior:'smooth',block:'start'})}function updateChapterNavTitle(){const label=document.getElementById('chapterNavCurrent');if(!label||activeSeq!==0){if(label)label.textContent='';return}const parts=[...document.querySelectorAll('#lesson .course-part')].slice(1);if(!parts.length)return;const marker=Math.min(220,window.innerHeight*.36);let current=parts[0];for(const part of parts){if(part.getBoundingClientRect().top<=marker)current=part;else break}const heading=current.querySelector('.part-title');label.textContent=heading?heading.textContent.trim().replace(/^[A-E]\\s*-\\s*/,''):''}
+function showSection(i){document.getElementById('part-'+i)?.scrollIntoView({behavior:'smooth',block:'start'})}function completeSequence(){done.add(activeSeq);renderCards();if(activeSeq===0)updateChapterProgress();alert('Séquence marquée comme terminée dans cette démonstration.')}
+renderCards();renderLesson();updateChapterProgress();window.addEventListener('scroll',()=>{updateChapterProgress();updateChapterNavTitle()},{passive:true});window.addEventListener('resize',()=>{updateChapterProgress();updateChapterNavTitle()});
 </script></body></html>
