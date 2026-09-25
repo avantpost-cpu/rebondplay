@@ -357,6 +357,10 @@ body{line-height:1.5}
 .quiz .quiz-feedback[hidden]{display:none!important}
 .quiz .quiz-feedback:not([hidden]){display:block;margin:14px 0 0;padding:12px 14px;background:#e5f3f4;border-left:4px solid #08798e;color:#064e61}
 .quiz .quiz-feedback b{color:#064e61}
+
+.quiz .quiz-result{display:block;margin-bottom:5px;font-weight:700}
+.quiz .quiz-result.is-correct{color:#24836e}
+.quiz .quiz-result.is-incorrect{color:#bd5135}
 </style>
 </head>
 <body>
@@ -389,12 +393,36 @@ const sections=[
 const seqs=[['1. Comprendre les violences – Sensibilisation Rebond','25 min','✦'],['2. Repérer les violences – Sensibilisation Rebond','40 min','◉'],['3. Signaler – Sensibilisation Rebond','40 min','⚑'],['4. Prévenir les violences – Sensibilisation Rebond','40 min','✚']];let activeSeq=0,done=new Set();
 function renderCards(){document.getElementById('seqGrid').innerHTML=seqs.map((s,i)=>`<div class="seq ${i===activeSeq?'selected':''}" onclick="selectSeq(${i})"><div class="seq-top"><span class="seq-num">Séquence ${i+1}</span><span class="seq-icon">${s[2]}</span></div><h3>${s[0]}</h3><div class="seq-foot"><span class="pill">${s[1]}</span><span class="${done.has(i)?'done':''}">${done.has(i)?'✓ Terminée':i===activeSeq?'En cours':'À découvrir'}</span></div></div>`).join('')}
 function bindQuizFeedback(container){
- container.querySelectorAll('.quiz').forEach(question=>{
+ const questions=[...container.querySelectorAll('.quiz')];
+ const answerKeys=[['B'],['A','B','C','D'],['A','C'],['C'],['C'],['B'],['C'],['A'],['D'],['B']];
+ questions.forEach((question,index)=>{
    const feedback=question.querySelector('.quiz-feedback');
+   const inputs=[...question.querySelectorAll('input')];
    if(!feedback)return;
-   question.querySelectorAll('input[type="checkbox"],input[type="radio"]').forEach(input=>{
+   const allowMultiple=index===1||index===2;
+   inputs.forEach(input=>{
+     input.type=allowMultiple?'checkbox':'radio';
+     if(!allowMultiple)input.name='quiz-question-'+(index+1);
+   });
+   let result=feedback.querySelector('.quiz-result');
+   if(!result){
+     result=document.createElement('strong');
+     result.className='quiz-result';
+     result.setAttribute('role','status');
+     feedback.prepend(result,document.createElement('br'));
+   }
+   inputs.forEach(input=>{
      input.addEventListener('change',()=>{
-       feedback.hidden=!question.querySelector('input[type="checkbox"]:checked,input[type="radio"]:checked');
+       const selected=inputs.filter(choice=>choice.checked)
+         .map(choice=>choice.closest('label')?.textContent.trim().match(/^([A-D])\\s*\\./)?.[1])
+         .filter(Boolean)
+         .sort();
+       const expected=[...(answerKeys[index]||[])].sort();
+       const correct=selected.length===expected.length&&selected.every((letter,i)=>letter===expected[i]);
+       result.textContent=correct?'Bonne réponse':'Mauvaise réponse';
+       result.classList.toggle('is-correct',correct);
+       result.classList.toggle('is-incorrect',!correct);
+       feedback.hidden=selected.length===0;
      });
    });
  });
