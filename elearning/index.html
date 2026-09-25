@@ -637,7 +637,7 @@ function bindVideoWatchProgress(){
    if(!status&&wrapper){
      status=document.createElement('div');
      status.className='video-watch-status';
-     status.innerHTML='<div class="video-watch-track" role="progressbar" aria-label="Pourcentage de la vidéo visionné" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="video-watch-fill"></div></div><span class="video-watch-percent">0 % vu</span><small>80 % requis</small>';
+     status.innerHTML='<div class="video-watch-track" role="progressbar" aria-label="Pourcentage de la vidéo visionnée" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="video-watch-fill"></div></div><span class="video-watch-percent">0 % vu</span><small>80 % requis</small>';
      video.insertAdjacentElement('afterend',status);
    }
    const watched=()=>video._watchRanges.reduce((sum,range)=>sum+Math.max(0,range[1]-range[0]),0);
@@ -663,6 +663,7 @@ function bindVideoWatchProgress(){
      if(key)setGatedContent(key,ratio>=VIDEO_WATCH_REQUIRED);
      updateChapterProgress();
    };
+   video._refreshWatchProgress=refresh;
    if(key)setGatedContent(key,false);
    video.addEventListener('playing',()=>{video._lastWatchTime=video.currentTime});
    video.addEventListener('timeupdate',()=>{
@@ -692,7 +693,6 @@ function bindVideoWatchProgress(){
      if(nextPart.querySelector('.inline-video[data-gate-key]'))break;
      nextPart=nextPart.nextElementSibling;
    }
-   setGatedContent('consentement',false);
  }
  const testimonialVideo=document.querySelector('#video-temoignage video');
  if(testimonialVideo){
@@ -704,9 +704,9 @@ function bindVideoWatchProgress(){
    }
    const quiz=document.getElementById('chapterQuiz');
    if(quiz)quiz.dataset.gatedContent='temoignage';
-   setGatedContent('facteurs',false);
-   setGatedContent('temoignage',false);
  }
+ document.querySelectorAll('#lesson .inline-video[data-gate-key]').forEach(wrapper=>setGatedContent(wrapper.dataset.gateKey,false));
+ videos.forEach(video=>video._refreshWatchProgress?.());
 }
 function updateChapterProgress(){
  const panel=document.getElementById('chapterProgress');
