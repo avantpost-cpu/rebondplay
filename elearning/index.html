@@ -409,6 +409,13 @@ body{line-height:1.5}
 .sequence-panel .seq:not(.selected) .seq-top{height:auto;min-height:48px;padding:9px 14px;display:flex;align-items:center;justify-content:flex-start;gap:12px}
 .sequence-panel .seq:not(.selected) .seq-name{display:block;visibility:visible;opacity:1;white-space:normal}
 .sequence-panel .seq:not(.selected) .seq-icon{margin-left:auto}
+
+/* Flèche bleue avant tous les exemples, comme sur le modèle fourni. */
+.example-block,.legal-example,.violence-example,.factor-example{position:relative}
+.example-block,.legal-example,.violence-example{padding-left:38px!important}
+.example-block::before,.legal-example::before,.violence-example::before,.factor-example::before{content:"";position:absolute;left:0;top:0;width:30px;height:30px;background:url("./flechebleue.png") center/contain no-repeat}
+.factor-example{margin-left:0!important;padding:0 0 0 38px!important;background:transparent!important;border:0!important;color:#4b9eaa!important}
+@media(max-width:600px){.example-block,.legal-example,.violence-example{padding-left:30px!important}.example-block::before,.legal-example::before,.violence-example::before,.factor-example::before{width:24px;height:24px}.factor-example{padding-left:30px!important}}
 </style>
 </head>
 <body>
