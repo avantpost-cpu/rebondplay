@@ -361,6 +361,9 @@ body{line-height:1.5}
 .quiz .quiz-result{display:block;margin-bottom:5px;font-weight:700}
 .quiz .quiz-result.is-correct{color:#24836e}
 .quiz .quiz-result.is-incorrect{color:#bd5135}
+
+.quiz .quiz-submit{display:inline-block;margin:10px 0 2px;padding:9px 14px;border:0;background:#ff764b;color:#fffefa;font:700 13px Poppins,Arial,sans-serif;cursor:pointer}
+.quiz .quiz-submit:hover,.quiz .quiz-submit:focus-visible{background:#df5e3b}
 </style>
 </head>
 <body>
@@ -411,20 +414,33 @@ function bindQuizFeedback(container){
      result.setAttribute('role','status');
      feedback.prepend(result,document.createElement('br'));
    }
-   inputs.forEach(input=>{
-     input.addEventListener('change',()=>{
-       const selected=inputs.filter(choice=>choice.checked)
-         .map(choice=>{const label=choice.closest('label')?.textContent.trim()||'';return 'ABCD'.includes(label[0])&&label[1]==='.'?label[0]:''})
-         .filter(Boolean)
-         .sort();
-       const expected=[...(answerKeys[index]||[])].sort();
-       const correct=selected.length===expected.length&&selected.every((letter,i)=>letter===expected[i]);
-       result.textContent=correct?'Bonne réponse':'Mauvaise réponse';
-       result.classList.toggle('is-correct',correct);
-       result.classList.toggle('is-incorrect',!correct);
-       feedback.hidden=selected.length===0;
-     });
-   });
+   const grade=()=>{
+     const selected=inputs.filter(choice=>choice.checked)
+       .map(choice=>{const label=choice.closest('label')?.textContent.trim()||'';return 'ABCD'.includes(label[0])&&label[1]==='.'?label[0]:''})
+       .filter(Boolean).sort();
+     if(!selected.length)return;
+     const expected=[...(answerKeys[index]||[])].sort();
+     const correct=selected.length===expected.length&&selected.every((letter,i)=>letter===expected[i]);
+     result.textContent=correct?'Bonne réponse':'Mauvaise réponse';
+     result.classList.toggle('is-correct',correct);
+     result.classList.toggle('is-incorrect',!correct);
+     feedback.hidden=false;
+   };
+   if(allowMultiple){
+     const submit=document.createElement('button');
+     submit.type='button';
+     submit.className='quiz-submit';
+     submit.textContent='Valider ma réponse';
+     submit.addEventListener('click',grade);
+     feedback.insertAdjacentElement('beforebegin',submit);
+     inputs.forEach(input=>input.addEventListener('change',()=>{
+       feedback.hidden=true;
+       result.textContent='';
+       result.classList.remove('is-correct','is-incorrect');
+     }));
+   }else{
+     inputs.forEach(input=>input.addEventListener('change',grade));
+   }
  });
 }
 function renderLesson(){
