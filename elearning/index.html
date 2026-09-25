@@ -202,7 +202,27 @@ body::before{content:none}
 .course-part .violence-card p{max-width:none;margin:8px 0 0;font-size:15px;line-height:1.6}
 .course-part .violence-card--neglect p:last-child{color:#bd5135;font-weight:700}
 @media(max-width:700px){.violence-card{padding:16px 18px}}
-/* Interlignage régulier pour une lecture plus naturelle. */\nbody{line-height:1.5}\n.hero h1{line-height:1.05}\n.hero-main p,.side-note p,.sequence-heading p{line-height:1.5}\n.course-part p,.course-part li{line-height:1.5}\n.course-part ul{line-height:1.5}\n.course-part ul li{line-height:1.5;padding-top:7px;padding-bottom:7px}\n.course-part .lead{line-height:1.5}\n.course-part>h2,.course-part>.part-title{line-height:1.08}\n.course-part h3{line-height:1.15}\n.course-part h4{line-height:1.18}\n.course-part h5{line-height:1.2}\n.course-part .callout{line-height:1.5}\n.quiz-panel>p,.quiz-panel .quiz p,.quiz-panel .quiz label{line-height:1.5}\n.quiz-panel .quiz h3,.quiz-panel .quiz h4{line-height:1.18}\n.stat-card p{line-height:1.5}\n.violence-card p{line-height:1.5}\n.consent-table{line-height:1.5}\n.testimonial-card>h4{line-height:1.15}\n@media(max-width:600px){.course-part p,.course-part li{line-height:1.5}}\n/* Interlignage compact de référence, appliqué à tous les contenus du chapitre. */
+/* Interlignage régulier pour une lecture plus naturelle. */
+body{line-height:1.5}
+.hero h1{line-height:1.05}
+.hero-main p,.side-note p,.sequence-heading p{line-height:1.5}
+.course-part p,.course-part li{line-height:1.5}
+.course-part ul{line-height:1.5}
+.course-part ul li{line-height:1.5;padding-top:7px;padding-bottom:7px}
+.course-part .lead{line-height:1.5}
+.course-part>h2,.course-part>.part-title{line-height:1.08}
+.course-part h3{line-height:1.15}
+.course-part h4{line-height:1.18}
+.course-part h5{line-height:1.2}
+.course-part .callout{line-height:1.5}
+.quiz-panel>p,.quiz-panel .quiz p,.quiz-panel .quiz label{line-height:1.5}
+.quiz-panel .quiz h3,.quiz-panel .quiz h4{line-height:1.18}
+.stat-card p{line-height:1.5}
+.violence-card p{line-height:1.5}
+.consent-table{line-height:1.5}
+.testimonial-card>h4{line-height:1.15}
+@media(max-width:600px){.course-part p,.course-part li{line-height:1.5}}
+/* Interlignage compact de référence, appliqué à tous les contenus du chapitre. */
 .lesson,.quiz-panel{line-height:1.25}
 .lesson p,.lesson li,.lesson label,.quiz-panel p,.quiz-panel li,.quiz-panel label{line-height:1.25}
 .lesson h1,.lesson h2,.lesson h3,.lesson h4,.lesson h5,
@@ -312,6 +332,17 @@ body::before{content:none}
 .course-part:not(:first-child){border-top:0!important}
 .course-part{border-bottom:0!important}
 .course-part hr{display:none!important}
+
+/* Suppression effective des séparateurs horizontaux bleu clair et violets. */
+#lesson .course-part:not(:first-child){border-top:0!important;padding-top:0!important}
+#lesson .course-part{border-bottom:0!important}
+#lesson .course-part>h3,
+#lesson .course-part>h4{border-top:0!important;border-left:0!important}
+#lesson .course-part hr,
+#lesson .course-part .divider{display:none!important}
+#lesson .legal-topic,
+#lesson .legal-topic--authority,
+#lesson .legal-topic--penalties{border-top:0!important}
 </style>
 </head>
 <body>
