@@ -584,10 +584,85 @@ function renderLesson(){
    quizPanel.innerHTML='';
    quizPanel.hidden=true;
  }
+ bindVideoWatchProgress();
  updateChapterNavTitle();
 }
 
-function updateChapterProgress(){const panel=document.getElementById('chapterProgress');panel.hidden=activeSeq!==0;if(activeSeq!==0)return;const article=document.getElementById('lesson');const rect=article.getBoundingClientRect();const articleTop=window.scrollY+rect.top;const quiz=document.getElementById('chapterQuiz');const quizBottom=window.scrollY+quiz.getBoundingClientRect().bottom;const articleHeight=Math.max(article.scrollHeight,quizBottom-articleTop);const readingLine=window.scrollY+window.innerHeight*.72;let pct=Math.round(Math.max(0,Math.min(1,(readingLine-articleTop)/articleHeight))*100);if(done.has(0))pct=100;document.getElementById('progressFill').style.width=pct+'%';document.getElementById('percent').textContent=pct+' %';document.getElementById('progressText').textContent=pct+' % parcouru'}
+const VIDEO_WATCH_REQUIRED=.8;
+function bindVideoWatchProgress(){
+ document.querySelectorAll('#lesson .inline-video video').forEach((video,index)=>{
+   const source=video.querySelector('source')?.getAttribute('src')||video.getAttribute('aria-label')||String(index);
+   const storageKey='rebond-video-watch:'+source;
+   let ranges=[];
+   try{ranges=JSON.parse(localStorage.getItem(storageKey)||'[]')}catch{}
+   if(!Array.isArray(ranges))ranges=[];
+   video._watchRanges=ranges.filter(range=>Array.isArray(range)&&range.length===2&&Number.isFinite(range[0])&&Number.isFinite(range[1]));
+   video._lastWatchTime=null;
+   const mergeRange=(start,end)=>{
+     if(!(end>start))return;
+     const all=[...video._watchRanges,[start,end]].sort((a,b)=>a[0]-b[0]);
+     video._watchRanges=[];
+     for(const range of all){
+       const last=video._watchRanges[video._watchRanges.length-1];
+       if(last&&range[0]<=last[1]+.15)last[1]=Math.max(last[1],range[1]);
+       else video._watchRanges.push([...range]);
+     }
+     try{localStorage.setItem(storageKey,JSON.stringify(video._watchRanges))}catch{}
+   };
+   const watched=()=>video._watchRanges.reduce((sum,range)=>sum+Math.max(0,range[1]-range[0]),0);
+   const refresh=()=>{
+     if(!Number.isFinite(video.duration)||video.duration<=0)return;
+     video._watchRanges=video._watchRanges.map(range=>[Math.max(0,range[0]),Math.min(video.duration,range[1])]).filter(range=>range[1]>range[0]);
+     updateChapterProgress();
+   };
+   video.addEventListener('playing',()=>{video._lastWatchTime=video.currentTime});
+   video.addEventListener('timeupdate',()=>{
+     const current=video.currentTime;
+     const previous=video._lastWatchTime;
+     if(!video.paused&&!video.seeking&&previous!==null){
+       const delta=current-previous;
+       if(delta>0&&delta<=2.5)mergeRange(previous,current);
+     }
+     video._lastWatchTime=current;
+     refresh();
+   });
+   ['pause','waiting','seeking','ended'].forEach(event=>video.addEventListener(event,()=>{video._lastWatchTime=null}));
+   video.addEventListener('seeked',()=>{video._lastWatchTime=video.currentTime});
+   video.addEventListener('loadedmetadata',refresh);
+ });
+}
+function updateChapterProgress(){
+ const panel=document.getElementById('chapterProgress');
+ panel.hidden=activeSeq!==0;
+ if(activeSeq!==0)return;
+ const article=document.getElementById('lesson');
+ const articleTop=window.scrollY+article.getBoundingClientRect().top;
+ const quiz=document.getElementById('chapterQuiz');
+ const quizBottom=window.scrollY+quiz.getBoundingClientRect().bottom;
+ const articleHeight=Math.max(article.scrollHeight,quizBottom-articleTop,1);
+ const readingLine=window.scrollY+window.innerHeight*.72;
+ let pct=Math.round(Math.max(0,Math.min(1,(readingLine-articleTop)/articleHeight))*100);
+ let blockedVideo=null;
+ document.querySelectorAll('#lesson .inline-video video').forEach(video=>{
+   const duration=video.duration;
+   if(!Number.isFinite(duration)||duration<=0||!Array.isArray(video._watchRanges))return;
+   const watchedSeconds=video._watchRanges.reduce((sum,range)=>sum+Math.max(0,range[1]-range[0]),0);
+   const watchedRatio=Math.min(1,watchedSeconds/duration);
+   if(watchedRatio>=VIDEO_WATCH_REQUIRED)return;
+   const videoTop=window.scrollY+video.closest('.inline-video').getBoundingClientRect().top;
+   if(readingLine>=videoTop){
+     const stopPct=Math.max(0,Math.floor((videoTop-articleTop)/articleHeight*100));
+     if(!blockedVideo||stopPct<blockedVideo.stopPct)blockedVideo={stopPct,watchedPct:Math.floor(watchedRatio*100)};
+   }
+ });
+ if(blockedVideo)pct=Math.min(pct,blockedVideo.stopPct);
+ if(done.has(0))pct=100;
+ document.getElementById('progressFill').style.width=pct+'%';
+ document.getElementById('percent').textContent=pct+' %';
+ document.getElementById('progressText').textContent=blockedVideo&&!done.has(0)
+   ?'Progression en pause · vidéo vue '+blockedVideo.watchedPct+' % (80 % requis)'
+   :pct+' % parcouru';
+}
 function selectSeq(i){if(activeSeq===i)return;activeSeq=i;renderCards();renderLesson();updateChapterProgress();document.querySelector('.content').scrollIntoView({behavior:'smooth',block:'start'})}function updateChapterNavTitle(){const label=document.getElementById('chapterNavCurrent');if(!label||activeSeq!==0){if(label)label.textContent='';return}const parts=[...document.querySelectorAll('#lesson .course-part')].slice(1);if(!parts.length)return;const marker=Math.min(220,window.innerHeight*.36);let current=parts[0];for(const part of parts){if(part.getBoundingClientRect().top<=marker)current=part;else break}const heading=current.querySelector('.part-title');let title=heading?heading.textContent.trim():'';if(title&&'ABCDE'.includes(title[0]))title=title.slice(1).trim();if(title.startsWith('-'))title=title.slice(1).trim();label.textContent=title}
 function showSection(i){document.getElementById('part-'+i)?.scrollIntoView({behavior:'smooth',block:'start'})}function completeSequence(){done.add(activeSeq);renderCards();if(activeSeq===0)updateChapterProgress();alert('Séquence marquée comme terminée dans cette démonstration.')}
 renderCards();renderLesson();updateChapterProgress();window.addEventListener('scroll',()=>{updateChapterProgress();updateChapterNavTitle()},{passive:true});window.addEventListener('resize',()=>{updateChapterProgress();updateChapterNavTitle()});
