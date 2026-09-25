@@ -300,6 +300,14 @@ body::before{content:none}
 .course-part ul.violence-detail-list li{position:relative;padding:5px 10px 5px 28px!important;border:0!important;line-height:1.25}
 .course-part ul.violence-detail-list li:before{content:"✸";position:absolute;left:4px;top:6px;color:#ff764b;font-size:12px}
 @media(max-width:600px){.course-part ul.violence-detail-list{margin-left:36px!important;padding-left:0!important}}
+/* Séparation plus nette entre les quatre blocs juridiques, sans toucher au texte. */
+.course-part .legal-topic{margin:34px 0 42px;padding:24px 26px;border-left-width:7px}
+.course-part .legal-topic+.legal-topic{margin-top:42px}
+.course-part .legal-topic>h4{margin-bottom:18px}
+.course-part .legal-topic>h5{margin-top:24px}
+.legal-example{margin:20px 0;padding:16px 18px}
+.course-part .legal-topic--authority,.course-part .legal-topic--penalties{border-top:1px solid rgba(6,62,84,.12)}
+@media(max-width:600px){.course-part .legal-topic{margin:26px 0 32px;padding:19px 16px}.course-part .legal-topic+.legal-topic{margin-top:32px}}
 </style>
 </head>
 <body>
