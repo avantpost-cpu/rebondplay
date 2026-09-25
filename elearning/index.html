@@ -140,6 +140,12 @@ body::before{content:none}
 /* Rappel orange du « Play » du logo. */
 .sequence-panel .seq:first-child .seq-top{background:var(--coral);color:#fffefa}
 .avatar{background:var(--coral)}
+/* Quiz uni, bleu RebondPlay, avec accents corail à la place du violet. */
+.quiz-panel{background:#064e61}
+.quiz-panel .quiz label{border-color:rgba(6,62,84,.16);background:#fffefa;transition:border-color .15s,background-color .15s}
+.quiz-panel .quiz label:hover{border-color:var(--coral);background:#fff0e9}
+.quiz-panel .quiz input{accent-color:var(--coral)}
+.quiz-panel .primary,.quiz-panel .quiz button{background:var(--coral);border-color:var(--coral);color:#fffefa;box-shadow:none}
 </style>
 </head>
 <body>
