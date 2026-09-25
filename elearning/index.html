@@ -421,6 +421,23 @@ body{line-height:1.5}
 .sequence-panel .seq .seq-top{background:#a5a5a5!important;color:#193f4e!important}
 .sequence-panel .seq.selected .seq-top{background:var(--coral)!important;color:#fffefa!important}
 .sequence-panel .seq.selected .seq-icon{color:#fffefa!important}
+
+/* Exemples : espace réservé à la flèche, sans filet vertical bleu. */
+.example-block,.legal-example,.violence-example{position:relative;border:0!important;padding-left:42px!important}
+.example-block::before,.violence-example::before{content:"";position:absolute;left:0;top:0;width:30px;height:30px;background:url("./fleche-exemple.png") center/contain no-repeat}
+.legal-example::before{content:"";position:absolute;left:0;top:0;width:30px;height:30px;background:url("./fleche-exemple-orange.png") center/contain no-repeat}
+.course-part ul.factor-list li .factor-example{position:relative;display:block;margin:8px 0 3px!important;padding:7px 0 7px 40px!important;background:transparent!important;border:0!important;color:#4b9eaa!important;font-style:italic!important;line-height:1.25!important}
+.course-part ul.factor-list li .factor-example::before{content:"";position:absolute;left:0;top:4px;width:29px;height:29px;background:url("./fleche-exemple.png") center/contain no-repeat}
+.course-part ul.legal-list li{padding-left:44px!important}
+.course-part ul.legal-list li::before{content:"";position:absolute;left:5px;top:5px;width:30px;height:30px;background:url("./fleche-exemple-orange.png") center/contain no-repeat}
+@media(max-width:600px){
+ .example-block,.legal-example,.violence-example{padding-left:34px!important}
+ .example-block::before,.legal-example::before,.violence-example::before{width:25px;height:25px}
+ .course-part ul.factor-list li .factor-example{padding-left:34px!important}
+ .course-part ul.factor-list li .factor-example::before{width:25px;height:25px}
+ .course-part ul.legal-list li{padding-left:38px!important}
+ .course-part ul.legal-list li::before{width:25px;height:25px}
+}
 </style>
 </head>
 <body>
