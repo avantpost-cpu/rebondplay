@@ -413,7 +413,7 @@ body{line-height:1.5}
 /* Flèche bleue avant tous les exemples, comme sur le modèle fourni. */
 .example-block,.legal-example,.violence-example,.factor-example{position:relative}
 .example-block,.legal-example,.violence-example{padding-left:38px!important}
-.example-block::before,.legal-example::before,.violence-example::before,.factor-example::before{content:"";position:absolute;left:0;top:0;width:30px;height:30px;background:url("./flechebleue.png") center/contain no-repeat}
+.example-block::before,.legal-example::before,.violence-example::before,.factor-example::before{content:"";position:absolute;left:0;top:0;width:30px;height:30px;background:url("./fleche-exemple.png") center/contain no-repeat}
 .factor-example{margin-left:0!important;padding:0 0 0 38px!important;background:transparent!important;border:0!important;color:#4b9eaa!important}
 @media(max-width:600px){.example-block,.legal-example,.violence-example{padding-left:30px!important}.example-block::before,.legal-example::before,.violence-example::before,.factor-example::before{width:24px;height:24px}.factor-example{padding-left:30px!important}}
 </style>
@@ -518,3 +518,10 @@ function selectSeq(i){if(activeSeq===i)return;activeSeq=i;renderCards();renderLe
 function showSection(i){document.getElementById('part-'+i)?.scrollIntoView({behavior:'smooth',block:'start'})}function completeSequence(){done.add(activeSeq);renderCards();if(activeSeq===0)updateChapterProgress();alert('Séquence marquée comme terminée dans cette démonstration.')}
 renderCards();renderLesson();updateChapterProgress();window.addEventListener('scroll',()=>{updateChapterProgress();updateChapterNavTitle()},{passive:true});window.addEventListener('resize',()=>{updateChapterProgress();updateChapterNavTitle()});
 </script></body></html>
+
+<style>
+/* Le corail suit la séquence sélectionnée, toutes les autres restent grises. */
+.sequence-panel .seq .seq-top{background:#a5a5a5!important;color:#193f4e!important}
+.sequence-panel .seq.selected .seq-top{background:var(--coral)!important;color:#fffefa!important}
+.sequence-panel .seq.selected .seq-icon{color:#fffefa!important}
+</style>
