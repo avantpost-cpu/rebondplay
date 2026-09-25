@@ -249,6 +249,15 @@ body::before{content:none}
 .course-part ul.factor-list li{padding-left:28px!important}
 .course-part .factor-example{display:block!important;width:100%;box-sizing:border-box;margin:8px 0 3px!important;padding:10px 14px!important;background:#e1f1f3!important;border-left:4px solid #08798e!important;color:#064e61!important;font-style:italic!important;font-weight:400!important;line-height:1.25!important}
 @media(max-width:600px){.course-part ul.factor-list{margin-left:36px!important;padding-left:12px!important}}
+/* Repère vertical d’accès direct aux parties A–E. */
+.content{display:grid;grid-template-columns:42px minmax(0,1fr);gap:14px;align-items:start}
+.chapter-nav{position:sticky;top:24px;display:flex;flex-direction:column;align-items:center;gap:8px;padding:10px 0;z-index:2}
+.chapter-nav[hidden]{display:none}
+.chapter-nav-label{writing-mode:vertical-rl;transform:rotate(180deg);font:700 9px Poppins,Arial,sans-serif;letter-spacing:.12em;color:#577985;margin-bottom:4px}
+.chapter-nav button{width:34px;height:34px;padding:0;border:1px solid rgba(6,62,84,.22);border-radius:0;background:#fffefa;color:#064e61;font:700 13px Poppins,Arial,sans-serif;cursor:pointer;transition:background .15s,color .15s}
+.chapter-nav button:hover,.chapter-nav button:focus-visible{background:#ff764b;color:#fffefa;outline:2px solid #ff764b;outline-offset:2px}
+#lesson{min-width:0}
+@media(max-width:760px){.content{grid-template-columns:34px minmax(0,1fr);gap:8px}.chapter-nav{top:12px;gap:6px}.chapter-nav button{width:30px;height:30px;font-size:12px}.chapter-nav-label{font-size:8px}}
 </style>
 </head>
 <body>
@@ -257,7 +266,7 @@ body::before{content:none}
 <div class="breadcrumb">Accueil&nbsp; / &nbsp;Espace formation&nbsp; / &nbsp;Sensibilisation Rebond</div>
 <section class="hero"><div class="hero-main"><div class="eyebrow">Votre parcours de sensibilisation</div><h1>Comprendre et prévenir les violences dans le sport</h1><p>Un parcours pour repérer les situations à risque et contribuer à un environnement sportif plus sûr.</p><div class="dates">13 août 2026 <span style="color:#b8e5df">→</span> 30 septembre 2026</div></div><aside class="sequence-panel"><div class="sequence-stack" id="seqGrid"></div><div class="sequence-duration"><b>Durée totale</b><br>2 h 25 · 4 séquences</div></aside></section>
 <section class="overview-grid"><div class="chapter-progress" id="chapterProgress"><div class="progress-head"><h2>Progression dans le chapitre 1</h2><small id="progressText">0 % parcouru</small></div><div class="track"><div class="fill" id="progressFill"></div></div><div class="progress-caption"><span>Début du chapitre</span><span id="percent">0 %</span><span>Fin du chapitre</span></div></div></section>
-<section class="content"><article class="lesson" id="lesson"></article></section>
+<section class="content"><nav class="chapter-nav" id="chapterNav" aria-label="Accès direct aux parties du chapitre"><span class="chapter-nav-label">PARTIES</span><button type="button" onclick="showSection(1)" aria-label="Aller à la partie A">A</button><button type="button" onclick="showSection(2)" aria-label="Aller à la partie B">B</button><button type="button" onclick="showSection(3)" aria-label="Aller à la partie C">C</button><button type="button" onclick="showSection(4)" aria-label="Aller à la partie D">D</button><button type="button" onclick="showSection(5)" aria-label="Aller à la partie E">E</button></nav><article class="lesson" id="lesson"></article></section>
 <section class="quiz-panel" id="chapterQuiz" hidden></section>
 <p class="footer-note">Prototype de démonstration · RebondPlay</p>
 </main>
