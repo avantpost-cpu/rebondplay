@@ -468,6 +468,10 @@ body{line-height:1.5}
 
 /* Toutes les flèches des blocs Exemple sont bleu Rebond. */
 #lesson .example-block::before,#lesson .legal-example::before,#lesson .violence-example::before,#lesson .course-part ul.factor-list li .factor-example::before{background-image:url("./fleche-exemple.png")!important}
+
+/* Progression séquentielle du quiz : les questions suivantes restent grisées. */
+#chapterQuiz .quiz.is-locked{opacity:.42!important;filter:grayscale(1)!important;pointer-events:none!important}
+#chapterQuiz .quiz.is-locked input,#chapterQuiz .quiz.is-locked button{cursor:not-allowed!important}
 </style>
 </head>
 <body>
@@ -502,10 +506,23 @@ function renderCards(){document.getElementById('seqGrid').innerHTML=seqs.map((s,
 function bindQuizFeedback(container){
  const questions=[...container.querySelectorAll('.quiz')];
  const answerKeys=[['B'],['A','B','C','D'],['A','C'],['C'],['C'],['B'],['C'],['A'],['D'],['B']];
+ let unlockedIndex=0;
+ const answered=new Set();
+ const updateLocks=()=>{
+   questions.forEach((question,index)=>{
+     const locked=index>unlockedIndex;
+     const completed=answered.has(index);
+     question.classList.toggle('is-locked',locked);
+     question.setAttribute('aria-disabled',locked?'true':'false');
+     question.querySelectorAll('input,button.quiz-submit').forEach(control=>{
+       control.disabled=locked||completed;
+     });
+   });
+ };
  questions.forEach((question,index)=>{
    const feedback=question.querySelector('.quiz-feedback');
    const inputs=[...question.querySelectorAll('input')];
-   if(!feedback)return;
+   if(!feedback||!inputs.length)return;
    const allowMultiple=index===1||index===2;
    inputs.forEach(input=>{
      input.type=allowMultiple?'checkbox':'radio';
@@ -529,6 +546,9 @@ function bindQuizFeedback(container){
      result.classList.toggle('is-correct',correct);
      result.classList.toggle('is-incorrect',!correct);
      feedback.hidden=false;
+     answered.add(index);
+     unlockedIndex=Math.max(unlockedIndex,index+1);
+     updateLocks();
    };
    if(allowMultiple){
      const submit=document.createElement('button');
@@ -538,6 +558,7 @@ function bindQuizFeedback(container){
      submit.addEventListener('click',grade);
      feedback.insertAdjacentElement('beforebegin',submit);
      inputs.forEach(input=>input.addEventListener('change',()=>{
+       if(answered.has(index))return;
        feedback.hidden=true;
        result.textContent='';
        result.classList.remove('is-correct','is-incorrect');
@@ -546,6 +567,7 @@ function bindQuizFeedback(container){
      inputs.forEach(input=>input.addEventListener('change',grade));
    }
  });
+ updateLocks();
 }
 function renderLesson(){
  const isFirst=activeSeq===0;
