@@ -472,6 +472,19 @@ body{line-height:1.5}
 /* Progression séquentielle du quiz : les questions suivantes restent grisées. */
 #chapterQuiz .quiz.is-locked{opacity:.42!important;filter:grayscale(1)!important;pointer-events:none!important}
 #chapterQuiz .quiz.is-locked input,#chapterQuiz .quiz.is-locked button{cursor:not-allowed!important}
+
+/* Barre de progression du chapitre, fixe en bas comme dans la référence Digiforma. */
+body{padding-bottom:72px}
+.wrap{padding-bottom:112px}
+.reading-dock{position:fixed;left:0;right:0;bottom:0;z-index:1200;background:#fffefa;border-top:1px solid rgba(6,62,84,.18);box-shadow:0 -3px 12px rgba(6,62,84,.08)}
+.reading-dock[hidden]{display:none!important}
+.reading-track{height:7px;position:relative;background:#dfe5e5}
+.reading-fill{height:100%;width:0;background:#08798e;transition:width .25s ease}
+.reading-marker{position:absolute;left:0;bottom:100%;transform:translateX(-50%);margin-bottom:5px;padding:3px 7px;background:#064e61;color:#fffefa;font:700 12px Poppins,Arial,sans-serif;white-space:nowrap}
+.reading-label{min-height:54px;display:flex;align-items:center;justify-content:center;gap:18px;padding:9px 18px 12px;color:#064e61;text-align:center}
+.reading-label strong{font-size:14px;font-weight:400}
+.reading-label small{font-size:11px;color:#5f7881}
+@media(max-width:600px){body{padding-bottom:64px}.wrap{padding-bottom:96px}.reading-label{min-height:50px;gap:5px;flex-direction:column;padding:7px 12px 9px}.reading-label strong{font-size:12px}.reading-label small{font-size:10px}}
 </style>
 </head>
 <body>
@@ -479,7 +492,10 @@ body{line-height:1.5}
 <main class="wrap">
 <div class="breadcrumb">Accueil&nbsp; / &nbsp;Espace formation&nbsp; / &nbsp;Sensibilisation Rebond</div>
 <section class="hero"><div class="hero-main"><div class="eyebrow">Votre parcours de sensibilisation</div><h1>Comprendre et prévenir les violences dans le sport</h1><p>Un parcours pour repérer les situations à risque et contribuer à un environnement sportif plus sûr.</p><div class="dates">13 août 2026 <span style="color:#b8e5df">→</span> 30 septembre 2026</div></div><aside class="sequence-panel"><div class="sequence-stack" id="seqGrid"></div><div class="sequence-duration"><b>Durée totale</b><br>2 h 25 · 4 séquences</div></aside></section>
-<section class="overview-grid"><div class="chapter-progress" id="chapterProgress"><div class="progress-head"><h2>Progression dans le chapitre 1</h2><small id="progressText">0 % parcouru</small></div><div class="track"><div class="fill" id="progressFill"></div></div><div class="progress-caption"><span>Début du chapitre</span><span id="percent">0 %</span><span>Fin du chapitre</span></div></div></section>
+<aside class="reading-dock" id="chapterProgress" aria-label="Progression du chapitre 1">
+<div class="reading-track"><div class="reading-fill" id="progressFill"></div><span class="reading-marker" id="percent">0 %</span></div>
+<div class="reading-label"><strong>1. Chapitre #1 – Comprendre les violences</strong><small id="progressText">0 % parcouru</small></div>
+</aside>
 <section class="content"><nav class="chapter-nav" id="chapterNav" aria-label="Accès direct aux parties du chapitre"><span class="chapter-nav-label">PARTIES</span><button type="button" onclick="showSection(1)" aria-label="Aller à la partie A"><img class="nav-arrow" src="./fleche.png" alt="" aria-hidden="true">A</button><button type="button" onclick="showSection(2)" aria-label="Aller à la partie B"><img class="nav-arrow" src="./fleche.png" alt="" aria-hidden="true">B</button><button type="button" onclick="showSection(3)" aria-label="Aller à la partie C"><img class="nav-arrow" src="./fleche.png" alt="" aria-hidden="true">C</button><button type="button" onclick="showSection(4)" aria-label="Aller à la partie D"><img class="nav-arrow" src="./fleche.png" alt="" aria-hidden="true">D</button><button type="button" onclick="showSection(5)" aria-label="Aller à la partie E"><img class="nav-arrow" src="./fleche.png" alt="" aria-hidden="true">E</button><span class="chapter-nav-current" id="chapterNavCurrent" aria-live="polite"></span></nav><article class="lesson" id="lesson"></article></section>
 <section class="quiz-panel" id="chapterQuiz" hidden></section>
 <p class="footer-note">Prototype de démonstration · RebondPlay</p>
@@ -658,6 +674,7 @@ function updateChapterProgress(){
  if(blockedVideo)pct=Math.min(pct,blockedVideo.stopPct);
  if(done.has(0))pct=100;
  document.getElementById('progressFill').style.width=pct+'%';
+ document.getElementById('percent').style.left=pct+'%';
  document.getElementById('percent').textContent=pct+' %';
  document.getElementById('progressText').textContent=blockedVideo&&!done.has(0)
    ?'Progression en pause · vidéo vue '+blockedVideo.watchedPct+' % (80 % requis)'
