@@ -438,6 +438,10 @@ body{line-height:1.5}
  .course-part ul.legal-list li{padding-left:38px!important}
  .course-part ul.legal-list li::before{width:25px;height:25px}
 }
+
+/* Correctif prioritaire des exemples imbriqués dans les listes de facteurs. */
+#lesson .course-part ul.factor-list li .factor-example{display:block!important;position:relative!important;margin:8px 0 3px!important;padding:7px 0 7px 42px!important;background:transparent!important;border:0!important;box-shadow:none!important;color:#4b9eaa!important;font-style:italic!important}
+#lesson .course-part ul.factor-list li .factor-example::before{content:""!important;position:absolute!important;left:0!important;top:4px!important;width:30px!important;height:30px!important;background:url("./fleche-exemple.png") center/contain no-repeat!important}
 </style>
 </head>
 <body>
