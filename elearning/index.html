@@ -108,6 +108,9 @@ body::before{content:"";position:fixed;inset:140px 0 0;z-index:-1;pointer-events
 .sequence-duration{padding:12px 16px;border-top:1px solid rgba(6,62,84,.18);font-size:12px;line-height:1.45;color:#294e5d;background:#fffefa}
 .sequence-duration b{font-weight:900}
 @media(max-width:900px){.sequence-panel{width:100%}.sequence-stack{gap:2px}}
+/* Texture motifs appliquée aux bandes turquoise latérales. */
+body::before{background-image:url("./motifs.png"),linear-gradient(to right,#08798e 0 15.4%,transparent 15.4% 84.6%,#08798e 84.6% 100%);background-size:100% auto,100% 100%;background-position:center top,center;background-repeat:repeat-y,no-repeat}
+@media(max-width:760px){body::before{background-image:url("./motifs.png"),linear-gradient(to right,#08798e 0 4%,transparent 4% 96%,#08798e 96%);background-size:100% auto,100% 100%;background-position:center top,center;background-repeat:repeat-y,no-repeat}}
 </style>
 </head>
 <body>
