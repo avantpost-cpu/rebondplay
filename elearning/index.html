@@ -645,9 +645,9 @@ function updateChapterProgress(){
  let blockedVideo=null;
  document.querySelectorAll('#lesson .inline-video video').forEach(video=>{
    const duration=video.duration;
-   if(!Number.isFinite(duration)||duration<=0||!Array.isArray(video._watchRanges))return;
+   if(!Array.isArray(video._watchRanges))return;
    const watchedSeconds=video._watchRanges.reduce((sum,range)=>sum+Math.max(0,range[1]-range[0]),0);
-   const watchedRatio=Math.min(1,watchedSeconds/duration);
+   const watchedRatio=Number.isFinite(duration)&&duration>0?Math.min(1,watchedSeconds/duration):0;
    if(watchedRatio>=VIDEO_WATCH_REQUIRED)return;
    const videoTop=window.scrollY+video.closest('.inline-video').getBoundingClientRect().top;
    if(readingLine>=videoTop){
