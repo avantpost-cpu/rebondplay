@@ -308,6 +308,10 @@ body::before{content:none}
 .legal-example{margin:20px 0;padding:16px 18px}
 .course-part .legal-topic--authority,.course-part .legal-topic--penalties{border-top:1px solid rgba(6,62,84,.12)}
 @media(max-width:600px){.course-part .legal-topic{margin:26px 0 32px;padding:19px 16px}.course-part .legal-topic+.legal-topic{margin-top:32px}}
+/* Retrait des filets décoratifs bleu clair et violets entre les parties. */
+.course-part:not(:first-child){border-top:0!important}
+.course-part{border-bottom:0!important}
+.course-part hr{display:none!important}
 </style>
 </head>
 <body>
