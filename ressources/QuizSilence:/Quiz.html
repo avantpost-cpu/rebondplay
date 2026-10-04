@@ -68,23 +68,30 @@
     #quiz, #timerBarContainer, #progress, #score { display: none; }
 
     .result-img { max-width: 50%; height: auto; display: block; margin: 20px auto 0 auto; }
+    .quiz-title-image { display:block; max-width:100%; height:auto; margin:0 auto 18px; }
+    .image-button { display:block; margin:20px auto; padding:0; width:min(100%,540px); border:0; background:transparent; cursor:pointer; }
+    .image-button:hover { background:transparent; }
+    .image-button img { display:block; width:100%; height:auto; }
+    #nextBtn { display:none; }
+
   </style>
 </head>
 <body>
-  <h2>Devinez les raisons du silence</h2>
+  <img src="button.png" alt="Devinez les raisons du silence — Commencer le quiz" class="quiz-title-image">
 
   <p id="instructions">
     Ce quiz vous invite à deviner les raisons pour lesquelles certaines victimes gardent le silence dans le milieu sportif. 
     Vous avez 15 secondes pour chaque question. La barre verte/orange indique le temps restant. Bonne chance !
   </p>
 
-  <button id="startBtn">Commencer le quiz</button>
+  <button id="startBtn" class="image-button" aria-label="Commencer le quiz"><img src="button.png" alt="Commencer le quiz"></button>
 
   <div id="progress"></div>
   <div id="timerBarContainer">
     <div id="timerBar"></div>
   </div>
   <div id="quiz"></div>
+  <button id="nextBtn" class="image-button" aria-label="Question suivante"><img src="suivante.png" alt="Question suivante"></button>
   <div id="score"></div>
   <div id="resultImage"></div>
 
@@ -110,6 +117,7 @@
     var progressContainer = document.getElementById("progress");
     var startBtn = document.getElementById("startBtn");
     var resultImage = document.getElementById("resultImage");
+    var nextBtn = document.getElementById("nextBtn");
 
     function shuffleArray(array) {
       for (let i = array.length - 1; i > 0; i--) {
@@ -160,10 +168,7 @@
         clearInterval(timer);
         document.getElementById("feedback").textContent = "⏰ Temps écoulé !";
         document.getElementById("feedback").className = "wrong";
-        setTimeout(function() {
-          currentQuestion++;
-          showQuestion();
-        }, 1000);
+        nextBtn.style.display = "block";
       }
     }
 
@@ -178,11 +183,14 @@
         feedback.textContent = "❌ Mauvaise réponse.";
         feedback.className = "wrong";
       }
-      setTimeout(function() {
-        currentQuestion++;
-        showQuestion();
-      }, 1000);
+      nextBtn.style.display = "block";
     }
+
+    nextBtn.addEventListener("click", function() {
+      nextBtn.style.display = "none";
+      currentQuestion++;
+      showQuestion();
+    });
 
     startBtn.addEventListener("click", function() {
       startBtn.style.display = "none";
