@@ -622,6 +622,88 @@ function bindQuizFeedback(container){
  });
  updateLocks();
 }
+function bindSeq2Quiz(container){
+ const section=[...container.querySelectorAll('.seq2-part')].find(s=>s.textContent.includes('QUIZ de fin de chapitre')&&s.textContent.includes('1. Le point de bascule'));
+ if(!section)return;
+ const specs=[
+  {title:'1. Le point de bascule',choices:['A. Lorsque la victime commence à exprimer sa confiance','B. Lorsque l’agresseur obtient une dépendance affective et isole la victime','C. Lorsque l’agresseur agit pour la première fois violemment'],correct:[1],multiple:false},
+  {title:'2. Le “pouvoir bienveillant”',choices:['A. Parce que celle-ci suppose que le sportif fasse confiance à son entraîneur, et parce qu’il se trouve de fait dans une relation asymétrique avec ce dernier car c’est lui qui a l’autorité.','B. Parce que l’autorité ne peut s’exercer que par la confiance.','C. Parce que l’autorité suppose que le sportif n’a aucun droit à la contestation.'],correct:[0],multiple:false},
+  {title:'3. Les signes invisibles',choices:['A - Un entraîneur qui multiplie les attentions “personnelles” envers un sportif','B - Une adolescente qui cherche constamment l’approbation de son coach','C - Des limites floues entre soutien et intimité','D - Une rigueur d’entraînement claire et transparente'],correct:[0,1,2],multiple:true},
+  {title:'4. L’argument de loyauté',choices:['A. “Si tu fais ce que je te dis, tu auras ta place dans l’équipe.”','B. “Tu sais que je t’aime bien, tu ne vas pas me trahir ?”','C. “Bravo pour tes efforts, tu peux être fier de toi.”'],correct:[0,1],multiple:true},
+  {title:'5. L’auto-censure',choices:['A. La banalisation','B. La dissociation','C. La soumission identitaire'],correct:[2],multiple:false},
+  {title:'6. Les faux soutiens',choices:['A. La solidarité protectrice','B. L’effet d’omerta et de dissonance cognitive','C. La simple ignorance'],correct:[1],multiple:false},
+  {title:'7. Les traces du traumatisme',choices:['Reviviscences ou cauchemars liés à l’événement','Évitement des lieux ou personnes associés à l’agression','Hypervigilance, sursauts, troubles du sommeil','Hausse soudaine de la performance sportive'],correct:[0,1,2,3],multiple:true},
+  {title:'8. Les indicateurs comportementaux',choices:['A - Isolement ou repli','B - Changement brutal d’attitude envers l’entraîneur','C - Perte de plaisir dans la pratique','D - Hyper-soumission ou perfectionnisme excessif'],correct:[0,1,2,3],multiple:true},
+  {title:'9. La performance comme écran',choices:['A. Parce qu’elle valorise la parole des victimes','B. Parce qu’elle place la réussite au-dessus de la protection','C. Parce qu’elle interdit toute exigence de résultats'],correct:[1],multiple:false},
+  {title:'10. Les bons et les mauvais secrets',choices:['A. Respecter le secret pour préserver la confiance de l’enfant','B. Chercher à comprendre sans le juger et l’informer qu’un adulte protecteur doit être averti si quelque chose le fait souffrir','C. Le confronter immédiatement à la personne concernée pour clarifier la situation'],correct:[1],multiple:false}
+ ];
+ let unlocked=0;
+ const answered=new Set();
+ const blocks=[];
+ specs.forEach((spec,index)=>{
+  const all=[...section.children];
+  const title=all.find(el=>el.textContent.trim()===spec.title);
+  if(!title)return;
+  const nextTitle=index+1<specs.length?all.find(el=>el.textContent.trim()===specs[index+1].title):null;
+  const range=[];
+  let node=title;
+  while(node&&node!==nextTitle){range.push(node);node=node.nextElementSibling}
+  const block=document.createElement('div');
+  block.className='quiz seq2-quiz-question';
+  title.before(block);
+  range.forEach(el=>block.appendChild(el));
+  blocks.push(block);
+  const choiceEls=spec.choices.map(txt=>[...block.children].find(el=>el.textContent.trim()===txt)).filter(Boolean);
+  choiceEls.forEach((el,choiceIndex)=>{
+   const label=document.createElement('label');
+   label.className='seq2-quiz-choice';
+   const input=document.createElement('input');
+   input.type=spec.multiple?'checkbox':'radio';
+   input.name='seq2-question-'+(index+1);
+   input.value=String(choiceIndex);
+   el.before(label);label.append(input,el);
+   let sibling=label.nextElementSibling;
+   if(sibling?.classList.contains('source-marker'))sibling.hidden=true;
+  });
+  const correction=[...block.children].find(el=>el.textContent.trim()==='Correction');
+  const correctionText=correction?.nextElementSibling;
+  const feedback=document.createElement('div');
+  feedback.className='quiz-feedback';
+  feedback.hidden=true;
+  const result=document.createElement('strong');
+  result.className='quiz-result';
+  result.setAttribute('role','status');
+  feedback.append(result,document.createElement('br'));
+  if(correction){feedback.append(correction);if(correctionText)feedback.append(correctionText)}
+  block.appendChild(feedback);
+  const inputs=[...block.querySelectorAll('input')];
+  const grade=()=>{
+   const selected=inputs.filter(i=>i.checked).map(i=>Number(i.value)).sort((a,b)=>a-b);
+   if(!selected.length)return;
+   const expected=[...spec.correct].sort((a,b)=>a-b);
+   const ok=selected.length===expected.length&&selected.every((v,i)=>v===expected[i]);
+   result.textContent=ok?(currentLanguage==='fr'?'Bonne réponse':'Correct answer'):(currentLanguage==='fr'?'Mauvaise réponse':'Incorrect answer');
+   result.classList.toggle('is-correct',ok);result.classList.toggle('is-incorrect',!ok);
+   feedback.hidden=false;answered.add(index);unlocked=Math.max(unlocked,index+1);refresh();
+  };
+  if(spec.multiple){
+   const submit=document.createElement('button');
+   submit.type='button';submit.className='quiz-submit';
+   submit.textContent=currentLanguage==='fr'?'Valider ma réponse':'Submit my answer';
+   submit.addEventListener('click',grade);
+   feedback.before(submit);
+  }else inputs.forEach(input=>input.addEventListener('change',grade));
+ });
+ function refresh(){
+  blocks.forEach((block,index)=>{
+   const locked=index>unlocked,completed=answered.has(index);
+   block.classList.toggle('is-locked',locked);
+   block.setAttribute('aria-disabled',locked?'true':'false');
+   block.querySelectorAll('input,button.quiz-submit').forEach(control=>control.disabled=locked||completed);
+  });
+ }
+ refresh();
+}
 function updateChapterNav(){
  const nav=document.getElementById('chapterNav');
  if(!nav)return;
@@ -649,6 +731,7 @@ function renderLesson(){
    quizPanel.hidden=false;
  } else if(activeSeq===1) {
    document.getElementById('lesson').innerHTML=seq2Html;
+   bindSeq2Quiz(document.getElementById('lesson'));
    quizPanel.innerHTML='';
    quizPanel.hidden=true;
  } else {
