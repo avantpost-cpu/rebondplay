@@ -39,23 +39,16 @@
     button:hover { background: #f0f0f0; }
 
     #startBtn {
-      background-color: #4f918d; /* couleur du bouton */
-      color: white;              /* texte en blanc */
-      font-weight: bold;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
       display: block;
       margin: 20px auto;
-      width: 200px;
-      text-align: center;
+      padding: 0;
+      width: min(100%,540px);
+      border: none;
+      background: transparent;
+      cursor: pointer;
     }
 
-    #startBtn:hover {
-      background-color: #3e736b; /* couleur légèrement plus foncée au survol */
-    }
+    #startBtn:hover { background: transparent; }
 
     .correct { color: green; font-weight: bold; }
     .wrong { color: red; font-weight: bold; }
@@ -69,8 +62,8 @@
 
     .result-img { max-width: 50%; height: auto; display: block; margin: 20px auto 0 auto; }
     .quiz-title-image { display:block; max-width:100%; height:auto; margin:0 auto 18px; }
-    .image-button { display:block; margin:20px auto; padding:0; width:min(100%,540px); border:0; background:transparent; cursor:pointer; }
-    .image-button:hover { background:transparent; }
+    .image-button { display:block; margin:20px auto; padding:0; width:min(100%,540px); border:0; background:transparent!important; cursor:pointer; }
+    .image-button:hover { background:transparent!important; }
     .image-button img { display:block; width:100%; height:auto; }
     #nextBtn { display:none; }
 
