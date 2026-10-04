@@ -622,7 +622,22 @@ function bindQuizFeedback(container){
  });
  updateLocks();
 }
+function updateChapterNav(){
+ const nav=document.getElementById('chapterNav');
+ if(!nav)return;
+ if(activeSeq===1){
+   nav.innerHTML='<span class="chapter-nav-label">PARTIES</span><button type="button" onclick="showSeq2Section(\'I\')" aria-label="Aller à la partie I"><img class="nav-arrow" src="./fleche.png" alt="" aria-hidden="true">I</button><button type="button" onclick="showSeq2Section(\'II\')" aria-label="Aller à la partie II"><img class="nav-arrow" src="./fleche.png" alt="" aria-hidden="true">II</button><button type="button" onclick="showSeq2Section(\'Q\')" aria-label="Aller au quiz"><img class="nav-arrow" src="./fleche.png" alt="" aria-hidden="true">Q</button><span class="chapter-nav-current" id="chapterNavCurrent" aria-live="polite"></span>';
+ }else{
+   nav.innerHTML='<span class="chapter-nav-label">PARTIES</span><button type="button" onclick="showSection(1)" aria-label="Aller à la partie A"><img class="nav-arrow" src="./fleche.png" alt="" aria-hidden="true">A</button><button type="button" onclick="showSection(2)" aria-label="Aller à la partie B"><img class="nav-arrow" src="./fleche.png" alt="" aria-hidden="true">B</button><button type="button" onclick="showSection(3)" aria-label="Aller à la partie C"><img class="nav-arrow" src="./fleche.png" alt="" aria-hidden="true">C</button><button type="button" onclick="showSection(4)" aria-label="Aller à la partie D"><img class="nav-arrow" src="./fleche.png" alt="" aria-hidden="true">D</button><button type="button" onclick="showSection(5)" aria-label="Aller à la partie E"><img class="nav-arrow" src="./fleche.png" alt="" aria-hidden="true">E</button><span class="chapter-nav-current" id="chapterNavCurrent" aria-live="polite"></span>';
+ }
+}
+function showSeq2Section(key){
+ const titles={I:'I - Repérer les auteurs et les mécanismes d’emprise',II:'II - Repérer les victimes',Q:'QUIZ de fin de chapitre'};
+ const el=[...document.querySelectorAll('#lesson .seq2-major-title, #lesson h3, #lesson h4')].find(n=>n.textContent.trim()===titles[key]);
+ el?.scrollIntoView({behavior:'smooth',block:'start'});
+}
 function renderLesson(){
+ updateChapterNav();
  const isFirst=activeSeq===0;
  const quizPanel=document.getElementById('chapterQuiz');
  if(isFirst){
