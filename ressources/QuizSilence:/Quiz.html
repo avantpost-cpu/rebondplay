@@ -9,7 +9,7 @@
       padding: 20px;
       max-width: 600px;
       margin: auto;
-      background-image: url('https://raw.githubusercontent.com/avantpost-cpu/rebondplay/main/ressources/QuizSilence%3A/fond.jpg'); /* image de fond répétée */
+      background-image: url('https://rebondplay.com/ressources/QuizSilence%3A/fond.jpg'); /* image de fond répétée */
       background-repeat: repeat;
       background-size: auto;
     }
@@ -77,21 +77,21 @@
   </style>
 </head>
 <body>
-  <img src="button.png" alt="Devinez les raisons du silence — Commencer le quiz" class="quiz-title-image">
+  <img src="https://rebondplay.com/ressources/QuizSilence%3A/button.png" alt="Devinez les raisons du silence — Commencer le quiz" class="quiz-title-image">
 
   <p id="instructions">
     Ce quiz vous invite à deviner les raisons pour lesquelles certaines victimes gardent le silence dans le milieu sportif. 
     Vous avez 15 secondes pour chaque question. La barre verte/orange indique le temps restant. Bonne chance !
   </p>
 
-  <button id="startBtn" class="image-button" aria-label="Commencer le quiz"><img src="button.png" alt="Commencer le quiz"></button>
+  <button id="startBtn" class="image-button" aria-label="Commencer le quiz"><img src="https://rebondplay.com/ressources/QuizSilence%3A/button.png" alt="Commencer le quiz"></button>
 
   <div id="progress"></div>
   <div id="timerBarContainer">
     <div id="timerBar"></div>
   </div>
   <div id="quiz"></div>
-  <button id="nextBtn" class="image-button" aria-label="Question suivante"><img src="suivante.png" alt="Question suivante"></button>
+  <button id="nextBtn" class="image-button" aria-label="Question suivante"><img src="https://rebondplay.com/ressources/QuizSilence%3A/suivante.png" alt="Question suivante"></button>
   <div id="score"></div>
   <div id="resultImage"></div>
 
@@ -135,9 +135,9 @@
 
         resultImage.innerHTML = "";
         if (score >= 5) {
-          resultImage.innerHTML = '<img src="https://raw.githubusercontent.com/avantpost-cpu/rebondplay/main/ressources/QuizSilence%3A/bravo.png" alt="Bravo !" class="result-img">';
+          resultImage.innerHTML = '<img src="https://rebondplay.com/ressources/QuizSilence%3A/bravo.png" alt="Bravo !" class="result-img">';
         } else {
-          resultImage.innerHTML = '<img src="https://raw.githubusercontent.com/avantpost-cpu/rebondplay/main/ressources/QuizSilence%3A/progres.png" alt="Progrès !" class="result-img">';
+          resultImage.innerHTML = '<img src="https://rebondplay.com/ressources/QuizSilence%3A/progres.png" alt="Progrès !" class="result-img">';
         }
         return;
       }
