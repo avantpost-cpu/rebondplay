@@ -188,7 +188,7 @@
       var q = questions[currentQuestion];
       progressContainer.textContent = "Question " + (currentQuestion + 1) + " / " + questions.length;
 
-      var html = '<div class="question"><p><strong>' + q.text + '</strong></p>';
+      var html = '<div class="question"><p>' + q.text + '</p>';
       q.answers.forEach((ans, index) => {
         if(q.multiple){
           html += `<label><input type="checkbox" value="${index}"> ${ans.text}</label><br>`;
