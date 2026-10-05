@@ -1,0 +1,404 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Questionnaire Rebond</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{
+  box-sizing:border-box
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  background:#cb8095 url("../RPessentielleplus/motifsplus.jpg") center/cover fixed;
+  font-family:Arial,sans-serif;
+  color:#073e55
+}
+
+.shell{
+  width:min(680px,92vw);
+  margin:6vh auto;
+  padding:clamp(20px,4vw,42px);
+  border-radius:24px;
+  background:#fff url("../fond.jpg") center/cover fixed;
+  box-shadow:0 15px 40px #073e5540
+}
+
+h1{
+  margin:0 0 12px;
+  font-size:clamp(28px,5vw,46px)
+}
+
+h2{
+  font-size:clamp(20px,3vw,28px);
+  line-height:1.25
+}
+
+.intro{
+  line-height:1.55
+}
+
+.field{
+  display:grid;
+  gap:7px;
+  margin:16px 0
+}
+
+.field input{
+  padding:13px;
+  border:2px solid #cb8095;
+  border-radius:12px;
+  font:inherit
+}
+
+.btn{
+  border:0;
+  border-radius:999px;
+  padding:14px 24px;
+  background:#073e55;
+  color:#fff;
+  font-weight:800;
+  cursor:pointer
+}
+
+.muted{
+  font-size:13px;
+  color:#48616a
+}
+
+.hidden{
+  display:none
+}
+
+.progress{
+  font-weight:800;
+  color:#cb8095
+}
+
+.choice{
+  display:block;
+  margin:12px 0;
+  padding:15px;
+  border:2px solid #d7b0bb;
+  border-radius:14px;
+  cursor:pointer
+}
+
+.choice input{
+  margin-right:10px;
+  accent-color:#073e55
+}
+
+.choice.selected{
+  border-color:#073e55;
+  background:#eef5f6
+}
+
+.feedback{
+  margin:18px 0;
+  padding:16px;
+  border-radius:15px;
+  background:#eef5f6;
+  line-height:1.45
+}
+
+.good{
+  color:#14733f
+}
+
+.bad{
+  color:#a83c3c
+}
+
+.error{
+  color:#a83c3c;
+  margin:10px 0
+}
+
+.result{
+  text-align:center
+}
+
+.score{
+  font-size:46px;
+  font-weight:900;
+  color:#cb8095
+}
+
+#intro{
+  background-image:url("../questionnaire/imagequestionnaire.png");
+  background-repeat:no-repeat;
+  background-position:center top;
+  background-size:100% auto;
+  padding:170px 44px 38px;
+  border-radius:24px;
+  min-height:660px
+}
+
+#intro .intro{
+  font-size:16px;
+  line-height:1.45;
+  margin:0 0 16px
+}
+</style>
+</head>
+
+<body>
+
+<main class="shell">
+
+<section id="intro">
+
+<p class="intro">
+Ce questionnaire vous permet de revenir sur les notions abordées pendant la sensibilisation aux violences dans le sport.
+</p>
+
+<p class="intro">
+<strong>Attention :</strong> certaines questions peuvent comporter plusieurs bonnes réponses. Lorsque c’est le cas, sélectionnez toutes les réponses qui vous semblent justes.
+</p>
+
+<form id="identity">
+
+<div class="field">
+<label for="first">Prénom</label>
+<input id="first" required>
+</div>
+
+<div class="field">
+<label for="last">Nom</label>
+<input id="last" required>
+</div>
+
+<div class="field">
+<label for="email">Adresse e-mail</label>
+<input id="email" type="email" required>
+</div>
+
+<label class="muted">
+<input id="consent" type="checkbox" required>
+J’accepte que mes réponses soient enregistrées pour l’évaluation de cette sensibilisation.
+</label>
+
+<p id="startError" class="error"></p>
+
+<button class="btn" type="submit">
+Commencer
+</button>
+
+</form>
+
+</section>
+
+<section id="quiz" class="hidden">
+
+<div class="progress" id="progress"></div>
+
+<h2 id="question"></h2>
+
+<div id="choices"></div>
+
+<button class="btn" id="validate">
+Valider
+</button>
+
+<div id="feedback"></div>
+
+</section>
+
+<section id="result" class="hidden result">
+
+<h1>Merci pour votre participation</h1>
+
+<div class="score" id="score"></div>
+
+<p id="resultText"></p>
+
+<button class="btn" onclick="location.reload()">
+Recommencer
+</button>
+
+</section>
+
+</main>
+
+<script>
+const SUPABASE_URL="https://tdsrqmpfdvntybdlvejy.supabase.co",
+SUPABASE_KEY="sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO",
+db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+const questions=[
+{q:"Un entraîneur respecte les règlements (horaires, diplômes, procédures) mais instaure un climat de peur, de pression et de silence. Quelle analyse est la plus pertinente ?",o:["L’absence d’infraction exclut toute violence","Il s’agit d’une exigence professionnelle indispensable dans le sport","Il peut s’agir de violences psychologiques"],a:[2],e:"Le respect des règles formelles n’exclut pas des violences psychologiques. Un climat de peur, de pression et de silence constitue un signal d’alerte."},
+{q:"Quel comportement montre une conduite d’évitement ?",o:["Se fâcher ponctuellement avec un coéquipier","Augmenter l’usage des réseaux sociaux","Des absences répétées aux entraînements"],a:[2],e:"Des absences répétées peuvent traduire une stratégie d’évitement d’un lieu, d’une personne ou d’une situation vécue comme insécurisante."},
+{q:"Quels comportements inhabituels peuvent être des signes de traumatisme ?",o:["Hypervigilance","Isolement social","Surinvestissement à l’entraînement"],a:[0,1],e:"L’hypervigilance et l’isolement social peuvent être des signes de traumatisme."},
+{q:"Qu’est-ce qui peut être un signe de stress post-traumatique ?",o:["Les comportements violents","Les troubles du sommeil","Les addictions","Les conduites à risque"],a:[0,1,2,3],e:"Ces quatre manifestations peuvent être associées à un stress post-traumatique."},
+{q:"Pourquoi est-il inexact de parler d’un « profil type » d’agresseur dans le sport ?",o:["Parce que les agresseurs sont majoritairement des inconnus","Parce que les agresseurs présentent tous des troubles psychiatriques","Parce que les agresseurs peuvent appartenir à tous les milieux et statuts","Parce que les violences sont toujours commises par des pairs"],a:[2],e:"Il n’existe pas de profil type : les auteurs peuvent appartenir à tous les milieux et occuper des statuts très différents."},
+{q:"Quel élément constitue un facteur central de vulnérabilité dans la relation entraîneur – athlète ?",o:["La proximité émotionnelle","Le déséquilibre structurel de pouvoir","L’intensité des entraînements","La durée de la relation sportive"],a:[1],e:"La relation entraîneur–athlète comporte un déséquilibre structurel de pouvoir qui peut accroître la vulnérabilité du pratiquant."},
+{q:"Un encadrant valorise fortement une athlète, puis commence à la dénigrer : remarques sur son corps, son poids, son apparence, menaces de ne plus l’entraîner si elle « ne fait pas d’efforts ». La jeune sportive perd confiance et se replie sur elle-même. Comment analyser cette situation ?",o:["Il s’agit d’une exigence sportive inadaptée","Il s’agit d’une violence verbale isolée","Il s’agit d’une phase de dévalorisation dans un processus d’emprise"],a:[2],e:"L’alternance entre valorisation et dénigrement peut s’inscrire dans un processus d’emprise et de dévalorisation progressive."},
+{q:"Pourquoi le consentement de la victime ne peut-il pas être considéré comme valide dans un contexte d’emprise ?",o:["Parce que la victime est toujours mineure dans un contexte d’emprise","Parce que la relation sportive interdit toute intimité","Parce que la domination altère le libre arbitre"],a:[2],e:"Dans un contexte d’emprise, la domination et le rapport de pouvoir peuvent altérer le libre arbitre."},
+{q:"Un jeune athlète présente des absences répétées, une chute soudaine de performance, évite les vestiaires et refuse les contacts physiques. Aucun fait de violence n’est rapporté. Quelle posture professionnelle est la plus adaptée ?",o:["Attendre une libération de la parole de la victime","Sanctionner son absentéisme","Considérer ces éléments comme des signaux d’alerte","L’interroger en lui posant des questions"],a:[2],e:"L’accumulation de changements inhabituels doit être considérée comme un ensemble de signaux d’alerte, sans mener soi-même une enquête."},
+{q:"Pourquoi le silence de l’entourage est-il un facteur aggravant des violences ?",o:["Parce qu’il renforce l’isolement de la victime et l’impunité de l’auteur","Parce qu’il permet d’éviter les conflits et tensions","Parce qu’il respecte la présomption d’innocence"],a:[0],e:"Le silence peut isoler davantage la victime et laisser perdurer les violences en renforçant l’impunité de l’auteur."},
+{q:"Pourquoi le principe « quand il y a un doute, il n’y a pas de doute » est-il central dans la logique du signalement ?",o:["Parce qu’il permet de qualifier juridiquement les faits","Parce qu’il repose sur la reconnaissance de signaux d’alerte pertinents","Parce qu’il remplace l’autorité judiciaire","Parce qu’il garantit la culpabilité de l’auteur présumé"],a:[1],e:"Le signalement ne consiste pas à qualifier juridiquement les faits ni à établir une culpabilité, mais à prendre au sérieux des signaux d’alerte pertinents."},
+{q:"Pourquoi est-il essentiel de différencier l’accueil de la parole du recueil de la parole ?",o:["Parce que l’accueil vise l’écoute, et le recueil relève de l’enquête pénale","Parce que l’accueil n’a pas de valeur légale","Parce que seul le médecin peut recueillir la parole"],a:[0],e:"Le rôle de l’encadrant est d’accueillir et d’écouter la parole, sans se substituer aux professionnels chargés du recueil dans le cadre de l’enquête."},
+{q:"Un enfant vous confie des faits de violences. Vous êtes très ému, vous le prenez dans vos bras et lui promettez que « tout ira bien » et que « l’agresseur ira en prison ». Quelle analyse est la plus juste ?",o:["Il s’agit d’une posture professionnelle recommandée","Il s’agit d’une obligation morale envers la victime","Il s’agit d’une réaction empathique et rassurante","Il s’agit d’une réaction compréhensible mais inadaptée"],a:[3],e:"L’émotion est compréhensible, mais il faut éviter les contacts non sollicités et les promesses sur des suites que l’on ne maîtrise pas."},
+{q:"Pourquoi ne faut-il jamais promettre la confidentialité absolue à une victime mineure ?",o:["Parce que la parole de l’enfant est souvent imprécise et devra être vérifiée","Parce que les parents doivent toujours être informés","Parce que la loi impose des obligations de signalement","Parce qu’il faut porter plainte"],a:[2],e:"La protection d’un mineur peut imposer de transmettre les informations aux autorités ou dispositifs compétents."},
+{q:"Quel est l’objectif principal d’un signalement à la cellule Signal-Sports ?",o:["Remplacer la justice qui ne va pas assez vite pour traiter les plaintes","Sanctionner automatiquement un auteur présumé en lui interdisant d’exercer","Obtenir une condamnation pénale plus rapide","Protéger les pratiquants et enclencher une enquête administrative"],a:[3],e:"Signal-Sports vise à protéger les pratiquants et à permettre le déclenchement d’une enquête administrative."},
+{q:"Pourquoi un signalement de bonne foi ne sera jamais sanctionné ?",o:["Parce qu’il conduit toujours à une enquête","Parce qu’il est toujours anonyme","Parce qu’il s’inscrit dans un principe de précaution et de protection","Parce qu’il relève de la liberté d’expression"],a:[2],e:"Un signalement effectué de bonne foi s’inscrit dans une démarche de précaution et de protection."},
+{q:"Pourquoi le contrôle d’honorabilité constitue un pilier central de la prévention ?",o:["Parce qu’il remplace l’enquête pénale quand elle n’est pas assez rapide","Parce qu’il permet d’empêcher la récidive","Parce qu’il vise à empêcher l’accès au public sportif à des personnes interdites d’exercer","Parce qu’il ne concerne que les professionnels rémunérés"],a:[2],e:"Le contrôle d’honorabilité vise à empêcher des personnes faisant l’objet d’une incapacité ou interdiction d’exercer d’accéder aux fonctions concernées."},
+{q:"Un club fait appel à un bénévole « de confiance », ancien pratiquant, pour encadrer ponctuellement des mineurs lors d’un stage. Aucun contrôle n’a été effectué car « ce n’est que pour quelques jours ».",o:["Le caractère ponctuel dispense du contrôle","Le bénévolat exclut l’obligation de contrôle","Le contrôle relève uniquement de la fédération","Toute intervention auprès de mineurs impose un contrôle d’honorabilité"],a:[3],e:"Le caractère bénévole ou ponctuel de l’intervention ne dispense pas du contrôle d’honorabilité lorsqu’il est requis pour l’encadrement de mineurs."},
+{q:"Quel rôle fondamental jouent les adultes dans la protection des pratiquants ?",o:["Garantir la performance","Rester neutres dans les conflits","Créer un cadre éthique où la parole est possible et protégée"],a:[2],e:"Les adultes ont la responsabilité de contribuer à un cadre éthique, sécurisant et propice à la parole."},
+{q:"Quelle est la responsabilité fondamentale de chaque acteur du sport après cette formation ?",o:["Protéger l’image de la structure","S’en tenir à son rôle strictement technique","Éviter toute prise de décision personnelle","Contribuer activement à un environnement sûr, respectueux et signalant"],a:[3],e:"Chaque acteur du sport contribue à la prévention en participant activement à un environnement sûr, respectueux et attentif aux signaux d’alerte."}
+];
+
+let participant=null,
+index=0,
+score=0,
+startedAt=null,
+locked=false;
+
+const $=id=>document.getElementById(id),
+same=(a,b)=>a.length===b.length&&a.every(x=>b.includes(x));
+
+$("identity").onsubmit=e=>{
+  e.preventDefault();
+
+  participant={
+    first:$("first").value.trim(),
+    last:$("last").value.trim(),
+    email:$("email").value.trim()
+  };
+
+  startedAt=Date.now();
+
+  $("intro").classList.add("hidden");
+  $("quiz").classList.remove("hidden");
+
+  render();
+};
+
+function render(){
+
+  locked=false;
+
+  $("validate").onclick=validate;
+  $("feedback").innerHTML="";
+  $("validate").disabled=false;
+
+  const x=questions[index];
+
+  $("progress").textContent=`Question ${index+1} sur ${questions.length}`;
+  $("question").textContent=x.q;
+
+  $("choices").innerHTML=x.o.map((v,i)=>`
+    <label class="choice">
+      <input type="checkbox" value="${i}">
+      <strong>${String.fromCharCode(65+i)}.</strong> ${v}
+    </label>
+  `).join("");
+}
+
+$("choices").onclick=e=>{
+  const l=e.target.closest(".choice");
+
+  if(l){
+    l.classList.toggle("selected");
+  }
+};
+
+async function validate(){
+
+  if(locked){
+    return;
+  }
+
+  locked=true;
+
+  const answer=[
+    ...document.querySelectorAll("#choices input:checked")
+  ].map(x=>+x.value);
+
+  const x=questions[index];
+  const ok=same(answer,x.a);
+
+  if(ok){
+    score++;
+  }
+
+  $("feedback").innerHTML=`
+    <div class="feedback">
+      <strong class="${ok?"good":"bad"}">
+        ${ok?"Bonne réponse":"À revoir"}
+      </strong>
+      <br>
+      ${x.e}
+    <br><strong>Réponses correctes : ${x.a.map(i=>String.fromCharCode(65+i)).join(", ")}</strong></div>
+  `;
+
+  $("validate").textContent=
+    index===questions.length-1
+      ?"Voir mon résultat"
+      :"Question suivante";
+
+  $("validate").onclick=next;
+}
+
+async function next(){
+
+  const x=questions[index];
+
+  const selected=[
+    ...document.querySelectorAll("#choices input:checked")
+  ].map(x=>+x.value);
+
+  await db
+    .from("questionnaire2_answers")
+    .insert({
+      participant_id:participant.email,
+      question_index:index+1,
+      selected_answers:selected,
+      correct:same(selected,x.a)
+    });
+
+  if(index<questions.length-1){
+
+    index++;
+
+    $("validate").textContent="Valider";
+    $("validate").onclick=()=>{};
+
+    render();
+
+  }else{
+
+    await db
+      .from("questionnaire2_participants")
+      .insert({
+        first_name:participant.first,
+        last_name:participant.last,
+        email:participant.email,
+        score,
+        total_questions:questions.length,
+        duration_seconds:Math.round(
+          (Date.now()-startedAt)/1000
+        )
+      });
+
+    $("quiz").classList.add("hidden");
+    $("result").classList.remove("hidden");
+
+    $("score").textContent=`${score} / ${questions.length}`;
+
+    $("resultText").textContent=
+      score===questions.length
+        ?"Bravo, toutes les notions sont maîtrisées."
+        :"Merci. Ce résultat peut vous aider à poursuivre la réflexion.";
+  }
+}
+</script>
+
+</body>
+</html>
