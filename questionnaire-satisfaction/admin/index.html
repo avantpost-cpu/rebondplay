@@ -10,6 +10,9 @@ body:has(#login:not([hidden])) .admin-head{display:none}
 #login.login input{box-sizing:border-box;width:100%;margin:0 0 10px;background:#fff}
 #login.login #connect{width:100%;background:#e65013;color:#fff}
 @media(max-width:600px){#login.login{padding:30px 24px}}
+
+/* Le cartouche de connexion disparaît après authentification */
+#login[hidden]{display:none!important}
 </style></head><body><main class="w"><section id="login" class="box login"><img class="login-logo" src="../../logorebondsignature.png" alt="Rebond"><h2>Administration Rebond</h2><p>Connectez-vous avec le compte administrateur Supabase.</p><input id="email" type="email" placeholder="Adresse e-mail"><input id="password" type="password" placeholder="Mot de passe"><button id="connect">Se connecter</button><p id="lm"></p></section><div id="app" hidden><h1>Questionnaire de satisfaction</h1><section class="box"><h2>Créer une session</h2><div class="row"><input id="event" placeholder="Nom de l'événement"><input id="date" type="date"><input id="place" placeholder="Lieu"><button id="create" type="button">Créer</button></div><p id="cm"></p></section><section class="box"><h2>Mes sessions</h2><div id="sessions">Chargement…</div></section></div></main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>window.REBOND_CONFIG={supabaseUrl:"https://tdsrqmpfdvntybdlvejy.supabase.co",supabaseKey:"sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO"};</script><script>
 const c=window.supabase.createClient(window.REBOND_CONFIG.supabaseUrl,window.REBOND_CONFIG.supabaseKey),login=document.querySelector("#login"),app=document.querySelector("#app");
 const emailEl=document.querySelector("#email"),passwordEl=document.querySelector("#password"),lmEl=document.querySelector("#lm"),eventEl=document.querySelector("#event"),dateEl=document.querySelector("#date"),placeEl=document.querySelector("#place"),cmEl=document.querySelector("#cm"),sessionsEl=document.querySelector("#sessions");
