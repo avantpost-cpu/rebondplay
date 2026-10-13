@@ -67,10 +67,18 @@
     .image-button img { display:block; width:100%; height:auto; }
     #nextBtn { display:none; width:min(60%,324px); }
 
+
+    .english-quiz-title { display:none; text-align:center; margin:0 auto 22px; line-height:1.05; }
+    .english-quiz-title .quiz-label { display:inline-block; padding:13px 25px; border-radius:48%; background:#426f80; color:#fff; font-size:46px; font-weight:300; letter-spacing:3px; }
+    .english-quiz-title .quiz-heading { display:block; margin-top:14px; color:#426f80; font-size:clamp(26px,5vw,43px); font-weight:300; letter-spacing:2px; }
+    html[lang="en"] .quiz-title-image { display:none; }
+    html[lang="en"] .english-quiz-title { display:block; }
   </style>
 </head>
 <body>
   <img src="https://rebondplay.com/pagevideo/animations/quizviolences/titrestress.png" alt="Quiz sur le stress post-traumatique" class="quiz-title-image">
+
+  <div class="english-quiz-title" role="heading" aria-level="1"><span class="quiz-label">QUIZ</span><span class="quiz-heading">POST-TRAUMATIC STRESS</span></div>
 
   <p id="instructions">
     Testez vos connaissances sur les conséquences psychologiques et physiques des violences dans le milieu sportif. 
