@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Majeure — Rebond</title>
+
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  overflow-x: auto;
+  font-family: Arial, sans-serif;
+}
+
+/* ⭐ CONTENEUR DE CONTRÔLE — clé pour Digiforma */
+#outer-container {
+  width: 100%;
+  max-width: 550px;
+  margin: auto;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ⭐ SCÈNE HOMOTHÉTIQUE — base 500 px */
+.homothety-stage {
+  width: 500px;
+  transform-origin: top left;
+}
+
+/* ------- CSS -------- */
+
+.scene-adulte {
+  width: 500px;
+  margin: 0;
+}
+
+.zone-fond {
+  position: relative;
+  width: 100%;
+  height: 709px;
+  background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/fondadulte.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center top;
+}
+
+/* ⭐ Style de base des icônes */
+.icone {
+  position: absolute;
+  width: 25%;
+  left: 18%;
+  aspect-ratio: 4 / 1;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left center;
+  opacity: .40;
+  cursor: pointer;
+
+  /* ⭐ Zoom orienté vers la droite (par défaut) */
+  transform-origin: left center;
+
+  transition: transform .15s ease-out, filter .2s ease-out, opacity .15s ease-out;
+}
+
+/* ⭐ Survol commun */
+.icone:hover {
+  opacity: 1;
+  filter: brightness(1.15);
+  z-index: 50;
+}
+
+/* ⭐⭐ ZOOM INDIVIDUEL POUR CHAQUE PHRASE ⭐⭐ */
+.i1:hover {
+  transform: scale(2.8) rotate(-3deg);
+}
+
+.i2:hover {
+  transform: scale(2.8) rotate(-3deg);
+}
+
+.i3:hover {
+  transform: scale(3.5) rotate(-3deg);
+}
+
+.i4:hover {
+  transform: scale(2.4) rotate(-3deg);
+}
+
+.i5:hover {
+  transform: scale(3.6) rotate(-3deg);
+}
+
+/* ⭐ Images des phrases */
+.i1 { top: 38%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/1.png"); }
+.i2 { top: 45%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/2.png"); }
+.i3 { top: 53%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/3.png"); }
+.i4 { top: 64%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/4.png"); }
+.i5 { top: 72%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/5.png"); }
+
+</style>
+<style>.en-overlay{display:none;position:absolute;inset:0;background:#fff;z-index:1;font-family:Arial,sans-serif}.en-title{position:absolute;top:5%;left:3%;right:3%;text-align:center;font-size:26px;font-weight:800;color:#559b98}.en-line{position:absolute;left:7%;right:7%;font-size:17px;line-height:1.25;text-align:center;font-weight:600;color:#252525;transform:translateY(-50%)}.en-mode .en-overlay{display:block}.en-mode .icone,.en-mode .ico-m{z-index:3;background-image:none!important;opacity:0!important}.en-mode .icone:hover,.en-mode .ico-m:hover{opacity:0!important}</style></head>
+
+<body>
+
+<!-- ⭐ WRAPPER DE CONTRÔLE -->
+<div id="outer-container">
+
+    <!-- ⭐ SCÈNE À ÉCHELLE FIXE -->
+    <div id="stage-wrapper" class="homothety-stage">
+
+        <div class="scene-adulte">
+            <div class="zone-fond"><div class="en-overlay"><div class="en-title">SPEAKING TO AN ADULT VICTIM</div><div class="en-line" style="top:38%">I believe you.</div><div class="en-line" style="top:45%">Nothing justifies violence.</div><div class="en-line" style="top:53%">You are not alone.</div><div class="en-line" style="top:64%">You did nothing wrong.</div><div class="en-line" style="top:72%">The perpetrator is solely responsible.</div><div class="en-line" style="top:80%">The law prohibits and punishes violence.</div><div class="en-line" style="top:88%">I will help and support you.</div></div>
+
+                <!-- ⭐ Icônes avec zoom individuel -->
+                <div class="icone i1" data-son="s1.wav"></div>
+                <div class="icone i2" data-son="s2.wav"></div>
+                <div class="icone i3" data-son="s3.wav"></div>
+                <div class="icone i4" data-son="s4.wav"></div>
+                <div class="icone i5" data-son="s5.wav"></div>
+
+            </div>
+        </div>
+
+    </div>
+</div> <!-- fin outer-container -->
+
+<!-- ⭐ SCRIPT HOMOTHÉTIQUE ANTI-BLOCAGE -->
+<script>
+function scaleStage() {
+  const stage = document.getElementById("stage-wrapper");
+  const container = document.getElementById("outer-container");
+
+  const baseWidth = 500;
+  const availableWidth = container.getBoundingClientRect().width;
+
+  let scale = availableWidth / baseWidth;
+  if (scale > 1) scale = 1;
+
+  stage.style.transform = `scale(${scale})`;
+}
+
+scaleStage();
+window.addEventListener("resize", scaleStage);
+
+setTimeout(scaleStage, 200);
+setTimeout(scaleStage, 600);
+setInterval(scaleStage, 800);
+
+/* ⭐ Sons */
+document.querySelectorAll(".icone").forEach(el => {
+  const fichier = el.getAttribute("data-son");
+  const audio = new Audio("https://avantpost-cpu.github.io/depot-quiz/majeure/" + fichier);
+  el.addEventListener("click", () => {
+    audio.currentTime = 0;
+    audio.play();
+  });
+});
+</script>
+
+</body>
+</html>
+<script>if(new URLSearchParams(location.search).get('lang')==='en')document.body.classList.add('en-mode');</script>
