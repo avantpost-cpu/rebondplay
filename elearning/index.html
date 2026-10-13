@@ -534,6 +534,8 @@ const EN_TRANSLATIONS={"Accueil&nbsp; / &nbsp;Espace formation&nbsp; / &nbsp;Sen
 function localizeHtml(html){
  if(currentLanguage==='fr')return html;
  html=html.replace('https://avantpost-cpu.github.io/depot-quiz/com/com.html','https://avantpost-cpu.github.io/depot-quiz/com/com.html?lang=en');
+ html=html.replace('https://avantpost-cpu.github.io/depot-quiz/majeure/majeure.html','https://avantpost-cpu.github.io/depot-quiz/majeure/majeure.html?lang=en');
+ html=html.replace('https://avantpost-cpu.github.io/depot-quiz/mineure/mineure.html','https://avantpost-cpu.github.io/depot-quiz/mineure/mineure.html?lang=en');
  const entries=Object.entries(EN_TRANSLATIONS).sort((a,b)=>b[0].length-a[0].length);
  const translate=text=>entries.reduce((out,[fr,en])=>out.split(fr).join(en),text);
  // Translate visible text and accessibility labels, never file paths, URLs or HTML attributes.
