@@ -93,7 +93,7 @@ body {
 <div class="container">
   <!-- Ligne 1 -->
   <div class="row row-1">
-    <img id="img1" src="https://avantpost-cpu.github.io/depot-quiz/urgence2/1.png" alt="image principale">
+    <img id="img1" src="./1.png" alt="image principale">
   </div>
 
   <!-- Groupe highlight -->
@@ -101,21 +101,21 @@ body {
     <!-- Ligne 2 -->
     <div class="row row-2">
       <video autoplay muted loop playsinline>
-        <source src="https://avantpost-cpu.github.io/depot-quiz/urgence2/2.mp4" type="video/mp4">
+        <source src="./2.mp4" type="video/mp4">
       </video>
-      <img class="highlight" id="img3" src="https://avantpost-cpu.github.io/depot-quiz/urgence2/3.png" alt="image 3">
-      <img class="highlight" id="img4" src="https://avantpost-cpu.github.io/depot-quiz/urgence2/4.png" alt="image 4">
+      <img class="highlight" id="img3" src="./3.png" alt="image 3">
+      <img class="highlight" id="img4" src="./4.png" alt="image 4">
     </div>
 
     <!-- Ligne 3 -->
     <div class="row row-3">
-      <img class="highlight" id="img5" src="https://avantpost-cpu.github.io/depot-quiz/urgence2/5.png" alt="image 5">
-      <img class="highlight" id="img6" src="https://avantpost-cpu.github.io/depot-quiz/urgence2/6.png" alt="image 6">
+      <img class="highlight" id="img5" src="./5.png" alt="image 5">
+      <img class="highlight" id="img6" src="./6.png" alt="image 6">
     </div>
 
     <!-- Ligne 4 -->
     <div class="row row-4">
-      <img class="highlight" id="img7" src="https://avantpost-cpu.github.io/depot-quiz/urgence2/7.png" alt="image 7">
+      <img class="highlight" id="img7" src="./7.png" alt="image 7">
     </div>
   </div>
 </div>
@@ -128,11 +128,11 @@ body {
   const highlights = Array.from(group.querySelectorAll('.highlight'));
 
   const replacements = {
-    'img3':'https://avantpost-cpu.github.io/depot-quiz/urgence2/1a.png',
-    'img4':'https://avantpost-cpu.github.io/depot-quiz/urgence2/1b.png',
-    'img5':'https://avantpost-cpu.github.io/depot-quiz/urgence2/1e.jpg',
-    'img6':'https://avantpost-cpu.github.io/depot-quiz/urgence2/1d.jpg',
-    'img7':'https://avantpost-cpu.github.io/depot-quiz/urgence2/1c.jpg'
+    'img3':'./1a.png',
+    'img4':'./1b.png',
+    'img5':'./1e.png',
+    'img6':'./1d.png',
+    'img7':'./1c.png'
   };
 
   let activeImg = null;
