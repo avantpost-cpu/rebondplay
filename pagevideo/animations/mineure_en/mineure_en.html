@@ -119,14 +119,6 @@ window.addEventListener("resize", scaleMineure);
 window.addEventListener("load", scaleMineure);
 
 /* ⭐ Audio au clic */
-document.querySelectorAll(".ico-m").forEach(el => {
-  const fichier = el.getAttribute("data-son");
-  const audio = new Audio("./" + fichier);
-
-  const play = () => { audio.currentTime = 0; audio.play(); };
-  el.addEventListener("click", play);
-  el.addEventListener("touchstart", play);
-});
 </script>
 
 </body></html>
