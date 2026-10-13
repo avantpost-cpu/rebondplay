@@ -743,7 +743,7 @@ function updateChapterNav(){
  const quizAria=currentLanguage==='en'?'Go to quiz':'Aller au quiz';
 
  if(activeSeq===1){
-   nav.innerHTML=`<span class="chapter-nav-label">${label}</span><button type="button" onclick="showSeq2Section(\'I\')" aria-label="${ariaPrefix}I"><img class="nav-arrow" src="./fleche.png" alt="" aria-hidden="true">I</button><button type="button" onclick="showSeq2Section(\'II\')" aria-label="${ariaPrefix}II"><img class="nav-arrow" src="./fleche.png" alt="" aria-hidden="true">II</button><button type="button" onclick="showSeq2Section(\'Q\')" aria-label="${quizAria}"><img class="nav-arrow" src="./fleche.png" alt="" aria-hidden="true">Q</button><span class="chapter-nav-current" id="chapterNavCurrent" aria-live="polite"></span>`;
+   nav.innerHTML=`<span class="chapter-nav-label">${label}</span><button type="button" onclick="showSeq2Section(\'A\')" aria-label="${ariaPrefix}A"><img class="nav-arrow" src="./fleche.png" alt="" aria-hidden="true">A</button><button type="button" onclick="showSeq2Section(\'B\')" aria-label="${ariaPrefix}AI"><img class="nav-arrow" src="./fleche.png" alt="" aria-hidden="true">B</button><button type="button" onclick="showSeq2Section(\'Q\')" aria-label="${quizAria}"><img class="nav-arrow" src="./fleche.png" alt="" aria-hidden="true">Q</button><span class="chapter-nav-current" id="chapterNavCurrent" aria-live="polite"></span>`;
  }else if(activeSeq===2){
    nav.innerHTML=`<span class="chapter-nav-label">${label}</span><button type="button" onclick="showSeq3Section(\'A\')" aria-label="${ariaPrefix}A"><img class="nav-arrow" src="./fleche.png" alt="" aria-hidden="true">A</button><button type="button" onclick="showSeq3Section(\'B\')" aria-label="${ariaPrefix}B"><img class="nav-arrow" src="./fleche.png" alt="" aria-hidden="true">B</button><button type="button" onclick="showSeq3Section(\'Q\')" aria-label="${quizAria}"><img class="nav-arrow" src="./fleche.png" alt="" aria-hidden="true">Q</button><span class="chapter-nav-current" id="chapterNavCurrent" aria-live="polite"></span>`;
  }else{
@@ -759,10 +759,15 @@ function showSeq3Section(key){
  if(!target)return;
  target.scrollIntoView({behavior:'smooth',block:'start'});
 }
+function getSeq2Targets(){
+ const titles=[...document.querySelectorAll('#lesson .seq2-major-title')];
+ const quiz=[...document.querySelectorAll('#lesson h3, #lesson h4')].find(el=>/quiz de fin de chapitre/i.test(el.textContent.trim()));
+ return {A:titles[0],B:titles[1],Q:quiz||document.querySelector('#chapterQuiz')};
+}
 function showSeq2Section(key){
- const titles={I:'I - Repérer les auteurs et les mécanismes d’emprise',II:'II - Repérer les victimes',Q:'QUIZ de fin de chapitre'};
- const el=[...document.querySelectorAll('#lesson .seq2-major-title, #lesson h3, #lesson h4')].find(n=>n.textContent.trim()===titles[key]);
- el?.scrollIntoView({behavior:'smooth',block:'start'});
+ const target=getSeq2Targets()[key];
+ if(!target)return;
+ target.scrollIntoView({behavior:'smooth',block:'start'});
 }
 function mountQuizViolences(){
  const image=document.querySelector('#lesson img[src="../pagevideo/animations/Image_Les-signaux-faibles.jpg"]');
