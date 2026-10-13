@@ -535,7 +535,7 @@ function localizeHtml(html){
  if(currentLanguage==='fr')return html;
  html=html.replace('https://avantpost-cpu.github.io/depot-quiz/com/com.html','https://avantpost-cpu.github.io/depot-quiz/com/com.html?lang=en');
  html=html.replace('https://avantpost-cpu.github.io/depot-quiz/phrases/phrases.html','https://avantpost-cpu.github.io/depot-quiz/phrases/phrases.html?lang=en');
- html=html.replace(/(<iframe[^>]*src=\\"https:\/\/avantpost-cpu\.github\.io\/depot-quiz\/phrases\/phrases\.html\?lang=en\\"[^>]*height:)780px/, '$11000px');
+ html=html.replace(/(<iframe[^>]*src="https:\/\/avantpost-cpu\.github\.io\/depot-quiz\/phrases\/phrases\.html\?lang=en"[^>]*height:)780px/, (_match,prefix)=>prefix+'1000px');
  html=html.replace('https://avantpost-cpu.github.io/depot-quiz/majeure/majeure.html','https://avantpost-cpu.github.io/rebondplay/pagevideo/animations/majeure_en/majeure.html');
  html=html.replace('https://avantpost-cpu.github.io/depot-quiz/mineure/mineure.html','https://avantpost-cpu.github.io/rebondplay/pagevideo/animations/mineure_en/mineure_en.html');
  html=html.replace('https://avantpost-cpu.github.io/depot-quiz/retenir/retenir.html','https://avantpost-cpu.github.io/depot-quiz/retenir/retenir.html?lang=en');
