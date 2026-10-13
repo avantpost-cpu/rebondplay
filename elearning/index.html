@@ -779,7 +779,7 @@ function mountQuizViolences(){
  block.id='quizViolencesEmbed';
  block.className='interactive-embed interactive-embed--quizviolences';
  const frame=document.createElement('iframe');
- frame.src='../pagevideo/animations/quizviolences/quizviolences.html';
+ frame.src='../pagevideo/animations/quizviolences/quizviolences.html'+(currentLanguage==='en'?'?lang=en':'');
  frame.title='Quiz violences';
  frame.loading='eager';
  frame.setAttribute('allow','fullscreen; autoplay');
