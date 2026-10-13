@@ -636,7 +636,7 @@ function bindQuizFeedback(container){
  updateLocks();
 }
 function bindSeq2Quiz(container){
- const section=[...container.querySelectorAll('.seq2-part')].find(s=>s.textContent.includes('QUIZ de fin de chapitre')&&s.textContent.includes('1. Le point de bascule'));
+ const section=[...container.querySelectorAll('.seq2-part')].find(s=>s.textContent.includes(localizeHtml('1. Le point de bascule')));
  if(!section)return;
  const specs=[
   {title:'1. Le point de bascule',choices:['A. Lorsque la victime commence à exprimer sa confiance','B. Lorsque l’agresseur obtient une dépendance affective et isole la victime','C. Lorsque l’agresseur agit pour la première fois violemment'],correct:[1],multiple:false},
@@ -655,9 +655,9 @@ function bindSeq2Quiz(container){
  const blocks=[];
  specs.forEach((spec,index)=>{
   const all=[...section.children];
-  const title=all.find(el=>el.textContent.trim()===spec.title);
+  const title=all.find(el=>el.textContent.trim()===localizeHtml(spec.title));
   if(!title)return;
-  const nextTitle=index+1<specs.length?all.find(el=>el.textContent.trim()===specs[index+1].title):null;
+  const nextTitle=index+1<specs.length?all.find(el=>el.textContent.trim()===localizeHtml(specs[index+1].title)):null;
   const range=[];
   let node=title;
   while(node&&node!==nextTitle){range.push(node);node=node.nextElementSibling}
@@ -666,7 +666,7 @@ function bindSeq2Quiz(container){
   title.before(block);
   range.forEach(el=>block.appendChild(el));
   blocks.push(block);
-  const choiceEls=spec.choices.map(txt=>[...block.children].find(el=>el.textContent.trim()===txt)).filter(Boolean);
+  const choiceEls=spec.choices.map(txt=>[...block.children].find(el=>el.textContent.trim()===localizeHtml(txt))).filter(Boolean);
   choiceEls.forEach((el,choiceIndex)=>{
    const label=document.createElement('label');
    label.className='seq2-quiz-choice';
@@ -678,7 +678,7 @@ function bindSeq2Quiz(container){
    let sibling=label.nextElementSibling;
    if(sibling?.classList.contains('source-marker'))sibling.hidden=true;
   });
-  const correction=[...block.children].find(el=>el.textContent.trim()==='Correction');
+  const correction=[...block.children].find(el=>el.textContent.trim()===localizeHtml('Correction'));
   const correctionText=correction?.nextElementSibling;
   const feedback=document.createElement('div');
   feedback.className='quiz-feedback';
