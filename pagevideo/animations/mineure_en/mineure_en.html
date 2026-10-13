@@ -1,4 +1,4 @@
-<div id="mineure-wrapper" style="
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head><body style="margin:0"><div id="mineure-wrapper" style="
   width:100%;
   display:flex;
   justify-content:center;
@@ -21,30 +21,30 @@
       <div style="
         width:100%;
         padding-top:142%;
-        background-image:url('https://avantpost-cpu.github.io/depot-quiz/mineure/fondmineure.png');
+        background-image:url('./fondmineure.png');
         background-size:contain;
         background-repeat:no-repeat;
         background-position:center;
         position:relative;
       ">
 
-        <div class="en-overlay"><div class="en-title">SPEAKING TO A CHILD VICTIM</div><div class="en-line" style="top:43%">You are brave to tell me this.</div><div class="en-line" style="top:50%">That person had no right to do that to you.</div><div class="en-line" style="top:57%">What happened to you is called violence.</div><div class="en-line" style="top:64%">Violence is never your fault.</div><div class="en-line" style="top:71%">The law prohibits and punishes violence.</div><div class="en-line" style="top:78%">There are people who can help you.</div><div class="en-line" style="top:85%">You did well to tell me.</div><div class="en-line" style="top:92%">I will do everything I can to help you.</div></div><!-- ICONES (positions proportionnelles) -->
-        <div class="ico-m ico-a" data-son="a.wav" style="top:34%; left:14%;"></div>
-        <div class="ico-m ico-b" data-son="b.wav" style="top:46%; left:14%;"></div>
+        <!-- ICONES (positions proportionnelles) -->
+        <div class="ico-m ico-a" style="top:34%; left:14%;"></div>
+        <div class="ico-m ico-b" style="top:46%; left:14%;"></div>
 
-        <div class="ico-m ico-c" data-son="c.wav" style="top:32%; left:44%;"></div>
-        <div class="ico-m ico-d" data-son="d.wav" style="top:43%; left:50%;"></div>
-        <div class="ico-m ico-e" data-son="e.wav" style="top:54%; left:45%;"></div>
-        <div class="ico-m ico-f" data-son="f.wav" style="top:64%; left:50%;"></div>
-        <div class="ico-m ico-g" data-son="g.wav" style="top:74%; left:50%;"></div>
-        <div class="ico-m ico-h" data-son="h.wav" style="top:84%; left:52%;"></div>
+        <div class="ico-m ico-c" style="top:32%; left:44%;"></div>
+        <div class="ico-m ico-d" style="top:43%; left:50%;"></div>
+        <div class="ico-m ico-e" style="top:54%; left:45%;"></div>
+        <div class="ico-m ico-f" style="top:64%; left:50%;"></div>
+        <div class="ico-m ico-g" style="top:74%; left:50%;"></div>
+        <div class="ico-m ico-h" style="top:84%; left:52%;"></div>
 
       </div>
     </div>
   </div>
 </div>
 
-<style>.en-overlay{display:none;position:absolute;inset:0;background:transparent;z-index:1;font-family:Arial,sans-serif}.en-overlay:before{content:'';position:absolute;left:0;right:0;top:30%;bottom:0;background:#fff}.en-title{position:absolute;top:32%;left:3%;right:3%;text-align:center;font-size:26px;font-weight:800;color:#dba800}.en-line{position:absolute;left:7%;right:7%;font-size:17px;line-height:1.25;text-align:center;font-weight:600;color:#252525;transform:translateY(-50%)}.en-mode .en-overlay{display:block}.en-mode .icone,.en-mode .ico-m{z-index:3;background-image:none!important;opacity:0!important}.en-mode .icone:hover,.en-mode .ico-m:hover{opacity:0!important}</style><style>
+<style>
 /* ⭐ Style de base des icônes */
 .ico-m {
   position:absolute;
@@ -70,14 +70,14 @@
 }
 
 /* ⭐ Images */
-.ico-a { background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/a.png"); }
-.ico-b { background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/b.png"); }
-.ico-c { background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/c.png"); }
-.ico-d { background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/d.png"); }
-.ico-e { background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/e.png"); }
-.ico-f { background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/f.png"); }
-.ico-g { background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/g.png"); }
-.ico-h { background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/h.png"); }
+.ico-a { background-image:url("./a.png"); }
+.ico-b { background-image:url("./b.png"); }
+.ico-c { background-image:url("./c.png"); }
+.ico-d { background-image:url("./d.png"); }
+.ico-e { background-image:url("./e.png"); }
+.ico-f { background-image:url("./f.png"); }
+.ico-g { background-image:url("./g.png"); }
+.ico-h { background-image:url("./h.png"); }
 
 /* ⭐⭐ ZOOM INDIVIDUEL (modifiable icône par icône) ⭐⭐ */
 /* Tu ne changes que le chiffre dans scale(X) */
@@ -121,11 +121,12 @@ window.addEventListener("load", scaleMineure);
 /* ⭐ Audio au clic */
 document.querySelectorAll(".ico-m").forEach(el => {
   const fichier = el.getAttribute("data-son");
-  const audio = new Audio("https://avantpost-cpu.github.io/depot-quiz/mineure/" + fichier);
+  const audio = new Audio("./" + fichier);
 
   const play = () => { audio.currentTime = 0; audio.play(); };
   el.addEventListener("click", play);
   el.addEventListener("touchstart", play);
 });
 </script>
-<script>if(new URLSearchParams(location.search).get('lang')==='en')document.body.classList.add('en-mode');</script>
+
+</body></html>
