@@ -107,19 +107,19 @@ html, body {
 <div class="wrapper">
   <div class="mosaic">
     <!-- Image du haut -->
-    <img src="https://avantpost-cpu.github.io/depot-quiz/puzzledef/a.jpg" alt="a">
+    <img src="https://avantpost-cpu.github.io/rebondplay/pagevideo/animations/puzzledef_en/a.jpg" alt="a">
 
     <!-- Image du bas + overlays + hotspots -->
     <div class="board" id="board">
-      <img class="base" src="https://avantpost-cpu.github.io/depot-quiz/puzzledef/b.jpg" alt="b">
+      <img class="base" src="https://avantpost-cpu.github.io/rebondplay/pagevideo/animations/puzzledef_en/b.jpg" alt="b">
 
       <!-- overlays -->
-      <img class="overlay b1" src="https://avantpost-cpu.github.io/depot-quiz/puzzledef/b1.png" alt="b1">
-      <img class="overlay b2" src="https://avantpost-cpu.github.io/depot-quiz/puzzledef/b2.png" alt="b2">
-      <img class="overlay b3" src="https://avantpost-cpu.github.io/depot-quiz/puzzledef/b3.png" alt="b3">
-      <img class="overlay b4" src="https://avantpost-cpu.github.io/depot-quiz/puzzledef/b4.png" alt="b4"><!-- ← ajout -->
-      <img class="overlay b5" src="https://avantpost-cpu.github.io/depot-quiz/puzzledef/b5.png" alt="b5">
-      <img class="overlay b6" src="https://avantpost-cpu.github.io/depot-quiz/puzzledef/b6.png" alt="b6">
+      <img class="overlay b1" src="https://avantpost-cpu.github.io/rebondplay/pagevideo/animations/puzzledef_en/b1.png" alt="b1">
+      <img class="overlay b2" src="https://avantpost-cpu.github.io/rebondplay/pagevideo/animations/puzzledef_en/b2.png" alt="b2">
+      <img class="overlay b3" src="https://avantpost-cpu.github.io/rebondplay/pagevideo/animations/puzzledef_en/b3.png" alt="b3">
+      <img class="overlay b4" src="https://avantpost-cpu.github.io/rebondplay/pagevideo/animations/puzzledef_en/b4.png" alt="b4"><!-- ← ajout -->
+      <img class="overlay b5" src="https://avantpost-cpu.github.io/rebondplay/pagevideo/animations/puzzledef_en/b5.png" alt="b5">
+      <img class="overlay b6" src="https://avantpost-cpu.github.io/rebondplay/pagevideo/animations/puzzledef_en/b6.png" alt="b6">
 
       <!-- hotspots invisibles -->
       <a id="z1" class="hotspot" aria-label="Zone 1"></a>
@@ -142,7 +142,7 @@ function adjustScale(){
 window.addEventListener('resize', adjustScale);
 window.addEventListener('load', () => {
   // préchargements pour transitions sans flash
-  ["b2.png","b4.png","b6.png"].forEach(n => new Image().src = `https://avantpost-cpu.github.io/depot-quiz/puzzledef/${n}`);
+  ["b2.png","b4.png","b6.png"].forEach(n => new Image().src = `https://avantpost-cpu.github.io/rebondplay/pagevideo/animations/puzzledef_en/${n}`);
   adjustScale();
 
   const board = document.getElementById('board');
