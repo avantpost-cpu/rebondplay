@@ -84,6 +84,19 @@ img {
   overflow: hidden;
 }
 
+/* Fondus très légers sur les bords des vignettes : atténuent les
+   différences de densité du papier sans toucher aux dessins ni au placement. */
+.a, .hoverable {
+  -webkit-mask-image:
+    linear-gradient(to right, transparent, #000 3%, #000 97%, transparent),
+    linear-gradient(to bottom, transparent, #000 3%, #000 97%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent, #000 3%, #000 97%, transparent),
+    linear-gradient(to bottom, transparent, #000 3%, #000 97%, transparent);
+  mask-composite: intersect;
+}
+
 /* calque coloré par-dessus */
 .hoverable::before {
   content: "";
