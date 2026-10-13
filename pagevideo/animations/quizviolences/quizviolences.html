@@ -90,6 +90,8 @@
   <div id="resultImage"></div>
 
   <script>
+    const isEnglish = new URLSearchParams(window.location.search).get('lang') === 'en';
+    if(isEnglish) document.documentElement.lang = 'en';
     var questions = [
       { 
         text: "Quels symptômes peuvent révéler un stress post-traumatique ?", 
@@ -157,6 +159,24 @@
       }
     ];
 
+    if(isEnglish){
+      questions = [
+        {text:"Which symptoms may indicate post-traumatic stress?",answers:[{text:"Hypervigilance",correct:true},{text:"Wearing excessive layers of clothing",correct:true},{text:"Sleeping deeply",correct:false},{text:"Skipping breakfast",correct:false}],multiple:true},
+        {text:"Which behavior is a sign of avoidance?",answers:[{text:"Missing training sessions",correct:true},{text:"Taking more photos",correct:false},{text:"Using social media more often",correct:false}],multiple:false},
+        {text:"Which disorder involves repetitive thoughts and compulsions?",answers:[{text:"Obsessive-compulsive disorder (OCD)",correct:true},{text:"Depression",correct:false},{text:"Freezing response",correct:false}],multiple:false},
+        {text:"Which physical signs may appear in a victim?",answers:[{text:"Unexplained injuries",correct:true},{text:"Birthmarks",correct:false},{text:"Poor taste in food",correct:false}],multiple:false},
+        {text:"What is dissociation?",answers:[{text:"Feeling detached from oneself",correct:true},{text:"Jumping for joy",correct:false},{text:"Eating more",correct:false}],multiple:false},
+        {text:"Which unusual behaviors may be signs of trauma?",answers:[{text:"Social withdrawal",correct:true},{text:"Hypervigilance",correct:true},{text:"Watching television",correct:false}],multiple:true},
+        {text:"Why can physical activity be used after trauma?",answers:[{text:"To rebuild self-esteem and a positive relationship with one's body",correct:true},{text:"To lose weight",correct:false},{text:"To punish the abuser",correct:false}],multiple:false}
+      ];
+      document.getElementById('instructions').textContent = 'Test your knowledge of the psychological and physical consequences of violence in sport. You have 15 seconds for each question. The green/orange bar shows the time remaining.';
+      document.getElementById('startBtn').setAttribute('aria-label','Start the quiz');
+      document.querySelector('#startBtn img').alt='Start the quiz';
+      document.getElementById('nextBtn').setAttribute('aria-label','Next question');
+      document.querySelector('#nextBtn img').alt='Next question';
+      document.getElementById('validateBtn').textContent='Check answers';
+    }
+
     var currentQuestion = 0;
     var score = 0;
     var timeLeft = 15;
@@ -210,7 +230,7 @@
       if(timeLeft <= 0) {
         clearInterval(timer);
         var feedback = document.getElementById("feedback");
-        feedback.textContent = "⏰ Temps écoulé !";
+        feedback.textContent = isEnglish ? "⏰ Time is up!" : "⏰ Temps écoulé !";
         feedback.className = "wrong";
         nextBtn.style.display = "block";
       }
@@ -223,11 +243,11 @@
       var feedback = document.getElementById("feedback");
 
       if(ans.correct){
-        feedback.textContent = "✅ Bonne réponse !";
+        feedback.textContent = isEnglish ? "✅ Correct answer!" : "✅ Bonne réponse !";
         feedback.className = "correct";
         score++;
       } else {
-        feedback.textContent = "❌ Mauvaise réponse.";
+        feedback.textContent = isEnglish ? "❌ Incorrect answer." : "❌ Mauvaise réponse.";
         feedback.className = "wrong";
       }
       nextBtn.style.display = "block";
@@ -245,11 +265,11 @@
 
       var feedback = document.getElementById("feedback");
       if(correct){
-        feedback.textContent = "✅ Bonne réponse !";
+        feedback.textContent = isEnglish ? "✅ Correct answer!" : "✅ Bonne réponse !";
         feedback.className = "correct";
         score++;
       } else {
-        feedback.textContent = "❌ Mauvaise réponse.";
+        feedback.textContent = isEnglish ? "❌ Incorrect answer." : "❌ Mauvaise réponse.";
         feedback.className = "wrong";
       }
 
@@ -262,7 +282,7 @@
       validateBtn.style.display = "none";
       timerBar.style.width = "0%";
       progressContainer.textContent = "";
-      scoreContainer.textContent = "Résultat final : " + score + " / " + questions.length;
+      scoreContainer.textContent = (isEnglish ? "Final score: " : "Résultat final : ") + score + " / " + questions.length;
 
       resultImage.innerHTML = "";
       if(score >= 5){
