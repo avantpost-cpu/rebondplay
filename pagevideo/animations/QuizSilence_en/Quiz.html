@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Devinez les raisons du silence</title>
+  <title>Guess the reasons behind the silence</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
       max-width: 600px;
       margin: auto;
-      background-image: url('https://rebondplay.com/ressources/QuizSilence%3A/fond.jpg'); /* image de fond répétée */
+      background-image: url('./fond.jpg'); /* image de fond répétée */
       background-repeat: repeat;
       background-size: auto;
     }
@@ -70,33 +70,33 @@
   </style>
 </head>
 <body>
-  <img src="https://rebondplay.com/ressources/QuizSilence%3A/raisons.png" alt="Devinez les raisons du silence" class="quiz-title-image">
+  <img src="./raisons.png" alt="Guess the reasons behind the silence" class="quiz-title-image">
 
   <p id="instructions">
-    Ce quiz vous invite à deviner les raisons pour lesquelles certaines victimes gardent le silence dans le milieu sportif. 
-    Vous avez 15 secondes pour chaque question. La barre verte/orange indique le temps restant. Bonne chance !
+    This quiz invites you to explore why some victims remain silent in sport. 
+    You have 15 seconds for each question. The green/orange bar shows the time remaining. Good luck!
   </p>
 
-  <button id="startBtn" class="image-button" aria-label="Commencer le quiz"><img src="https://rebondplay.com/ressources/QuizSilence%3A/button.png" alt="Commencer le quiz"></button>
+  <button id="startBtn" class="image-button" aria-label="Start the quiz"><img src="./button.png" alt="Start the quiz"></button>
 
   <div id="progress"></div>
   <div id="timerBarContainer">
     <div id="timerBar"></div>
   </div>
   <div id="quiz"></div>
-  <button id="nextBtn" class="image-button" aria-label="Question suivante"><img src="https://rebondplay.com/ressources/QuizSilence%3A/suivante.png" alt="Question suivante"></button>
+  <button id="nextBtn" class="image-button" aria-label="Next question"><img src="./suivante.png" alt="Next question"></button>
   <div id="score"></div>
   <div id="resultImage"></div>
 
   <script>
     var questions = [
-      { text: "Pression sur la carrière : pourquoi le silence ?", answers: ["L’agresseur menace la carrière","Trop d’entraînements","Préférence pour la discrétion"], correct: 0 },
-      { text: "Loyauté à l’équipe : effet sur le silence ?", answers: ["Craint de nuire au club","Veut devenir capitaine","Pense que personne n’écoute"], correct: 0 },
-      { text: "Menaces physiques : exemple ?", answers: ["Ne pas intervenir en cas de blessure","Entraînements supplémentaires","Récompenses"], correct: 0 },
-      { text: "Pression familiale : effet sur le silence ?", answers: ["Peur de décevoir ou ne pas être cru","Famille encourage à parler","Famille indifférente"], correct: 0 },
-      { text: "Culture de l’effort : effet sur le silence ?", answers: ["Violences perçues comme rite","Blessures toujours soignées","Douleur ignorée par coach"], correct: 0 },
-      { text: "Culte de la virilité : effet sur le silence ?", answers: ["Honte de montrer vulnérabilité","Veut prouver sa force","Personne ne remarquera"], correct: 0 },
-      { text: "Méfiance envers institutions : pourquoi ?", answers: ["Plaintes mal traitées","Préfère amis","Cherche conseils sportifs"], correct: 0 }
+      { text: "Pressure on sporting careers: why stay silent?", answers: ["The abuser threatens the victim’s sporting career","Too many training sessions","A preference for privacy"], correct: 0 },
+      { text: "Team loyalty: how can it lead to silence?", answers: ["Fear of damaging the club’s reputation","Wanting to become team captain","Believing no one is listening"], correct: 0 },
+      { text: "Physical threats: which is an example?", answers: ["Threatening to withhold help in case of injury","Extra training sessions","Rewards"], correct: 0 },
+      { text: "Family pressure: how can it lead to silence?", answers: ["Fear of disappointing family or not being believed","Family encourages the victim to speak up","Family is indifferent"], correct: 0 },
+      { text: "Culture of toughness: how can it lead to silence?", answers: ["Abuse is seen as a rite of passage","Injuries are always treated","The coach ignores pain"], correct: 0 },
+      { text: "Pressure to appear tough: how can it lead to silence?", answers: ["Shame about showing vulnerability","Wanting to prove their strength","Thinking nobody will notice"], correct: 0 },
+      { text: "Distrust of institutions: why?", answers: ["Reports of abuse are handled poorly","Preferring to confide in friends","Seeking sporting advice"], correct: 0 }
     ];
 
     var currentQuestion = 0;
@@ -124,13 +124,13 @@
         quizContainer.innerHTML = "";
         timerBar.style.width = "0%";
         progressContainer.textContent = "";
-        scoreContainer.textContent = "Résultat final : " + score + " / " + questions.length;
+        scoreContainer.textContent = "Final score: " + score + " / " + questions.length;
 
         resultImage.innerHTML = "";
         if (score >= 5) {
-          resultImage.innerHTML = '<img src="https://rebondplay.com/ressources/QuizSilence%3A/bravo.png" alt="Bravo !" class="result-img">';
+          resultImage.innerHTML = '<img src="./bravo.png" alt="Well done!" class="result-img">';
         } else {
-          resultImage.innerHTML = '<img src="https://rebondplay.com/ressources/QuizSilence%3A/progres.png" alt="Progrès !" class="result-img">';
+          resultImage.innerHTML = '<img src="./progres.png" alt="Keep improving!" class="result-img">';
         }
         return;
       }
@@ -159,7 +159,7 @@
       timerBar.style.width = (timeLeft / 15 * 100) + "%";
       if (timeLeft <= 0) {
         clearInterval(timer);
-        document.getElementById("feedback").textContent = "⏰ Temps écoulé !";
+        document.getElementById("feedback").textContent = "⏰ Time’s up!";
         document.getElementById("feedback").className = "wrong";
         nextBtn.style.display = "block";
       }
@@ -169,11 +169,11 @@
       clearInterval(timer);
       var feedback = document.getElementById("feedback");
       if (isCorrect) {
-        feedback.textContent = "✅ Bonne réponse !";
+        feedback.textContent = "✅ Correct answer!";
         feedback.className = "correct";
         score++;
       } else {
-        feedback.textContent = "❌ Mauvaise réponse.";
+        feedback.textContent = "❌ Incorrect answer.";
         feedback.className = "wrong";
       }
       nextBtn.style.display = "block";
