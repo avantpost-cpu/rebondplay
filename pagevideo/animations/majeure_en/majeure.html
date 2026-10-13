@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Majeure — Rebond</title>
+<title>Adult victim — Rebond</title>
 
 <style>
 html, body {
@@ -39,7 +39,7 @@ html, body {
   position: relative;
   width: 100%;
   height: 709px;
-  background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/fondadulte.png");
+  background-image: url("./fondadulte.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center top;
@@ -92,14 +92,14 @@ html, body {
 }
 
 /* ⭐ Images des phrases */
-.i1 { top: 38%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/1.png"); }
-.i2 { top: 45%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/2.png"); }
-.i3 { top: 53%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/3.png"); }
-.i4 { top: 64%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/4.png"); }
-.i5 { top: 72%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/5.png"); }
+.i1 { top: 38%; background-image: url("./1.png"); }
+.i2 { top: 45%; background-image: url("./2.png"); }
+.i3 { top: 53%; background-image: url("./3.png"); }
+.i4 { top: 64%; background-image: url("./4.png"); }
+.i5 { top: 72%; background-image: url("./5.png"); }
 
 </style>
-<style>.en-overlay{display:none;position:absolute;inset:0;background:#fff;z-index:1;font-family:Arial,sans-serif}.en-title{position:absolute;top:5%;left:3%;right:3%;text-align:center;font-size:26px;font-weight:800;color:#559b98}.en-line{position:absolute;left:7%;right:7%;font-size:17px;line-height:1.25;text-align:center;font-weight:600;color:#252525;transform:translateY(-50%)}.en-mode .en-overlay{display:block}.en-mode .icone,.en-mode .ico-m{z-index:3;background-image:none!important;opacity:0!important}.en-mode .icone:hover,.en-mode .ico-m:hover{opacity:0!important}</style></head>
+</head>
 
 <body>
 
@@ -110,14 +110,14 @@ html, body {
     <div id="stage-wrapper" class="homothety-stage">
 
         <div class="scene-adulte">
-            <div class="zone-fond"><div class="en-overlay"><div class="en-title">SPEAKING TO AN ADULT VICTIM</div><div class="en-line" style="top:38%">I believe you.</div><div class="en-line" style="top:45%">Nothing justifies violence.</div><div class="en-line" style="top:53%">You are not alone.</div><div class="en-line" style="top:64%">You did nothing wrong.</div><div class="en-line" style="top:72%">The perpetrator is solely responsible.</div><div class="en-line" style="top:80%">The law prohibits and punishes violence.</div><div class="en-line" style="top:88%">I will help and support you.</div></div>
+            <div class="zone-fond">
 
                 <!-- ⭐ Icônes avec zoom individuel -->
-                <div class="icone i1" data-son="s1.wav"></div>
-                <div class="icone i2" data-son="s2.wav"></div>
-                <div class="icone i3" data-son="s3.wav"></div>
-                <div class="icone i4" data-son="s4.wav"></div>
-                <div class="icone i5" data-son="s5.wav"></div>
+                <div class="icone i1"></div>
+                <div class="icone i2"></div>
+                <div class="icone i3"></div>
+                <div class="icone i4"></div>
+                <div class="icone i5"></div>
 
             </div>
         </div>
@@ -147,17 +147,7 @@ setTimeout(scaleStage, 200);
 setTimeout(scaleStage, 600);
 setInterval(scaleStage, 800);
 
-/* ⭐ Sons */
-document.querySelectorAll(".icone").forEach(el => {
-  const fichier = el.getAttribute("data-son");
-  const audio = new Audio("https://avantpost-cpu.github.io/depot-quiz/majeure/" + fichier);
-  el.addEventListener("click", () => {
-    audio.currentTime = 0;
-    audio.play();
-  });
-});
 </script>
 
 </body>
 </html>
-<script>if(new URLSearchParams(location.search).get('lang')==='en')document.body.classList.add('en-mode');</script>
