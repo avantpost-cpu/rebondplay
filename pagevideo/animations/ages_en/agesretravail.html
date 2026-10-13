@@ -102,10 +102,10 @@ img {
 }
 
 /* mapping des versions colorées */
-.b::before { background-image: url("https://avantpost-cpu.github.io/depot-quiz/ages/b1.jpg"); }
-.c::before { background-image: url("https://avantpost-cpu.github.io/depot-quiz/ages/c1.jpg"); }
-.d::before { background-image: url("https://avantpost-cpu.github.io/depot-quiz/ages/d1.jpg"); }
-.e::before { background-image: url("https://avantpost-cpu.github.io/depot-quiz/ages/e1.jpg"); }
+.b::before { background-image: url("b1.png"); }
+.c::before { background-image: url("c1.png"); }
+.d::before { background-image: url("d1.png"); }
+.e::before { background-image: url("e1.png"); }
 
 /* auto-resize Digiforma */
 @media (max-width: 900px) {
@@ -121,26 +121,26 @@ img {
     <div class="left">
       <!-- a est fixe -->
       <div class="a">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/ages/a.jpg" alt="a">
+        <img src="a.png" alt="a">
       </div>
       <!-- c est interactive -->
       <div class="hoverable c">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/ages/c.jpg" alt="c">
+        <img src="c.png" alt="c">
       </div>
     </div>
     <!-- b est interactive -->
     <div class="hoverable b">
-      <img src="https://avantpost-cpu.github.io/depot-quiz/ages/b.jpg" alt="b">
+      <img src="b.png" alt="b">
     </div>
   </div>
 
   <!-- Bloc bas -->
   <div class="bottom">
     <div class="hoverable d">
-      <img id="img-d" src="https://avantpost-cpu.github.io/depot-quiz/ages/d.jpg" alt="d">
+      <img id="img-d" src="d.png" alt="d">
     </div>
     <div class="hoverable e">
-      <img id="img-e" src="https://avantpost-cpu.github.io/depot-quiz/ages/e.jpg" alt="e">
+      <img id="img-e" src="e.png" alt="e">
     </div>
   </div>
 </div>
@@ -171,15 +171,15 @@ const imgD = document.getElementById('img-d');
 const imgE = document.getElementById('img-e');
 
 const srcBase = {
-  d: "https://avantpost-cpu.github.io/depot-quiz/ages/d.jpg",
-  e: "https://avantpost-cpu.github.io/depot-quiz/ages/e.jpg"
+  d: "d.png",
+  e: "e.png"
 };
 
 const srcAlt = {
-  b: "https://avantpost-cpu.github.io/depot-quiz/ages/d2.jpg",
-  c: "https://avantpost-cpu.github.io/depot-quiz/ages/d4.jpg",
-  e: "https://avantpost-cpu.github.io/depot-quiz/ages/d3.jpg", /* ✅ corrigé ici */
-  d: "https://avantpost-cpu.github.io/depot-quiz/ages/e2.jpg"
+  b: "d2.png",
+  c: "d4.png",
+  e: "d3.png", /* ✅ corrigé ici */
+  d: "e2.png"
 };
 
 /* fonction de remplacement doux */
