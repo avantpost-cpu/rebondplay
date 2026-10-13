@@ -538,6 +538,7 @@ function localizeHtml(html){
  html=html.replace('https://avantpost-cpu.github.io/depot-quiz/mineure/mineure.html','https://avantpost-cpu.github.io/depot-quiz/mineure/mineure.html?lang=en');
  html=html.replace('https://avantpost-cpu.github.io/depot-quiz/retenir/retenir.html','https://avantpost-cpu.github.io/depot-quiz/retenir/retenir.html?lang=en');
  html=html.replace('https://avantpost-cpu.github.io/depot-quiz/signalement/signalement.html','https://avantpost-cpu.github.io/depot-quiz/signalement/signalement.html?lang=en');
+ html=html.replace('../pagevideo/animations/tribunal.jpg','../pagevideo/animations/tribunal_en.png');
  const entries=Object.entries(EN_TRANSLATIONS).sort((a,b)=>b[0].length-a[0].length);
  const translate=text=>entries.reduce((out,[fr,en])=>out.split(fr).join(en),text);
  // Translate visible text and accessibility labels, never file paths, URLs or HTML attributes.
