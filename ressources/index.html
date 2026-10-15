@@ -90,6 +90,10 @@
     .card>img{border-radius:inherit}
     .card::after{border-radius:inherit}
     .kit,.relayeur{box-shadow:0 18px 28px rgba(31,33,40,.28)}
+    /* Les zones A3 et A2 restent cliquables ; la flèche jaune du visuel est conservée. */
+    .fresque .download-a3,.fresque .download-a2{z-index:9;top:85%;height:15%;width:18%;background:transparent}
+    .fresque .download-a3{left:3%}.fresque .download-a2{left:21%}
+    .fresque .download-a3::before,.fresque .download-a2::before,.fresque .download-a3::after,.fresque .download-a2::after{content:none!important;display:none!important}
     .pending{cursor:not-allowed}
 
     @media(max-width:1050px){.topbar{grid-template-columns:auto 1fr}.page-title{grid-column:1/-1;grid-row:2}.account-meta{white-space:normal}.resources{width:min(92vw,800px);grid-template-columns:1fr 1fr}.sports{grid-column:1;grid-row:1}.cocotte{grid-column:2;grid-row:1}.relayeur{grid-column:1/-1;grid-row:2}.kit{grid-column:1/-1;grid-row:3}.fresque{grid-column:1/-1;grid-row:4}.sports .copy,.cocotte .copy{font-size:clamp(11px,1.65vw,16px)}.fresque .copy{font-size:clamp(10px,1.35vw,13px)}}
