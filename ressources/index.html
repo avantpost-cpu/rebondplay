@@ -41,7 +41,57 @@
     .sports .download{left:75%;top:83.5%;width:14%;aspect-ratio:1}
     .cocotte .download-one{left:14%;top:53.8%;width:27%;height:4.4%;border-radius:8px}.cocotte .download-two{left:14%;top:58.2%;width:27%;height:4.4%;border-radius:8px}.cocotte .download-one:hover,.cocotte .download-one:focus-visible,.cocotte .download-two:hover,.cocotte .download-two:focus-visible{background:rgba(255,204,0,.28);box-shadow:0 0 0 3px #f2c400;outline:none}
     .fresque .download-a3{left:4%;top:76%;width:18%;height:15%;border-radius:8px}.fresque .download-a2{left:22%;top:76%;width:18%;height:15%;border-radius:8px}
+    /* Flèches de téléchargement visibles, sans modifier les visuels des cartes */
+    .download{display:flex;align-items:center;justify-content:center;color:#073e55}
+    .download::before{content:"";position:absolute;inset:12%;border-radius:50%;background:rgba(255,255,255,.94);box-shadow:0 3px 9px rgba(0,0,0,.22);transition:transform .2s ease,background .2s ease}
+    .download::after{content:"";position:relative;width:40%;height:40%;background:currentColor;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M11 3h2v10.17l3.59-3.58L18 11l-6 6-6-6 1.41-1.41L11 13.17V3ZM4 19h16v2H4z'/%3E%3C/svg%3E") center/contain no-repeat}
+    .download:hover::before,.download:focus-visible::before{transform:scale(1.12);background:#efb416}
+    .cocotte .download-one,.cocotte .download-two,.fresque .download-a3,.fresque .download-a2{border-radius:999px}
+    .cocotte .download-one::before,.cocotte .download-two::before,.fresque .download-a3::before,.fresque .download-a2::before{inset:0;left:50%;width:min(42px,100%);height:100%;transform:translateX(-50%)}
+    .cocotte .download-one:hover::before,.cocotte .download-two:hover::before,.fresque .download-a3:hover::before,.fresque .download-a2:hover::before{transform:translateX(-50%) scale(1.1)}
+    .cocotte .download-one::after,.cocotte .download-two::after,.fresque .download-a3::after,.fresque .download-a2::after{width:20px;height:20px;flex:none}
+    .sports::after,.kit::after,.cocotte::after,.fresque::after,.relayeur::after{content:"";position:absolute;z-index:3;pointer-events:none;background:url("jaune.png") center/contain no-repeat;opacity:0;transition:opacity .18s ease}
+    .sports:hover::after,.sports:focus-within::after,.kit:hover::after,.kit:focus-within::after,.cocotte:hover::after,.cocotte:focus-within::after,.fresque:hover::after,.fresque:focus-within::after,.relayeur:hover::after,.relayeur:focus-within::after{opacity:1}
+    .sports::after{left:74.5%;top:82.5%;width:14.5%;aspect-ratio:104/95}
+    .cocotte::after{left:19.5%;top:42.5%;width:14.5%;aspect-ratio:104/95}
+    .kit::after{right:7%;bottom:7%;width:12%;aspect-ratio:104/95}.fresque::after{left:15%;top:49.5%;width:10.5%;aspect-ratio:104/95}.relayeur::after{left:28%;right:auto;bottom:7%;width:15%;aspect-ratio:104/95}.kit .download{right:7%;bottom:7%;width:12%;aspect-ratio:1}.relayeur .download{left:28%;bottom:7%;width:15%;aspect-ratio:1}
+    .sports .download{left:75%;top:83.5%;width:14%;aspect-ratio:1}
+    .cocotte .download-one{left:14%;top:53.8%;width:27%;height:4.4%;border-radius:8px}.cocotte .download-two{left:14%;top:58.2%;width:27%;height:4.4%;border-radius:8px}.cocotte .download-one:hover,.cocotte .download-one:focus-visible,.cocotte .download-two:hover,.cocotte .download-two:focus-visible{background:rgba(255,204,0,.28);box-shadow:0 0 0 3px #f2c400;outline:none}
+    .fresque .download-a3{left:4%;top:76%;width:18%;height:15%;border-radius:8px}.fresque .download-a2{left:22%;top:76%;width:18%;height:15%;border-radius:8px}
+
+    /* Kit : flèche dans la zone libre de la partie droite de l'illustration */
+    .kit .download{right:11%;top:30%;bottom:auto;width:12%;aspect-ratio:1}
+    .kit::after{right:11%;top:30%;bottom:auto;width:12%}
+    /* Fresque : les deux libellés A3 et A2 restent des zones de téléchargement distinctes */
+    .fresque .download-a3,.fresque .download-a2{z-index:8;top:75%;height:23%;width:18%;border-radius:6px;cursor:pointer}
+    .fresque .download-a3{left:4%}
+    .fresque .download-a2{left:22%}
+    .fresque .download-a3::before,.fresque .download-a2::before,.fresque .download-a3::after,.fresque .download-a2::after{display:none}
+    .fresque .download-a3:hover,.fresque .download-a2:hover,.fresque .download-a3:focus-visible,.fresque .download-a2:focus-visible{background:rgba(239,180,22,.20);outline:2px solid #efb416}
+
+    /* Fresque : garder les libellés de l'illustration entièrement lisibles.
+       Les zones A3 et A2 sont cliquables, sans pastille superposée. */
+    .fresque .download-a3,.fresque .download-a2{top:87%;height:13%;width:17%;z-index:8;background:transparent;border-radius:5px}
+    .fresque .download-a3{left:3%}
+    .fresque .download-a2{left:21%}
+    .fresque .download-a3::before,.fresque .download-a2::before,.fresque .download-a3::after,.fresque .download-a2::after{content:none!important;display:none!important}
+    .fresque .download-a3:hover,.fresque .download-a2:hover,.fresque .download-a3:focus-visible,.fresque .download-a2:focus-visible{background:rgba(239,180,22,.18);outline:2px solid #efb416;outline-offset:-2px}
+
+    /* Cocot'éthik : les intitulés imprimés restent visibles, sans flèches par-dessus. */
+    .cocotte .download-one,.cocotte .download-two{z-index:8;left:9%;width:37%;height:5%;background:transparent;border-radius:5px}
+    .cocotte .download-one{top:52.8%}
+    .cocotte .download-two{top:58.0%}
+    .cocotte .download-one::before,.cocotte .download-two::before,.cocotte .download-one::after,.cocotte .download-two::after{content:none!important;display:none!important}
+    .cocotte .download-one:hover,.cocotte .download-two:hover,.cocotte .download-one:focus-visible,.cocotte .download-two:focus-visible{background:rgba(255,204,0,.20);box-shadow:inset 0 0 0 2px #f2c400;outline:none}
+
+    /* Ombres homogènes sur toutes les cartes, sans découpe par overflow */
+    .resources{overflow:visible}
+    .card{overflow:visible;filter:none;box-shadow:0 18px 28px rgba(31,33,40,.28);isolation:isolate}
+    .card>img{border-radius:inherit}
+    .card::after{border-radius:inherit}
+    .kit,.relayeur{box-shadow:0 18px 28px rgba(31,33,40,.28)}
     .pending{cursor:not-allowed}
+
     @media(max-width:1050px){.topbar{grid-template-columns:auto 1fr}.page-title{grid-column:1/-1;grid-row:2}.account-meta{white-space:normal}.resources{width:min(92vw,800px);grid-template-columns:1fr 1fr}.sports{grid-column:1;grid-row:1}.cocotte{grid-column:2;grid-row:1}.relayeur{grid-column:1/-1;grid-row:2}.kit{grid-column:1/-1;grid-row:3}.fresque{grid-column:1/-1;grid-row:4}.sports .copy,.cocotte .copy{font-size:clamp(11px,1.65vw,16px)}.fresque .copy{font-size:clamp(10px,1.35vw,13px)}}
     @media(max-width:620px){.topbar{display:flex;flex-wrap:wrap;padding:16px 18px}.brand{width:180px}.account{order:2;width:100%;justify-content:flex-start}.page-title{order:3;width:100%}.page-title img{width:min(86vw,430px)}.resources{display:flex;flex-direction:column;width:min(91vw,440px);margin-top:30px}.sports .copy,.cocotte .copy{font-size:clamp(12px,3.6vw,17px)}.fresque .copy{font-size:clamp(10px,2.8vw,15px)}.back{position:static;width:max-content;margin:0 auto 34px}.logout{margin-left:auto}}
     @media(prefers-reduced-motion:reduce){.card{transition:none}}
@@ -69,8 +119,8 @@
     <article class="card cocotte">
       <img src="cocot.png" alt="Cocot’éthik">
       <p class="copy">La célèbre cocotte en papier revisitée<br>pour jouer, réfléchir et échanger&nbsp;! On<br>choisit un chiffre, on ouvre la cocotte…<br>et on découvre une question, un défi<br>ou une situation à explorer ensemble.<br>Une façon d’aborder des sujets parfois<br>sensibles sans en avoir l’air.</p>
-      <a class="download download-one pending" href="A4_Cocotte_Rebond_ge%CC%81ne%CC%81rique_1.pdf" download aria-label="Télécharger Cocot’éthik — modèle 1"></a>
-      <a class="download download-two pending" href="A4_Cocotte_Rebond_ge%CC%81ne%CC%81rique_2.pdf" download aria-label="Télécharger Cocot’éthik — modèle 2"></a>
+      <a class="download download-one" href="A4_Cocotte_Rebond_ge%CC%81ne%CC%81rique_1.pdf" download aria-label="Télécharger Cocot’éthik — modèle 1"></a>
+      <a class="download download-two" href="A4_Cocotte_Rebond_ge%CC%81ne%CC%81rique_2.pdf" download aria-label="Télécharger Cocot’éthik — modèle 2"></a>
     </article>
 
     <article class="card relayeur"><img src="kitrelayeur.png" alt="Kit du relayeur"><a class="download" href="Kit%20du%20relayeur_Print_A5_18052026.pdf" download aria-label="Télécharger le Kit du relayeur"></a></article>
@@ -78,8 +128,8 @@
     <article class="card fresque">
       <img src="fresque.png" alt="Fresque collective à colorier">
       <p class="copy">La Fresque collective, c’est un coloriage géant à<br>réaliser tous ensemble pour partager un moment<br>de sensibilisation créatif et convivial&nbsp;!</p>
-      <a class="download download-a3 pending" href="fresque_A3_A.pdf" download aria-label="Télécharger la fresque — format A3 A"></a>
-      <a class="download download-a2 pending" href="fresque_A3_B.pdf" download aria-label="Télécharger la fresque — format A3 B"></a>
+      <a class="download download-a3" href="fresque_A3_A.pdf" download aria-label="Télécharger la fresque — format A3 A"></a>
+      <a class="download download-a2" href="fresque_A3_B.pdf" download aria-label="Télécharger la fresque — format A3 B"></a>
     </article>
   </main>
   <a class="back" href="../pagefull/index.html">← Retour à l’accueil</a>
