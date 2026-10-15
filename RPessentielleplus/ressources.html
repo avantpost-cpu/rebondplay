@@ -60,6 +60,14 @@
     .fresque .download-a2{left:22%}
     .fresque .download-a3::before,.fresque .download-a2::before,.fresque .download-a3::after,.fresque .download-a2::after{display:none}
     .fresque .download-a3:hover,.fresque .download-a2:hover,.fresque .download-a3:focus-visible,.fresque .download-a2:focus-visible{background:rgba(239,180,22,.20);outline:2px solid #efb416}
+
+    /* Fresque : garder les libellés de l'illustration entièrement lisibles.
+       Les zones A3 et A2 sont cliquables, sans pastille superposée. */
+    .fresque .download-a3,.fresque .download-a2{top:87%;height:13%;width:17%;z-index:8;background:transparent;border-radius:5px}
+    .fresque .download-a3{left:3%}
+    .fresque .download-a2{left:21%}
+    .fresque .download-a3::before,.fresque .download-a2::before,.fresque .download-a3::after,.fresque .download-a2::after{content:none!important;display:none!important}
+    .fresque .download-a3:hover,.fresque .download-a2:hover,.fresque .download-a3:focus-visible,.fresque .download-a2:focus-visible{background:rgba(239,180,22,.18);outline:2px solid #efb416;outline-offset:-2px}
     .pending{cursor:not-allowed}
     @media(max-width:1050px){.topbar{grid-template-columns:auto 1fr}.page-title{grid-column:1/-1;grid-row:2}.account-meta{white-space:normal}.resources{width:min(92vw,800px);grid-template-columns:1fr 1fr}.sports{grid-column:1;grid-row:1}.cocotte{grid-column:2;grid-row:1}.relayeur{grid-column:1/-1;grid-row:2}.kit{grid-column:1/-1;grid-row:3}.fresque{grid-column:1/-1;grid-row:4}.sports .copy,.cocotte .copy{font-size:clamp(11px,1.65vw,16px)}.fresque .copy{font-size:clamp(10px,1.35vw,13px)}}
     @media(max-width:620px){.topbar{display:flex;flex-wrap:wrap;padding:16px 18px}.brand{width:180px}.account{order:2;width:100%;justify-content:flex-start}.page-title{order:3;width:100%}.page-title img{width:min(86vw,430px)}.resources{display:flex;flex-direction:column;width:min(91vw,440px);margin-top:30px}.sports .copy,.cocotte .copy{font-size:clamp(12px,3.6vw,17px)}.fresque .copy{font-size:clamp(10px,2.8vw,15px)}.back{position:static;width:max-content;margin:0 auto 34px}.logout{margin-left:auto}}
