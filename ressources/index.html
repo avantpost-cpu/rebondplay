@@ -97,6 +97,15 @@
       object-fit:contain!important;border-radius:0!important;
       clip-path:none!important;box-shadow:none!important;filter:none!important;
     }
+    /* Les hotspots de téléchargement ne doivent produire aucune ombre.
+       Les PNG conservent seuls leurs ombres intégrées. */
+    .resources .download,.resources .download:hover,.resources .download:focus-visible{
+      filter:none!important;box-shadow:none!important;
+      text-shadow:none!important;backdrop-filter:none!important;
+    }
+    .resources .download::before,.resources .download::after{
+      filter:none!important;box-shadow:none!important;
+    }
     .pending{cursor:not-allowed}
 
     @media(max-width:1050px){.topbar{grid-template-columns:auto 1fr}.page-title{grid-column:1/-1;grid-row:2}.account-meta{white-space:normal}.resources{width:min(92vw,800px);grid-template-columns:1fr 1fr}.sports{grid-column:1;grid-row:1}.cocotte{grid-column:2;grid-row:1}.relayeur{grid-column:1/-1;grid-row:2}.kit{grid-column:1/-1;grid-row:3}.fresque{grid-column:1/-1;grid-row:4}.sports .copy,.cocotte .copy{font-size:clamp(11px,1.65vw,16px)}.fresque .copy{font-size:clamp(10px,1.35vw,13px)}}
