@@ -23,6 +23,9 @@
       background:transparent!important;clip-path:none!important;
     }
     .expo-tab img{border-radius:0!important;clip-path:none!important;box-shadow:none!important}
+    /* Ombre douce suivant la silhouette réelle des trois visuels, sans masque ni ombre rectangulaire. */
+    .expo-tab,.expo-tab:hover{box-shadow:none!important;filter:none!important}
+    .expo-tab img{filter:drop-shadow(0 10px 9px rgba(29,24,12,.30))!important}
 </style>
 <style>.rp-footer{width:min(90vw,1540px);margin:clamp(18px,2vw,32px) auto 0;padding:22px 0 28px;display:flex;justify-content:space-between;align-items:center;gap:16px;color:inherit;font-size:clamp(11px,.8vw,15px)}.rp-footer strong{font-weight:900}.rp-footer a{text-decoration:none;font-weight:800;color:inherit}.rp-footer a:hover{text-decoration:underline}@media(max-width:600px){.rp-footer{flex-direction:column;text-align:center}}</style><style>.rp-footer,.rp-footer a{color:#fff}</style></head>
 <body>
