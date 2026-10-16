@@ -114,7 +114,13 @@
 
     @media(prefers-reduced-motion:reduce){.card{transition:none}}
   </style>
-<style>.rp-footer{width:min(90vw,1540px);margin:clamp(35px,5vw,80px) auto 0;padding:22px 0 28px;border-top:0;display:flex;justify-content:space-between;align-items:center;gap:16px;color:#073e55;font-size:clamp(11px,.8vw,15px)}.rp-footer strong{font-weight:900}.rp-footer a{text-decoration:none;font-weight:800}.rp-footer a:hover{text-decoration:underline}@media(max-width:600px){.rp-footer{flex-direction:column;text-align:center}}</style><style>.rp-footer{margin-top:18px;color:#fff;border-top-color:transparent}.rp-footer a{color:#fff}</style></head>
+<style>.rp-footer{width:min(90vw,1540px);margin:clamp(35px,5vw,80px) auto 0;padding:22px 0 28px;border-top:0;display:flex;justify-content:space-between;align-items:center;gap:16px;color:#073e55;font-size:clamp(11px,.8vw,15px)}.rp-footer strong{font-weight:900}.rp-footer a{text-decoration:none;font-weight:800}.rp-footer a:hover{text-decoration:underline}@media(max-width:600px){.rp-footer{flex-direction:column;text-align:center}}</style><style>.rp-footer{margin-top:18px;color:#fff;border-top-color:transparent}.rp-footer a{color:#fff}</style><style>
+html:has(body.embed-resources),body.embed-resources{background:transparent!important;background-image:none!important;min-height:0!important}
+body.embed-resources .topbar,body.embed-resources .back,body.embed-resources .rp-footer{display:none!important}
+body.embed-resources main.resources{margin:0 auto!important;padding:0 0 24px!important}
+body.embed-resources{overflow:hidden}
+</style><script>if(new URLSearchParams(location.search).get("embed")==="1"){document.addEventListener("DOMContentLoaded",()=>document.body.classList.add("embed-resources"))}</script>
+</head>
 <body>
   <header class="topbar">
     <a class="brand" href="index.html" aria-label="Retour à l’accueil RebondPlay Essentiel"><img src="Logo_RebondPlay_essentielplusW.png" alt="RebondPlay Essentiel"></a>
