@@ -57,10 +57,25 @@ async function loadQuizSessions(){
  const el=$("sessionList");const {data,error}=await db.from("rebond_quiz_sessions").select("code,event_name,event_date,event_place").eq("category",quizCategory).order("event_date",{ascending:false});
  if(error){el.textContent="Impossible de charger les sessions : "+error.message;return}
  el.innerHTML=(data||[]).map(x=>{const link=location.origin+location.pathname.replace(/admin\.html$/,"")+"?session="+encodeURIComponent(x.code),stats=location.pathname+"?session="+encodeURIComponent(x.code);
- return '<div style="border-top:1px solid #ddd;padding:14px 0"><strong>'+htmlEscape(x.event_name)+'</strong> <small>'+htmlEscape(x.event_date)+' '+htmlEscape(x.event_place)+'</small><p style="overflow-wrap:anywhere"><a href="'+htmlEscape(link)+'" target="_blank" rel="noopener">'+htmlEscape(link)+'</a></p><button type="button" class="open-session-results" data-session="'+htmlEscape(x.code)+'" data-name="'+htmlEscape(x.event_name)+'" style="background:#e65013;color:#fff">Voir les résultats</button></div>'}).join("")||"Aucune session créée.";
+ return '<div style="border-top:1px solid #ddd;padding:14px 0"><strong>'+htmlEscape(x.event_name)+'</strong> <small>'+htmlEscape(x.event_date)+' '+htmlEscape(x.event_place)+'</small><p style="overflow-wrap:anywhere"><a href="'+htmlEscape(link)+'" target="_blank" rel="noopener">'+htmlEscape(link)+'</a></p><button type="button" class="open-session-results" data-session="'+htmlEscape(x.code)+'" data-name="'+htmlEscape(x.event_name)+'" style="background:#e65013;color:#fff">Voir les résultats</button> <button type="button" class="delete-session" data-code="'+htmlEscape(x.code)+'" data-name="'+htmlEscape(x.event_name)+'" style="background:#b74b4b;color:#fff">Supprimer</button></div>'}).join("")||"Aucune session créée.";
  el.innerHTML+='<div style="border-top:1px solid #ddd;padding:16px 0"><strong>Résultats historiques</strong><p style="font-size:14px">Participations antérieures à la création des sessions.</p><button type="button" id="openHistory" style="background:#065269;color:#fff">Voir les résultats historiques</button></div>';
  el.querySelectorAll(".open-session-results").forEach(b=>b.onclick=()=>showSessionResults(b.dataset.session,b.dataset.name));
+ el.querySelectorAll(".delete-session").forEach(b=>b.onclick=()=>deleteQuizSession(b));
  $("openHistory").onclick=()=>showSessionResults("","Résultats historiques");
+}
+async function deleteQuizSession(btn){
+ const code=btn.dataset.code,name=btn.dataset.name;
+ if(!confirm('Supprimer définitivement la session « '+name+' » ?\\nCette action supprimera également ses participations et ses réponses. Elle est irréversible.'))return;
+ btn.disabled=true;btn.textContent="Suppression…";
+ try{
+   for(const table of ["questionnaire_answers","questionnaire_participants"]){
+     const {error}=await db.from(table).delete().eq("session_code",code);
+     if(error)throw new Error(table+" : "+error.message);
+   }
+   const {error}=await db.from("rebond_quiz_sessions").delete().eq("code",code).eq("category",quizCategory);
+   if(error)throw new Error(error.message);
+   await loadQuizSessions();
+ }catch(e){alert("Suppression incomplète ou impossible : "+e.message+"\\nVérifie les droits Supabase avant de réessayer.");btn.disabled=false;btn.textContent="Supprimer";}
 }
 async function showSessionResults(code,name){
  selectedSession=code;$("resultsDashboard").hidden=false;$("resultsTitle").textContent=name||"Résultats de la session";
