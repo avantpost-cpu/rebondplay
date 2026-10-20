@@ -54,7 +54,14 @@ document.getElementById("emailReport").onclick=()=>{document.getElementById("mai
 const quizCategory="sensibilisation";
 const htmlEscape=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 async function loadQuizSessions(){
- const el=$("sessionList");const {data,error}=await db.from("rebond_quiz_sessions").select("code,event_name,event_date,event_place").eq("category",quizCategory).order("event_date",{ascending:false});
+ const el=$("sessionList");let data,error;
+ try{
+   const result=await Promise.race([
+     db.from("rebond_quiz_sessions").select("code,event_name,event_date,event_place").eq("category",quizCategory).order("event_date",{ascending:false}),
+     new Promise((_,reject)=>setTimeout(()=>reject(new Error("Délai dépassé : impossible de joindre Supabase.")),12000))
+   ]);
+   data=result.data;error=result.error;
+ }catch(e){el.innerHTML="Chargement interrompu : "+htmlEscape(e.message)+' <button type="button" id="retrySessions">Réessayer</button>';$("retrySessions").onclick=loadQuizSessions;return;}
  if(error){el.textContent="Impossible de charger les sessions : "+error.message;return}
  el.innerHTML=(data||[]).map(x=>{const link=location.origin+location.pathname.replace(/admin\.html$/,"")+"?session="+encodeURIComponent(x.code),stats=location.pathname+"?session="+encodeURIComponent(x.code);
  return '<div style="border-top:1px solid #ddd;padding:14px 0"><strong>'+htmlEscape(x.event_name)+'</strong> <small>'+htmlEscape(x.event_date)+' '+htmlEscape(x.event_place)+'</small><p style="overflow-wrap:anywhere"><a href="'+htmlEscape(link)+'" target="_blank" rel="noopener">'+htmlEscape(link)+'</a></p><button type="button" class="open-session-results" data-session="'+htmlEscape(x.code)+'" data-name="'+htmlEscape(x.event_name)+'" style="background:#e65013;color:#fff">Voir les résultats</button> <button type="button" class="delete-session" data-code="'+htmlEscape(x.code)+'" data-name="'+htmlEscape(x.event_name)+'" style="background:#b74b4b;color:#fff">Supprimer</button></div>'}).join("")||"Aucune session créée.";
