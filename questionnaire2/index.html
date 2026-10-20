@@ -338,11 +338,13 @@ async function validate(){
     return;
   }
 
-  locked=true;
-
   const answer=[
     ...document.querySelectorAll("#choices input:checked")
   ].map(x=>+x.value);
+
+  if(answer.length===0){$("feedback").textContent="Sélectionnez au moins une réponse pour continuer.";return;}
+  locked=true;
+  $("validate").disabled=true;
 
   const x=questions[index];
   const ok=same(answer,x.a);
@@ -361,6 +363,7 @@ async function validate(){
     <br><strong>Réponses correctes : ${x.a.map(i=>String.fromCharCode(65+i)).join(", ")}</strong></div>
   `;
 
+  $("validate").disabled=false;
   $("validate").textContent=
     index===questions.length-1
       ?"Voir mon résultat"
