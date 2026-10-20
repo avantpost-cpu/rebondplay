@@ -44,7 +44,7 @@ async function deleteParticipant(id,name){
   if(pr.error){alert("Impossible de supprimer la participation : "+pr.error.message);if(btn){btn.disabled=false;btn.textContent="Supprimer"}return}
   await load();
 }
-let currentRows=[],currentAnswers=[];document.getElementById("exportEmails").onclick=()=>{const emails=[...new Set(currentRows.map(x=>(x.email||"").trim()).filter(Boolean))];if(!emails.length){alert("Aucune adresse e-mail à extraire.");return}const blob=new Blob(["Adresse e-mail\n"+emails.map(e=>'"'+e.replace(/"/g,'""')+'"').join("\n")],{type:"text/csv;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="emails-quiz-06-10-2026.csv";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url)};
+let currentRows=[],currentAnswers=[];if(document.getElementById("exportEmails"))document.getElementById("exportEmails").onclick=()=>{const emails=[...new Set(currentRows.map(x=>(x.email||"").trim()).filter(Boolean))];if(!emails.length){alert("Aucune adresse e-mail à extraire.");return}const blob=new Blob(["Adresse e-mail\n"+emails.map(e=>'"'+e.replace(/"/g,'""')+'"').join("\n")],{type:"text/csv;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="emails-quiz-06-10-2026.csv";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url)};
 const archivesMode=new URLSearchParams(location.search).get("archives")==="2026-10-06";
 const directSessionCode=new URLSearchParams(location.search).get("session");
 if(directSessionCode){document.head.insertAdjacentHTML("beforeend",'<style>#sessionManager{display:none!important}#resultsDashboard{display:block!important}</style>');}
