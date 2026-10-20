@@ -357,6 +357,10 @@ e:"Il faut écouter sans enquêter soi-même, transmettre l’alerte et sollicit
 
 ];
 
+const sessionCode=new URLSearchParams(location.search).get("session");
+let sessionValid=!sessionCode;
+async function verifySession(){if(!sessionCode)return;const {data,error}=await db.from("rebond_quiz_sessions").select("code").eq("code",sessionCode).eq("category","sensibilisation").maybeSingle();sessionValid=!error&&!!data;if(!sessionValid){document.body.innerHTML='<main style="max-width:560px;margin:10vh auto;padding:30px;background:#fff;border-radius:18px;font:18px Arial;color:#065269"><h1>Session introuvable</h1><p>Ce lien de quiz est invalide. Contactez votre organisateur.</p></main>'}};
+verifySession();
 let participant=null,
 index=0,
 score=0,
@@ -368,6 +372,7 @@ same=(a,b)=>a.length===b.length&&a.every(x=>b.includes(x));
 
 $("identity").onsubmit=e=>{
   e.preventDefault();
+  if(!sessionValid){alert("Session non valide. Rechargez la page.");return}
 
   participant={
     first:$("first").value.trim(),
@@ -461,6 +466,7 @@ async function next(){
     .from("questionnaire_answers")
     .insert({
       participant_id:participant.email,
+      session_code:sessionCode,
       question_index:index+1,
       selected_answers:selected,
       correct:same(selected,x.a)
@@ -480,6 +486,7 @@ async function next(){
     await db
       .from("questionnaire_participants")
       .insert({
+        session_code:sessionCode,
         first_name:participant.first,
         last_name:participant.last,
         email:participant.email,
