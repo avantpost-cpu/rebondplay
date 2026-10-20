@@ -60,7 +60,7 @@ async function loadQuizSessions(){
    const timeout=setTimeout(()=>controller.abort(),10000);
    try{
      const url=U+"/rest/v1/rebond_quiz_sessions?select=code,event_name,event_date,event_place&category=eq."+encodeURIComponent(quizCategory)+"&order=event_date.desc";
-     const response=await fetch(url,{headers:{"apikey":K,"Authorization":"Bearer "+K,"Accept":"application/json"},signal:controller.signal,cache:"no-store"});
+     const response=await fetch(url,{headers:{"apikey":K,"Accept":"application/json"},signal:controller.signal,cache:"no-store"});
      if(!response.ok)throw new Error("Supabase HTTP "+response.status+" : "+(await response.text()).slice(0,220));
      data=await response.json();
      if(!Array.isArray(data))throw new Error("Réponse Supabase inattendue");
