@@ -55,21 +55,8 @@ document.getElementById("emailReport").onclick=()=>{document.getElementById("mai
 
 const htmlEscape=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 async function loadQuizSessions(){
- const el=$("sessionList");let data;
- try{
-   const controller=new AbortController();
-   const timeout=setTimeout(()=>controller.abort(),10000);
-   try{
-     const url=U+"/rest/v1/rebond_quiz_sessions?select=code,event_name,event_date,event_place&category=eq."+encodeURIComponent(quizCategory)+"&order=event_date.desc";
-     const response=await fetch(url,{headers:{"apikey":K,"Accept":"application/json"},signal:controller.signal,cache:"no-store"});
-     if(!response.ok)throw new Error("Supabase HTTP "+response.status+" : "+(await response.text()).slice(0,220));
-     data=await response.json();
-     if(!Array.isArray(data))throw new Error("Réponse Supabase inattendue");
-   }finally{clearTimeout(timeout)}
- }catch(e){
-   el.textContent="Impossible de charger les sessions : "+(e.name==="AbortError"?"délai de connexion dépassé":e.message);
-   return;
- }
+ const el=$("sessionList");const {data,error}=await db.from("rebond_quiz_sessions").select("code,event_name,event_date,event_place").eq("category",quizCategory).order("event_date",{ascending:false});
+ if(error){el.textContent="Impossible de charger les sessions : "+error.message;return}
  el.innerHTML=(data||[]).map(x=>{const link=location.origin+location.pathname.replace(/admin\.html$/,"")+"?session="+encodeURIComponent(x.code),stats=location.pathname+"?session="+encodeURIComponent(x.code);
  return '<div style="border-top:1px solid #ddd;padding:14px 0"><strong>'+htmlEscape(x.event_name)+'</strong> <small>'+htmlEscape(x.event_date)+' '+htmlEscape(x.event_place)+'</small><p style="overflow-wrap:anywhere"><a href="'+htmlEscape(link)+'" target="_blank" rel="noopener">'+htmlEscape(link)+'</a></p><button type="button" class="open-session-results" data-session="'+htmlEscape(x.code)+'" data-name="'+htmlEscape(x.event_name)+'" style="background:#e65013;color:#fff">Voir les résultats</button> <button type="button" class="delete-session" data-code="'+htmlEscape(x.code)+'" data-name="'+htmlEscape(x.event_name)+'" style="background:#b74b4b;color:#fff">Supprimer</button></div>'}).join("")||"Aucune session créée.";
  el.innerHTML+='<div style="border-top:1px solid #ddd;padding:16px 0"><strong>Résultats historiques</strong><p style="font-size:14px">Participations antérieures à la création des sessions.</p><button type="button" id="openHistory" style="background:#065269;color:#fff">Voir les résultats historiques</button></div>';
