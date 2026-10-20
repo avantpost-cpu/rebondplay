@@ -167,7 +167,7 @@ h2{
 
 <section id="intro">
 
-<p class="event-date">06/10/2026</p>
+<p class="event-date" id="eventDate"></p>
 
 <p class="intro">
 Ce questionnaire vous permet de revenir sur les notions abordées pendant la formation sur la prévention des violences dans le sport.
@@ -273,7 +273,7 @@ const questions=[
 
 const sessionCode=new URLSearchParams(location.search).get("session");
 let sessionValid=!sessionCode;
-async function verifySession(){if(!sessionCode)return;const {data,error}=await db.from("rebond_quiz_sessions").select("code").eq("code",sessionCode).eq("category","formation").maybeSingle();sessionValid=!error&&!!data;if(!sessionValid){document.body.innerHTML='<main style="max-width:560px;margin:10vh auto;padding:30px;background:#fff;border-radius:18px;font:18px Arial;color:#065269"><h1>Session introuvable</h1><p>Ce lien de quiz est invalide. Contactez votre organisateur.</p></main>'}};
+async function verifySession(){if(!sessionCode){document.getElementById("eventDate").hidden=true;return;}const {data,error}=await db.from("rebond_quiz_sessions").select("code,event_date").eq("code",sessionCode).eq("category","formation").maybeSingle();sessionValid=!error&&!!data;if(sessionValid){const d=data.event_date;document.getElementById("eventDate").textContent=d?d.slice(8,10)+"/"+d.slice(5,7)+"/"+d.slice(0,4):"";}if(!sessionValid){document.body.innerHTML='<main style="max-width:560px;margin:10vh auto;padding:30px;background:#fff;border-radius:18px;font:18px Arial;color:#065269"><h1>Session introuvable</h1><p>Ce lien de quiz est invalide. Contactez votre organisateur.</p></main>'}};
 verifySession();
 let participant=null,
 index=0,
