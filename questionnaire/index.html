@@ -360,6 +360,8 @@ e:"Il faut écouter sans enquêter soi-même, transmettre l’alerte et sollicit
 const adminPreview=new URLSearchParams(location.search).get("apercu")==="admin";
 if(adminPreview){
  document.addEventListener("DOMContentLoaded",async()=>{
+   const {data:{session}}=await db.auth.getSession();
+   if(!session){document.body.innerHTML='<main style="max-width:620px;margin:10vh auto;padding:30px;background:white;color:#065269;border-radius:18px;font:18px Arial"><h1>Accès administrateur requis</h1><p>Connectez-vous depuis l’administration générale pour consulter les questions.</p><a href="/administration-questionnaires/">Accéder à l’administration générale</a></main>';return;}
    const wrapper=document.createElement("main");wrapper.style.cssText="max-width:900px;margin:25px auto;padding:26px;background:#f7f3ed;color:#065269;border-radius:20px;font:16px/1.5 Arial,sans-serif";
    const title=document.createElement("h1");title.textContent="Aperçu administrateur — "+"Quiz Sensibilisation";wrapper.append(title);
    const notice=document.createElement("p");notice.textContent="Lecture seule : aucune participation ni réponse n’est enregistrée.";wrapper.append(notice);
