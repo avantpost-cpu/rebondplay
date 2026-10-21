@@ -271,10 +271,21 @@ const questions=[
 {q:"Quelle est la responsabilité fondamentale de chaque acteur du sport après cette formation ?",o:["Protéger l’image de la structure","S’en tenir à son rôle strictement technique","Éviter toute prise de décision personnelle","Contribuer activement à un environnement sûr, respectueux et signalant"],a:[3],e:"À l’issue de la formation, chacun doit pouvoir agir à son niveau : adopter des pratiques respectueuses, rester attentif aux signaux d’alerte, accueillir la parole de façon adaptée et transmettre les situations préoccupantes aux dispositifs compétents. La protection est une responsabilité collective."}
 ];
 
+const adminPreview=new URLSearchParams(location.search).get("apercu")==="admin";
+if(adminPreview){
+ document.addEventListener("DOMContentLoaded",async()=>{
+   const wrapper=document.createElement("main");wrapper.style.cssText="max-width:900px;margin:25px auto;padding:26px;background:#f7f3ed;color:#065269;border-radius:20px;font:16px/1.5 Arial,sans-serif";
+   const title=document.createElement("h1");title.textContent="Aperçu administrateur — "+"Quiz Formation";wrapper.append(title);
+   const notice=document.createElement("p");notice.textContent="Lecture seule : aucune participation ni réponse n’est enregistrée.";wrapper.append(notice);
+   const back=document.createElement("a");back.href="/administration-questionnaires/";back.textContent="← Administration générale";back.style.cssText="display:inline-block;margin-bottom:18px;color:#065269;font-weight:bold";wrapper.append(back);
+   questions.forEach((q,i)=>{const section=document.createElement("section");section.style.cssText="background:#fff;padding:18px 22px;border-radius:12px;margin:14px 0";const h=document.createElement("h2");h.textContent="Question "+(i+1)+" — "+q.q;h.style.fontSize="19px";section.append(h);const list=document.createElement("ol");list.type="A";q.o.forEach((answer,j)=>{const li=document.createElement("li");li.textContent=answer;if(q.a.includes(j)){li.style.cssText="color:#217a54;font-weight:bold";li.append(document.createTextNode(" ✓"))}list.append(li)});section.append(list);const explanation=document.createElement("p");explanation.textContent="Explication : "+q.e;section.append(explanation);wrapper.append(section)});
+   document.body.replaceChildren(wrapper);
+ });
+}
 const sessionCode=new URLSearchParams(location.search).get("session");
 let sessionValid=!sessionCode;
 async function verifySession(){if(!sessionCode){document.getElementById("eventDate").hidden=true;return;}const {data,error}=await db.from("rebond_quiz_sessions").select("code,event_date").eq("code",sessionCode).eq("category","formation").maybeSingle();sessionValid=!error&&!!data;if(sessionValid){const d=data.event_date;document.getElementById("eventDate").textContent=d?d.slice(8,10)+"/"+d.slice(5,7)+"/"+d.slice(0,4):"";}if(!sessionValid){document.body.innerHTML='<main style="max-width:560px;margin:10vh auto;padding:30px;background:#fff;border-radius:18px;font:18px Arial;color:#065269"><h1>Session introuvable</h1><p>Ce lien de quiz est invalide. Contactez votre organisateur.</p></main>'}};
-verifySession();
+if(!adminPreview)verifySession();
 let participant=null,
 index=0,
 score=0,
