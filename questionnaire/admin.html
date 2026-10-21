@@ -65,10 +65,10 @@ async function loadQuizSessions(){
  if(error){el.textContent="Impossible de charger les sessions : "+error.message;return}
  el.innerHTML=(data||[]).map(x=>{const link=location.origin+location.pathname.replace(/admin\.html$/,"")+"?session="+encodeURIComponent(x.code),stats=location.pathname+"?session="+encodeURIComponent(x.code);
  return '<div style="border-top:1px solid #ddd;padding:14px 0"><strong>'+htmlEscape(x.event_name)+'</strong> <small>'+htmlEscape(x.event_date)+' '+htmlEscape(x.event_place)+'</small><p style="overflow-wrap:anywhere"><a href="'+htmlEscape(link)+'" target="_blank" rel="noopener">'+htmlEscape(link)+'</a></p><button type="button" class="open-session-results" data-session="'+htmlEscape(x.code)+'" data-name="'+htmlEscape(x.event_name)+'" style="background:#e65013;color:#fff">Voir les résultats</button> <button type="button" class="delete-session" data-code="'+htmlEscape(x.code)+'" data-name="'+htmlEscape(x.event_name)+'" style="background:#b74b4b;color:#fff">Supprimer</button></div>'}).join("")||"Aucune session créée.";
- el.innerHTML+='<div style="border-top:1px solid #ddd;padding:16px 0"><strong>Résultats historiques</strong><p style="font-size:14px">Participations antérieures à la création des sessions.</p><button type="button" id="openHistory" style="background:#065269;color:#fff">Voir les résultats historiques</button></div>';
+ el.innerHTML+='<div style="border-top:1px solid #ddd;padding:16px 0"><strong>22/09/2026</strong><p style="font-size:14px">Quiz fin de session du 22/09/2026.</p><button type="button" id="openHistory" style="background:#065269;color:#fff">Voir les résultats du 22/09/2026</button></div>';
  el.querySelectorAll(".open-session-results").forEach(b=>b.onclick=()=>showSessionResults(b.dataset.session,b.dataset.name));
  el.querySelectorAll(".delete-session").forEach(b=>b.onclick=()=>deleteQuizSession(b));
- $("openHistory").onclick=()=>showSessionResults("","Résultats historiques");
+ $("openHistory").onclick=()=>showSessionResults("","Résultats du 22/09/2026");
 }
 async function deleteQuizSession(btn){
  const code=btn.dataset.code,name=btn.dataset.name;
