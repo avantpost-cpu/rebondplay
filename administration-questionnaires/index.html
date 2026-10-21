@@ -16,7 +16,8 @@
  const el=document.getElementById("formationSessions");
  const db=supabase.createClient("https://tdsrqmpfdvntybdlvejy.supabase.co","sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO");
  const login=document.getElementById("centralLogin"),content=document.getElementById("centralContent");
- async function enter(){const {data:{session}}=await db.auth.getSession();if(session){login.hidden=true;content.hidden=false;return true}login.hidden=false;content.hidden=true;return false}
+ const retour=new URLSearchParams(location.search).get("retour");const safeRetour=retour&&/^\/(?:questionnaire\/admin\.html|questionnaire2\/admin(?:-archives-06102026)?\.html)(?:\?.*)?$/.test(retour)?retour:null;
+ async function enter(){const {data:{session}}=await db.auth.getSession();if(session){if(safeRetour){location.replace(safeRetour);return true}login.hidden=true;content.hidden=false;return true}login.hidden=false;content.hidden=true;return false}
  document.getElementById("centralLoginForm").onsubmit=async e=>{e.preventDefault();const button=e.currentTarget.querySelector("button");button.disabled=true;const {error}=await db.auth.signInWithPassword({email:document.getElementById("centralEmail").value.trim(),password:document.getElementById("centralPassword").value});button.disabled=false;if(error){document.getElementById("centralError").textContent=error.message;return}document.getElementById("centralError").textContent="";if(await enter())location.reload()};
  if(!(await enter()))return;
  const {data,error}=await db.from("rebond_quiz_sessions").select("code,event_name,event_date,event_place").eq("category","formation").order("event_date",{ascending:false});
