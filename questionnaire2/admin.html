@@ -84,6 +84,9 @@ async function loadQuizSessions(){
  el.innerHTML+='<div style="border-top:1px solid #ddd;padding:16px 0"><strong>Résultats historiques</strong><p style="font-size:14px">Participations antérieures à la création des sessions.</p><button type="button" id="openHistory" style="background:#065269;color:#fff">Voir les résultats historiques</button></div>';
  el.querySelectorAll(".open-session-results").forEach(b=>b.onclick=()=>showSessionResults(b.dataset.session,b.dataset.name));
  el.querySelectorAll(".delete-session").forEach(b=>b.onclick=()=>deleteQuizSession(b));
+ const deleteRequested=new URLSearchParams(location.search).get("deleteSession");
+ if(deleteRequested){const target=[...el.querySelectorAll(".delete-session")].find(b=>b.dataset.code===deleteRequested);if(target){target.style.outline="3px solid #b74b4b";target.style.outlineOffset="3px";target.scrollIntoView({block:"center"});$("sessionMessage").textContent="Pour supprimer cette session, utilisez le bouton Supprimer encadré en rouge. Une confirmation sera demandée."}else{$("sessionMessage").textContent="Session à supprimer introuvable dans cette liste."}}
+
  $("openHistory").onclick=()=>showSessionResults("","Résultats historiques");
 }
 async function deleteQuizSession(btn){
