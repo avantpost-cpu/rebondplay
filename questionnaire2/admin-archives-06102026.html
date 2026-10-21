@@ -104,7 +104,7 @@ async function showSessionResults(code,name){
  const url=new URL(location.href);url.searchParams.delete("utm_source");if(code){url.searchParams.delete("archives");url.searchParams.set("session",code)}else{url.searchParams.delete("session");url.searchParams.set("archives","2026-10-06")}history.replaceState(null,"",url);
  await load();$("resultsDashboard").scrollIntoView({behavior:"smooth",block:"start"});
 }
-$("backToSessions").onclick=()=>{selectedSession="";$("resultsDashboard").hidden=true;$("sessionManager").hidden=true;const url=new URL(location.href);url.searchParams.delete("session");history.replaceState(null,"",url);};
+if($("backToSessions"))$("backToSessions").onclick=()=>{selectedSession="";$("resultsDashboard").hidden=true;$("sessionManager").hidden=true;const url=new URL(location.href);url.searchParams.delete("session");history.replaceState(null,"",url);};
 $("sessionCreate").onclick=async()=>{
  const name=$("sessionEvent").value.trim(),date=$("sessionDate").value,place=$("sessionPlace").value.trim(),msg=$("sessionMessage"),btn=$("sessionCreate");
  if(!name||!date){msg.textContent="Nom de l’événement et date obligatoires.";return}
