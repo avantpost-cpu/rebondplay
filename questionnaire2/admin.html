@@ -121,5 +121,9 @@ $("sessionCreate").onclick=async()=>{
  msg.textContent="Session créée.";$("sessionEvent").value="";$("sessionDate").value="";$("sessionPlace").value="";await loadQuizSessions();
 };
 
-db.auth.getSession().then(({data:{session}})=>{if(session&&$("reset")?.hidden!==false)enterExistingAdmin().catch(e=>{$("error").textContent=e.message||"Erreur de chargement";$("login").hidden=false})}).catch(()=>{});
+db.auth.getSession().then(async ({data:{session}})=>{
+ if($("reset")?.hidden===false)return;
+ if(!session){location.replace("/administration-questionnaires/?retour="+encodeURIComponent(location.pathname+location.search));return}
+ try{await enterExistingAdmin()}catch(e){$("error").textContent=e.message||"Erreur de chargement";$("login").hidden=true;$("dash").hidden=false}
+}).catch(()=>{location.replace("/administration-questionnaires/?retour="+encodeURIComponent(location.pathname+location.search))});
 </script></body></html>
