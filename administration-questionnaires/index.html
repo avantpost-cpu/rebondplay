@@ -19,6 +19,6 @@
  if(error){el.textContent="Impossible de charger les sessions : "+error.message;return}
  if(!data?.length){el.textContent="Aucune session de formation créée.";return}
  const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
- el.innerHTML="<strong>Sessions de formation</strong>"+data.map(x=>'<div class="session-item"><strong>'+esc(x.event_name)+'</strong><small>'+esc(x.event_date)+' — '+esc(x.event_place)+'</small><a class="btn" href="../questionnaire2/admin.html?session='+encodeURIComponent(x.code)+'">Voir les résultats</a></div>').join("");
+ el.innerHTML="<strong>Sessions de formation</strong>"+data.map(x=>'<div class="session-item"><strong>'+esc(x.event_name)+'</strong><small>'+esc(x.event_date)+' — '+esc(x.event_place)+'</small><a class="btn" href="../questionnaire2/admin.html?session='+encodeURIComponent(x.code)+'">Voir les résultats</a><a class="btn admin" style="background:#b74b4b;margin-left:8px" href="../questionnaire2/admin.html?deleteSession='+encodeURIComponent(x.code)+'" aria-label="Supprimer la session '+esc(x.event_name)+'">Supprimer</a></div>').join("");
 })().catch(e=>{document.getElementById("formationSessions").textContent="Chargement impossible : "+e.message});
 </script></body></html>
