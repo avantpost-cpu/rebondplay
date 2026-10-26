@@ -133,6 +133,16 @@ body {
     border: 0;
 }
 
+.individual-access{max-width:520px;margin:0 auto 16px;padding:0 14px;text-align:center;color:#fff;font:600 15px Arial,sans-serif}
+.individual-access summary{display:inline-block;cursor:pointer;background:#f7f4ef;color:#065269;border-radius:28px;padding:13px 22px;font-weight:800;list-style:none}
+.individual-access summary::-webkit-details-marker{display:none}
+.individual-access .individual-panel{margin:15px auto 0;padding:20px;background:#f7f4ef;color:#063e54;border-radius:16px;text-align:left;box-shadow:0 7px 14px #0003}
+.individual-panel label{display:block;font-weight:700;margin:10px 0 5px}
+.individual-panel input{display:block;width:100%;font:inherit;padding:11px;border:1px solid #065269;border-radius:7px;background:white;color:#063e54}
+.individual-panel button{background:#065269;color:white;border:0;border-radius:8px;padding:12px 18px;font:800 15px Arial;cursor:pointer;margin-top:14px}
+.individual-panel button:disabled{opacity:.5}
+.individual-panel p{font-size:13px;line-height:1.5}
+#individualResult{white-space:pre-wrap}
 .rebond-signature-footer {
     text-align: center;
     padding: 20px 12px;
@@ -200,7 +210,22 @@ body {
 
     </form>
 </main>
-
+<section class="individual-access" aria-label="Connexion individuelle">
+<details id="individualDetails">
+<summary>Se connecter avec un compte individuel</summary>
+<div class="individual-panel">
+<p>Connexion par e-mail et mot de passe. Pendant la transition, cet accès permet de vérifier ton abonnement sans remplacer les codes actuels.</p>
+<form id="individualForm">
+<label for="individualEmail">Adresse e-mail</label><input id="individualEmail" type="email" autocomplete="username" required>
+<label for="individualPassword">Mot de passe</label><input id="individualPassword" type="password" autocomplete="current-password" required>
+<button type="submit" id="individualSubmit">Vérifier mon abonnement</button>
+</form>
+<p id="individualResult" role="status" aria-live="polite"></p>
+<p id="individualNext" hidden><a href="/connexion-pilote/">Ouvrir l'espace de test sécurisé</a></p>
+<button type="button" id="individualLogout" hidden>Se déconnecter</button>
+</div>
+</details>
+</section>
 <footer class="rebond-signature-footer">
     <strong>Rebond</strong> · Association de prévention contre les violences dans le sport
 </footer>
@@ -425,5 +450,30 @@ body {
 })();
 </script>
 
+<script>
+(()=>{
+"use strict";
+const $=id=>document.getElementById(id);
+const client=window.supabase.createClient("https://tdsrqmpfdvntybdlvejy.supabase.co","sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO",{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
+const form=$("individualForm"),result=$("individualResult"),button=$("individualSubmit"),logout=$("individualLogout"),next=$("individualNext");
+form.addEventListener("submit",async event=>{
+event.preventDefault();button.disabled=true;result.textContent="Connexion en cours…";next.hidden=true;
+try{
+const {error}=await client.auth.signInWithPassword({email:$("individualEmail").value.trim(),password:$("individualPassword").value});
+$("individualPassword").value="";
+if(error)throw error;
+const {data,error:lookupError}=await client.rpc("rp_mon_abonnement");
+if(lookupError)throw lookupError;
+const subscription=data?.[0];
+form.hidden=true;logout.hidden=false;
+if(!subscription){result.textContent="Compte connecté, mais aucun abonnement actif n'est associé à ce compte.";return}
+result.textContent="Compte vérifié.\nOrganisme : "+subscription.nom_structure+"\nOffre : "+subscription.offre+"\nValable jusqu'au : "+subscription.date_fin+"\nL'accès aux pages actuelles par compte individuel sera activé après sécurisation de ces pages.";
+next.hidden=false;
+}catch(error){result.textContent="Connexion ou vérification impossible : "+(error?.message||"Erreur inconnue")}
+finally{button.disabled=false}
+});
+logout.addEventListener("click",async()=>{await client.auth.signOut();form.hidden=false;logout.hidden=true;next.hidden=true;result.textContent="Déconnecté."});
+})();
+</script>
 </body>
 </html>
