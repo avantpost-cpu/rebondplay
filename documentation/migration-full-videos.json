@@ -1,8 +1,8 @@
 {
-  "version": 2,
+  "version": 3,
   "bucket": "rebondplay-prive",
   "tier": "full",
-  "notes": "Shared media stored once under videos/. Rights controlled by rp_media_autorisations.offres. Existing full/Angie_liberation1.mp4 retained during transition; do not delete it before testing.",
+  "notes": "Seven French videos connected to Full pilot via shared private Storage. Remaining 25 public fallback. Essentiel+ entitlements NOT inferred from HTML references; confirm separately. Keep public originals until migration and validation complete.",
   "videos": [
     {
       "source_public": "../pagevideo/Film_Expo-e-preuves_bdf2.mp4",
@@ -28,43 +28,43 @@
     {
       "source_public": "../pagevideo/Angie_emprise1.mp4",
       "storage_path": "full/Angie_emprise1.mp4",
-      "status": "pending_upload",
-      "pilot_reader": "public_fallback",
+      "status": "shared_private_verified",
+      "pilot_reader": "private",
       "storage_path_shared": "videos/Angie_emprise1.mp4"
     },
     {
       "source_public": "../pagevideo/Angie_emprise2.mp4",
       "storage_path": "full/Angie_emprise2.mp4",
-      "status": "pending_upload",
-      "pilot_reader": "public_fallback",
+      "status": "shared_private_verified",
+      "pilot_reader": "private",
       "storage_path_shared": "videos/Angie_emprise2.mp4"
     },
     {
       "source_public": "../pagevideo/Angie_emprise3.mp4",
       "storage_path": "full/Angie_emprise3.mp4",
-      "status": "pending_upload",
-      "pilot_reader": "public_fallback",
+      "status": "shared_private_verified",
+      "pilot_reader": "private",
       "storage_path_shared": "videos/Angie_emprise3.mp4"
     },
     {
       "source_public": "../pagevideo/Angie_raisonsilence1.mp4",
       "storage_path": "full/Angie_raisonsilence1.mp4",
-      "status": "pending_upload",
-      "pilot_reader": "public_fallback",
+      "status": "shared_private_verified",
+      "pilot_reader": "private",
       "storage_path_shared": "videos/Angie_raisonsilence1.mp4"
     },
     {
       "source_public": "../pagevideo/Angie_raisonsilence2.mp4",
       "storage_path": "full/Angie_raisonsilence2.mp4",
-      "status": "pending_upload",
-      "pilot_reader": "public_fallback",
+      "status": "shared_private_verified",
+      "pilot_reader": "private",
       "storage_path_shared": "videos/Angie_raisonsilence2.mp4"
     },
     {
       "source_public": "../pagevideo/Angie_raisonsilence3.mp4",
       "storage_path": "full/Angie_raisonsilence3.mp4",
-      "status": "pending_upload",
-      "pilot_reader": "public_fallback",
+      "status": "shared_private_verified",
+      "pilot_reader": "private",
       "storage_path_shared": "videos/Angie_raisonsilence3.mp4"
     },
     {
@@ -91,7 +91,7 @@
     {
       "source_public": "../pagevideo/Angie_liberation1.mp4",
       "storage_path": "full/Angie_liberation1.mp4",
-      "status": "legacy_private_verified_pending_shared_copy",
+      "status": "shared_private_verified",
       "pilot_reader": "private",
       "storage_path_shared": "videos/Angie_liberation1.mp4"
     },
