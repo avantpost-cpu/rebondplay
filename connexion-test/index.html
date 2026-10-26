@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>RebondPlay — Connexion unique (test)</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>:root{font-family:Arial,Helvetica,sans-serif;color:#143b49;background:#f2e5c8}*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(circle at 20% 20%,#e8b2a8,transparent 35%),#f2e5c8}main{width:min(100%,460px);background:#fff9ed;padding:38px;border-radius:22px;box-shadow:10px 12px 0 #143b4930}h1{margin:0 0 8px;font-size:2rem}p{line-height:1.5}label{display:block;margin:18px 0 6px;font-weight:700}input{width:100%;padding:13px;border:1px solid #8e9da0;border-radius:8px;font:inherit}button{width:100%;background:#e26b36;color:white;border:0;border-radius:9px;padding:15px;font-weight:bold;font-size:1rem;margin-top:22px;cursor:pointer}button:disabled{opacity:.6}#status{min-height:2.6em}small{display:block;margin-top:20px;color:#54666a}a{color:#065269}</style></head>
+<body><main><h1>RebondPlay</h1><p><strong>Connexion unique — phase de test</strong></p><p>Accédez à votre espace selon l'offre de votre organisme.</p><form id="login"><label for="email">Adresse e-mail</label><input id="email" type="email" autocomplete="username" required><label for="password">Mot de passe</label><input id="password" type="password" autocomplete="current-password" required><button id="submit">Se connecter</button></form><p id="status" role="status" aria-live="polite"></p><small>Accès réservé aux comptes autorisés par Rebond. Aucun compte n'est créé depuis cette page.</small></main>
+<script>
+(async()=>{
+const status=document.getElementById('status'),form=document.getElementById('login'),button=document.getElementById('submit');
+const client=window.supabase.createClient('https://tdsrqmpfdvntybdlvejy.supabase.co','sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO',{auth:{storageKey:'rebondplay-full-pilot-auth',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
+const routes={full:'/pagefull/',essentielplus:'/RPessentielleplus/'};
+async function route(){
+ const {data:user,error:userError}=await client.auth.getUser();
+ if(userError||!user?.user)return false;
+ const {data,error}=await client.rpc('rp_mon_abonnement');
+ if(error)throw error;
+ const subscription=data?.[0];
+ if(!subscription){status.textContent='Aucun abonnement actif et valide associé à ce compte.';return false}
+ if(subscription.offre==='essentiel'){status.textContent='Compte Essentiel reconnu. La connexion unique à cette offre sera activée après sécurisation de sa page.';return false}
+ if(!routes[subscription.offre]){status.textContent='Offre non reconnue. Contactez Rebond.';return false}
+ location.replace(routes[subscription.offre]);return true;
+}
+form.addEventListener('submit',async e=>{e.preventDefault();button.disabled=true;status.textContent='Vérification des droits…';try{const {error}=await client.auth.signInWithPassword({email:document.getElementById('email').value.trim(),password:document.getElementById('password').value});document.getElementById('password').value='';if(error)throw error;await route()}catch(e){status.textContent='Connexion impossible : '+(e.message||'Erreur de connexion')}finally{button.disabled=false}});
+try{const {data}=await client.auth.getSession();if(data?.session)await route()}catch(e){status.textContent='Vérification indisponible. Réessayez.'}
+})();
+</script></body></html>
