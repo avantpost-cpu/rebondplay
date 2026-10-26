@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#bd8fbe">
+  <title>Ressources — RebondPlay Essentiel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
+  <style>
+    :root{--ink:#073e55;--purple:#bd8fbe;--orange:#ff743b;--turquoise:#3cc7c9;--shadow:0 18px 28px rgba(31,33,40,.28)}
+    *{box-sizing:border-box}
+    html{min-width:300px}
+    body{margin:0;min-height:100vh;color:var(--ink);background:#cb8095 url("motifsplus.jpg") center top/cover fixed no-repeat;font-family:"Nunito",Arial,sans-serif}
+    img{display:block;max-width:100%}
+    a{color:inherit}
+    button{font:inherit}
+    .topbar{min-height:clamp(92px,8.2vw,158px);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:30px;padding:16px 3.4% 10px;background:#fff url("motifsplus.jpg") center/cover no-repeat !important}
+    .brand{width:clamp(205px,15.6vw,310px);justify-self:start}.brand img{width:100%}
+    .page-title{display:flex;align-items:center;justify-content:center}
+    .page-title img{width:clamp(300px,31vw,615px);height:auto}
+    .account{display:flex;align-items:center;justify-content:flex-end;gap:clamp(9px,1vw,20px);min-width:0;color:#082f4a}
+    .avatar{width:clamp(43px,3.25vw,65px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;flex:none;background:#082f4a;color:var(--purple)}.avatar svg{width:62%;height:62%;fill:currentColor}
+    .account-copy{min-width:0}.account-name{font-size:clamp(13px,1vw,20px);font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.account-meta{margin-top:3px;font-size:clamp(9px,.75vw,15px);font-weight:700;white-space:nowrap}
+    .logout{min-height:46px;padding:0 clamp(10px,1.3vw,25px);border:0;border-left:1px solid rgba(8,47,74,.28);background:transparent;color:inherit;font-weight:900;cursor:pointer;white-space:nowrap}.logout:hover{color:#fff}
+    .back{position:fixed;z-index:10;left:clamp(14px,2vw,38px);bottom:clamp(14px,2vw,38px);display:flex;align-items:center;gap:8px;padding:10px 16px;border-radius:999px;background:#fff;text-decoration:none;font-size:14px;font-weight:900;box-shadow:0 7px 16px rgba(3,42,56,.24)}
+    .resources{width:min(94vw,1800px);margin:clamp(42px,4.4vw,88px) auto clamp(75px,7vw,140px);display:grid;grid-template-columns:1.02fr 1.48fr 1.02fr 1.02fr;grid-template-rows:auto auto;gap:clamp(16px,1.8vw,34px)}
+    .card{position:relative;overflow:hidden;border-radius:clamp(14px,1.45vw,28px);filter:none;box-shadow:none;transition:transform .22s ease}.card:hover{transform:translateY(-5px)}.card>img{width:100%;height:100%;object-fit:fill}
+    .sports{grid-column:1;grid-row:1/3;aspect-ratio:731/1156}.kit{grid-column:2;grid-row:1;aspect-ratio:1004/559}.cocotte{grid-column:3;grid-row:1/3;aspect-ratio:717/1156}.fresque{grid-column:2;grid-row:2;aspect-ratio:996/608}
+    .copy{position:absolute;margin:0;text-align:center;line-height:1.28;font-weight:600}
+    .sports .copy{z-index:2;left:7%;right:7%;top:18.2%;font-size:clamp(11px,.9vw,18px);line-height:1.25}
+    .cocotte .copy{z-index:2;left:8%;right:8%;top:17.8%;font-size:clamp(11px,.9vw,18px);line-height:1.28;color:#111}
+    .fresque .copy{z-index:2;left:4%;width:64%;top:21.5%;font-size:clamp(10px,.76vw,15px);line-height:1.25;color:#fff}
+    .download{position:absolute;z-index:4;border-radius:50%;text-decoration:none;outline-offset:4px}.download:focus-visible{outline:3px solid #fff}
+    /* Flèches de téléchargement visibles, sans modifier les visuels des cartes */
+    .download{display:flex;align-items:center;justify-content:center;color:#073e55}
+    .download::before{content:"";position:absolute;inset:12%;border-radius:50%;background:rgba(255,255,255,.94);box-shadow:0 3px 9px rgba(0,0,0,.22);transition:transform .2s ease,background .2s ease}
+    .download::after{content:"";position:relative;width:40%;height:40%;background:currentColor;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='black' d='M11 3h2v10.17l3.59-3.58L18 11l-6 6-6-6 1.41-1.41L11 13.17V3ZM4 19h16v2H4z'/%3E%3C/svg%3E") center/contain no-repeat}
+    .download:hover::before,.download:focus-visible::before{transform:scale(1.12);background:#efb416}
+    .cocotte .download-one,.cocotte .download-two,.fresque .download-a3,.fresque .download-a2{border-radius:999px}
+    .cocotte .download-one::before,.cocotte .download-two::before,.fresque .download-a3::before,.fresque .download-a2::before{inset:0;left:50%;width:min(42px,100%);height:100%;transform:translateX(-50%)}
+    .cocotte .download-one:hover::before,.cocotte .download-two:hover::before,.fresque .download-a3:hover::before,.fresque .download-a2:hover::before{transform:translateX(-50%) scale(1.1)}
+    .cocotte .download-one::after,.cocotte .download-two::after,.fresque .download-a3::after,.fresque .download-a2::after{width:20px;height:20px;flex:none}
+    .sports::after,.kit::after,.cocotte::after,.fresque::after,.relayeur::after{content:"";position:absolute;z-index:3;pointer-events:none;background:url("jaune.png") center/contain no-repeat;opacity:0;transition:opacity .18s ease}
+    .sports:hover::after,.sports:focus-within::after,.kit:hover::after,.kit:focus-within::after,.cocotte:hover::after,.cocotte:focus-within::after,.fresque:hover::after,.fresque:focus-within::after,.relayeur:hover::after,.relayeur:focus-within::after{opacity:1}
+    .sports::after{left:74.5%;top:82.5%;width:14.5%;aspect-ratio:104/95}
+    .cocotte::after{left:19.5%;top:42.5%;width:14.5%;aspect-ratio:104/95}
+    .kit::after{right:7%;bottom:7%;width:12%;aspect-ratio:104/95}.fresque::after{left:15%;top:49.5%;width:10.5%;aspect-ratio:104/95}.relayeur::after{left:28%;right:auto;bottom:7%;width:15%;aspect-ratio:104/95}.kit .download{right:7%;bottom:7%;width:12%;aspect-ratio:1}.relayeur .download{left:28%;bottom:7%;width:15%;aspect-ratio:1}
+    .sports .download{left:75%;top:83.5%;width:14%;aspect-ratio:1}
+    .cocotte .download-one{left:14%;top:53.8%;width:27%;height:4.4%;border-radius:8px}.cocotte .download-two{left:14%;top:58.2%;width:27%;height:4.4%;border-radius:8px}.cocotte .download-one:hover,.cocotte .download-one:focus-visible,.cocotte .download-two:hover,.cocotte .download-two:focus-visible{background:rgba(255,204,0,.28);box-shadow:0 0 0 3px #f2c400;outline:none}
+    .fresque .download-a3{left:4%;top:76%;width:18%;height:15%;border-radius:8px}.fresque .download-a2{left:22%;top:76%;width:18%;height:15%;border-radius:8px}
+
+    /* Une carte = les dimensions naturelles de son illustration.
+       Les rangées de grille peuvent être plus hautes, mais jamais les cartes :
+       l'ombre suit donc le contour visible, sans rectangle décalé. */
+    .resources{overflow:visible;align-items:start}
+    .resources .card{position:relative;align-self:start;justify-self:stretch;aspect-ratio:auto!important;height:auto!important;min-height:0;overflow:hidden;border-radius:clamp(14px,1.45vw,28px);filter:none!important;box-shadow:0 5px 12px rgba(20,25,35,.24)!important;transition:transform .22s ease,box-shadow .2s ease}
+    .resources .card:hover{transform:translateY(-5px)!important;box-shadow:0 8px 15px rgba(20,25,35,.27)!important}
+    .resources .card>img{display:block;width:100%;height:auto!important;max-width:100%;object-fit:contain!important;border-radius:inherit;filter:none!important;box-shadow:none!important}
+    /* Les trois boutons circulaires restent dans leurs proportions. */
+    .sports .download,.kit .download,.relayeur .download{display:block;aspect-ratio:1;height:auto;border-radius:50%}
+    .sports .download::before,.kit .download::before,.relayeur .download::before{inset:0;width:100%;height:100%;border-radius:50%}
+    .sports .download::after,.kit .download::after,.relayeur .download::after{position:absolute;left:30%;top:30%;width:40%;height:40%}
+    .kit .download{right:11%;top:30%;bottom:auto;width:12%}
+    .kit::after{right:11%;top:30%;bottom:auto;width:12%}
+    /* Sur l'image Fresque, A3 est à environ 5 % et A2 à 23 %,
+       tous deux dans la bande inférieure : zones limitées aux libellés. */
+    .fresque .download-a3,.fresque .download-a2{display:block;z-index:8;top:76%;width:18%;height:15%;aspect-ratio:auto;border-radius:8px;background:transparent}
+    .fresque .download-a3{left:4%}
+    .fresque .download-a2{left:22%}
+    .cocotte .download-one,.cocotte .download-two{display:block;z-index:8;left:14%;width:27%;height:4.4%;aspect-ratio:auto;border-radius:8px;background:transparent}
+    .cocotte .download-one{top:53.8%}
+    .cocotte .download-two{top:58.2%}
+    .cocotte .download-one::before,.cocotte .download-two::before,.cocotte .download-one::after,.cocotte .download-two::after,.fresque .download-a3::before,.fresque .download-a2::before,.fresque .download-a3::after,.fresque .download-a2::after{content:none!important;display:none!important}
+    .cocotte .download-one:hover,.cocotte .download-two:hover,.fresque .download-a3:hover,.fresque .download-a2:hover,.cocotte .download-one:focus-visible,.cocotte .download-two:focus-visible,.fresque .download-a3:focus-visible,.fresque .download-a2:focus-visible{background:rgba(239,180,22,.16);box-shadow:inset 0 0 0 2px #efb416;outline:none}
+    /* Retour à l'interaction d'origine : cartes légèrement relevées au survol,
+       ombre sur la carte à la taille naturelle et aucun masque coupant les zones. */
+    .resources .card{clip-path:none!important;box-shadow:0 5px 12px rgba(20,25,35,.24)!important;transition:transform .22s ease,box-shadow .22s ease!important}
+    .resources .card:hover{transform:translateY(-5px)!important;box-shadow:0 8px 15px rgba(20,25,35,.27)!important}
+    .download:hover::before,.download:focus-visible::before{transform:scale(1.12);background:#efb416}
+    /* PNG transparents : leurs ombres et leurs coins sont déjà dessinés.
+       Aucun fond, arrondi, masque ou ombre CSS sur les cartes. */
+    .resources .card,.resources .card:hover{
+      background:transparent!important;border:0!important;border-radius:0!important;
+      overflow:visible!important;clip-path:none!important;
+      box-shadow:none!important;filter:none!important;
+    }
+    .resources .card{transform:none!important;transition:transform .22s ease!important}
+    .resources .card:hover{transform:translateY(-5px)!important}
+    .resources .card>img{
+      display:block;width:100%;height:auto!important;max-width:100%;
+      object-fit:contain!important;border-radius:0!important;
+      clip-path:none!important;box-shadow:none!important;filter:none!important;
+    }
+    /* Les hotspots de téléchargement ne doivent produire aucune ombre.
+       Les PNG conservent seuls leurs ombres intégrées. */
+    .resources .download,.resources .download:hover,.resources .download:focus-visible{
+      filter:none!important;box-shadow:none!important;
+      text-shadow:none!important;backdrop-filter:none!important;
+    }
+    .resources .download::before,.resources .download::after{
+      filter:none!important;box-shadow:none!important;
+    }
+    /* Laisser respirer les ombres intégrées des PNG entre deux rangées.
+       Les images et leurs zones cliquables gardent leurs proportions. */
+    .resources{row-gap:clamp(38px,4.5vw,72px)!important}
+    @media(max-width:1050px){
+      .resources{row-gap:clamp(40px,6vw,72px)!important}
+    }
+    .pending{cursor:not-allowed}
+    @media(max-width:1050px){.topbar{grid-template-columns:auto 1fr}.page-title{grid-column:1/-1;grid-row:2}.account-meta{white-space:normal}.resources{width:min(92vw,800px);grid-template-columns:1fr 1fr}.sports{grid-column:1;grid-row:1}.cocotte{grid-column:2;grid-row:1}.relayeur{grid-column:1/-1;grid-row:2}.kit{grid-column:1/-1;grid-row:3}.fresque{grid-column:1/-1;grid-row:4}.sports .copy,.cocotte .copy{font-size:clamp(11px,1.65vw,16px)}.fresque .copy{font-size:clamp(10px,1.35vw,13px)}}
+    @media(max-width:620px){.topbar{display:flex;flex-wrap:wrap;padding:16px 18px}.brand{width:180px}.account{order:2;width:100%;justify-content:flex-start}.page-title{order:3;width:100%}.page-title img{width:min(86vw,430px)}.resources{display:flex;flex-direction:column;width:min(91vw,440px);margin-top:30px}.sports .copy,.cocotte .copy{font-size:clamp(12px,3.6vw,17px)}.fresque .copy{font-size:clamp(10px,2.8vw,15px)}.back{position:static;width:max-content;margin:0 auto 34px}.logout{margin-left:auto}}
+
+    @media(prefers-reduced-motion:reduce){.card{transition:none}}
+  </style>
+<style>.rp-footer{width:min(90vw,1540px);margin:clamp(35px,5vw,80px) auto 0;padding:22px 0 28px;border-top:0;display:flex;justify-content:space-between;align-items:center;gap:16px;color:#073e55;font-size:clamp(11px,.8vw,15px)}.rp-footer strong{font-weight:900}.rp-footer a{text-decoration:none;font-weight:800}.rp-footer a:hover{text-decoration:underline}@media(max-width:600px){.rp-footer{flex-direction:column;text-align:center}}</style><style>.rp-footer{margin-top:18px;color:#fff;border-top-color:transparent}.rp-footer a{color:#fff}</style><style>
+html:has(body.embed-resources),body.embed-resources{background:transparent!important;background-image:none!important;min-height:0!important}
+body.embed-resources .topbar,body.embed-resources .back,body.embed-resources .rp-footer{display:none!important}
+body.embed-resources main.resources{margin:0 auto!important;padding:0 0 24px!important}
+body.embed-resources{overflow:hidden}
+</style><script>if(new URLSearchParams(location.search).get("embed")==="1"){document.addEventListener("DOMContentLoaded",()=>document.body.classList.add("embed-resources"))}</script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="Retour à l’accueil RebondPlay Essentiel"><img src="Logo_RebondPlay_essentielplusW.png" alt="RebondPlay Essentiel"></a>
+    <div class="page-title"><img src="../ressources/titre.png" alt="Ressources"></div>
+    <div class="account" aria-label="Compte connecté"><span class="avatar" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0z"/></svg></span><div class="account-copy"><div class="account-name" id="accountName">Bonjour</div><div class="account-meta" id="accountMeta"></div></div><button class="logout" id="logoutButton" type="button">Se déconnecter</button></div>
+  </header>
+
+  <main class="resources">
+    <article class="card sports">
+      <img src="../ressources/cooleurs.png" alt="Sports en cool’eurs — coloriages sur les valeurs du sport">
+      <p class="copy">12 coloriages ludiques à télécharger<br>pour sensibiliser aux valeurs du sport<br>et ouvrir la discussion&nbsp;!</p>
+      <a class="download" href="../ressources/coloriages_15x21.pdf" download aria-label="Télécharger les coloriages Sports en cool’eurs"></a>
+    </article>
+
+    <article class="card kit">
+      <img src="../ressources/kitcom.png" alt="Kit de communication Signaler c’est protéger">
+      <a class="download" href="../ressources/affiches_kitcom.zip" download aria-label="Télécharger le kit de communication"></a>
+    </article>
+
+    <article class="card cocotte">
+      <img src="../ressources/cocot.png" alt="Cocot’éthik">
+      <p class="copy">La célèbre cocotte en papier revisitée<br>pour jouer, réfléchir et échanger&nbsp;! On<br>choisit un chiffre, on ouvre la cocotte…<br>et on découvre une question, un défi<br>ou une situation à explorer ensemble.<br>Une façon d’aborder des sujets parfois<br>sensibles sans en avoir l’air.</p>
+      <a class="download download-one" href="../ressources/A4_Cocotte_Rebond_ge%CC%81ne%CC%81rique_1.pdf" download aria-label="Télécharger Cocot’éthik — modèle 1"></a>
+      <a class="download download-two" href="../ressources/A4_Cocotte_Rebond_ge%CC%81ne%CC%81rique_2.pdf" download aria-label="Télécharger Cocot’éthik — modèle 2"></a>
+    </article>
+
+    <article class="card relayeur"><img src="../ressources/kitrelayeur.png" alt="Kit du relayeur"><a class="download" href="../ressources/Kit%20du%20relayeur_Print_A5_18052026.pdf" download aria-label="Télécharger le Kit du relayeur"></a></article>
+
+    <article class="card fresque">
+      <img src="../ressources/fresque.png" alt="Fresque collective à colorier">
+      <p class="copy">La Fresque collective, c’est un coloriage géant à<br>réaliser tous ensemble pour partager un moment<br>de sensibilisation créatif et convivial&nbsp;!</p>
+      <a class="download download-a3" href="../ressources/fresque_A3_A.pdf" download aria-label="Télécharger la fresque — format A3 A"></a>
+      <a class="download download-a2" href="../ressources/fresque_A3_B.pdf" download aria-label="Télécharger la fresque — format A3 B"></a>
+    </article>
+  </main>
+  <a class="back" href="index.html">← Retour à l’accueil</a>
+
+  <script>
+    (()=>{
+      const storageKeys=["rebondplay_access_ok","rebondplay_abonnement_id","rebondplay_nom_structure","rebondplay_code","rebondplay_date_fin","rebondplay_prenom_contact","rebondplay_nom_contact"],get=key=>sessionStorage.getItem(key)||"";
+      if(window.top===window.self){location.replace('/connexion-test/');return}
+      const name=[get("rebondplay_prenom_contact"),get("rebondplay_nom_contact")].filter(Boolean).join(" ")||get("rebondplay_nom_structure");document.getElementById("accountName").textContent=`Bonjour ${name}`.trim();
+      const endValue=get("rebondplay_date_fin"),metaElement=document.getElementById("accountMeta");let meta=get("rebondplay_nom_structure");if(endValue){const end=new Date(`${endValue}T23:59:59`),days=Math.max(0,Math.ceil((end-Date.now())/86400000));metaElement.innerHTML=`Votre abonnement est encore valable<br>${days} jour${days>1?"s":""}`}else{metaElement.textContent=meta}
+      document.getElementById("logoutButton").addEventListener("click",()=>{storageKeys.forEach(key=>sessionStorage.removeItem(key));location.replace("/connexion-test/")});
+      document.querySelectorAll("[data-missing]").forEach(link=>link.addEventListener("click",event=>{event.preventDefault();alert("Le document PDF sera disponible ici dès son ajout.")}));
+    })();
+  </script>
+<footer class="rp-footer"><span><strong>Rebond</strong> · Association de prévention contre les violences dans le sport</span><span><a href="mailto:contact@assorebond.com">contact@assorebond.com</a> · RebondPlay Essentiel · © 2026</span></footer></body>
+</html>
