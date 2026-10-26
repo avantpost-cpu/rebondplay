@@ -1,200 +1,233 @@
 {
-  "version": 1,
+  "version": 2,
   "bucket": "rebondplay-prive",
   "tier": "full",
-  "notes": "Keep public fallback until each file is uploaded, verified under RLS and switched in the pilot. Do not delete public copies automatically.",
+  "notes": "Shared media stored once under videos/. Rights controlled by rp_media_autorisations.offres. Existing full/Angie_liberation1.mp4 retained during transition; do not delete it before testing.",
   "videos": [
     {
       "source_public": "../pagevideo/Film_Expo-e-preuves_bdf2.mp4",
       "storage_path": "full/Film_Expo-e-preuves_bdf2.mp4",
       "status": "pending_upload",
-      "pilot_reader": "public_fallback"
+      "pilot_reader": "public_fallback",
+      "storage_path_shared": "videos/Film_Expo-e-preuves_bdf2.mp4"
     },
     {
       "source_public": "../pagevideo/teaserexpo.mp4",
       "storage_path": "full/teaserexpo.mp4",
       "status": "pending_upload",
-      "pilot_reader": "public_fallback"
+      "pilot_reader": "public_fallback",
+      "storage_path_shared": "videos/teaserexpo.mp4"
     },
     {
       "source_public": "../pagevideo/Angie_Les%20violences%20dans%20le%20sport.mp4",
       "storage_path": "full/Angie_Les violences dans le sport.mp4",
       "status": "pending_upload",
-      "pilot_reader": "public_fallback"
+      "pilot_reader": "public_fallback",
+      "storage_path_shared": "videos/Angie_Les violences dans le sport.mp4"
     },
     {
       "source_public": "../pagevideo/Angie_emprise1.mp4",
       "storage_path": "full/Angie_emprise1.mp4",
       "status": "pending_upload",
-      "pilot_reader": "public_fallback"
+      "pilot_reader": "public_fallback",
+      "storage_path_shared": "videos/Angie_emprise1.mp4"
     },
     {
       "source_public": "../pagevideo/Angie_emprise2.mp4",
       "storage_path": "full/Angie_emprise2.mp4",
       "status": "pending_upload",
-      "pilot_reader": "public_fallback"
+      "pilot_reader": "public_fallback",
+      "storage_path_shared": "videos/Angie_emprise2.mp4"
     },
     {
       "source_public": "../pagevideo/Angie_emprise3.mp4",
       "storage_path": "full/Angie_emprise3.mp4",
       "status": "pending_upload",
-      "pilot_reader": "public_fallback"
+      "pilot_reader": "public_fallback",
+      "storage_path_shared": "videos/Angie_emprise3.mp4"
     },
     {
       "source_public": "../pagevideo/Angie_raisonsilence1.mp4",
       "storage_path": "full/Angie_raisonsilence1.mp4",
       "status": "pending_upload",
-      "pilot_reader": "public_fallback"
+      "pilot_reader": "public_fallback",
+      "storage_path_shared": "videos/Angie_raisonsilence1.mp4"
     },
     {
       "source_public": "../pagevideo/Angie_raisonsilence2.mp4",
       "storage_path": "full/Angie_raisonsilence2.mp4",
       "status": "pending_upload",
-      "pilot_reader": "public_fallback"
+      "pilot_reader": "public_fallback",
+      "storage_path_shared": "videos/Angie_raisonsilence2.mp4"
     },
     {
       "source_public": "../pagevideo/Angie_raisonsilence3.mp4",
       "storage_path": "full/Angie_raisonsilence3.mp4",
       "status": "pending_upload",
-      "pilot_reader": "public_fallback"
+      "pilot_reader": "public_fallback",
+      "storage_path_shared": "videos/Angie_raisonsilence3.mp4"
     },
     {
       "source_public": "../pagevideo/Angie_facteursaggravants1.mp4",
       "storage_path": "full/Angie_facteursaggravants1.mp4",
       "status": "pending_upload",
-      "pilot_reader": "public_fallback"
+      "pilot_reader": "public_fallback",
+      "storage_path_shared": "videos/Angie_facteursaggravants1.mp4"
     },
     {
       "source_public": "../pagevideo/Angie_facteursaggravants2.mp4",
       "storage_path": "full/Angie_facteursaggravants2.mp4",
       "status": "pending_upload",
-      "pilot_reader": "public_fallback"
+      "pilot_reader": "public_fallback",
+      "storage_path_shared": "videos/Angie_facteursaggravants2.mp4"
     },
     {
       "source_public": "../pagevideo/Angie_facteursaggravants3.mp4",
       "storage_path": "full/Angie_facteursaggravants3.mp4",
       "status": "pending_upload",
-      "pilot_reader": "public_fallback"
+      "pilot_reader": "public_fallback",
+      "storage_path_shared": "videos/Angie_facteursaggravants3.mp4"
     },
     {
       "source_public": "../pagevideo/Angie_liberation1.mp4",
       "storage_path": "full/Angie_liberation1.mp4",
-      "status": "private_verified",
-      "pilot_reader": "private"
+      "status": "legacy_private_verified_pending_shared_copy",
+      "pilot_reader": "private",
+      "storage_path_shared": "videos/Angie_liberation1.mp4"
     },
     {
       "source_public": "../pagevideo/Angie_liberation2.mp4",
       "storage_path": "full/Angie_liberation2.mp4",
       "status": "pending_upload",
-      "pilot_reader": "public_fallback"
+      "pilot_reader": "public_fallback",
+      "storage_path_shared": "videos/Angie_liberation2.mp4"
     },
     {
       "source_public": "../pagevideo/Angie_liberation3.mp4",
       "storage_path": "full/Angie_liberation3.mp4",
       "status": "pending_upload",
-      "pilot_reader": "public_fallback"
+      "pilot_reader": "public_fallback",
+      "storage_path_shared": "videos/Angie_liberation3.mp4"
     },
     {
       "source_public": "../pagevideo/Angie_conséquence1.mp4",
       "storage_path": "full/Angie_conséquence1.mp4",
       "status": "pending_upload",
-      "pilot_reader": "public_fallback"
+      "pilot_reader": "public_fallback",
+      "storage_path_shared": "videos/Angie_conséquence1.mp4"
     },
     {
       "source_public": "../pagevideo/Angie_conséquence2.mp4",
       "storage_path": "full/Angie_conséquence2.mp4",
       "status": "pending_upload",
-      "pilot_reader": "public_fallback"
+      "pilot_reader": "public_fallback",
+      "storage_path_shared": "videos/Angie_conséquence2.mp4"
     },
     {
       "source_public": "../pagevideo/Angie_conséquence3.mp4",
       "storage_path": "full/Angie_conséquence3.mp4",
       "status": "pending_upload",
-      "pilot_reader": "public_fallback"
+      "pilot_reader": "public_fallback",
+      "storage_path_shared": "videos/Angie_conséquence3.mp4"
     },
     {
       "source_public": "../pagevideo/animations/strategie_demprise.mp4",
       "storage_path": "full/animations/strategie_demprise.mp4",
       "status": "pending_upload",
-      "pilot_reader": "public_fallback"
+      "pilot_reader": "public_fallback",
+      "storage_path_shared": "videos/animations/strategie_demprise.mp4"
     },
     {
       "source_public": "../pagevideo/animations/1%20enfant%20sur%207.mp4",
       "storage_path": "full/animations/1 enfant sur 7.mp4",
       "status": "pending_upload",
-      "pilot_reader": "public_fallback"
+      "pilot_reader": "public_fallback",
+      "storage_path_shared": "videos/animations/1 enfant sur 7.mp4"
     },
     {
       "source_public": "../pagevideo/animations/Exemple%20Franck%20Nicotra.mp4",
       "storage_path": "full/animations/Exemple Franck Nicotra.mp4",
       "status": "pending_upload",
-      "pilot_reader": "public_fallback"
+      "pilot_reader": "public_fallback",
+      "storage_path_shared": "videos/animations/Exemple Franck Nicotra.mp4"
     },
     {
       "source_public": "../pagevideo/animations/Exemple%20de%20question%20sans%20signes%20d'alerte.mp4",
       "storage_path": "full/animations/Exemple de question sans signes d'alerte.mp4",
       "status": "pending_upload",
-      "pilot_reader": "public_fallback"
+      "pilot_reader": "public_fallback",
+      "storage_path_shared": "videos/animations/Exemple de question sans signes d'alerte.mp4"
     },
     {
       "source_public": "../pagevideo/animations/Exemple%20de%20questions%20avec%20signes%20d'alerte.mp4",
       "storage_path": "full/animations/Exemple de questions avec signes d'alerte.mp4",
       "status": "pending_upload",
-      "pilot_reader": "public_fallback"
+      "pilot_reader": "public_fallback",
+      "storage_path_shared": "videos/animations/Exemple de questions avec signes d'alerte.mp4"
     },
     {
       "source_public": "../pagevideo/animations/La%20France%20en%202023%E2%80%A6.mp4",
       "storage_path": "full/animations/La France en 2023….mp4",
       "status": "pending_upload",
-      "pilot_reader": "public_fallback"
+      "pilot_reader": "public_fallback",
+      "storage_path_shared": "videos/animations/La France en 2023….mp4"
     },
     {
       "source_public": "../pagevideo/animations/Le%20consentement.mp4",
       "storage_path": "full/animations/Le consentement.mp4",
       "status": "pending_upload",
-      "pilot_reader": "public_fallback"
+      "pilot_reader": "public_fallback",
+      "storage_path_shared": "videos/animations/Le consentement.mp4"
     },
     {
       "source_public": "../pagevideo/animations/Le%20secret.mp4",
       "storage_path": "full/animations/Le secret.mp4",
       "status": "pending_upload",
-      "pilot_reader": "public_fallback"
+      "pilot_reader": "public_fallback",
+      "storage_path_shared": "videos/animations/Le secret.mp4"
     },
     {
       "source_public": "../pagevideo/animations/Les%20auteurs.mp4",
       "storage_path": "full/animations/Les auteurs.mp4",
       "status": "pending_upload",
-      "pilot_reader": "public_fallback"
+      "pilot_reader": "public_fallback",
+      "storage_path_shared": "videos/animations/Les auteurs.mp4"
     },
     {
       "source_public": "../pagevideo/animations/Les%20facteurs%20aggravants.mp4",
       "storage_path": "full/animations/Les facteurs aggravants.mp4",
       "status": "pending_upload",
-      "pilot_reader": "public_fallback"
+      "pilot_reader": "public_fallback",
+      "storage_path_shared": "videos/animations/Les facteurs aggravants.mp4"
     },
     {
       "source_public": "../pagevideo/animations/Profil%20de%20l'agresseur.mp4",
       "storage_path": "full/animations/Profil de l'agresseur.mp4",
       "status": "pending_upload",
-      "pilot_reader": "public_fallback"
+      "pilot_reader": "public_fallback",
+      "storage_path_shared": "videos/animations/Profil de l'agresseur.mp4"
     },
     {
       "source_public": "../pagevideo/animations/Re%CC%81sultat%20enque%CC%82te.mp4",
       "storage_path": "full/animations/Résultat enquête.mp4",
       "status": "pending_upload",
-      "pilot_reader": "public_fallback"
+      "pilot_reader": "public_fallback",
+      "storage_path_shared": "videos/animations/Résultat enquête.mp4"
     },
     {
       "source_public": "../pagevideo/animations/Signaler%20n'est%20pas%20de%CC%81noncer.mp4",
       "storage_path": "full/animations/Signaler n'est pas dénoncer.mp4",
       "status": "pending_upload",
-      "pilot_reader": "public_fallback"
+      "pilot_reader": "public_fallback",
+      "storage_path_shared": "videos/animations/Signaler n'est pas dénoncer.mp4"
     },
     {
       "source_public": "../pagevideo/animations/Strate%CC%81gie%20de%20l'agresseur.mp4",
       "storage_path": "full/animations/Stratégie de l'agresseur.mp4",
       "status": "pending_upload",
-      "pilot_reader": "public_fallback"
+      "pilot_reader": "public_fallback",
+      "storage_path_shared": "videos/animations/Stratégie de l'agresseur.mp4"
     }
-  ]
+  ],
+  "shared_storage_prefix": "videos/"
 }
