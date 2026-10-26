@@ -1,8 +1,8 @@
 {
-  "version": 4,
+  "version": 5,
   "bucket": "rebondplay-prive",
   "tier": "full",
-  "notes": "All video and media-library access is available to Full and Essentiel+; Essentiel has neither. Shared private media authorization matrix updated for all uploaded video paths. Seven French videos connected in Full pilot; production unchanged.",
+  "notes": "13 French videos wired to Full pilot via private shared storage. Full and Essentiel+ authorized; Essentiel excluded. 19 public fallbacks remain; production pages unchanged.",
   "videos": [
     {
       "source_public": "../pagevideo/Film_Expo-e-preuves_bdf2.mp4",
@@ -21,9 +21,9 @@
     {
       "source_public": "../pagevideo/Angie_Les%20violences%20dans%20le%20sport.mp4",
       "storage_path": "full/Angie_Les violences dans le sport.mp4",
-      "status": "pending_upload",
-      "pilot_reader": "public_fallback",
-      "storage_path_shared": "videos/Angie_Les violences dans le sport.mp4"
+      "status": "shared_private_verified",
+      "pilot_reader": "private",
+      "storage_path_shared": "videos/Angie_Les violences dans le sport (1).mp4"
     },
     {
       "source_public": "../pagevideo/Angie_emprise1.mp4",
@@ -70,22 +70,22 @@
     {
       "source_public": "../pagevideo/Angie_facteursaggravants1.mp4",
       "storage_path": "full/Angie_facteursaggravants1.mp4",
-      "status": "pending_upload",
-      "pilot_reader": "public_fallback",
+      "status": "shared_private_verified",
+      "pilot_reader": "private",
       "storage_path_shared": "videos/Angie_facteursaggravants1.mp4"
     },
     {
       "source_public": "../pagevideo/Angie_facteursaggravants2.mp4",
       "storage_path": "full/Angie_facteursaggravants2.mp4",
-      "status": "pending_upload",
-      "pilot_reader": "public_fallback",
+      "status": "shared_private_verified",
+      "pilot_reader": "private",
       "storage_path_shared": "videos/Angie_facteursaggravants2.mp4"
     },
     {
       "source_public": "../pagevideo/Angie_facteursaggravants3.mp4",
       "storage_path": "full/Angie_facteursaggravants3.mp4",
-      "status": "pending_upload",
-      "pilot_reader": "public_fallback",
+      "status": "shared_private_verified",
+      "pilot_reader": "private",
       "storage_path_shared": "videos/Angie_facteursaggravants3.mp4"
     },
     {
@@ -98,15 +98,15 @@
     {
       "source_public": "../pagevideo/Angie_liberation2.mp4",
       "storage_path": "full/Angie_liberation2.mp4",
-      "status": "pending_upload",
-      "pilot_reader": "public_fallback",
+      "status": "shared_private_verified",
+      "pilot_reader": "private",
       "storage_path_shared": "videos/Angie_liberation2.mp4"
     },
     {
       "source_public": "../pagevideo/Angie_liberation3.mp4",
       "storage_path": "full/Angie_liberation3.mp4",
-      "status": "pending_upload",
-      "pilot_reader": "public_fallback",
+      "status": "shared_private_verified",
+      "pilot_reader": "private",
       "storage_path_shared": "videos/Angie_liberation3.mp4"
     },
     {
