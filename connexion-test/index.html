@@ -6,7 +6,7 @@
 (async()=>{
 const status=document.getElementById('status'),form=document.getElementById('login'),button=document.getElementById('submit');
 const client=window.supabase.createClient('https://tdsrqmpfdvntybdlvejy.supabase.co','sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO',{auth:{storageKey:'rebondplay-full-pilot-auth',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
-const routes={full:'/pagefull/',essentielplus:'/RPessentielleplus/'};
+const routes={full:'/pagefull/',essentielplus:'/RPessentielleplus/',essentiel:'/Essentiel-pilote/'};
 async function route(){
  const {data:user,error:userError}=await client.auth.getUser();
  if(userError||!user?.user)return false;
@@ -14,7 +14,7 @@ async function route(){
  if(error)throw error;
  const subscription=data?.[0];
  if(!subscription){status.textContent='Aucun abonnement actif et valide associé à ce compte.';return false}
- if(subscription.offre==='essentiel'){status.textContent='Compte Essentiel reconnu. La connexion unique à cette offre sera activée après sécurisation de sa page.';return false}
+ 
  if(!routes[subscription.offre]){status.textContent='Offre non reconnue. Contactez Rebond.';return false}
  location.replace(routes[subscription.offre]);return true;
 }
