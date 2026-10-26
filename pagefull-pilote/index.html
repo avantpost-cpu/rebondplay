@@ -109,7 +109,7 @@
           </div>
           <div class="video-subtheme">Libération de la parole</div>
           <div class="video-choice-row">
-            <button class="video-choice" type="button" data-video="../pagevideo/Angie_liberation1.mp4" data-description="Angélique Cauchy témoigne de la libération de la parole.">Partie 1</button>
+            <button class="video-choice" type="button" data-private-video="full/Angie_liberation1.mp4" data-description="Angélique Cauchy témoigne de la libération de la parole.">Partie 1</button>
             <button class="video-choice" type="button" data-video="../pagevideo/Angie_liberation2.mp4" data-description="Angélique Cauchy témoigne de la libération de la parole.">Partie 2</button>
             <button class="video-choice" type="button" data-video="../pagevideo/Angie_liberation3.mp4" data-description="Angélique Cauchy témoigne de la libération de la parole.">Partie 3</button>
           </div>
@@ -183,7 +183,34 @@
       await unlock();
       const slider=document.getElementById("slider"),track=document.getElementById("sliderTrack"),slides=[...track.children],dotsBox=document.getElementById("sliderDots"),reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;let current=0,timer=0,touchStart=0;const dots=slides.map((_,index)=>{const dot=document.createElement("button");dot.type="button";dot.className="slider-dot";dot.setAttribute("aria-label",`Afficher la slide ${index+1}`);dot.addEventListener("click",()=>{show(index);restart()});dotsBox.append(dot);return dot});function show(index){current=(index+slides.length)%slides.length;track.style.transform=`translateX(-${current*100}%)`;dots.forEach((dot,i)=>dot.classList.toggle("active",i===current))}function stop(){clearInterval(timer);timer=0}function start(){if(!reduced&&!timer)timer=setInterval(()=>show(current+1),3000)}function restart(){stop();start()}document.getElementById("prevSlide").addEventListener("click",()=>{show(current-1);restart()});document.getElementById("nextSlide").addEventListener("click",()=>{show(current+1);restart()});slider.addEventListener("mouseenter",stop);slider.addEventListener("mouseleave",start);slider.addEventListener("focusin",stop);slider.addEventListener("focusout",start);slider.addEventListener("touchstart",event=>{touchStart=event.changedTouches[0].clientX;stop()},{passive:true});slider.addEventListener("touchend",event=>{const distance=event.changedTouches[0].clientX-touchStart;if(Math.abs(distance)>45)show(current+(distance<0?1:-1));start()},{passive:true});document.addEventListener("visibilitychange",()=>document.hidden?stop():start());show(0);start();
       const videoLink=document.querySelector(".resource.video"),videoModal=document.getElementById("videoModal"),videoClose=document.getElementById("videoModalClose");function closeVideoModal(){videoModal.classList.remove("is-open");popupVideo.pause();document.body.style.overflow=""}videoLink.addEventListener("click",event=>{event.preventDefault();videoModal.classList.add("is-open");document.body.style.overflow="hidden";videoClose.focus()});videoClose.addEventListener("click",closeVideoModal);videoModal.addEventListener("click",event=>{if(event.target===videoModal)closeVideoModal()});document.addEventListener("keydown",event=>{if(event.key==="Escape"&&videoModal.classList.contains("is-open"))closeVideoModal()});
-      const popupVideo=document.getElementById("popupVideo");popupVideo.addEventListener("contextmenu",event=>event.preventDefault());const videoChoices=[...document.querySelectorAll(".video-choice")];videoChoices.forEach(choice=>choice.addEventListener("click",()=>{popupVideo.pause();popupVideo.querySelector("source").src=choice.dataset.video;popupVideo.load();document.getElementById("videoDescription").textContent=choice.dataset.description||"";popupVideo.play().catch(()=>{});videoChoices.forEach(item=>item.classList.toggle("is-active",item===choice))}));
+      const popupVideo=document.getElementById("popupVideo");popupVideo.addEventListener("contextmenu",event=>event.preventDefault());const videoChoices=[...document.querySelectorAll(".video-choice")];let videoRequest=0;
+      videoChoices.forEach(choice=>choice.addEventListener("click",async()=>{
+        const request=++videoRequest;
+        popupVideo.pause();popupVideo.removeAttribute("src");popupVideo.querySelector("source").removeAttribute("src");popupVideo.load();
+        const description=document.getElementById("videoDescription");
+        description.textContent=choice.dataset.description||"";
+        videoChoices.forEach(item=>item.classList.toggle("is-active",item===choice));
+        try{
+          let url=choice.dataset.video;
+          if(choice.dataset.privateVideo){
+            description.textContent="Chargement de la vidéo protégée…";
+            const {data:user,error:userError}=await client.auth.getUser();
+            if(userError||!user?.user)throw new Error("Connexion expirée. Reconnectez-vous.");
+            const subscription=await check();
+            if(subscription?.offre!=="full")throw new Error("Votre abonnement ne permet pas de lire cette vidéo.");
+            const {data,error}=await client.storage.from("rebondplay-prive").createSignedUrl(choice.dataset.privateVideo,900);
+            if(error||!data?.signedUrl)throw error||new Error("Lien de lecture indisponible.");
+            url=data.signedUrl;
+          }
+          if(request!==videoRequest)return;
+          popupVideo.querySelector("source").src=url;
+          popupVideo.load();
+          description.textContent=choice.dataset.description||"";
+          await popupVideo.play().catch(()=>{});
+        }catch(error){
+          if(request===videoRequest)description.textContent="Lecture impossible : "+(error?.message||"Erreur inconnue");
+        }
+      }));
     })();
   </script>
 <footer class="rp-footer"><span><strong>Rebond</strong> · Association de prévention contre les violences dans le sport</span><span><a href="mailto:contact@assorebond.com">contact@assorebond.com</a> · RebondPlay Full · © 2026</span></footer></body>
