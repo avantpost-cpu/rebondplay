@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "bucket": "rebondplay-prive",
+  "status": "pilot",
+  "media": [
+    {
+      "id": "angie-liberation-1",
+      "title": "Libération de la parole — Partie 1",
+      "source": "../pagevideo/Angie_liberation1.mp4",
+      "privatePath": "full/Angie_liberation1.mp4",
+      "offers": [
+        "full"
+      ],
+      "state": "uploaded-and-tested"
+    }
+  ],
+  "notes": [
+    "Only one asset is migrated. All other GitHub videos remain public.",
+    "Existing site uses shared-code sessionStorage; it does not authenticate users to Supabase Auth.",
+    "Do not replace public video references until individual authentication and access matrix are integrated."
+  ]
+}
