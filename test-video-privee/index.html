@@ -46,7 +46,7 @@ button:disabled{opacity:.5;cursor:wait}video{width:100%;margin-top:20px;backgrou
       if(error)throw error;
       form.hidden=true;logout.hidden=false;
       say('Compte connecté. Vérification des droits et préparation de la lecture progressive…');
-      const result=await client.storage.from('rebondplay-prive').createSignedUrl('full/Angie_liberation1.mp4',900);
+      const result=await client.storage.from('rebondplay-prive').createSignedUrl('videos/Angie_liberation1.mp4',900);
       if(result.error)throw result.error;
       player.src=result.data.signedUrl;player.hidden=false;
       say('Accès Full autorisé. Lecture progressive activée. Le lien temporaire expire après 15 minutes.');
