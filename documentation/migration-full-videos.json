@@ -1,8 +1,8 @@
 {
-  "version": 3,
+  "version": 4,
   "bucket": "rebondplay-prive",
   "tier": "full",
-  "notes": "Seven French videos connected to Full pilot via shared private Storage. Remaining 25 public fallback. Essentiel+ entitlements NOT inferred from HTML references; confirm separately. Keep public originals until migration and validation complete.",
+  "notes": "All video and media-library access is available to Full and Essentiel+; Essentiel has neither. Shared private media authorization matrix updated for all uploaded video paths. Seven French videos connected in Full pilot; production unchanged.",
   "videos": [
     {
       "source_public": "../pagevideo/Film_Expo-e-preuves_bdf2.mp4",
@@ -229,5 +229,12 @@
       "storage_path_shared": "videos/animations/Stratégie de l'agresseur.mp4"
     }
   ],
-  "shared_storage_prefix": "videos/"
+  "shared_storage_prefix": "videos/",
+  "allowed_tiers": [
+    "full",
+    "essentielplus"
+  ],
+  "excluded_tiers": [
+    "essentiel"
+  ]
 }
