@@ -28,7 +28,7 @@ button:disabled{opacity:.5;cursor:wait}video{width:100%;margin-top:20px;backgrou
 <button id="logout" type="button" hidden>Se déconnecter</button>
 <p id="status" role="status" aria-live="polite"></p>
 <video id="player" controls playsinline controlsList="nodownload" hidden></video>
-<small>La vidéo est téléchargée uniquement après vérification de la session et des droits par Supabase Storage. Le bouton « télécharger » est masqué, mais cela ne constitue pas une protection contre la copie.</small>
+<small>Un lien temporaire de lecture est délivré uniquement après vérification des droits par Supabase Storage. Il reste utilisable jusqu'à son expiration, même après déconnexion. Le bouton « télécharger » est masqué, mais cela ne constitue pas une protection contre la copie.</small>
 </section></main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.0/dist/umd/supabase.min.js"></script>
 <script>
@@ -36,9 +36,8 @@ button:disabled{opacity:.5;cursor:wait}video{width:100%;margin-top:20px;backgrou
   'use strict';
   const client = window.supabase.createClient('https://tdsrqmpfdvntybdlvejy.supabase.co','sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO',{auth:{persistSession:false,autoRefreshToken:false,detectSessionInUrl:false}});
   const form=document.getElementById('login'), status=document.getElementById('status'), player=document.getElementById('player'), logout=document.getElementById('logout'), connect=document.getElementById('connect');
-  let objectUrl=null;
   const say=(message)=>{status.textContent=message};
-  function clearVideo(){player.pause();player.hidden=true;player.removeAttribute('src');player.load();if(objectUrl){URL.revokeObjectURL(objectUrl);objectUrl=null}}
+  function clearVideo(){player.pause();player.hidden=true;player.removeAttribute('src');player.load()}
   form.addEventListener('submit',async e=>{
     e.preventDefault();clearVideo();connect.disabled=true;say('Connexion en cours…');
     try{
@@ -46,11 +45,11 @@ button:disabled{opacity:.5;cursor:wait}video{width:100%;margin-top:20px;backgrou
       document.getElementById('password').value='';
       if(error)throw error;
       form.hidden=true;logout.hidden=false;
-      say('Compte connecté. Vérification des droits et chargement de la vidéo…');
-      const result=await client.storage.from('rebondplay-prive').download('full/Angie_liberation1.mp4');
+      say('Compte connecté. Vérification des droits et préparation de la lecture progressive…');
+      const result=await client.storage.from('rebondplay-prive').createSignedUrl('full/Angie_liberation1.mp4',900);
       if(result.error)throw result.error;
-      objectUrl=URL.createObjectURL(result.data);player.src=objectUrl;player.hidden=false;
-      say('Accès Full autorisé. Lancez la lecture ci-dessous.');
+      player.src=result.data.signedUrl;player.hidden=false;
+      say('Accès Full autorisé. Lecture progressive activée. Le lien temporaire expire après 15 minutes.');
     }catch(err){say('Accès impossible : '+(err?.message||'Erreur inconnue')+'\nSi la connexion réussit mais que le fichier est refusé, la règle de sécurité a bloqué la lecture.');}
     finally{connect.disabled=false}
   });
