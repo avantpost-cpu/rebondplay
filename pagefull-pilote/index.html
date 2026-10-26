@@ -144,7 +144,7 @@
       const gate=document.getElementById("fullPilotGate"),form=document.getElementById("fullPilotForm"),message=document.getElementById("fullPilotMessage");
       if(!window.supabase){message.textContent="Le service de connexion n'a pas chargé. Recharge la page.";return}
       const client=window.supabase.createClient("https://tdsrqmpfdvntybdlvejy.supabase.co","sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO",{auth:{storageKey:"rebondplay-full-pilot-auth",persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
-      let current=null;
+      let activeSubscription=null;
       async function check(){
         const {data:user,error:userError}=await client.auth.getUser();
         if(userError||!user?.user)return null;
@@ -154,8 +154,8 @@
       }
       async function unlock(){
         gate.hidden=true;document.body.classList.add("full-pilot-ready");
-        document.getElementById("accountName").textContent="Bonjour "+(current.nom_structure||"");
-        const days=Math.max(0,Math.ceil((new Date(current.date_fin+"T23:59:59")-Date.now())/86400000));
+        document.getElementById("accountName").textContent="Bonjour "+(activeSubscription.nom_structure||"");
+        const days=Math.max(0,Math.ceil((new Date(activeSubscription.date_fin+"T23:59:59")-Date.now())/86400000));
         document.getElementById("accountMeta").textContent="Votre abonnement est encore valable "+days+" jour"+(days>1?"s":"");
         document.getElementById("logoutButton").addEventListener("click",async()=>{await client.auth.signOut();location.replace("/index.html")});
       }
@@ -168,16 +168,16 @@
           const {error}=await client.auth.signInWithPassword({email:document.getElementById("fullPilotEmail").value.trim(),password:document.getElementById("fullPilotPassword").value});
           document.getElementById("fullPilotPassword").value="";
           if(error)throw error;
-          current=await check();
-          if(!current){message.textContent="Aucun abonnement actif associé à ce compte.";await client.auth.signOut();return}
-          if(current.offre!=="full"){message.textContent="Accès Full refusé : ce compte appartient à l'offre "+current.offre+".";await client.auth.signOut();return}
+          activeSubscription=await check();
+          if(!activeSubscription){message.textContent="Aucun abonnement actif associé à ce compte.";await client.auth.signOut();return}
+          if(activeSubscription.offre!=="full"){message.textContent="Accès Full refusé : ce compte appartient à l'offre "+activeSubscription.offre+".";await client.auth.signOut();return}
           resolveAccess();
         }catch(error){message.textContent="Connexion impossible : "+(error.message||"Erreur réseau")}
         finally{button.disabled=false}
       });
       try{
         const {data}=await client.auth.getSession();
-        if(data?.session){current=await check();if(current?.offre==="full")resolveAccess()}
+        if(data?.session){activeSubscription=await check();if(activeSubscription?.offre==="full")resolveAccess()}
       }catch(error){message.textContent="Connecte-toi pour accéder à Full."}
       await access;
       await unlock();
