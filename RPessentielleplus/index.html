@@ -54,7 +54,7 @@
 #essentielGate .essentiel-gate-error{position:absolute;left:27%;top:65.5%;width:46%;min-height:0;margin:0;padding:8px 12px;border-radius:9px;background:rgba(192,57,43,.90);color:#fff;font-size:clamp(9px,1.1vw,13px);line-height:1.3;text-align:center;display:none}
 #essentielGate .essentiel-gate-error:not(:empty){display:block}
 @media(max-width:650px){#essentielGate{align-items:flex-start;padding-top:6px}#essentielGate .essentiel-gate-box{width:calc(100vw - 12px)}}
-</style></head>
+</style><style id="rp-hide-secondary-login">#plusPilotGate form{display:none!important}#plusPilotGate::after{content:"Vérification de votre accès…";font:800 18px Nunito,Arial,sans-serif;color:#065269}</style></head>
 <body><div id="plusPilotGate"><form id="plusPilotForm"><h1>RebondPlay Essentiel+ — accès sécurisé</h1><p>Connexion individuelle nécessaire pour consulter cette plateforme.</p><label for="plusPilotEmail">E-mail</label><input id="plusPilotEmail" type="email" autocomplete="username" required><label for="plusPilotPassword">Mot de passe</label><input id="plusPilotPassword" type="password" autocomplete="current-password" required><button type="submit">Accéder à Essentiel+</button><p id="plusPilotMessage" role="status"></p><p><a href="/index.html">Retour à l’accueil</a></p></form></div>
   <header class="topbar">
     <a class="brand" href="index.html" aria-label="RebondPlay Essentiel+ — accueil"><img src="Logo_RebondPlay_essentielplus.png" alt="RebondPlay Essentiel+"></a>
@@ -186,8 +186,9 @@
       });
       try{
         const {data}=await client.auth.getSession();
-        if(data?.session){activeSubscription=await check();if(activeSubscription?.offre==="essentielplus")resolveAccess()}
-      }catch(error){message.textContent="Connecte-toi pour accéder à Essentiel+."}
+        if(data?.session){activeSubscription=await check();if(activeSubscription?.offre==="essentielplus")resolveAccess();else location.replace("/connexion-test/")}
+        else location.replace("/connexion-test/");
+      }catch(error){location.replace("/connexion-test/")}
       await access;
       await unlock();
       const slider=document.getElementById("slider"),track=document.getElementById("sliderTrack"),slides=[...track.children],dotsBox=document.getElementById("sliderDots"),reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;let current=0,timer=0,touchStart=0;const dots=slides.map((_,index)=>{const dot=document.createElement("button");dot.type="button";dot.className="slider-dot";dot.setAttribute("aria-label",`Afficher la slide ${index+1}`);dot.addEventListener("click",()=>{show(index);restart()});dotsBox.append(dot);return dot});function show(index){current=(index+slides.length)%slides.length;track.style.transform=`translateX(-${current*100}%)`;dots.forEach((dot,i)=>dot.classList.toggle("active",i===current))}function stop(){clearInterval(timer);timer=0}function start(){if(!reduced&&!timer)timer=setInterval(()=>show(current+1),3000)}function restart(){stop();start()}document.getElementById("prevSlide").addEventListener("click",()=>{show(current-1);restart()});document.getElementById("nextSlide").addEventListener("click",()=>{show(current+1);restart()});slider.addEventListener("mouseenter",stop);slider.addEventListener("mouseleave",start);slider.addEventListener("focusin",stop);slider.addEventListener("focusout",start);slider.addEventListener("touchstart",event=>{touchStart=event.changedTouches[0].clientX;stop()},{passive:true});slider.addEventListener("touchend",event=>{const distance=event.changedTouches[0].clientX-touchStart;if(Math.abs(distance)>45)show(current+(distance<0?1:-1));start()},{passive:true});document.addEventListener("visibilitychange",()=>document.hidden?stop():start());show(0);start();
