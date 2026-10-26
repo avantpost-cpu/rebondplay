@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#c697c7">
   <title>RebondPlay Full — Pilote sécurisé</title>
-  <meta name="robots" content="noindex,nofollow">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.0/dist/umd/supabase.min.js"></script>
+  <meta name="robots" content="noindex,nofollow"><base href="/pagefull/">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>body:not(.full-pilot-ready) > :not(#fullPilotGate){visibility:hidden}#fullPilotGate[hidden]{display:none!important}#fullPilotGate{position:fixed;inset:0;z-index:999999;background:#bd8fbe;display:flex;align-items:center;justify-content:center;padding:20px;font:16px Arial;color:#063e54}#fullPilotGate form{background:#f7f4ef;padding:32px;border-radius:18px;max-width:480px;width:100%;box-shadow:0 8px 20px #0004}#fullPilotGate label{display:block;margin-top:14px;font-weight:700}#fullPilotGate input{width:100%;padding:12px;margin-top:6px;border:1px solid #065269;border-radius:8px}#fullPilotGate button{margin-top:20px;background:#065269;color:white;border:0;padding:12px 20px;border-radius:8px;font-weight:700}#fullPilotGate p{line-height:1.5}</style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,7 +42,7 @@
 .resource:hover{transform:none!important}
 <style id="video-close-size-fix">.video-modal-hotspot{width:clamp(28px,4vw,58px)!important;height:clamp(28px,4vw,58px)!important}.video-modal-hotspot img{width:50%!important;height:50%!important;display:block;margin:auto}</style></style><style>.rp-footer{width:min(90vw,1540px);margin:clamp(18px,2vw,32px) auto 0;padding:22px 0 28px;display:flex;justify-content:space-between;align-items:center;gap:16px;color:inherit;font-size:clamp(11px,.8vw,15px)}.rp-footer strong{font-weight:900}.rp-footer a{text-decoration:none;font-weight:800;color:inherit}.rp-footer a:hover{text-decoration:underline}@media(max-width:600px){.rp-footer{flex-direction:column;text-align:center}}</style><style>.rp-footer,.rp-footer a{color:#fff}</style></head>
 <body>
-<div id="fullPilotGate"><form id="fullPilotForm"><h1>RebondPlay Full — accès pilote</h1><p>Connexion individuelle nécessaire pour consulter cette version de test.</p><label for="fullPilotEmail">E-mail</label><input id="fullPilotEmail" type="email" autocomplete="username" required><label for="fullPilotPassword">Mot de passe</label><input id="fullPilotPassword" type="password" autocomplete="current-password" required><button type="submit">Accéder à Full</button><p id="fullPilotMessage" role="status"></p><p><a href="../index.html">Retour à l’accueil</a></p></form></div>
+<div id="fullPilotGate"><form id="fullPilotForm"><h1>RebondPlay Full — accès pilote</h1><p>Connexion individuelle nécessaire pour consulter cette version de test.</p><label for="fullPilotEmail">E-mail</label><input id="fullPilotEmail" type="email" autocomplete="username" required><label for="fullPilotPassword">Mot de passe</label><input id="fullPilotPassword" type="password" autocomplete="current-password" required><button type="submit">Accéder à Full</button><p id="fullPilotMessage" role="status"></p><p><a href="/index.html">Retour à l’accueil</a></p></form></div>
   <header class="topbar">
     <a class="brand" href="#accueil" aria-label="RebondPlay Full — accueil"><img src="Logo_RebondPlay_full2.png" alt="RebondPlay Full"></a>
     <div class="account" aria-label="Compte connecté"><span class="avatar" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0z"/></svg></span><div class="account-copy"><div class="account-name" id="accountName">Bonjour</div><div class="account-meta" id="accountMeta"></div></div><button class="logout" id="logoutButton" type="button">Se déconnecter</button></div>
@@ -141,36 +141,46 @@
   </div>
   <script>
     (async()=>{
-      const client=window.supabase.createClient("https://tdsrqmpfdvntybdlvejy.supabase.co","sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO",{auth:{storageKey:"rebondplay-full-pilot-auth",persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
       const gate=document.getElementById("fullPilotGate"),form=document.getElementById("fullPilotForm"),message=document.getElementById("fullPilotMessage");
-      async function getSubscription(){
+      if(!window.supabase){message.textContent="Le service de connexion n'a pas chargé. Recharge la page.";return}
+      const client=window.supabase.createClient("https://tdsrqmpfdvntybdlvejy.supabase.co","sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO",{auth:{storageKey:"rebondplay-full-pilot-auth",persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
+      let current=null;
+      async function check(){
         const {data:user,error:userError}=await client.auth.getUser();
         if(userError||!user?.user)return null;
         const {data,error}=await client.rpc("rp_mon_abonnement");
         if(error)throw error;
         return data?.[0]||null;
       }
-      let current=null;
-      try{current=await getSubscription()}catch(error){message.textContent="Impossible de vérifier l'abonnement."}
-      while(!current||current.offre!=="full"){
-        gate.hidden=false;
-        if(current&&current.offre!=="full"){message.textContent="Accès Full refusé : ce compte appartient à l'offre "+current.offre+".";await client.auth.signOut();current=null}
-        await new Promise(resolve=>{
-          form.onsubmit=async event=>{
-            event.preventDefault();const button=form.querySelector("button");button.disabled=true;message.textContent="Vérification en cours…";
-            const {error}=await client.auth.signInWithPassword({email:document.getElementById("fullPilotEmail").value.trim(),password:document.getElementById("fullPilotPassword").value});
-            document.getElementById("fullPilotPassword").value="";
-            if(error){message.textContent="Connexion impossible : "+error.message;button.disabled=false;return}
-            try{current=await getSubscription()}catch(error){message.textContent="Abonnement non vérifiable.";button.disabled=false;return}
-            button.disabled=false;resolve();
-          };
-        });
+      async function unlock(){
+        gate.hidden=true;document.body.classList.add("full-pilot-ready");
+        document.getElementById("accountName").textContent="Bonjour "+(current.nom_structure||"");
+        const days=Math.max(0,Math.ceil((new Date(current.date_fin+"T23:59:59")-Date.now())/86400000));
+        document.getElementById("accountMeta").textContent="Votre abonnement est encore valable "+days+" jour"+(days>1?"s":"");
+        document.getElementById("logoutButton").addEventListener("click",async()=>{await client.auth.signOut();location.replace("/index.html")});
       }
-      gate.hidden=true;document.body.classList.add("full-pilot-ready");
-      document.getElementById("accountName").textContent="Bonjour "+(current.nom_structure||"");
-      const days=Math.max(0,Math.ceil((new Date(current.date_fin+"T23:59:59")-Date.now())/86400000));
-      document.getElementById("accountMeta").textContent="Votre abonnement est encore valable "+days+" jour"+(days>1?"s":"");
-      document.getElementById("logoutButton").addEventListener("click",async()=>{await client.auth.signOut();location.replace("../index.html")});
+      let resolveAccess;
+      const access=new Promise(resolve=>{resolveAccess=resolve});
+      form.addEventListener("submit",async event=>{
+        event.preventDefault();
+        const button=form.querySelector("button");button.disabled=true;message.textContent="Connexion en cours…";
+        try{
+          const {error}=await client.auth.signInWithPassword({email:document.getElementById("fullPilotEmail").value.trim(),password:document.getElementById("fullPilotPassword").value});
+          document.getElementById("fullPilotPassword").value="";
+          if(error)throw error;
+          current=await check();
+          if(!current){message.textContent="Aucun abonnement actif associé à ce compte.";await client.auth.signOut();return}
+          if(current.offre!=="full"){message.textContent="Accès Full refusé : ce compte appartient à l'offre "+current.offre+".";await client.auth.signOut();return}
+          resolveAccess();
+        }catch(error){message.textContent="Connexion impossible : "+(error.message||"Erreur réseau")}
+        finally{button.disabled=false}
+      });
+      try{
+        const {data}=await client.auth.getSession();
+        if(data?.session){current=await check();if(current?.offre==="full")resolveAccess()}
+      }catch(error){message.textContent="Connecte-toi pour accéder à Full."}
+      await access;
+      await unlock();
       const slider=document.getElementById("slider"),track=document.getElementById("sliderTrack"),slides=[...track.children],dotsBox=document.getElementById("sliderDots"),reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;let current=0,timer=0,touchStart=0;const dots=slides.map((_,index)=>{const dot=document.createElement("button");dot.type="button";dot.className="slider-dot";dot.setAttribute("aria-label",`Afficher la slide ${index+1}`);dot.addEventListener("click",()=>{show(index);restart()});dotsBox.append(dot);return dot});function show(index){current=(index+slides.length)%slides.length;track.style.transform=`translateX(-${current*100}%)`;dots.forEach((dot,i)=>dot.classList.toggle("active",i===current))}function stop(){clearInterval(timer);timer=0}function start(){if(!reduced&&!timer)timer=setInterval(()=>show(current+1),3000)}function restart(){stop();start()}document.getElementById("prevSlide").addEventListener("click",()=>{show(current-1);restart()});document.getElementById("nextSlide").addEventListener("click",()=>{show(current+1);restart()});slider.addEventListener("mouseenter",stop);slider.addEventListener("mouseleave",start);slider.addEventListener("focusin",stop);slider.addEventListener("focusout",start);slider.addEventListener("touchstart",event=>{touchStart=event.changedTouches[0].clientX;stop()},{passive:true});slider.addEventListener("touchend",event=>{const distance=event.changedTouches[0].clientX-touchStart;if(Math.abs(distance)>45)show(current+(distance<0?1:-1));start()},{passive:true});document.addEventListener("visibilitychange",()=>document.hidden?stop():start());show(0);start();
       const videoLink=document.querySelector(".resource.video"),videoModal=document.getElementById("videoModal"),videoClose=document.getElementById("videoModalClose");function closeVideoModal(){videoModal.classList.remove("is-open");popupVideo.pause();document.body.style.overflow=""}videoLink.addEventListener("click",event=>{event.preventDefault();videoModal.classList.add("is-open");document.body.style.overflow="hidden";videoClose.focus()});videoClose.addEventListener("click",closeVideoModal);videoModal.addEventListener("click",event=>{if(event.target===videoModal)closeVideoModal()});document.addEventListener("keydown",event=>{if(event.key==="Escape"&&videoModal.classList.contains("is-open"))closeVideoModal()});
       const popupVideo=document.getElementById("popupVideo");popupVideo.addEventListener("contextmenu",event=>event.preventDefault());const videoChoices=[...document.querySelectorAll(".video-choice")];videoChoices.forEach(choice=>choice.addEventListener("click",()=>{popupVideo.pause();popupVideo.querySelector("source").src=choice.dataset.video;popupVideo.load();document.getElementById("videoDescription").textContent=choice.dataset.description||"";popupVideo.play().catch(()=>{});videoChoices.forEach(item=>item.classList.toggle("is-active",item===choice))}));
