@@ -6,7 +6,7 @@
 (async()=>{
 const status=document.getElementById('status'),form=document.getElementById('login'),button=document.getElementById('submit');
 const client=window.supabase.createClient('https://tdsrqmpfdvntybdlvejy.supabase.co','sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO',{auth:{storageKey:'rebondplay-full-pilot-auth',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
-const routes={full:'/pagefull/',essentielplus:'/RPessentielleplus/',essentiel:'/Essentiel-pilote/'};
+const routes={full:'/pagefull/',essentielplus:'/RPessentielleplus/',essentiel:'/Essentiel/'};
 async function route(){
  const {data:user,error:userError}=await client.auth.getUser();
  if(userError||!user?.user)return false;
