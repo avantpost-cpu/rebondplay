@@ -1,21 +1,21 @@
 {
-  "version": 5,
+  "version": 6,
   "bucket": "rebondplay-prive",
   "tier": "full",
-  "notes": "13 French videos wired to Full pilot via private shared storage. Full and Essentiel+ authorized; Essentiel excluded. 19 public fallbacks remain; production pages unchanged.",
+  "notes": "19 French videos wired to Full pilot via shared private Storage; 13 public fallbacks remain. Full and Essentiel+ authorized; Essentiel excluded. Production unchanged.",
   "videos": [
     {
       "source_public": "../pagevideo/Film_Expo-e-preuves_bdf2.mp4",
       "storage_path": "full/Film_Expo-e-preuves_bdf2.mp4",
-      "status": "pending_upload",
-      "pilot_reader": "public_fallback",
+      "status": "shared_private_verified",
+      "pilot_reader": "private",
       "storage_path_shared": "videos/Film_Expo-e-preuves_bdf2.mp4"
     },
     {
       "source_public": "../pagevideo/teaserexpo.mp4",
       "storage_path": "full/teaserexpo.mp4",
-      "status": "pending_upload",
-      "pilot_reader": "public_fallback",
+      "status": "shared_private_verified",
+      "pilot_reader": "private",
       "storage_path_shared": "videos/teaserexpo.mp4"
     },
     {
@@ -112,30 +112,30 @@
     {
       "source_public": "../pagevideo/Angie_conséquence1.mp4",
       "storage_path": "full/Angie_conséquence1.mp4",
-      "status": "pending_upload",
-      "pilot_reader": "public_fallback",
-      "storage_path_shared": "videos/Angie_conséquence1.mp4"
+      "status": "shared_private_verified",
+      "pilot_reader": "private",
+      "storage_path_shared": "videos/Angie_consequence1.mp4"
     },
     {
       "source_public": "../pagevideo/Angie_conséquence2.mp4",
       "storage_path": "full/Angie_conséquence2.mp4",
-      "status": "pending_upload",
-      "pilot_reader": "public_fallback",
-      "storage_path_shared": "videos/Angie_conséquence2.mp4"
+      "status": "shared_private_verified",
+      "pilot_reader": "private",
+      "storage_path_shared": "videos/Angie_consequence2.mp4"
     },
     {
       "source_public": "../pagevideo/Angie_conséquence3.mp4",
       "storage_path": "full/Angie_conséquence3.mp4",
-      "status": "pending_upload",
-      "pilot_reader": "public_fallback",
-      "storage_path_shared": "videos/Angie_conséquence3.mp4"
+      "status": "shared_private_verified",
+      "pilot_reader": "private",
+      "storage_path_shared": "videos/Angie_consequence3.mp4"
     },
     {
       "source_public": "../pagevideo/animations/strategie_demprise.mp4",
       "storage_path": "full/animations/strategie_demprise.mp4",
-      "status": "pending_upload",
-      "pilot_reader": "public_fallback",
-      "storage_path_shared": "videos/animations/strategie_demprise.mp4"
+      "status": "shared_private_verified",
+      "pilot_reader": "private",
+      "storage_path_shared": "videos/strategie_demprise.mp4"
     },
     {
       "source_public": "../pagevideo/animations/1%20enfant%20sur%207.mp4",
