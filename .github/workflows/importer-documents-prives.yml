@@ -1,0 +1,22 @@
+name: Importer documents privés vers Supabase
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Vérifier la clé de service
+        env:
+          SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          if [ -z "$SERVICE_KEY" ]; then echo "Secret SUPABASE_SERVICE_ROLE_KEY manquant" >&2; exit 1; fi
+      - name: Copier les documents dans le bucket privé
+        env:
+          SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/importer-documents-prives.mjs
