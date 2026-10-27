@@ -119,7 +119,7 @@
 
     @media(prefers-reduced-motion:reduce){.card{transition:none}}
   </style>
-<style>.rp-footer{width:min(90vw,1540px);margin:clamp(18px,2vw,32px) auto 0;padding:22px 0 28px;display:flex;justify-content:space-between;align-items:center;gap:16px;color:inherit;font-size:clamp(11px,.8vw,15px)}.rp-footer strong{font-weight:900}.rp-footer a{text-decoration:none;font-weight:800;color:inherit}.rp-footer a:hover{text-decoration:underline}@media(max-width:600px){.rp-footer{flex-direction:column;text-align:center}}</style><style>.rp-footer,.rp-footer a{color:#fff}</style></head>
+<style>.rp-footer{width:min(90vw,1540px);margin:clamp(18px,2vw,32px) auto 0;padding:22px 0 28px;display:flex;justify-content:space-between;align-items:center;gap:16px;color:inherit;font-size:clamp(11px,.8vw,15px)}.rp-footer strong{font-weight:900}.rp-footer a{text-decoration:none;font-weight:800;color:inherit}.rp-footer a:hover{text-decoration:underline}@media(max-width:600px){.rp-footer{flex-direction:column;text-align:center}}</style><style>.rp-footer,.rp-footer a{color:#fff}</style><style>body:not(.rp-resources-ready) main,body:not(.rp-resources-ready) .back{visibility:hidden}</style></head>
 <body>
   <header class="topbar">
     <a class="brand" href="../pagefull/index.html" aria-label="Retour à l’accueil RebondPlay Full"><img src="../pagefull/logo_RPF.png" alt="RebondPlay Full"></a>
@@ -131,41 +131,63 @@
     <article class="card sports">
       <img src="cooleurs.png" alt="Sports en cool’eurs — coloriages sur les valeurs du sport">
       <p class="copy">12 coloriages ludiques à télécharger<br>pour sensibiliser aux valeurs du sport<br>et ouvrir la discussion&nbsp;!</p>
-      <a class="download" href="coloriages_15x21.pdf" download aria-label="Télécharger les coloriages Sports en cool’eurs"></a>
+      <a class="download" href="#" data-private-document="coloriages_15x21.pdf" download aria-label="Télécharger les coloriages Sports en cool’eurs"></a>
     </article>
 
     <article class="card kit">
       <img src="kitcom.png" alt="Kit de communication Signaler c’est protéger">
-      <a class="download" href="affiches_kitcom.zip" download aria-label="Télécharger le kit de communication"></a>
+      <a class="download" href="#" data-private-document="affiches_kitcom.zip" download aria-label="Télécharger le kit de communication"></a>
     </article>
 
     <article class="card cocotte">
       <img src="cocot.png" alt="Cocot’éthik">
       <p class="copy">La célèbre cocotte en papier revisitée<br>pour jouer, réfléchir et échanger&nbsp;! On<br>choisit un chiffre, on ouvre la cocotte…<br>et on découvre une question, un défi<br>ou une situation à explorer ensemble.<br>Une façon d’aborder des sujets parfois<br>sensibles sans en avoir l’air.</p>
-      <a class="download download-one" href="A4_Cocotte_Rebond_ge%CC%81ne%CC%81rique_1.pdf" download aria-label="Télécharger Cocot’éthik — modèle 1"></a>
-      <a class="download download-two" href="A4_Cocotte_Rebond_ge%CC%81ne%CC%81rique_2.pdf" download aria-label="Télécharger Cocot’éthik — modèle 2"></a>
+      <a class="download download-one" href="#" data-private-document="A4_Cocotte_Rebond_générique_1.pdf" download aria-label="Télécharger Cocot’éthik — modèle 1"></a>
+      <a class="download download-two" href="#" data-private-document="A4_Cocotte_Rebond_générique_2.pdf" download aria-label="Télécharger Cocot’éthik — modèle 2"></a>
     </article>
 
-    <article class="card relayeur"><img src="kitrelayeur.png" alt="Kit du relayeur"><a class="download" href="Kit%20du%20relayeur_Print_A5_18052026.pdf" download aria-label="Télécharger le Kit du relayeur"></a></article>
+    <article class="card relayeur"><img src="kitrelayeur.png" alt="Kit du relayeur"><a class="download" href="#" data-private-document="Kit du relayeur_Print_A5_18052026.pdf" download aria-label="Télécharger le Kit du relayeur"></a></article>
 
     <article class="card fresque">
       <img src="fresque.png" alt="Fresque collective à colorier">
       <p class="copy">La Fresque collective, c’est un coloriage géant à<br>réaliser tous ensemble pour partager un moment<br>de sensibilisation créatif et convivial&nbsp;!</p>
-      <a class="download download-a3" href="fresque_A3_A.pdf" download aria-label="Télécharger la fresque — format A3 A"></a>
-      <a class="download download-a2" href="fresque_A3_B.pdf" download aria-label="Télécharger la fresque — format A3 B"></a>
+      <a class="download download-a3" href="#" data-private-document="fresque_A3_A.pdf" download aria-label="Télécharger la fresque — format A3 A"></a>
+      <a class="download download-a2" href="#" data-private-document="fresque_A3_B.pdf" download aria-label="Télécharger la fresque — format A3 B"></a>
     </article>
   </main>
   <a class="back" href="../pagefull/index.html">← Retour à l’accueil</a>
 
-  <script>
-    (()=>{
-      const storageKeys=["rebondplay_access_ok","rebondplay_abonnement_id","rebondplay_nom_structure","rebondplay_code","rebondplay_date_fin","rebondplay_prenom_contact","rebondplay_nom_contact"],get=key=>sessionStorage.getItem(key)||"";
-      if(get("rebondplay_access_ok")!=="1"){location.replace("../index.html");return}
-      const name=[get("rebondplay_prenom_contact"),get("rebondplay_nom_contact")].filter(Boolean).join(" ")||get("rebondplay_nom_structure");document.getElementById("accountName").textContent=`Bonjour ${name}`.trim();
-      const endValue=get("rebondplay_date_fin"),metaElement=document.getElementById("accountMeta");let meta=get("rebondplay_nom_structure");if(endValue){const end=new Date(`${endValue}T23:59:59`),days=Math.max(0,Math.ceil((end-Date.now())/86400000));metaElement.innerHTML=`Votre abonnement est encore valable<br>${days} jour${days>1?"s":""}`}else{metaElement.textContent=meta}
-      document.getElementById("logoutButton").addEventListener("click",()=>{storageKeys.forEach(key=>sessionStorage.removeItem(key));location.replace("../index.html")});
-      document.querySelectorAll("[data-missing]").forEach(link=>link.addEventListener("click",event=>{event.preventDefault();alert("Le document PDF sera disponible ici dès son ajout.")}));
-    })();
-  </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(async()=>{
+ const sup=window.supabase?.createClient("https://tdsrqmpfdvntybdlvejy.supabase.co","sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO",{auth:{storageKey:"rebondplay-full-pilot-auth",persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
+ try{
+  if(!sup)throw Error("Connexion indisponible");
+  const {data:{user},error:authError}=await sup.auth.getUser();
+  if(authError||!user){location.replace("/connexion-test/");return}
+  const {data,error}=await sup.rpc("rp_mon_abonnement");
+  if(error)throw error;
+  const sub=Array.isArray(data)?data[0]:data;
+  if(sub?.offre!=="full"){location.replace("/connexion-test/");return}
+  document.getElementById("accountName").textContent="Bonjour "+(sub.nom_structure||"");
+  const meta=document.getElementById("accountMeta");
+  if(sub.date_fin){const days=Math.max(0,Math.ceil((new Date(sub.date_fin+"T23:59:59")-Date.now())/86400000));meta.textContent="Votre abonnement est encore valable "+days+" jour"+(days>1?"s":"")}
+  else meta.textContent="Offre Full";
+  document.getElementById("logoutButton").addEventListener("click",async()=>{await sup.auth.signOut();location.replace("/connexion-test/")});
+  document.querySelectorAll("[data-missing]").forEach(a=>a.addEventListener("click",e=>{e.preventDefault();alert("Le document sera disponible prochainement.")}));
+  document.querySelectorAll("a[data-private-document]").forEach(a=>a.addEventListener("click",async e=>{
+   e.preventDefault();if(a.dataset.loading==="1")return;a.dataset.loading="1";
+   try{
+    const {data:{session}}=await sup.auth.getSession();
+    if(!session?.access_token){location.replace("/connexion-test/");return}
+    const res=await fetch("https://tdsrqmpfdvntybdlvejy.supabase.co/functions/v1/rp-document-prive",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+session.access_token,apikey:"sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO"},body:JSON.stringify({file:a.dataset.privateDocument})});
+    const payload=await res.json();if(!res.ok||!payload.url)throw Error(payload.error||"Téléchargement indisponible");
+    const link=document.createElement("a");link.href=payload.url;link.download=a.dataset.privateDocument;document.body.appendChild(link);link.click();link.remove();
+   }catch(err){alert(err.message||"Erreur de téléchargement")}finally{a.dataset.loading="0"}
+  }));
+  document.body.classList.add("rp-resources-ready");
+ }catch(err){location.replace("/connexion-test/")}
+})();
+</script>
 <footer class="rp-footer"><span><strong>Rebond</strong> · Association de prévention contre les violences dans le sport</span><span><a href="mailto:contact@assorebond.com">contact@assorebond.com</a> · RebondPlay Full · © 2026</span></footer></body>
 </html>
