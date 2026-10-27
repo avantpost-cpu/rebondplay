@@ -7,42 +7,24 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    window.REBONDPLAY_ACCESS_READY = (async () => {
-      const isLocalPreview =
-        location.protocol === "file:" ||
-        ["localhost", "127.0.0.1", "0.0.0.0"].includes(location.hostname) ||
-        location.hostname.endsWith(".sandbox.local");
-
-      if (isLocalPreview) {
-        document.documentElement.classList.remove("access-pending");
-        return true;
-      }
-
-      const refuse = () => {
-        ["rebondplay_access_ok", "rebondplay_code", "rebondplay_abonnement_id",
-         "rebondplay_nom_structure", "rebondplay_date_fin"]
-          .forEach(key => sessionStorage.removeItem(key));
-        location.replace("/");
-        return false;
-      };
-
-      const code = sessionStorage.getItem("rebondplay_code");
-      if (sessionStorage.getItem("rebondplay_access_ok") !== "1" || !code) return refuse();
-
-      try {
-        const client = window.supabase.createClient(
-          "https://tdsrqmpfdvntybdlvejy.supabase.co",
-          "sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO"
-        );
-        const { data, error } = await client.rpc("rp_verifier_code", { p_code: code });
-        if (error || !data?.[0]?.valide) return refuse();
-        document.documentElement.classList.remove("access-pending");
-        return true;
-      } catch (error) {
-        console.error("REBONDPLAY — vérification d’accès impossible :", error);
-        return refuse();
-      }
-    })();
+    window.REBONDPLAY_ACCESS_READY=(async()=>{
+ const isPreview=location.protocol==="file:"||["localhost","127.0.0.1","0.0.0.0"].includes(location.hostname)||location.hostname.endsWith(".sandbox.local");
+ if(isPreview){document.documentElement.classList.remove("access-pending");return true}
+ try{
+  if(!window.supabase)throw Error("Supabase indisponible");
+  const client=window.supabase.createClient("https://tdsrqmpfdvntybdlvejy.supabase.co","sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO",{auth:{storageKey:"rebondplay-full-pilot-auth",persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
+  const {data:user,error:userError}=await client.auth.getUser();
+  if(userError||!user?.user)throw Error("Connexion requise");
+  const {data,error}=await client.rpc("rp_mon_abonnement");
+  if(error||data?.[0]?.offre!=="full")throw Error("Abonnement Full requis");
+  document.documentElement.classList.remove("access-pending");
+  return true;
+ }catch(error){
+  console.error("RebondPlay : accès au jeu refusé",error);
+  location.replace("/connexion-test/");
+  return false;
+ }
+})();
   </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
