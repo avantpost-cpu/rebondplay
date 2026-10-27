@@ -71,7 +71,7 @@ window.REBONDPLAY_ACCESS_READY=(async()=>{
   const {data:user,error:userError}=await client.auth.getUser();
   if(userError||!user?.user)throw Error("Connexion requise");
   const {data,error}=await client.rpc("rp_mon_abonnement");
-  if(error||data?.[0]?.offre!=="full")throw Error("Abonnement Full requis");
+  if(error||!["full","essentielplus"].includes(data?.[0]?.offre))throw Error("Abonnement Full ou Essentiel+ requis");
   document.documentElement.classList.remove("access-pending");
   return true;
  }catch(error){
