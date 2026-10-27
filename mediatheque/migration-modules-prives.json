@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "description": "30 modules publics à migrer avec leurs dépendances. Ne pas supprimer avant validation privée.",
+  "modules": [
+    {
+      "title": "A — Affiches",
+      "source": "affiches/affiches.html",
+      "status": "public_unmigrated"
+    },
+    {
+      "title": "A — Autobiographie / Témoignage",
+      "source": "autobio/autobio.html",
+      "status": "public_unmigrated"
+    },
+    {
+      "title": "A — Âges",
+      "source": "ages/agesretravail.html",
+      "status": "public_unmigrated"
+    },
+    {
+      "title": "C — Chiffres",
+      "source": "chiffres/chiffres.html",
+      "status": "public_unmigrated"
+    },
+    {
+      "title": "C — Communication",
+      "source": "com/com.html",
+      "status": "public_unmigrated"
+    },
+    {
+      "title": "C — Comparaison",
+      "source": "comparaison/comparaison.html",
+      "status": "public_unmigrated"
+    },
+    {
+      "title": "C — Course",
+      "source": "course/course.html",
+      "status": "public_unmigrated"
+    },
+    {
+      "title": "E — Essai",
+      "source": "essai/essai.html",
+      "status": "public_unmigrated"
+    },
+    {
+      "title": "F — Films",
+      "source": "films/films.html",
+      "status": "public_unmigrated"
+    },
+    {
+      "title": "H — Honorabilité",
+      "source": "hono/hono.html",
+      "status": "public_unmigrated"
+    },
+    {
+      "title": "I — Infra",
+      "source": "infra/infra.html",
+      "status": "public_unmigrated"
+    },
+    {
+      "title": "L — Livre",
+      "source": "livre/livre.html",
+      "status": "public_unmigrated"
+    },
+    {
+      "title": "L — Livres jeunesse",
+      "source": "livresj/livresj.html",
+      "status": "public_unmigrated"
+    },
+    {
+      "title": "M — Majeure",
+      "source": "majeure/majeure.html",
+      "status": "public_unmigrated"
+    },
+    {
+      "title": "M — Mineure",
+      "source": "mineure/mineure.html",
+      "status": "public_unmigrated"
+    },
+    {
+      "title": "M — Miroir (outil)",
+      "source": "outil/miroir.html",
+      "status": "public_unmigrated"
+    },
+    {
+      "title": "P — Phrases",
+      "source": "phrases/phrases.html",
+      "status": "public_unmigrated"
+    },
+    {
+      "title": "P — Puzzle (définition)",
+      "source": "puzzledef/puzzledef.html",
+      "status": "public_unmigrated"
+    },
+    {
+      "title": "Q — Question",
+      "source": "question/question1.html",
+      "status": "public_unmigrated"
+    },
+    {
+      "title": "R — Retenir",
+      "source": "retenir/retenir.html",
+      "status": "public_unmigrated"
+    },
+    {
+      "title": "R — Réglo’Sport",
+      "source": "reglosport/reglosport.html",
+      "status": "public_unmigrated"
+    },
+    {
+      "title": "S — Signalement",
+      "source": "signalement/signalement.html",
+      "status": "public_unmigrated"
+    },
+    {
+      "title": "T — Tableau",
+      "source": "tableau/tableau.html",
+      "status": "public_unmigrated"
+    },
+    {
+      "title": "T — Tableau 1",
+      "source": "tableau1/tableau1.html",
+      "status": "public_unmigrated"
+    },
+    {
+      "title": "T — Tableau 2",
+      "source": "tableau2/tableau2.html",
+      "status": "public_unmigrated"
+    },
+    {
+      "title": "T — Tableau 3",
+      "source": "tableau3/tableau3.html",
+      "status": "public_unmigrated"
+    },
+    {
+      "title": "T — Tâches",
+      "source": "taches/taches.html",
+      "status": "public_unmigrated"
+    },
+    {
+      "title": "U — Urgence",
+      "source": "urgence/urgence.html",
+      "status": "public_unmigrated"
+    },
+    {
+      "title": "U — Urgence 2",
+      "source": "urgence2/urgence2.html",
+      "status": "public_unmigrated"
+    },
+    {
+      "title": "V — Violences",
+      "source": "violences/violences.html",
+      "status": "public_unmigrated"
+    }
+  ]
+}
