@@ -17,7 +17,7 @@ for(const name of files){
  await access(source);
  const bytes=await readFile(source);
  if(!bytes.length)throw Error('Fichier vide: '+source);
- const path='documents/communs/'+name;
+ const path='documents/communs/'+name.normalize('NFC');
  const url=base+'/storage/v1/object/rebondplay-prive/'+path.split('/').map(encodeURIComponent).join('/');
  const res=await fetch(url,{method:'POST',headers:{apikey:key,Authorization:'Bearer '+key,'Content-Type':extname(name)==='.pdf'?'application/pdf':'application/zip','x-upsert':'true'},body:bytes});
  const response=await res.text();
