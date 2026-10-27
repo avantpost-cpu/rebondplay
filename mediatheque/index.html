@@ -64,13 +64,30 @@ function card(r){
   const isAnimation=r.type==="Animation vidéo (MP4)";
   const docHtml=!isAnimation&&docs.length?`<div class="doc-list" aria-label="Documents à télécharger"><strong>Documents disponibles</strong>${docs.filter(d=>d.url).map(d=>{const u=new URL(d.url,location.href).href;return `<a class="document-download" href="${esc(u)}" target="_blank" rel="noopener" download>${esc(d.label||'Télécharger le document')} ↓</a>`}).join('')}</div>`:'';
   const preview=r.previewImage?`<div class="preview"><img src="${esc(r.previewImage)}" alt="Aperçu : ${esc(r.title)}" style="width:100%;height:100%;object-fit:contain;background:#fff"></div>`:(href||r.privatePath)&&r.type==="Animation vidéo (MP4)"?`<div class="preview"><video class="resource-video" controls controlsList="nodownload noremoteplayback" disablePictureInPicture disableRemotePlayback preload="none" playsinline aria-label="Lire ${esc(r.title)}"><source data-private-path="${esc(r.privatePath||'')}" type="video/mp4"></video></div>`:docPreview?`<div class="preview"><div class="preview-file"><span class="file-icon" aria-hidden="true">▤</span><strong>${esc(r.type||"Document PDF")}</strong></div></div>`:href?`<div class="preview"><iframe loading="lazy" title="Aperçu : ${esc(r.title)}" src="${esc(href)}"></iframe></div>`:`<div class="preview"><div class="preview-file"><span class="file-icon" aria-hidden="true">▤</span><strong>${esc(r.type||'Ressource Rebond')}</strong></div></div>`;
-  const actions=href&&!isAnimation?`<div class="actions"><a class="open" href="${esc(href)}" target="_blank" rel="noopener">Ouvrir</a></div>`:'';
+  const pilotModule=href.match(/^https:\/\/avantpost-cpu\.github\.io\/depot-quiz\/(affiches\/affiches\.html|autobio\/autobio\.html)$/)?.[1];
+  const actions=pilotModule?`<div class="actions"><a class="open private-module-open" href="#" data-module="${esc(pilotModule)}">Ouvrir en accès privé</a></div>`:href&&!isAnimation?`<div class="actions"><a class="open" href="${esc(href)}" target="_blank" rel="noopener">Ouvrir</a></div>`:'';
   return `<article class="card" data-search="${esc(searchText(r))}"><h2>${esc(r.title)}</h2>${r.summary?`<p>${esc(r.summary)}</p>`:''}${preview}${tags?`<div class="docs" aria-label="Thèmes">${tags}</div>`:''}${docHtml}${actions}</article>`;
 }
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function render(){const q=norm(search.value.trim());let filtered=resources.filter(r=>{const first=(r.title||'').trim().charAt(0).toUpperCase();return (!selectedLetter||q||first===selectedLetter)&&(!q||q.split(/\s+/).filter(Boolean).every(term=>searchText(r).includes(term)))});status.textContent=`${filtered.length} ressource${filtered.length===1?'':'s'}${q?' trouvée'+(filtered.length===1?'':'s')+(search.value.trim()?' pour « '+search.value.trim()+' »':''):''}`;grid.innerHTML=filtered.length?filtered.map(card).join(''):'<div class="empty">Aucune ressource ne correspond à cette recherche.</div>';bindPrivateVideos();nav.querySelectorAll('[data-letter]').forEach(a=>a.classList.toggle('active',a.dataset.letter===selectedLetter))}
 grid.addEventListener('contextmenu',event=>{if(event.target.closest('video'))event.preventDefault()});
 search.addEventListener('input',()=>render());
+grid.addEventListener("click",async event=>{
+ const a=event.target.closest("a.private-module-open");if(!a)return;
+ event.preventDefault();
+ const popup=window.open("","_blank");
+ if(!popup){alert("Autorisez les fenêtres contextuelles pour ouvrir le module.");return}
+ popup.opener=null;
+ popup.document.write("<!doctype html><title>RebondPlay</title><p>Chargement sécurisé du module…</p>");
+ try{
+  const {data,error}=await privateClient.auth.getSession();
+  if(error||!data?.session?.access_token)throw Error("Connexion requise");
+  const response=await fetch("https://tdsrqmpfdvntybdlvejy.supabase.co/functions/v1/rp-module-render",{method:"POST",headers:{"Authorization":"Bearer "+data.session.access_token,"apikey":"sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO","Content-Type":"application/json"},body:JSON.stringify({path:a.dataset.module})});
+  const result=await response.json();
+  if(!response.ok||!result.html)throw Error(result.error||"Module indisponible");
+  popup.document.open();popup.document.write(result.html);popup.document.close();
+ }catch(e){popup.document.open();popup.document.write("<p>Impossible de charger ce module privé. Revenez à la médiathèque.</p>");popup.document.close();alert(e.message)}
+});
 const rpPrivateDocumentNames=new Set(["coloriages_15x21.pdf","A4_Cocotte_Rebond_générique_1.pdf","A4_Cocotte_Rebond_générique_2.pdf","Kit du relayeur_Print_A5_18052026.pdf","fresque_A3_A.pdf","fresque_A3_B.pdf"].map(x=>x.normalize("NFD")));
 grid.addEventListener("click",async event=>{
  const a=event.target.closest("a.document-download");if(!a)return;
