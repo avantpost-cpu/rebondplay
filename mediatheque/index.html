@@ -71,7 +71,7 @@ function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&l
 function render(){const q=norm(search.value.trim());let filtered=resources.filter(r=>{const first=(r.title||'').trim().charAt(0).toUpperCase();return (!selectedLetter||q||first===selectedLetter)&&(!q||q.split(/\s+/).filter(Boolean).every(term=>searchText(r).includes(term)))});status.textContent=`${filtered.length} ressource${filtered.length===1?'':'s'}${q?' trouvée'+(filtered.length===1?'':'s')+(search.value.trim()?' pour « '+search.value.trim()+' »':''):''}`;grid.innerHTML=filtered.length?filtered.map(card).join(''):'<div class="empty">Aucune ressource ne correspond à cette recherche.</div>';bindPrivateVideos();nav.querySelectorAll('[data-letter]').forEach(a=>a.classList.toggle('active',a.dataset.letter===selectedLetter))}
 grid.addEventListener('contextmenu',event=>{if(event.target.closest('video'))event.preventDefault()});
 search.addEventListener('input',()=>render());
-const rpPrivateDocumentNames=new Set(["coloriages_15x21.pdf","A4_Cocotte_Rebond_générique_1.pdf","A4_Cocotte_Rebond_générique_2.pdf","Kit du relayeur_Print_A5_18052026.pdf","fresque_A3_A.pdf","fresque_A3_B.pdf"]);
+const rpPrivateDocumentNames=new Set(["coloriages_15x21.pdf","A4_Cocotte_Rebond_générique_1.pdf","A4_Cocotte_Rebond_générique_2.pdf","Kit du relayeur_Print_A5_18052026.pdf","fresque_A3_A.pdf","fresque_A3_B.pdf"].map(x=>x.normalize("NFD")));
 grid.addEventListener("click",async event=>{
  const a=event.target.closest("a.document-download");if(!a)return;
  const file=decodeURIComponent(new URL(a.href).pathname.split("/").pop()).normalize("NFD");
