@@ -1,28 +1,593 @@
 <!doctype html>
-<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Rebond — Résultats satisfaction</title>
+
 <style>
-*{box-sizing:border-box}body{margin:0;background:#065269;font-family:Arial,sans-serif;color:#123}.w{max-width:1100px;margin:auto;padding:28px 16px}h1{color:#fff}.box{background:#fff;border-radius:20px;padding:22px;margin:14px 0}button{padding:11px 14px;border:0;border-radius:10px;background:#e65013;color:#fff;font-weight:bold;cursor:pointer}.top{display:flex;justify-content:space-between;gap:12px;align-items:center}.kpis{display:flex;gap:10px;flex-wrap:wrap}.kpi{background:#eef5f4;padding:14px;border-radius:12px;min-width:145px}.kpi b{display:block;font-size:26px;color:#065269}.sec{border-top:1px solid #ddd;margin-top:22px;padding-top:18px}.bar{display:grid;grid-template-columns:2fr 3fr 55px;gap:9px;align-items:center;margin:8px 0}.track{height:14px;background:#e8eeee;border-radius:20px;overflow:hidden}.fill{height:100%;background:#e65013}.answer{background:#f7f7f4;padding:12px;border-radius:10px;margin:8px 0}.person{border:1px solid #dde5e5;border-radius:12px;padding:12px;margin:9px 0}.person summary{font-weight:bold;cursor:pointer;color:#065269}.person p{line-height:1.55}.empty{color:#789;font-style:italic}@media(max-width:650px){.bar{grid-template-columns:1fr 2fr 45px}.top{align-items:flex-start;flex-direction:column}}
-dialog{border:0;border-radius:18px;padding:0;max-width:520px;width:calc(100% - 32px);box-shadow:0 20px 60px rgba(0,0,0,.35)}dialog::backdrop{background:rgba(0,30,40,.6)}.mailbox{padding:22px}.mailbox input{width:100%;padding:12px;border:1px solid #ccd8d8;border-radius:10px;font:inherit}.mailactions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}.status{min-height:20px;margin-top:10px;font-size:14px}</style></head><body><main class="w"><h1>Satisfaction — Résultats</h1><section class="box"><div class="top"><button onclick="location.href='./'">← Mes sessions</button><div style="display:flex;gap:8px;flex-wrap:wrap"><button id="email">Envoyer le récapitulatif par e-mail</button><button id="csv">Exporter CSV</button></div></div><h2 id="title">Chargement…</h2><div id="body"></div></section></main><dialog id="mailDialog"><div class="mailbox"><h2>Envoyer le récapitulatif</h2><p>Le bilan de cette session sera envoyé par e-mail.</p><label><b>Destinataire</b><input id="mailTo" type="email" placeholder="nom@domaine.fr"></label><div class="status" id="mailStatus"></div><div class="mailactions"><button type="button" id="mailCancel">Annuler</button><button type="button" id="mailSend">Envoyer</button></div></div></dialog>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>window.REBOND_CONFIG={supabaseUrl:"https://tdsrqmpfdvntybdlvejy.supabase.co",supabaseKey:"sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO"};</script><script>
-const c=window.supabase.createClient(window.REBOND_CONFIG.supabaseUrl,window.REBOND_CONFIG.supabaseKey);
-const id=new URLSearchParams(location.search).get("id");let rows=[],sess=null;
-const esc=v=>String(v??"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
-const pct=(n,d)=>d?Math.round(n*100/d):0;
-function bar(label,count,total){let p=pct(count,total);return '<div class="bar"><span>'+esc(label)+'</span><div class="track"><div class="fill" style="width:'+p+'%"></div></div><b>'+p+'%</b></div>'}
-const topics=["Types de violences","Signaux d’alerte","Procédures de signalement","Obligations légales","Outils de prévention"];
-const keys=[["types de violences"],["signaux"],["procédures","procedures"],["obligations"],["outils de prévention","outils de prevention"]];
-function has(a,i){return (a||[]).some(v=>keys[i].some(k=>String(v).toLowerCase().includes(k)))}
-function dist(field,opts){return opts.map(o=>bar(o,rows.filter(x=>x[field]===o).length,rows.length)).join("")}
-async function init(){let auth=await c.auth.getSession();if(!auth.data.session){location.href="./";return}let a=await c.from("satisfaction_sessions").select("*").eq("id",id).single();let b=await c.from("satisfaction_responses").select("*").eq("session_id",id).order("created_at");if(a.error||b.error){document.querySelector("#title").textContent="Impossible de charger les résultats";return}sess=a.data;rows=b.data||[];document.querySelector("#title").textContent=sess.event_name+" — "+new Date(sess.event_date+"T12:00").toLocaleDateString("fr-FR");render()}
-function render(){let n=rows.length,avg=n?(rows.reduce((a,x)=>a+Number(x.satisfaction||0),0)/n).toFixed(1):"—",news=rows.filter(x=>x.newsletter==="Oui").length;let o='<div class="kpis"><div class="kpi"><b>'+n+'</b>participants</div><div class="kpi"><b>'+avg+'/5</b>satisfaction</div><div class="kpi"><b>'+news+'</b>newsletter</div><div class="kpi"><b>'+pct(rows.filter(x=>String(x.equipped).startsWith("Oui")).length,n)+'%</b>mieux outillés</div></div>';
-o+='<div class="sec"><h3>Avant / Après</h3><h4>Connaissance avant</h4>'+topics.map((t,i)=>bar(t,rows.filter(x=>has(x.before,i)).length,n)).join("")+'<h4>Maîtrise après</h4>'+topics.map((t,i)=>bar(t,rows.filter(x=>has(x.after,i)).length,n)).join("")+'</div>';
-o+='<div class="sec"><h3>Évaluations</h3><h4>Contenu adapté</h4>'+dist("adapted",["Oui, tout à fait","Plutôt","Peu adapté","Pas du tout"])+'<h4>Qualité</h4>'+dist("quality",["Excellente","Bonne","Moyenne","À améliorer"])+'<h4>Mieux outillé</h4>'+dist("equipped",["Oui, tout à fait","Oui, plutôt","Non, pas vraiment","Non, pas du tout"])+'<h4>Vécu émotionnel</h4>'+dist("emotion",["Très touché(e)","Concerné(e)","Intéressé(e) mais ne me sens pas concerné(e)","Pas concerné(e)"])+'</div>';
-let contacts=rows.filter(x=>x.newsletter==="Oui");o+='<div class="sec"><h3>Contacts newsletter</h3>'+(contacts.map(x=>'<div class="answer"><b>'+esc(x.name)+'</b> — '+esc(x.email||"E-mail non renseigné")+'</div>').join("")||'<p class="empty">Aucun contact.</p>')+'</div>';
-let fs=[["learned","Éléments marquants / appris"],["changes","Pratiques ou attitudes à modifier"],["useful","Aspects les plus utiles"],["improve","Aspects à améliorer"],["remarks","Autres remarques"]];o+='<div class="sec"><h3>Réponses rédigées</h3>'+fs.map(f=>'<h4>'+f[1]+'</h4>'+(rows.filter(x=>x[f[0]]).map(x=>'<div class="answer"><b>'+esc(x.name)+'</b><br>'+esc(x[f[0]])+'</div>').join("")||'<p class="empty">Aucune réponse.</p>')).join("")+'</div>';
-o+='<div class="sec"><h3>Détail par participant</h3>'+(rows.map(x=>'<details class="person"><summary>'+esc(x.name)+' — '+esc(x.job)+'</summary><p><b>E-mail :</b> '+esc(x.email||"—")+'<br><b>Newsletter :</b> '+esc(x.newsletter)+'<br><b>Avant :</b> '+esc((x.before||[]).join(" • "))+'<br><b>Après :</b> '+esc((x.after||[]).join(" • "))+'<br><b>À approfondir :</b> '+esc((x.deepen||[]).join(" • "))+'<br><b>Contenu adapté :</b> '+esc(x.adapted)+'<br><b>Qualité :</b> '+esc(x.quality)+'<br><b>Mieux outillé :</b> '+esc(x.equipped)+'<br><b>Vécu :</b> '+esc(x.emotion)+'<br><b>Satisfaction :</b> '+esc(x.satisfaction)+'/5<br><b>Éléments marquants :</b> '+esc(x.learned)+'<br><b>Changements :</b> '+esc(x.changes)+'<br><b>Utile :</b> '+esc(x.useful)+'<br><b>À améliorer :</b> '+esc(x.improve)+'<br><b>Remarques :</b> '+esc(x.remarks||"—")+'</p></details>').join("")||'<p class="empty">Aucune réponse.</p>')+'</div>';document.querySelector("#body").innerHTML=o}
-document.querySelector("#email").onclick=()=>{document.querySelector("#mailStatus").textContent="";document.querySelector("#mailDialog").showModal()};
-document.querySelector("#mailCancel").onclick=()=>document.querySelector("#mailDialog").close();
-document.querySelector("#mailSend").onclick=async()=>{let to=document.querySelector("#mailTo").value.trim(),st=document.querySelector("#mailStatus"),btn=document.querySelector("#mailSend");if(!to||!to.includes("@")){st.textContent="Indique une adresse e-mail valide.";return}btn.disabled=true;st.textContent="Envoi en cours…";let {data:{session}}=await c.auth.getSession();if(!session?.access_token){btn.disabled=false;st.textContent="Envoi impossible : session administrateur expirée. Reconnectez-vous.";return}let {data,error}=await c.functions.invoke("smart-task",{body:{session_id:id,to},headers:{Authorization:"Bearer "+session.access_token}});btn.disabled=false;if(error){let detail=error.message;try{if(error.context){const r=error.context;const body=await r.clone().json();detail=body?.error||body?.message||JSON.stringify(body);if(body?.details)detail+=" — "+(typeof body.details==="string"?body.details:JSON.stringify(body.details))}}catch(e){try{if(error.context){const t=await error.context.clone().text();if(t)detail+=" — "+t}}catch(_){}}st.textContent="Envoi impossible : "+detail;return}st.textContent="Récapitulatif envoyé à "+to+".";setTimeout(()=>document.querySelector("#mailDialog").close(),1400)};
-document.querySelector("#csv").onclick=()=>{if(!rows.length)return;let cols=["name","job","newsletter","email","before","after","deepen","learned","adapted","quality","equipped","changes","emotion","useful","improve","satisfaction","remarks","created_at"];let q=v=>'"'+String(Array.isArray(v)?v.join(" | "):(v??"")).replaceAll('"','""')+'"';let csv="\uFEFF"+[cols.join(";"),...rows.map(r=>cols.map(k=>q(r[k])).join(";"))].join("\n");let a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));a.download="satisfaction-"+(sess?.event_date||"session")+".csv";a.click()};init();
-</script></body></html>
+*{box-sizing:border-box}
+body{margin:0;background:#065269;font-family:Arial,sans-serif;color:#123}
+.w{max-width:1100px;margin:auto;padding:28px 16px}
+h1{color:#fff}
+.box{background:#fff;border-radius:20px;padding:22px;margin:14px 0}
+button,.button{display:inline-block;padding:11px 14px;border:0;border-radius:10px;background:#e65013;color:#fff;font:700 14px Arial,sans-serif;cursor:pointer;text-decoration:none}
+button:disabled{opacity:.55;cursor:wait}
+[hidden]{display:none!important}
+.top{display:flex;justify-content:space-between;gap:12px;align-items:center}
+.kpis{display:flex;gap:10px;flex-wrap:wrap}
+.kpi{background:#eef5f4;padding:14px;border-radius:12px;min-width:145px}
+.kpi b{display:block;font-size:26px;color:#065269}
+.sec{border-top:1px solid #ddd;margin-top:22px;padding-top:18px}
+.bar{display:grid;grid-template-columns:2fr 3fr 55px;gap:9px;align-items:center;margin:8px 0}
+.track{height:14px;background:#e8eeee;border-radius:20px;overflow:hidden}
+.fill{height:100%;background:#e65013}
+.answer{background:#f7f7f4;padding:12px;border-radius:10px;margin:8px 0}
+.person{border:1px solid #dde5e5;border-radius:12px;padding:12px;margin:9px 0}
+.person summary{font-weight:bold;cursor:pointer;color:#065269}
+.person p{line-height:1.55}
+.empty{color:#789;font-style:italic}
+dialog{border:0;border-radius:18px;padding:0;max-width:520px;width:calc(100% - 32px);box-shadow:0 20px 60px #0006}
+dialog::backdrop{background:rgba(0,30,40,.6)}
+.mailbox{padding:22px}
+.mailbox input{width:100%;padding:12px;border:1px solid #ccd8d8;border-radius:10px;font:inherit}
+.mailactions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+.status{min-height:20px;margin-top:10px;font-size:14px}
+@media(max-width:650px){
+  .bar{grid-template-columns:1fr 2fr 45px}
+  .top{align-items:flex-start;flex-direction:column}
+}
+</style>
+</head>
+
+<body>
+<main class="w">
+  <h1>Satisfaction — Résultats</h1>
+
+  <section id="access" class="box">
+    <p id="accessMessage" role="status">Vérification de l’accès…</p>
+    <a class="button" href="./">← Mes sessions / Connexion</a>
+  </section>
+
+  <section id="report" class="box" hidden>
+    <div class="top">
+      <a class="button" href="./">← Mes sessions</a>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button id="email" type="button" disabled>
+          Envoyer le récapitulatif par e-mail
+        </button>
+        <button id="csv" type="button" disabled>Exporter CSV</button>
+      </div>
+    </div>
+
+    <h2 id="title"></h2>
+    <div id="body"></div>
+    <p id="actionStatus" role="status"></p>
+  </section>
+</main>
+
+<dialog id="mailDialog">
+  <form id="mailForm" class="mailbox">
+    <h2>Envoyer le récapitulatif</h2>
+    <p>Le bilan de cette session sera envoyé par e-mail.</p>
+
+    <label for="mailTo"><b>Destinataire</b></label>
+    <input id="mailTo" type="email" placeholder="nom@domaine.fr" required>
+
+    <div class="status" id="mailStatus" role="status"></div>
+
+    <div class="mailactions">
+      <button type="button" id="mailCancel">Annuler</button>
+      <button type="submit" id="mailSend">Envoyer</button>
+    </div>
+  </form>
+</dialog>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+(async function () {
+  const $ = id => document.getElementById(id);
+  const id = new URLSearchParams(location.search).get("id");
+
+  let rows = [];
+  let sess = null;
+  let ready = false;
+  let version = 0;
+  let timer;
+
+  function closeAccess(message) {
+    ready = false;
+    rows = [];
+    sess = null;
+    $("report").hidden = true;
+    $("access").hidden = false;
+    $("accessMessage").textContent = message;
+    $("title").textContent = "";
+    $("body").replaceChildren();
+    $("email").disabled = true;
+    $("csv").disabled = true;
+    $("mailDialog").close();
+  }
+
+  if (!window.supabase?.createClient) {
+    closeAccess(
+      "La bibliothèque de connexion n’a pas pu être chargée. Recharge la page."
+    );
+    return;
+  }
+
+  const c = window.supabase.createClient(
+    "https://tdsrqmpfdvntybdlvejy.supabase.co",
+    "sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO"
+  );
+
+  const esc = value => String(value ?? "").replace(
+    /[&<>"']/g,
+    character => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;"
+    }[character])
+  );
+
+  const pct = (count, total) =>
+    total ? Math.round(count * 100 / total) : 0;
+
+  const list = value =>
+    Array.isArray(value) ? value.join(" • ") : String(value ?? "");
+
+  const topics = [
+    "Types de violences",
+    "Signaux d’alerte",
+    "Procédures de signalement",
+    "Obligations légales",
+    "Outils de prévention"
+  ];
+
+  const keys = [
+    ["types de violences"],
+    ["signaux"],
+    ["procédures", "procedures"],
+    ["obligations"],
+    ["outils de prévention", "outils de prevention"]
+  ];
+
+  function has(values, index) {
+    return Array.isArray(values) && values.some(value =>
+      keys[index].some(key =>
+        String(value).toLowerCase().includes(key)
+      )
+    );
+  }
+
+  function bar(label, count, total) {
+    const percentage = pct(count, total);
+
+    return (
+      '<div class="bar"><span>' + esc(label) +
+      '</span><div class="track"><div class="fill" style="width:' +
+      percentage + '%"></div></div><b>' +
+      percentage + "%</b></div>"
+    );
+  }
+
+  function dist(field, options) {
+    return options.map(option =>
+      bar(
+        option,
+        rows.filter(row => row[field] === option).length,
+        rows.length
+      )
+    ).join("");
+  }
+
+  async function verifyAdmin() {
+    const current = version;
+    const { data, error } = await c.auth.getSession();
+
+    if (current !== version) return null;
+    if (error) throw Error("Impossible de vérifier la connexion.");
+
+    if (!data?.session) {
+      closeAccess(
+        "Connexion requise. Retourne à Mes sessions pour te connecter."
+      );
+      return null;
+    }
+
+    const { data: isAdmin, error: roleError } =
+      await c.rpc("rebond_is_admin");
+
+    if (current !== version) return null;
+
+    if (roleError) {
+      throw Error("Impossible de vérifier tes droits.");
+    }
+
+    if (isAdmin !== true) {
+      closeAccess("Accès réservé aux administrateurs.");
+      return null;
+    }
+
+    return data.session;
+  }
+
+  async function init() {
+    const current = ++version;
+    closeAccess("Vérification de l’accès…");
+
+    if (!id) {
+      closeAccess(
+        "Aucune session sélectionnée. Ouvre les résultats depuis Mes sessions."
+      );
+      return;
+    }
+
+    try {
+      if (!(await verifyAdmin())) return;
+      if (current !== version) return;
+
+      $("accessMessage").textContent = "Chargement des résultats…";
+
+      const [sessionResult, responsesResult] = await Promise.all([
+        c.from("satisfaction_sessions")
+          .select("*")
+          .eq("id", id)
+          .single(),
+        c.from("satisfaction_responses")
+          .select("*")
+          .eq("session_id", id)
+          .order("created_at")
+      ]);
+
+      if (current !== version) return;
+
+      if (
+        sessionResult.error ||
+        responsesResult.error ||
+        !sessionResult.data
+      ) {
+        closeAccess(
+          "Résultats introuvables ou impossibles à charger."
+        );
+        return;
+      }
+
+      sess = sessionResult.data;
+      rows = responsesResult.data || [];
+
+      const day = sess.event_date
+        ? new Date(
+            sess.event_date + "T12:00"
+          ).toLocaleDateString("fr-FR")
+        : "";
+
+      $("title").textContent =
+        (sess.event_name ?? "") + (day ? " — " + day : "");
+
+      render();
+
+      ready = true;
+      $("access").hidden = true;
+      $("report").hidden = false;
+      $("email").disabled = false;
+      $("csv").disabled = false;
+    } catch {
+      if (current === version) {
+        closeAccess(
+          "Impossible de vérifier l’accès ou de charger les résultats. Recharge la page."
+        );
+      }
+    }
+  }
+
+  function render() {
+    const count = rows.length;
+
+    const average = count
+      ? (
+          rows.reduce(
+            (sum, row) => sum + Number(row.satisfaction || 0),
+            0
+          ) / count
+        ).toFixed(1)
+      : "—";
+
+    const newsletter = rows.filter(
+      row => row.newsletter === "Oui"
+    ).length;
+
+    const equipped = rows.filter(
+      row => String(row.equipped).startsWith("Oui")
+    ).length;
+
+    let html =
+      '<div class="kpis">' +
+      '<div class="kpi"><b>' + count + "</b>participants</div>" +
+      '<div class="kpi"><b>' + average + "/5</b>satisfaction</div>" +
+      '<div class="kpi"><b>' + newsletter + "</b>newsletter</div>" +
+      '<div class="kpi"><b>' + pct(equipped, count) +
+      "%</b>mieux outillés</div></div>";
+
+    html +=
+      '<div class="sec"><h3>Avant / Après</h3>' +
+      "<h4>Connaissance avant</h4>" +
+      topics.map((topic, index) =>
+        bar(
+          topic,
+          rows.filter(row => has(row.before, index)).length,
+          count
+        )
+      ).join("") +
+      "<h4>Maîtrise après</h4>" +
+      topics.map((topic, index) =>
+        bar(
+          topic,
+          rows.filter(row => has(row.after, index)).length,
+          count
+        )
+      ).join("") +
+      "</div>";
+
+    html +=
+      '<div class="sec"><h3>Évaluations</h3>' +
+      "<h4>Contenu adapté</h4>" +
+      dist("adapted", [
+        "Oui, tout à fait", "Plutôt", "Peu adapté", "Pas du tout"
+      ]) +
+      "<h4>Qualité</h4>" +
+      dist("quality", [
+        "Excellente", "Bonne", "Moyenne", "À améliorer"
+      ]) +
+      "<h4>Mieux outillé</h4>" +
+      dist("equipped", [
+        "Oui, tout à fait", "Oui, plutôt",
+        "Non, pas vraiment", "Non, pas du tout"
+      ]) +
+      "<h4>Vécu émotionnel</h4>" +
+      dist("emotion", [
+        "Très touché(e)",
+        "Concerné(e)",
+        "Intéressé(e) mais ne me sens pas concerné(e)",
+        "Pas concerné(e)"
+      ]) +
+      "</div>";
+
+    const contacts = rows.filter(row => row.newsletter === "Oui");
+
+    html +=
+      '<div class="sec"><h3>Contacts newsletter</h3>' +
+      (
+        contacts.map(row =>
+          '<div class="answer"><b>' + esc(row.name) +
+          "</b> — " +
+          esc(row.email || "E-mail non renseigné") +
+          "</div>"
+        ).join("") ||
+        '<p class="empty">Aucun contact.</p>'
+      ) +
+      "</div>";
+
+    const fields = [
+      ["learned", "Éléments marquants / appris"],
+      ["changes", "Pratiques ou attitudes à modifier"],
+      ["useful", "Aspects les plus utiles"],
+      ["improve", "Aspects à améliorer"],
+      ["remarks", "Autres remarques"]
+    ];
+
+    html +=
+      '<div class="sec"><h3>Réponses rédigées</h3>' +
+      fields.map(([field, label]) =>
+        "<h4>" + label + "</h4>" +
+        (
+          rows.filter(row => row[field]).map(row =>
+            '<div class="answer"><b>' + esc(row.name) +
+            "</b><br>" + esc(row[field]) + "</div>"
+          ).join("") ||
+          '<p class="empty">Aucune réponse.</p>'
+        )
+      ).join("") +
+      "</div>";
+
+    html +=
+      '<div class="sec"><h3>Détail par participant</h3>' +
+      (
+        rows.map(row =>
+          '<details class="person"><summary>' +
+          esc(row.name) + " — " + esc(row.job) +
+          "</summary><p>" +
+          "<b>E-mail :</b> " + esc(row.email || "—") +
+          "<br><b>Newsletter :</b> " + esc(row.newsletter) +
+          "<br><b>Avant :</b> " + esc(list(row.before)) +
+          "<br><b>Après :</b> " + esc(list(row.after)) +
+          "<br><b>À approfondir :</b> " + esc(list(row.deepen)) +
+          "<br><b>Contenu adapté :</b> " + esc(row.adapted) +
+          "<br><b>Qualité :</b> " + esc(row.quality) +
+          "<br><b>Mieux outillé :</b> " + esc(row.equipped) +
+          "<br><b>Vécu :</b> " + esc(row.emotion) +
+          "<br><b>Satisfaction :</b> " + esc(row.satisfaction) + "/5" +
+          "<br><b>Éléments marquants :</b> " + esc(row.learned) +
+          "<br><b>Changements :</b> " + esc(row.changes) +
+          "<br><b>Utile :</b> " + esc(row.useful) +
+          "<br><b>À améliorer :</b> " + esc(row.improve) +
+          "<br><b>Remarques :</b> " + esc(row.remarks || "—") +
+          "</p></details>"
+        ).join("") ||
+        '<p class="empty">Aucune réponse.</p>'
+      ) +
+      "</div>";
+
+    $("body").innerHTML = html;
+  }
+
+  $("email").onclick = () => {
+    if (!ready) return;
+    $("mailStatus").textContent = "";
+    $("mailDialog").showModal();
+  };
+
+  $("mailCancel").onclick = () => $("mailDialog").close();
+
+  $("mailForm").addEventListener("submit", async event => {
+    event.preventDefault();
+
+    const button = $("mailSend");
+    const status = $("mailStatus");
+
+    if (!ready || button.disabled) return;
+
+    const to = $("mailTo").value.trim();
+
+    if (!$("mailTo").checkValidity()) {
+      $("mailTo").reportValidity();
+      return;
+    }
+
+    button.disabled = true;
+    status.textContent = "Vérification des droits…";
+
+    try {
+      const current = version;
+      const session = await verifyAdmin();
+
+      if (!session || !ready || current !== version) return;
+
+      if (!session.access_token) {
+        status.textContent = "Session expirée. Reconnecte-toi.";
+        return;
+      }
+
+      status.textContent = "Envoi en cours…";
+
+      const { error } = await c.functions.invoke("smart-task", {
+        body: { session_id: id, to },
+        headers: {
+          Authorization: "Bearer " + session.access_token
+        }
+      });
+
+      if (!ready || current !== version) return;
+
+      if (error) {
+        status.textContent =
+          "Envoi non confirmé. Vérifie avant de réessayer.";
+        return;
+      }
+
+      status.textContent = "Récapitulatif envoyé à " + to + ".";
+    } catch {
+      status.textContent =
+        "Vérification ou envoi non confirmé. Ne relance pas immédiatement.";
+    } finally {
+      button.disabled = false;
+    }
+  });
+
+  function csvCell(value) {
+    let text = String(
+      Array.isArray(value) ? value.join(" | ") : (value ?? "")
+    );
+
+    // Neutralise les préfixes interprétables comme des formules,
+    // y compris après des espaces ou caractères de contrôle.
+    if (
+      /^[\s\u0000-\u001f\u007f-\u009f]*[=+\-@]/u.test(text) ||
+      /^[\t\r\n]/.test(text)
+    ) {
+      text = "'" + text;
+    }
+
+    return '"' + text.replaceAll('"', '""') + '"';
+  }
+
+  $("csv").onclick = async () => {
+    if (!ready || $("csv").disabled) return;
+
+    const button = $("csv");
+    button.disabled = true;
+    $("actionStatus").textContent = "";
+
+    try {
+      const current = version;
+
+      if (!(await verifyAdmin())) return;
+      if (!ready || current !== version) return;
+
+      if (!rows.length) {
+        $("actionStatus").textContent =
+          "Aucune réponse à exporter.";
+        return;
+      }
+
+      const columns = [
+        "name", "job", "newsletter", "email",
+        "before", "after", "deepen", "learned",
+        "adapted", "quality", "equipped", "changes",
+        "emotion", "useful", "improve", "satisfaction",
+        "remarks", "created_at"
+      ];
+
+      const csv = "\uFEFF" + [
+        columns.join(";"),
+        ...rows.map(row =>
+          columns.map(column => csvCell(row[column])).join(";")
+        )
+      ].join("\n");
+
+      const url = URL.createObjectURL(
+        new Blob([csv], { type: "text/csv;charset=utf-8" })
+      );
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download =
+        "satisfaction-" + (sess?.event_date || "session") + ".csv";
+
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    } catch {
+      $("actionStatus").textContent =
+        "Export impossible. Recharge la page pour réessayer.";
+    } finally {
+      button.disabled = !ready;
+    }
+  };
+
+  c.auth.onAuthStateChange(event => {
+    if (event === "SIGNED_OUT") {
+      clearTimeout(timer);
+      ++version;
+      closeAccess(
+        "Tu es déconnecté. Retourne à Mes sessions pour te connecter."
+      );
+      return;
+    }
+
+    if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED") {
+      ++version;
+      closeAccess("Vérification de l’accès…");
+      clearTimeout(timer);
+
+      timer = setTimeout(() => {
+        init();
+      }, 0);
+    }
+  });
+
+  await init();
+})().catch(() => {
+  document.getElementById("report").hidden = true;
+  document.getElementById("access").hidden = false;
+  document.getElementById("accessMessage").textContent =
+    "Impossible d’initialiser la page. Recharge-la pour réessayer.";
+});
+</script>
+</body>
+</html>
