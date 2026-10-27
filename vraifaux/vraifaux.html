@@ -62,194 +62,23 @@ window.REBONDPLAY_CLIENT =
     );
 
 
-window.REBONDPLAY_ACCESS_READY =
-(async () => {
-
-
-    const STORAGE_OK =
-        "rebondplay_access_ok";
-
-    const STORAGE_CODE =
-        "rebondplay_code";
-
-    const STORAGE_ABONNEMENT =
-        "rebondplay_abonnement_id";
-
-    const STORAGE_STRUCTURE =
-        "rebondplay_nom_structure";
-
-    const STORAGE_DATE_FIN =
-        "rebondplay_date_fin";
-
-
-    function effacerAcces(){
-
-        sessionStorage.removeItem(
-            STORAGE_OK
-        );
-
-        sessionStorage.removeItem(
-            STORAGE_CODE
-        );
-
-        sessionStorage.removeItem(
-            STORAGE_ABONNEMENT
-        );
-
-        sessionStorage.removeItem(
-            STORAGE_STRUCTURE
-        );
-
-        sessionStorage.removeItem(
-            STORAGE_DATE_FIN
-        );
-
-    }
-
-
-    function refuserAcces(){
-
-        effacerAcces();
-
-        window.location.replace(
-            "/"
-        );
-
-    }
-
-
-    const accesOK =
-        sessionStorage.getItem(
-            STORAGE_OK
-        );
-
-
-    const code =
-        sessionStorage.getItem(
-            STORAGE_CODE
-        );
-
-
-    /*
-       Sans validation préalable sur le portail,
-       on refuse immédiatement l'accès.
-    */
-
-    if(
-        accesOK !== "1" ||
-        !code
-    ){
-
-        refuserAcces();
-
-        return false;
-
-    }
-
-
-    try{
-
-
-        /*
-           On vérifie réellement le code
-           dans Supabase à chaque ouverture du jeu.
-        */
-
-        const {
-            data,
-            error
-        } =
-        await window.REBONDPLAY_CLIENT.rpc(
-            "rp_verifier_code",
-            {
-                p_code:code
-            }
-        );
-
-
-        if(error){
-
-            throw error;
-
-        }
-
-
-        const abonnement =
-            data?.[0];
-
-
-        if(
-            !abonnement ||
-            abonnement.valide !== true
-        ){
-
-            refuserAcces();
-
-            return false;
-
-        }
-
-
-        /*
-           Mise à jour des données de session.
-        */
-
-        sessionStorage.setItem(
-            STORAGE_OK,
-            "1"
-        );
-
-
-        sessionStorage.setItem(
-            STORAGE_ABONNEMENT,
-            abonnement.abonnement_id
-        );
-
-
-        sessionStorage.setItem(
-            STORAGE_STRUCTURE,
-            abonnement.nom_structure || ""
-        );
-
-
-        sessionStorage.setItem(
-            STORAGE_DATE_FIN,
-            abonnement.date_fin || ""
-        );
-
-
-        /*
-           Seulement maintenant,
-           on rend la page visible.
-        */
-
-        document
-            .documentElement
-            .classList
-            .remove(
-                "access-pending"
-            );
-
-
-        return true;
-
-
-    }catch(error){
-
-
-        console.error(
-            "REBONDPLAY — vérification d'accès impossible :",
-            error
-        );
-
-
-        refuserAcces();
-
-        return false;
-
-    }
-
-
+window.REBONDPLAY_ACCESS_READY=(async()=>{
+ const isPreview=location.protocol==="file:"||["localhost","127.0.0.1","0.0.0.0"].includes(location.hostname)||location.hostname.endsWith(".sandbox.local");
+ if(isPreview){document.documentElement.classList.remove("access-pending");return true}
+ try{
+  if(!window.supabase)throw Error("Supabase indisponible");
+  const client=window.supabase.createClient("https://tdsrqmpfdvntybdlvejy.supabase.co","sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO",{auth:{storageKey:"rebondplay-full-pilot-auth",persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
+  const {data:user,error:userError}=await client.auth.getUser();
+  if(userError||!user?.user)throw Error("Connexion requise");
+  const {data,error}=await client.rpc("rp_mon_abonnement");
+  if(error||data?.[0]?.offre!=="full")throw Error("Abonnement Full requis");
+  document.documentElement.classList.remove("access-pending");
+  return true;
+ }catch(error){
+  console.error("RebondPlay : accès au jeu refusé",error);
+  location.replace("/connexion-test/");
+  return false;
+ }
 })();
 
 </script>
