@@ -1,0 +1,51 @@
+name: Aligner la médiathèque pilote sur les accès privés
+on:
+  push:
+    paths:
+      - '.github/workflows/aligner-mediatheque-pilote.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: aligner-mediatheque-pilote
+  cancel-in-progress: false
+jobs:
+  aligner:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remplacer les anciennes URLs pilotes par le lecteur privé validé
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          source=Path('mediatheque/index.html').read_text(encoding='utf-8')
+          catalog=json.loads(Path('mediatheque/ressources.json').read_text(encoding='utf-8'))
+          old=json.loads(Path('mediatheque-pilote/ressources.json').read_text(encoding='utf-8'))
+          assert len(catalog)==len(old)==63
+          assert sum(bool(x.get('privateModule')) for x in catalog)==30
+          assert 'rp-module-render' in source and 'private-module-open' in source
+          assert 'rp_mon_abonnement' in source
+          # Le pilote utilise exactement le lecteur sécurisé de la médiathèque principale.
+          source=source.replace("fetch('/mediatheque/ressources.json')","fetch('/mediatheque-pilote/ressources.json')")
+          assert "fetch('/mediatheque-pilote/ressources.json')" in source
+          Path('mediatheque-pilote/index.html').write_text(source,encoding='utf-8')
+          Path('mediatheque-pilote/ressources.json').write_text(json.dumps(catalog,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          updated=json.loads(Path('mediatheque-pilote/ressources.json').read_text())
+          assert len(updated)==63
+          assert sum(bool(x.get('privateModule')) for x in updated)==30
+          assert not any('depot-quiz/' in x.get('url','') for x in updated)
+          print('Médiathèque pilote : 63 ressources, 30 modules privés, zéro ancienne URL de module.')
+          PY
+          git diff --exit-code -- elearning pagevideo
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add mediatheque-pilote/index.html mediatheque-pilote/ressources.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Aligner la médiathèque pilote sur le lecteur privé principal [skip ci]'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
