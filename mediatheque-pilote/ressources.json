@@ -1,7 +1,6 @@
 [
   {
     "title": "A — Affiches",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/affiches/affiches.html",
     "type": "Module interactif",
     "summary": "Diaporama de visuels RègloSport à faire défiler.",
     "themes": [
@@ -18,7 +17,8 @@
       "règlement sportif",
       "repères",
       "sport"
-    ]
+    ],
+    "privateModule": "affiches/affiches.html"
   },
   {
     "title": "A — Affiches SignalSport",
@@ -64,7 +64,6 @@
   },
   {
     "title": "A — Autobiographie / Témoignage",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/autobio/autobio.html",
     "type": "Module interactif",
     "summary": "Sélection de récits autobiographiques et de témoignages sur les violences sexuelles dans le sport, l’emprise, le silence et la reconstruction.",
     "themes": [
@@ -87,11 +86,11 @@
       "libération de la parole",
       "reconstruction",
       "parcours de victime"
-    ]
+    ],
+    "privateModule": "autobio/autobio.html"
   },
   {
     "title": "A — Âges",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/ages/agesretravail.html",
     "type": "Module interactif",
     "summary": "Mosaïque visuelle interactive consacrée aux âges.",
     "themes": [
@@ -109,11 +108,11 @@
       "majeure",
       "mineur",
       "mineure"
-    ]
+    ],
+    "privateModule": "ages/agesretravail.html"
   },
   {
     "title": "C — Chiffres",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/chiffres/chiffres.html",
     "type": "Module interactif",
     "summary": "Mosaïque interactive de cinq visuels chiffrés.",
     "themes": [
@@ -129,7 +128,8 @@
       "données",
       "repère chiffré",
       "sensibilisation"
-    ]
+    ],
+    "privateModule": "chiffres/chiffres.html"
   },
   {
     "title": "C — Cocot’éthik",
@@ -180,7 +180,6 @@
   },
   {
     "title": "C — Communication",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/com/com.html",
     "type": "Module interactif",
     "summary": "Deux séquences vidéo et des visuels pour observer la communication verbale et non verbale.",
     "themes": [
@@ -200,11 +199,11 @@
       "dialogue",
       "observer",
       "signes non verbaux"
-    ]
+    ],
+    "privateModule": "com/com.html"
   },
   {
     "title": "C — Comparaison",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/comparaison/comparaison.html",
     "type": "Module interactif",
     "summary": "Mise en regard de qualificatifs stéréotypés associés au féminin et au masculin.",
     "themes": [
@@ -226,11 +225,11 @@
       "égalité",
       "discrimination",
       "rôles de genre"
-    ]
+    ],
+    "privateModule": "comparaison/comparaison.html"
   },
   {
     "title": "C — Course",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/course/course.html",
     "type": "Module interactif",
     "summary": "Quiz ludique sur la protection des enfants, les obligations de signalement et les conduites à tenir face à une situation de violence.",
     "themes": [
@@ -257,11 +256,11 @@
       "obligation légale",
       "interdiction d’exercer",
       "encadrement sportif"
-    ]
+    ],
+    "privateModule": "course/course.html"
   },
   {
     "title": "E — Essai",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/essai/essai.html",
     "type": "Module interactif",
     "summary": "Essais et ouvrages d’analyse sur les violences sexuelles dans le sport, les rapports d’autorité, la pression de la performance et le silence institutionnel.",
     "themes": [
@@ -289,11 +288,11 @@
       "prévenir",
       "agir",
       "repères juridiques"
-    ]
+    ],
+    "privateModule": "essai/essai.html"
   },
   {
     "title": "F — Films",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/films/films.html",
     "type": "Module interactif",
     "summary": "Sélection de fictions, téléfilms et documentaires sur l’emprise, les violences sexuelles, la pression de la performance et le silence dans le sport.",
     "themes": [
@@ -326,7 +325,8 @@
       "témoignage",
       "enquête",
       "prévention"
-    ]
+    ],
+    "privateModule": "films/films.html"
   },
   {
     "title": "F — Fresque à colorier",
@@ -374,7 +374,6 @@
   },
   {
     "title": "H — Honorabilité",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/hono/hono.html",
     "type": "Module interactif",
     "summary": "Repères illustrés sur le contrôle d’honorabilité dans les structures sportives.",
     "themes": [
@@ -396,11 +395,11 @@
       "protection des mineurs",
       "prévention",
       "sécurité"
-    ]
+    ],
+    "privateModule": "hono/hono.html"
   },
   {
     "title": "I — Infra",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/infra/infra.html",
     "type": "Module interactif",
     "summary": "Mosaïque interactive de repères sur les infractions et les violences dans le sport, dont le bizutage.",
     "themes": [
@@ -419,7 +418,8 @@
       "protection des mineurs",
       "repères juridiques",
       "cadre légal"
-    ]
+    ],
+    "privateModule": "infra/infra.html"
   },
   {
     "title": "K — Kit du relayeur",
@@ -480,7 +480,6 @@
   },
   {
     "title": "L — Livre",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/livre/livre.html",
     "type": "Module interactif",
     "summary": "Feuilletage visuel de pages d’un livre et de sa couverture.",
     "themes": [
@@ -496,11 +495,11 @@
       "ouvrage",
       "extrait",
       "récit"
-    ]
+    ],
+    "privateModule": "livre/livre.html"
   },
   {
     "title": "L — Livres jeunesse",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/livresj/livresj.html",
     "type": "Module interactif",
     "summary": "Sélection de livres pour aborder avec les enfants les violences, le respect du corps, le consentement et le droit de demander de l’aide.",
     "themes": [
@@ -529,11 +528,11 @@
       "prévention",
       "parents",
       "professionnels"
-    ]
+    ],
+    "privateModule": "livresj/livresj.html"
   },
   {
     "title": "M — Majeure",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/majeure/majeure.html",
     "type": "Module interactif",
     "summary": "Séquence visuelle interactive associée à la situation d’une personne majeure.",
     "themes": [
@@ -548,11 +547,11 @@
       "adulte",
       "âge",
       "personne adulte"
-    ]
+    ],
+    "privateModule": "majeure/majeure.html"
   },
   {
     "title": "M — Mineure",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/mineure/mineure.html",
     "type": "Module interactif",
     "summary": "Séquence visuelle interactive associée à la situation d’une personne mineure.",
     "themes": [
@@ -569,11 +568,11 @@
       "jeune",
       "âge",
       "protection de l’enfance"
-    ]
+    ],
+    "privateModule": "mineure/mineure.html"
   },
   {
     "title": "M — Miroir (outil)",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/outil/miroir.html",
     "type": "Module interactif",
     "summary": "Baromètre du climat éthique composé de vingt situations pour réfléchir à sa pratique sportive ou éducative et repérer les situations à risque.",
     "themes": [
@@ -619,11 +618,11 @@
       "réaction immédiate",
       "CRIP",
       "procureur"
-    ]
+    ],
+    "privateModule": "outil/miroir.html"
   },
   {
     "title": "P — Phrases",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/phrases/phrases.html",
     "type": "Module interactif",
     "summary": "Deux séquences vidéo et des séries d’images autour de phrases et d’échanges entre majeurs et mineurs.",
     "themes": [
@@ -646,11 +645,11 @@
       "parler",
       "question",
       "expression"
-    ]
+    ],
+    "privateModule": "phrases/phrases.html"
   },
   {
     "title": "P — Puzzle (définition)",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/puzzledef/puzzledef.html",
     "type": "Module interactif",
     "summary": "Puzzle interactif organisé autour de définitions et de zones à explorer.",
     "themes": [
@@ -667,11 +666,11 @@
       "repère",
       "activité pédagogique",
       "jeu interactif"
-    ]
+    ],
+    "privateModule": "puzzledef/puzzledef.html"
   },
   {
     "title": "Q — Question",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/question/question1.html",
     "type": "Module interactif",
     "summary": "Exemples de questions ouvertes pour accueillir la parole d’un enfant quand un changement, un symptôme ou une blessure inquiète.",
     "themes": [
@@ -695,11 +694,11 @@
       "violence suspectée",
       "ne pas suggérer la réponse",
       "dialogue"
-    ]
+    ],
+    "privateModule": "question/question1.html"
   },
   {
     "title": "R — Retenir",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/retenir/retenir.html",
     "type": "Module interactif",
     "summary": "Repères pour réagir avec justesse lorsqu’une victime parle : croire, écouter, soutenir, ne pas culpabiliser et ne pas minimiser.",
     "themes": [
@@ -724,11 +723,11 @@
       "courage",
       "accueillir la parole",
       "réaction adaptée"
-    ]
+    ],
+    "privateModule": "retenir/retenir.html"
   },
   {
     "title": "R — Réglo’Sport",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/reglosport/reglosport.html",
     "type": "Module interactif",
     "summary": "Situations illustrées pour repérer les limites, les comportements inappropriés et les ressources d’aide dans le sport.",
     "themes": [
@@ -770,11 +769,11 @@
       "signaler",
       "tchat",
       "protection"
-    ]
+    ],
+    "privateModule": "reglosport/reglosport.html"
   },
   {
     "title": "S — Signalement",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/signalement/signalement.html",
     "type": "Module interactif",
     "summary": "Présentation de trois voies de signalement : judiciaire, administrative et disciplinaire.",
     "themes": [
@@ -799,7 +798,8 @@
       "obligation de signaler",
       "procédure",
       "protection"
-    ]
+    ],
+    "privateModule": "signalement/signalement.html"
   },
   {
     "title": "S — Sports en Cool’eurs",
@@ -840,7 +840,6 @@
   },
   {
     "title": "T — Tableau",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/tableau/tableau.html",
     "type": "Module interactif",
     "summary": "Tableau de repères et définitions sur les infractions sexuelles et les atteintes aux personnes.",
     "themes": [
@@ -861,11 +860,11 @@
       "définition",
       "droit pénal",
       "protection des mineurs"
-    ]
+    ],
+    "privateModule": "tableau/tableau.html"
   },
   {
     "title": "T — Tableau 1",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/tableau1/tableau1.html",
     "type": "Module interactif",
     "summary": "Repères illustrés sur les violences physiques et psychologiques et leurs conséquences.",
     "themes": [
@@ -886,11 +885,11 @@
       "infraction",
       "définition",
       "droit pénal"
-    ]
+    ],
+    "privateModule": "tableau1/tableau1.html"
   },
   {
     "title": "T — Tableau 2",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/tableau2/tableau2.html",
     "type": "Module interactif",
     "summary": "Repères juridiques sur l’obligation de signaler certains mauvais traitements ou atteintes sexuelles, notamment envers un mineur.",
     "themes": [
@@ -911,11 +910,11 @@
       "signalement de bonne foi",
       "protection juridique",
       "infraction"
-    ]
+    ],
+    "privateModule": "tableau2/tableau2.html"
   },
   {
     "title": "T — Tableau 3",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/tableau3/tableau3.html",
     "type": "Module interactif",
     "summary": "Présentation de différentes infractions sexuelles visant les mineurs, y compris les sollicitations et images à caractère sexuel en ligne.",
     "themes": [
@@ -937,11 +936,11 @@
       "internet",
       "droit pénal",
       "peine"
-    ]
+    ],
+    "privateModule": "tableau3/tableau3.html"
   },
   {
     "title": "T — Tâches",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/taches/taches.html",
     "type": "Module interactif",
     "summary": "Module interactif Rebond intitulé « Tâches ».",
     "themes": [
@@ -954,11 +953,11 @@
       "activité",
       "interaction",
       "module Rebond"
-    ]
+    ],
+    "privateModule": "taches/taches.html"
   },
   {
     "title": "U — Urgence",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/urgence/urgence.html",
     "type": "Module interactif",
     "summary": "Repères visuels pour trouver les contacts à appeler en cas de danger ou de besoin d’aide.",
     "themes": [
@@ -982,11 +981,11 @@
       "violences",
       "numéro d’urgence",
       "signalement"
-    ]
+    ],
+    "privateModule": "urgence/urgence.html"
   },
   {
     "title": "U — Urgence 2",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/urgence2/urgence2.html",
     "type": "Module interactif",
     "summary": "Séquence vidéo et visuels autour d’une situation d’urgence et des actions à entreprendre.",
     "themes": [
@@ -1005,11 +1004,11 @@
       "situation préoccupante",
       "violence",
       "victime"
-    ]
+    ],
+    "privateModule": "urgence2/urgence2.html"
   },
   {
     "title": "V — Violences",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/violences/violences.html",
     "type": "Module interactif",
     "summary": "Mosaïque interactive de sensibilisation consacrée aux violences.",
     "themes": [
@@ -1029,33 +1028,18 @@
       "protection",
       "victime",
       "comportement inapproprié"
-    ]
+    ],
+    "privateModule": "violences/violences.html"
   },
   {
     "title": "A — Animations sensibilisation — 1 enfant sur 7",
-    "url": "https://rebondplay.com/pagevideo/animations/1%20enfant%20sur%207.mp4",
     "type": "Animation vidéo (MP4)",
     "summary": "Vidéo de sensibilisation à télécharger : 1 enfant sur 7.",
     "themes": [
       "Statistiques",
       "Protection de l’enfance"
     ],
-    "documents": [
-      {
-        "label": "Télécharger — 1 enfant sur 7",
-        "url": "https://rebondplay.com/pagevideo/animations/1%20enfant%20sur%207.mp4",
-        "type": "MP4",
-        "keywords": [
-          "enfants",
-          "statistiques",
-          "violences sexuelles",
-          "prévention",
-          "sensibilisation",
-          "sport",
-          "1 enfant sur 7"
-        ]
-      }
-    ],
+    "documents": [],
     "keywords": [
       "1 enfant sur 7",
       "animation",
@@ -1081,29 +1065,13 @@
   },
   {
     "title": "A — Animations sensibilisation — Exemple Franck Nicotra",
-    "url": "https://rebondplay.com/pagevideo/animations/Exemple%20Franck%20Nicotra.mp4",
     "type": "Animation vidéo (MP4)",
     "summary": "Vidéo de sensibilisation à télécharger : Exemple Franck Nicotra.",
     "themes": [
       "Témoignage",
       "Accueil de la parole"
     ],
-    "documents": [
-      {
-        "label": "Télécharger — Exemple Franck Nicotra",
-        "url": "https://rebondplay.com/pagevideo/animations/Exemple%20Franck%20Nicotra.mp4",
-        "type": "MP4",
-        "keywords": [
-          "témoignage",
-          "Franck Nicotra",
-          "entretien",
-          "parole",
-          "violences sexuelles",
-          "prévention",
-          "Exemple Franck Nicotra"
-        ]
-      }
-    ],
+    "documents": [],
     "keywords": [
       "Exemple Franck Nicotra",
       "animation",
@@ -1125,7 +1093,6 @@
   },
   {
     "title": "A — Animations sensibilisation — Exemple de question sans signes d'alerte",
-    "url": "https://rebondplay.com/pagevideo/animations/Exemple%20de%20question%20sans%20signes%20d'alerte.mp4",
     "type": "Animation vidéo (MP4)",
     "summary": "Vidéo de sensibilisation à télécharger : Exemple de question sans signes d'alerte.",
     "themes": [
@@ -1133,21 +1100,7 @@
       "Écoute",
       "Repérage"
     ],
-    "documents": [
-      {
-        "label": "Télécharger — Exemple de question sans signes d'alerte",
-        "url": "https://rebondplay.com/pagevideo/animations/Exemple%20de%20question%20sans%20signes%20d'alerte.mp4",
-        "type": "MP4",
-        "keywords": [
-          "questionnement",
-          "entretien",
-          "repérage",
-          "sans signe d'alerte",
-          "prévention",
-          "Exemple de question sans signes d'alerte"
-        ]
-      }
-    ],
+    "documents": [],
     "keywords": [
       "Exemple de question sans signes d'alerte",
       "animation",
@@ -1171,7 +1124,6 @@
   },
   {
     "title": "A — Animations sensibilisation — Exemple de questions avec signes d'alerte",
-    "url": "https://rebondplay.com/pagevideo/animations/Exemple%20de%20questions%20avec%20signes%20d'alerte.mp4",
     "type": "Animation vidéo (MP4)",
     "summary": "Vidéo de sensibilisation à télécharger : Exemple de questions avec signes d'alerte.",
     "themes": [
@@ -1179,21 +1131,7 @@
       "Écoute",
       "Repérage"
     ],
-    "documents": [
-      {
-        "label": "Télécharger — Exemple de questions avec signes d'alerte",
-        "url": "https://rebondplay.com/pagevideo/animations/Exemple%20de%20questions%20avec%20signes%20d'alerte.mp4",
-        "type": "MP4",
-        "keywords": [
-          "questionnement",
-          "entretien",
-          "repérage",
-          "signes d'alerte",
-          "prévention",
-          "Exemple de questions avec signes d'alerte"
-        ]
-      }
-    ],
+    "documents": [],
     "keywords": [
       "Exemple de questions avec signes d'alerte",
       "animation",
@@ -1217,28 +1155,13 @@
   },
   {
     "title": "A — Animations sensibilisation — La France en 2023…",
-    "url": "https://rebondplay.com/pagevideo/animations/La%20France%20en%202023%E2%80%A6.mp4",
     "type": "Animation vidéo (MP4)",
     "summary": "Vidéo de sensibilisation à télécharger : La France en 2023….",
     "themes": [
       "Statistiques",
       "Enquête"
     ],
-    "documents": [
-      {
-        "label": "Télécharger — La France en 2023…",
-        "url": "https://rebondplay.com/pagevideo/animations/La%20France%20en%202023%E2%80%A6.mp4",
-        "type": "MP4",
-        "keywords": [
-          "France",
-          "2023",
-          "statistiques",
-          "enquête",
-          "violences sexuelles",
-          "La France en 2023…"
-        ]
-      }
-    ],
+    "documents": [],
     "keywords": [
       "La France en 2023…",
       "animation",
@@ -1262,28 +1185,13 @@
   },
   {
     "title": "A — Animations sensibilisation — Le consentement",
-    "url": "https://rebondplay.com/pagevideo/animations/Le%20consentement.mp4",
     "type": "Animation vidéo (MP4)",
     "summary": "Vidéo de sensibilisation à télécharger : Le consentement.",
     "themes": [
       "Consentement",
       "Respect"
     ],
-    "documents": [
-      {
-        "label": "Télécharger — Le consentement",
-        "url": "https://rebondplay.com/pagevideo/animations/Le%20consentement.mp4",
-        "type": "MP4",
-        "keywords": [
-          "consentement",
-          "accord",
-          "limites",
-          "respect",
-          "prévention",
-          "Le consentement"
-        ]
-      }
-    ],
+    "documents": [],
     "keywords": [
       "Le consentement",
       "animation",
@@ -1307,7 +1215,6 @@
   },
   {
     "title": "A — Animations sensibilisation — Le secret",
-    "url": "https://rebondplay.com/pagevideo/animations/Le%20secret.mp4",
     "type": "Animation vidéo (MP4)",
     "summary": "Vidéo de sensibilisation à télécharger : Le secret.",
     "themes": [
@@ -1315,21 +1222,7 @@
       "Protection de l’enfance",
       "Parole"
     ],
-    "documents": [
-      {
-        "label": "Télécharger — Le secret",
-        "url": "https://rebondplay.com/pagevideo/animations/Le%20secret.mp4",
-        "type": "MP4",
-        "keywords": [
-          "secret",
-          "parole",
-          "révélation",
-          "confidence",
-          "protection de l'enfance",
-          "Le secret"
-        ]
-      }
-    ],
+    "documents": [],
     "keywords": [
       "Le secret",
       "animation",
@@ -1353,27 +1246,13 @@
   },
   {
     "title": "A — Animations sensibilisation — Les auteurs",
-    "url": "https://rebondplay.com/pagevideo/animations/Les%20auteurs.mp4",
     "type": "Animation vidéo (MP4)",
     "summary": "Vidéo de sensibilisation à télécharger : Les auteurs.",
     "themes": [
       "Auteurs de violences",
       "Responsabilité"
     ],
-    "documents": [
-      {
-        "label": "Télécharger — Les auteurs",
-        "url": "https://rebondplay.com/pagevideo/animations/Les%20auteurs.mp4",
-        "type": "MP4",
-        "keywords": [
-          "auteurs de violences",
-          "agresseur",
-          "responsabilité",
-          "violences sexuelles",
-          "Les auteurs"
-        ]
-      }
-    ],
+    "documents": [],
     "keywords": [
       "Les auteurs",
       "animation",
@@ -1395,27 +1274,13 @@
   },
   {
     "title": "A — Animations sensibilisation — Les facteurs aggravants",
-    "url": "https://rebondplay.com/pagevideo/animations/Les%20facteurs%20aggravants.mp4",
     "type": "Animation vidéo (MP4)",
     "summary": "Vidéo de sensibilisation à télécharger : Les facteurs aggravants.",
     "themes": [
       "Droit",
       "Violences sexuelles"
     ],
-    "documents": [
-      {
-        "label": "Télécharger — Les facteurs aggravants",
-        "url": "https://rebondplay.com/pagevideo/animations/Les%20facteurs%20aggravants.mp4",
-        "type": "MP4",
-        "keywords": [
-          "facteurs aggravants",
-          "circonstances aggravantes",
-          "violences sexuelles",
-          "droit",
-          "Les facteurs aggravants"
-        ]
-      }
-    ],
+    "documents": [],
     "keywords": [
       "Les facteurs aggravants",
       "animation",
@@ -1437,27 +1302,13 @@
   },
   {
     "title": "A — Animations sensibilisation — Profil de l'agresseur",
-    "url": "https://rebondplay.com/pagevideo/animations/Profil%20de%20l'agresseur.mp4",
     "type": "Animation vidéo (MP4)",
     "summary": "Vidéo de sensibilisation à télécharger : Profil de l'agresseur.",
     "themes": [
       "Auteurs de violences",
       "Prévention"
     ],
-    "documents": [
-      {
-        "label": "Télécharger — Profil de l'agresseur",
-        "url": "https://rebondplay.com/pagevideo/animations/Profil%20de%20l'agresseur.mp4",
-        "type": "MP4",
-        "keywords": [
-          "profil de l'agresseur",
-          "auteur",
-          "agresseur",
-          "comportement",
-          "Profil de l'agresseur"
-        ]
-      }
-    ],
+    "documents": [],
     "keywords": [
       "Profil de l'agresseur",
       "animation",
@@ -1479,28 +1330,13 @@
   },
   {
     "title": "A — Animations sensibilisation — Résultat enquête",
-    "url": "https://rebondplay.com/pagevideo/animations/Re%CC%81sultat%20enque%CC%82te.mp4",
     "type": "Animation vidéo (MP4)",
     "summary": "Vidéo de sensibilisation à télécharger : Résultat enquête.",
     "themes": [
       "Statistiques",
       "Enquête"
     ],
-    "documents": [
-      {
-        "label": "Télécharger — Résultat enquête",
-        "url": "https://rebondplay.com/pagevideo/animations/Re%CC%81sultat%20enque%CC%82te.mp4",
-        "type": "MP4",
-        "keywords": [
-          "résultats d'enquête",
-          "statistiques",
-          "violences sexuelles",
-          "sport",
-          "prévention",
-          "Résultat enquête"
-        ]
-      }
-    ],
+    "documents": [],
     "keywords": [
       "Résultat enquête",
       "animation",
@@ -1523,29 +1359,13 @@
   },
   {
     "title": "A — Animations sensibilisation — Signaler n'est pas dénoncer",
-    "url": "https://rebondplay.com/pagevideo/animations/Signaler%20n'est%20pas%20de%CC%81noncer.mp4",
     "type": "Animation vidéo (MP4)",
     "summary": "Vidéo de sensibilisation à télécharger : Signaler n'est pas dénoncer.",
     "themes": [
       "Signalement",
       "Protection"
     ],
-    "documents": [
-      {
-        "label": "Télécharger — Signaler n'est pas dénoncer",
-        "url": "https://rebondplay.com/pagevideo/animations/Signaler%20n'est%20pas%20de%CC%81noncer.mp4",
-        "type": "MP4",
-        "keywords": [
-          "signalement",
-          "signaler",
-          "dénonciation",
-          "protection",
-          "obligation de signalement",
-          "enfant en danger",
-          "Signaler n'est pas dénoncer"
-        ]
-      }
-    ],
+    "documents": [],
     "keywords": [
       "Signaler n'est pas dénoncer",
       "animation",
@@ -1570,7 +1390,6 @@
   },
   {
     "title": "A — Animations sensibilisation — Stratégie de l'agresseur",
-    "url": "https://rebondplay.com/pagevideo/animations/Strate%CC%81gie%20de%20l'agresseur.mp4",
     "type": "Animation vidéo (MP4)",
     "summary": "Vidéo de sensibilisation à télécharger : Stratégie de l'agresseur.",
     "themes": [
@@ -1578,21 +1397,7 @@
       "Manipulation",
       "Violences sexuelles"
     ],
-    "documents": [
-      {
-        "label": "Télécharger — Stratégie de l'agresseur",
-        "url": "https://rebondplay.com/pagevideo/animations/Strate%CC%81gie%20de%20l'agresseur.mp4",
-        "type": "MP4",
-        "keywords": [
-          "stratégie de l'agresseur",
-          "emprise",
-          "manipulation",
-          "isolement",
-          "violences sexuelles",
-          "Stratégie de l'agresseur"
-        ]
-      }
-    ],
+    "documents": [],
     "keywords": [
       "Stratégie de l'agresseur",
       "animation",
@@ -1618,7 +1423,6 @@
   },
   {
     "title": "Angélique Cauchy — Les facteurs aggravants — Partie 1",
-    "url": "https://rebondplay.com/pagevideo/Angie_facteursaggravants1.mp4",
     "type": "Animation vidéo (MP4)",
     "summary": "Témoignage complémentaire d’Angélique Cauchy sur les facteurs aggravants — partie 1.",
     "themes": [
@@ -1636,7 +1440,6 @@
   },
   {
     "title": "Angélique Cauchy — Les facteurs aggravants — Partie 2",
-    "url": "https://rebondplay.com/pagevideo/Angie_facteursaggravants2.mp4",
     "type": "Animation vidéo (MP4)",
     "summary": "Témoignage complémentaire d’Angélique Cauchy sur les facteurs aggravants — partie 2.",
     "themes": [
@@ -1654,7 +1457,6 @@
   },
   {
     "title": "Angélique Cauchy — Les facteurs aggravants — Partie 3",
-    "url": "https://rebondplay.com/pagevideo/Angie_facteursaggravants3.mp4",
     "type": "Animation vidéo (MP4)",
     "summary": "Témoignage complémentaire d’Angélique Cauchy sur les facteurs aggravants — partie 3.",
     "themes": [
@@ -1672,7 +1474,6 @@
   },
   {
     "title": "Angélique Cauchy — L’emprise — Partie 1",
-    "url": "https://rebondplay.com/pagevideo/Angie_emprise1.mp4",
     "type": "Animation vidéo (MP4)",
     "summary": "Témoignage d’Angélique Cauchy : l’emprise, partie 1.",
     "themes": [
@@ -1690,7 +1491,6 @@
   },
   {
     "title": "Angélique Cauchy — L’emprise — Partie 2",
-    "url": "https://rebondplay.com/pagevideo/Angie_emprise2.mp4",
     "type": "Animation vidéo (MP4)",
     "summary": "Témoignage d’Angélique Cauchy : l’emprise, partie 2.",
     "themes": [
@@ -1708,7 +1508,6 @@
   },
   {
     "title": "Angélique Cauchy — L’emprise — Partie 3",
-    "url": "https://rebondplay.com/pagevideo/Angie_emprise3.mp4",
     "type": "Animation vidéo (MP4)",
     "summary": "Témoignage d’Angélique Cauchy : l’emprise, partie 3.",
     "themes": [
@@ -1726,7 +1525,6 @@
   },
   {
     "title": "Angélique Cauchy — Les raisons du silence — Partie 1",
-    "url": "https://rebondplay.com/pagevideo/Angie_raisonsilence1.mp4",
     "type": "Animation vidéo (MP4)",
     "summary": "Témoignage d’Angélique Cauchy : les raisons du silence, partie 1.",
     "themes": [
@@ -1744,7 +1542,6 @@
   },
   {
     "title": "Angélique Cauchy — Les raisons du silence — Partie 2",
-    "url": "https://rebondplay.com/pagevideo/Angie_raisonsilence2.mp4",
     "type": "Animation vidéo (MP4)",
     "summary": "Témoignage d’Angélique Cauchy : les raisons du silence, partie 2.",
     "themes": [
@@ -1762,7 +1559,6 @@
   },
   {
     "title": "Angélique Cauchy — Les raisons du silence — Partie 3",
-    "url": "https://rebondplay.com/pagevideo/Angie_raisonsilence3.mp4",
     "type": "Animation vidéo (MP4)",
     "summary": "Témoignage d’Angélique Cauchy : les raisons du silence, partie 3.",
     "themes": [
@@ -1780,7 +1576,6 @@
   },
   {
     "title": "Angélique Cauchy — Les conséquences — Partie 1",
-    "url": "https://rebondplay.com/pagevideo/Angie_cons%C3%A9quence1.mp4",
     "type": "Animation vidéo (MP4)",
     "summary": "Témoignage d’Angélique Cauchy : les conséquences, partie 1.",
     "themes": [
@@ -1798,7 +1593,6 @@
   },
   {
     "title": "Angélique Cauchy — Les conséquences — Partie 2",
-    "url": "https://rebondplay.com/pagevideo/Angie_cons%C3%A9quence2.mp4",
     "type": "Animation vidéo (MP4)",
     "summary": "Témoignage d’Angélique Cauchy : les conséquences, partie 2.",
     "themes": [
@@ -1816,7 +1610,6 @@
   },
   {
     "title": "Angélique Cauchy — Les conséquences — Partie 3",
-    "url": "https://rebondplay.com/pagevideo/Angie_cons%C3%A9quence3.mp4",
     "type": "Animation vidéo (MP4)",
     "summary": "Témoignage d’Angélique Cauchy : les conséquences, partie 3.",
     "themes": [
@@ -1834,7 +1627,6 @@
   },
   {
     "title": "Angélique Cauchy — Libération de la parole — Partie 1",
-    "url": "https://rebondplay.com/pagevideo/Angie_liberation1.mp4",
     "type": "Animation vidéo (MP4)",
     "summary": "Témoignage d’Angélique Cauchy — Libération de la parole.",
     "themes": [
@@ -1851,7 +1643,6 @@
   },
   {
     "title": "Angélique Cauchy — Libération de la parole — Partie 2",
-    "url": "https://rebondplay.com/pagevideo/Angie_liberation2.mp4",
     "type": "Animation vidéo (MP4)",
     "summary": "Témoignage d’Angélique Cauchy — Libération de la parole.",
     "themes": [
@@ -1868,7 +1659,6 @@
   },
   {
     "title": "Angélique Cauchy — Libération de la parole — Partie 3",
-    "url": "https://rebondplay.com/pagevideo/Angie_liberation3.mp4",
     "type": "Animation vidéo (MP4)",
     "summary": "Témoignage d’Angélique Cauchy — Libération de la parole.",
     "themes": [
