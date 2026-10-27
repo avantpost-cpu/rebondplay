@@ -1,7 +1,6 @@
 [
   {
     "title": "A — Affiches",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/affiches/affiches.html",
     "type": "Module interactif",
     "summary": "Diaporama de visuels RègloSport à faire défiler.",
     "themes": [
@@ -18,7 +17,8 @@
       "règlement sportif",
       "repères",
       "sport"
-    ]
+    ],
+    "privateModule": "affiches/affiches.html"
   },
   {
     "title": "A — Affiches SignalSport",
@@ -64,7 +64,6 @@
   },
   {
     "title": "A — Autobiographie / Témoignage",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/autobio/autobio.html",
     "type": "Module interactif",
     "summary": "Sélection de récits autobiographiques et de témoignages sur les violences sexuelles dans le sport, l’emprise, le silence et la reconstruction.",
     "themes": [
@@ -87,11 +86,11 @@
       "libération de la parole",
       "reconstruction",
       "parcours de victime"
-    ]
+    ],
+    "privateModule": "autobio/autobio.html"
   },
   {
     "title": "A — Âges",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/ages/agesretravail.html",
     "type": "Module interactif",
     "summary": "Mosaïque visuelle interactive consacrée aux âges.",
     "themes": [
@@ -109,11 +108,11 @@
       "majeure",
       "mineur",
       "mineure"
-    ]
+    ],
+    "privateModule": "ages/agesretravail.html"
   },
   {
     "title": "C — Chiffres",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/chiffres/chiffres.html",
     "type": "Module interactif",
     "summary": "Mosaïque interactive de cinq visuels chiffrés.",
     "themes": [
@@ -129,7 +128,8 @@
       "données",
       "repère chiffré",
       "sensibilisation"
-    ]
+    ],
+    "privateModule": "chiffres/chiffres.html"
   },
   {
     "title": "C — Cocot’éthik",
@@ -180,7 +180,6 @@
   },
   {
     "title": "C — Communication",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/com/com.html",
     "type": "Module interactif",
     "summary": "Deux séquences vidéo et des visuels pour observer la communication verbale et non verbale.",
     "themes": [
@@ -200,11 +199,11 @@
       "dialogue",
       "observer",
       "signes non verbaux"
-    ]
+    ],
+    "privateModule": "com/com.html"
   },
   {
     "title": "C — Comparaison",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/comparaison/comparaison.html",
     "type": "Module interactif",
     "summary": "Mise en regard de qualificatifs stéréotypés associés au féminin et au masculin.",
     "themes": [
@@ -226,11 +225,11 @@
       "égalité",
       "discrimination",
       "rôles de genre"
-    ]
+    ],
+    "privateModule": "comparaison/comparaison.html"
   },
   {
     "title": "C — Course",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/course/course.html",
     "type": "Module interactif",
     "summary": "Quiz ludique sur la protection des enfants, les obligations de signalement et les conduites à tenir face à une situation de violence.",
     "themes": [
@@ -257,11 +256,11 @@
       "obligation légale",
       "interdiction d’exercer",
       "encadrement sportif"
-    ]
+    ],
+    "privateModule": "course/course.html"
   },
   {
     "title": "E — Essai",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/essai/essai.html",
     "type": "Module interactif",
     "summary": "Essais et ouvrages d’analyse sur les violences sexuelles dans le sport, les rapports d’autorité, la pression de la performance et le silence institutionnel.",
     "themes": [
@@ -289,11 +288,11 @@
       "prévenir",
       "agir",
       "repères juridiques"
-    ]
+    ],
+    "privateModule": "essai/essai.html"
   },
   {
     "title": "F — Films",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/films/films.html",
     "type": "Module interactif",
     "summary": "Sélection de fictions, téléfilms et documentaires sur l’emprise, les violences sexuelles, la pression de la performance et le silence dans le sport.",
     "themes": [
@@ -326,7 +325,8 @@
       "témoignage",
       "enquête",
       "prévention"
-    ]
+    ],
+    "privateModule": "films/films.html"
   },
   {
     "title": "F — Fresque à colorier",
@@ -374,7 +374,6 @@
   },
   {
     "title": "H — Honorabilité",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/hono/hono.html",
     "type": "Module interactif",
     "summary": "Repères illustrés sur le contrôle d’honorabilité dans les structures sportives.",
     "themes": [
@@ -396,11 +395,11 @@
       "protection des mineurs",
       "prévention",
       "sécurité"
-    ]
+    ],
+    "privateModule": "hono/hono.html"
   },
   {
     "title": "I — Infra",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/infra/infra.html",
     "type": "Module interactif",
     "summary": "Mosaïque interactive de repères sur les infractions et les violences dans le sport, dont le bizutage.",
     "themes": [
@@ -419,7 +418,8 @@
       "protection des mineurs",
       "repères juridiques",
       "cadre légal"
-    ]
+    ],
+    "privateModule": "infra/infra.html"
   },
   {
     "title": "K — Kit du relayeur",
@@ -480,7 +480,6 @@
   },
   {
     "title": "L — Livre",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/livre/livre.html",
     "type": "Module interactif",
     "summary": "Feuilletage visuel de pages d’un livre et de sa couverture.",
     "themes": [
@@ -496,11 +495,11 @@
       "ouvrage",
       "extrait",
       "récit"
-    ]
+    ],
+    "privateModule": "livre/livre.html"
   },
   {
     "title": "L — Livres jeunesse",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/livresj/livresj.html",
     "type": "Module interactif",
     "summary": "Sélection de livres pour aborder avec les enfants les violences, le respect du corps, le consentement et le droit de demander de l’aide.",
     "themes": [
@@ -529,11 +528,11 @@
       "prévention",
       "parents",
       "professionnels"
-    ]
+    ],
+    "privateModule": "livresj/livresj.html"
   },
   {
     "title": "M — Majeure",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/majeure/majeure.html",
     "type": "Module interactif",
     "summary": "Séquence visuelle interactive associée à la situation d’une personne majeure.",
     "themes": [
@@ -548,11 +547,11 @@
       "adulte",
       "âge",
       "personne adulte"
-    ]
+    ],
+    "privateModule": "majeure/majeure.html"
   },
   {
     "title": "M — Mineure",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/mineure/mineure.html",
     "type": "Module interactif",
     "summary": "Séquence visuelle interactive associée à la situation d’une personne mineure.",
     "themes": [
@@ -569,11 +568,11 @@
       "jeune",
       "âge",
       "protection de l’enfance"
-    ]
+    ],
+    "privateModule": "mineure/mineure.html"
   },
   {
     "title": "M — Miroir (outil)",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/outil/miroir.html",
     "type": "Module interactif",
     "summary": "Baromètre du climat éthique composé de vingt situations pour réfléchir à sa pratique sportive ou éducative et repérer les situations à risque.",
     "themes": [
@@ -619,11 +618,11 @@
       "réaction immédiate",
       "CRIP",
       "procureur"
-    ]
+    ],
+    "privateModule": "outil/miroir.html"
   },
   {
     "title": "P — Phrases",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/phrases/phrases.html",
     "type": "Module interactif",
     "summary": "Deux séquences vidéo et des séries d’images autour de phrases et d’échanges entre majeurs et mineurs.",
     "themes": [
@@ -646,11 +645,11 @@
       "parler",
       "question",
       "expression"
-    ]
+    ],
+    "privateModule": "phrases/phrases.html"
   },
   {
     "title": "P — Puzzle (définition)",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/puzzledef/puzzledef.html",
     "type": "Module interactif",
     "summary": "Puzzle interactif organisé autour de définitions et de zones à explorer.",
     "themes": [
@@ -667,11 +666,11 @@
       "repère",
       "activité pédagogique",
       "jeu interactif"
-    ]
+    ],
+    "privateModule": "puzzledef/puzzledef.html"
   },
   {
     "title": "Q — Question",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/question/question1.html",
     "type": "Module interactif",
     "summary": "Exemples de questions ouvertes pour accueillir la parole d’un enfant quand un changement, un symptôme ou une blessure inquiète.",
     "themes": [
@@ -695,11 +694,11 @@
       "violence suspectée",
       "ne pas suggérer la réponse",
       "dialogue"
-    ]
+    ],
+    "privateModule": "question/question1.html"
   },
   {
     "title": "R — Retenir",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/retenir/retenir.html",
     "type": "Module interactif",
     "summary": "Repères pour réagir avec justesse lorsqu’une victime parle : croire, écouter, soutenir, ne pas culpabiliser et ne pas minimiser.",
     "themes": [
@@ -724,11 +723,11 @@
       "courage",
       "accueillir la parole",
       "réaction adaptée"
-    ]
+    ],
+    "privateModule": "retenir/retenir.html"
   },
   {
     "title": "R — Réglo’Sport",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/reglosport/reglosport.html",
     "type": "Module interactif",
     "summary": "Situations illustrées pour repérer les limites, les comportements inappropriés et les ressources d’aide dans le sport.",
     "themes": [
@@ -770,11 +769,11 @@
       "signaler",
       "tchat",
       "protection"
-    ]
+    ],
+    "privateModule": "reglosport/reglosport.html"
   },
   {
     "title": "S — Signalement",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/signalement/signalement.html",
     "type": "Module interactif",
     "summary": "Présentation de trois voies de signalement : judiciaire, administrative et disciplinaire.",
     "themes": [
@@ -799,7 +798,8 @@
       "obligation de signaler",
       "procédure",
       "protection"
-    ]
+    ],
+    "privateModule": "signalement/signalement.html"
   },
   {
     "title": "S — Sports en Cool’eurs",
@@ -840,7 +840,6 @@
   },
   {
     "title": "T — Tableau",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/tableau/tableau.html",
     "type": "Module interactif",
     "summary": "Tableau de repères et définitions sur les infractions sexuelles et les atteintes aux personnes.",
     "themes": [
@@ -861,11 +860,11 @@
       "définition",
       "droit pénal",
       "protection des mineurs"
-    ]
+    ],
+    "privateModule": "tableau/tableau.html"
   },
   {
     "title": "T — Tableau 1",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/tableau1/tableau1.html",
     "type": "Module interactif",
     "summary": "Repères illustrés sur les violences physiques et psychologiques et leurs conséquences.",
     "themes": [
@@ -886,11 +885,11 @@
       "infraction",
       "définition",
       "droit pénal"
-    ]
+    ],
+    "privateModule": "tableau1/tableau1.html"
   },
   {
     "title": "T — Tableau 2",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/tableau2/tableau2.html",
     "type": "Module interactif",
     "summary": "Repères juridiques sur l’obligation de signaler certains mauvais traitements ou atteintes sexuelles, notamment envers un mineur.",
     "themes": [
@@ -911,11 +910,11 @@
       "signalement de bonne foi",
       "protection juridique",
       "infraction"
-    ]
+    ],
+    "privateModule": "tableau2/tableau2.html"
   },
   {
     "title": "T — Tableau 3",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/tableau3/tableau3.html",
     "type": "Module interactif",
     "summary": "Présentation de différentes infractions sexuelles visant les mineurs, y compris les sollicitations et images à caractère sexuel en ligne.",
     "themes": [
@@ -937,11 +936,11 @@
       "internet",
       "droit pénal",
       "peine"
-    ]
+    ],
+    "privateModule": "tableau3/tableau3.html"
   },
   {
     "title": "T — Tâches",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/taches/taches.html",
     "type": "Module interactif",
     "summary": "Module interactif Rebond intitulé « Tâches ».",
     "themes": [
@@ -954,11 +953,11 @@
       "activité",
       "interaction",
       "module Rebond"
-    ]
+    ],
+    "privateModule": "taches/taches.html"
   },
   {
     "title": "U — Urgence",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/urgence/urgence.html",
     "type": "Module interactif",
     "summary": "Repères visuels pour trouver les contacts à appeler en cas de danger ou de besoin d’aide.",
     "themes": [
@@ -982,11 +981,11 @@
       "violences",
       "numéro d’urgence",
       "signalement"
-    ]
+    ],
+    "privateModule": "urgence/urgence.html"
   },
   {
     "title": "U — Urgence 2",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/urgence2/urgence2.html",
     "type": "Module interactif",
     "summary": "Séquence vidéo et visuels autour d’une situation d’urgence et des actions à entreprendre.",
     "themes": [
@@ -1005,11 +1004,11 @@
       "situation préoccupante",
       "violence",
       "victime"
-    ]
+    ],
+    "privateModule": "urgence2/urgence2.html"
   },
   {
     "title": "V — Violences",
-    "url": "https://avantpost-cpu.github.io/depot-quiz/violences/violences.html",
     "type": "Module interactif",
     "summary": "Mosaïque interactive de sensibilisation consacrée aux violences.",
     "themes": [
@@ -1029,7 +1028,8 @@
       "protection",
       "victime",
       "comportement inapproprié"
-    ]
+    ],
+    "privateModule": "violences/violences.html"
   },
   {
     "title": "A — Animations sensibilisation — 1 enfant sur 7",
