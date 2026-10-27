@@ -46,7 +46,36 @@ let privateReady=false;
 async function privateCheck(){if(!privateClient)return false;const {data:u,error:e}=await privateClient.auth.getUser();if(e||!u?.user)return false;const {data,error}=await privateClient.rpc("rp_mon_abonnement");if(error)throw error;const a=data?.[0];if(!a||!["full","essentielplus"].includes(a.offre))return false;privateReady=true;document.body.classList.add("private-ready");document.getElementById("privateGate").remove();document.getElementById("accountName").textContent="Bonjour "+(a.nom_structure||"");document.getElementById("accountMeta").textContent="Offre "+a.offre;document.getElementById("tierLabel").textContent=a.offre==="full"?"RebondPlay Full":"RebondPlay Essentiel+";document.getElementById("tierBack").href=a.offre==="full"?"/pagefull/index.html":"/RPessentielleplus/index.html";document.getElementById("logoutButton").addEventListener("click",async()=>{await privateClient.auth.signOut();location.href="/index.html"});return true}
 document.getElementById("privateForm").addEventListener("submit",async e=>{e.preventDefault();const msg=document.getElementById("privateMessage");msg.textContent="Connexion en cours…";try{const {error}=await privateClient.auth.signInWithPassword({email:document.getElementById("privateEmail").value.trim(),password:document.getElementById("privatePassword").value});document.getElementById("privatePassword").value="";if(error)throw error;if(!await privateCheck())msg.textContent="Abonnement Full ou Essentiel+ requis."}catch(err){msg.textContent=err.message||"Erreur de connexion"}});
 privateCheck().then(ok=>{if(!ok)location.replace("/connexion-test/")}).catch(()=>location.replace("/connexion-test/"));
-async function bindPrivateVideos(){if(!privateReady)return;for(const video of document.querySelectorAll("video.resource-video")){const source=video.querySelector("source[data-private-path]");if(!source||!source.dataset.privatePath)continue;video.addEventListener("click",async()=>{if(source.src)return;const {data,error}=await privateClient.storage.from("rebondplay-prive").createSignedUrl(source.dataset.privatePath,900);if(error){video.setAttribute("aria-label","Vidéo indisponible");return}source.src=data.signedUrl;video.load();video.play().catch(()=>{})},{once:true});}}
+async function bindPrivateVideos(){
+ if(!privateReady)return;
+ for(const video of document.querySelectorAll("video.resource-video")){
+  const source=video.querySelector("source[data-private-path]");
+  if(!source||!source.dataset.privatePath)continue;
+  const wrap=video.parentElement;
+  const button=document.createElement("button");
+  button.type="button";button.className="private-video-load";
+  button.textContent="▶ Lire la vidéo";
+  button.style.cssText="display:block;margin:10px auto;padding:10px 18px;background:#1b5f6e;color:white;border:0;border-radius:9px;font-weight:700;cursor:pointer";
+  wrap.appendChild(button);
+  button.addEventListener("click",async()=>{
+   if(button.disabled)return;
+   button.disabled=true;button.textContent="Chargement…";
+   try{
+    const {data:session,error:authError}=await privateClient.auth.getSession();
+    if(authError||!session?.session?.access_token)throw Error("Session expirée");
+    const {data,error}=await privateClient.storage.from("rebondplay-prive").createSignedUrl(source.dataset.privatePath,3600);
+    if(error||!data?.signedUrl)throw Error(error?.message||"Vidéo indisponible");
+    source.src=data.signedUrl;video.load();
+    button.remove();
+    await video.play();
+   }catch(err){
+    button.disabled=false;button.textContent="▶ Réessayer la lecture";
+    console.error("Vidéo privée RebondPlay",err);
+    alert("Impossible de charger cette vidéo : "+(err?.message||"erreur inconnue"));
+   }
+  });
+ }
+}
 </script>
 <script>
 const alphabet='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');let resources=[];let selectedLetter='';
