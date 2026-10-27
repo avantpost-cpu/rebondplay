@@ -85,7 +85,7 @@ grid.addEventListener("click",async event=>{
   const response=await fetch("https://tdsrqmpfdvntybdlvejy.supabase.co/functions/v1/rp-module-render",{method:"POST",headers:{"Authorization":"Bearer "+data.session.access_token,"apikey":"sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO","Content-Type":"application/json"},body:JSON.stringify({path:a.dataset.module})});
   const result=await response.json();
   if(!response.ok||!result.html)throw Error(result.error||"Module indisponible");
-  popup.document.open();popup.document.write(result.html);popup.document.close();
+  popup.document.open();popup.document.write("<!doctype html><html><head><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Module privé RebondPlay</title><style>html,body{margin:0;width:100%;height:100%;overflow:hidden}iframe{border:0;width:100%;height:100%}</style></head><body><iframe id=\"rp-private-frame\" sandbox=\"allow-scripts allow-forms allow-modals allow-pointer-lock allow-downloads\" referrerpolicy=\"no-referrer\" title=\"Module privé RebondPlay\"></iframe></body></html>");popup.document.close();popup.document.getElementById("rp-private-frame").srcdoc=result.html;
  }catch(e){popup.document.open();popup.document.write("<p>Impossible de charger ce module privé. Revenez à la médiathèque.</p>");popup.document.close();alert(e.message)}
 });
 const rpPrivateDocumentNames=new Set(["coloriages_15x21.pdf","A4_Cocotte_Rebond_générique_1.pdf","A4_Cocotte_Rebond_générique_2.pdf","Kit du relayeur_Print_A5_18052026.pdf","fresque_A3_A.pdf","fresque_A3_B.pdf"].map(x=>x.normalize("NFD")));
