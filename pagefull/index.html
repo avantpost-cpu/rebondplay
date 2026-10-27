@@ -214,5 +214,28 @@
       }));
     })();
   </script>
-<footer class="rp-footer"><span><strong>Rebond</strong> · Association de prévention contre les violences dans le sport</span><span><a href="mailto:contact@assorebond.com">contact@assorebond.com</a> · RebondPlay Full · © 2026</span></footer><script>document.getElementById("ressources-link")?.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();window.location.assign(this.href)},true);</script></body>
+<footer class="rp-footer"><span><strong>Rebond</strong> · Association de prévention contre les violences dans le sport</span><span><a href="mailto:contact@assorebond.com">contact@assorebond.com</a> · RebondPlay Full · © 2026</span></footer><script>document.getElementById("ressources-link")?.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();window.location.assign(this.href)},true);</script><style id="rp-navigation-repair">
+.feature-grid>a,.resources>a,.expo-slide>a{pointer-events:auto!important;cursor:pointer!important;position:relative;z-index:5}
+.feature-grid>a>img,.resources>a>img{pointer-events:none!important}
+</style>
+<script id="rp-navigation-repair-script">
+(function(){
+ const routes={
+  "adultes":"/pageadultes/index.html",
+  "jeunes":"/pagejeunes/index.html",
+  "ressources-link":"/ressources/index.html"
+ };
+ document.querySelectorAll("#adultes,#jeunes,#ressources-link,.expo-slide-link").forEach(function(link){
+  const target=routes[link.id]||(link.classList.contains("expo-slide-link")?"/pageexpo/index.html":null);
+  if(!target)return;
+  link.setAttribute("href",target);
+  link.addEventListener("click",function(event){
+   if(event.defaultPrevented)return;
+   if(event.button!==0||event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;
+   event.preventDefault();window.location.assign(target);
+  });
+ });
+})();
+</script>
+</body>
 </html>
