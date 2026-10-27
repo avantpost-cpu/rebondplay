@@ -43,19 +43,21 @@ html{scroll-behavior:smooth}body{margin:0;min-width:300px;background-color:#f7f4
 <script>
 const privateClient=window.supabase?.createClient("https://tdsrqmpfdvntybdlvejy.supabase.co","sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO",{auth:{storageKey:"rebondplay-full-pilot-auth",persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
 let privateReady=false;
-async function privateCheck(){if(!privateClient)return false;const {data:u,error:e}=await privateClient.auth.getUser();if(e||!u?.user)return false;const {data,error}=await privateClient.rpc("rp_mon_abonnement");if(error)throw error;const a=data?.[0];if(!a||!["full","essentielplus"].includes(a.offre))return false;privateReady=true;document.body.classList.add("private-ready");document.getElementById("privateGate").remove();document.getElementById("accountName").textContent="Bonjour "+(a.nom_structure||"");document.getElementById("accountMeta").textContent="Offre "+a.offre;document.getElementById("tierLabel").textContent=a.offre==="full"?"RebondPlay Full":"RebondPlay Essentiel+";document.getElementById("tierBack").href=a.offre==="full"?"/pagefull/index.html":"/RPessentielleplus/index.html";document.getElementById("logoutButton").addEventListener("click",async()=>{await privateClient.auth.signOut();location.href="/index.html"});return true}
+async function privateCheck(){if(!privateClient)return false;const {data:u,error:e}=await privateClient.auth.getUser();if(e||!u?.user)return false;const {data,error}=await privateClient.rpc("rp_mon_abonnement");if(error)throw error;const a=data?.[0];if(!a||!["full","essentielplus"].includes(a.offre))return false;privateReady=true;queueMicrotask(()=>{if(typeof render==="function")render()});document.body.classList.add("private-ready");document.getElementById("privateGate").remove();document.getElementById("accountName").textContent="Bonjour "+(a.nom_structure||"");document.getElementById("accountMeta").textContent="Offre "+a.offre;document.getElementById("tierLabel").textContent=a.offre==="full"?"RebondPlay Full":"RebondPlay Essentiel+";document.getElementById("tierBack").href=a.offre==="full"?"/pagefull/index.html":"/RPessentielleplus/index.html";document.getElementById("logoutButton").addEventListener("click",async()=>{await privateClient.auth.signOut();location.href="/index.html"});return true}
 document.getElementById("privateForm").addEventListener("submit",async e=>{e.preventDefault();const msg=document.getElementById("privateMessage");msg.textContent="Connexion en cours…";try{const {error}=await privateClient.auth.signInWithPassword({email:document.getElementById("privateEmail").value.trim(),password:document.getElementById("privatePassword").value});document.getElementById("privatePassword").value="";if(error)throw error;if(!await privateCheck())msg.textContent="Abonnement Full ou Essentiel+ requis."}catch(err){msg.textContent=err.message||"Erreur de connexion"}});
 privateCheck().then(ok=>{if(!ok)location.replace("/connexion-test/")}).catch(()=>location.replace("/connexion-test/"));
 async function bindPrivateVideos(){
  if(!privateReady)return;
  for(const video of document.querySelectorAll("video.resource-video")){
   const source=video.querySelector("source[data-private-path]");
-  if(!source||!source.dataset.privatePath)continue;
-  const wrap=video.parentElement;
+  if(!source?.dataset.privatePath)continue;
+  const wrap=video.closest(".preview");
+  if(!wrap||wrap.querySelector(".private-video-load"))continue;
+  wrap.style.position="relative";
   const button=document.createElement("button");
   button.type="button";button.className="private-video-load";
   button.textContent="▶ Lire la vidéo";
-  button.style.cssText="display:block;margin:10px auto;padding:10px 18px;background:#1b5f6e;color:white;border:0;border-radius:9px;font-weight:700;cursor:pointer";
+  button.style.cssText="position:absolute;inset:auto auto 50% 50%;transform:translate(-50%,50%);z-index:10;min-width:155px;padding:12px 16px;background:#1b5f6e;color:white;border:2px solid white;border-radius:9px;font-weight:700;cursor:pointer";
   wrap.appendChild(button);
   button.addEventListener("click",async()=>{
    if(button.disabled)return;
@@ -65,13 +67,15 @@ async function bindPrivateVideos(){
     if(authError||!session?.session?.access_token)throw Error("Session expirée");
     const {data,error}=await privateClient.storage.from("rebondplay-prive").createSignedUrl(source.dataset.privatePath,3600);
     if(error||!data?.signedUrl)throw Error(error?.message||"Vidéo indisponible");
-    source.src=data.signedUrl;video.load();
-    button.remove();
+    source.src=data.signedUrl;
+    video.load();
+    button.textContent="▶ Démarrer";
     await video.play();
+    button.remove();
    }catch(err){
-    button.disabled=false;button.textContent="▶ Réessayer la lecture";
+    button.disabled=false;button.textContent="▶ Réessayer";
     console.error("Vidéo privée RebondPlay",err);
-    alert("Impossible de charger cette vidéo : "+(err?.message||"erreur inconnue"));
+    alert("Impossible de lire cette vidéo : "+(err?.message||"Erreur inconnue"));
    }
   });
  }
