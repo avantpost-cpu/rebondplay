@@ -54,7 +54,7 @@
 #essentielGate .essentiel-gate-error{position:absolute;left:27%;top:65.5%;width:46%;min-height:0;margin:0;padding:8px 12px;border-radius:9px;background:rgba(192,57,43,.90);color:#fff;font-size:clamp(9px,1.1vw,13px);line-height:1.3;text-align:center;display:none}
 #essentielGate .essentiel-gate-error:not(:empty){display:block}
 @media(max-width:650px){#essentielGate{align-items:flex-start;padding-top:6px}#essentielGate .essentiel-gate-box{width:calc(100vw - 12px)}}
-</style><style id="rp-hide-secondary-login">#plusPilotGate form{display:none!important}#plusPilotGate::after{content:"Vérification de votre accès…";font:800 18px Nunito,Arial,sans-serif;color:#065269}</style></head>
+</style><style id="rp-hide-secondary-login">#plusPilotGate form{display:none!important}#plusPilotGate::after{content:"Vérification de votre accès…";font:800 18px Nunito,Arial,sans-serif;color:#065269}</style><style id="rp-resources-click-fix">#ressources-link{position:relative!important;z-index:50!important;pointer-events:auto!important;cursor:pointer!important}#ressources-link img{pointer-events:none!important}</style></head>
 <body><div id="plusPilotGate"><form id="plusPilotForm"><h1>RebondPlay Essentiel+ — accès sécurisé</h1><p>Connexion individuelle nécessaire pour consulter cette plateforme.</p><label for="plusPilotEmail">E-mail</label><input id="plusPilotEmail" type="email" autocomplete="username" required><label for="plusPilotPassword">Mot de passe</label><input id="plusPilotPassword" type="password" autocomplete="current-password" required><button type="submit">Accéder à Essentiel+</button><p id="plusPilotMessage" role="status"></p><p><a href="/index.html">Retour à l’accueil</a></p></form></div>
   <header class="topbar">
     <a class="brand" href="index.html" aria-label="RebondPlay Essentiel+ — accueil"><img src="Logo_RebondPlay_essentielplus.png" alt="RebondPlay Essentiel+"></a>
@@ -73,7 +73,7 @@
   <main class="content" id="accueil">
     <section class="feature-grid" aria-label="Espaces RebondPlay">
       <a class="feature feature-adults" id="adultes" href="adultes.html"><img class="feature-block" src="../pagefull/blocadultes.png" alt="Pour les adultes"></a>
-      <a class="feature feature-expo" id="ressources-link" href="ressources.html"><img class="feature-block" src="../pagefull/blocressources.png" alt="Ressources"></a>
+      <a class="feature feature-expo" id="ressources-link" href="/RPessentielleplus/ressources.html"><img class="feature-block" src="../pagefull/blocressources.png" alt="Ressources"></a>
     </section>
     <div class="section-title" id="ressources"><img src="../pagefull/titre1.png" alt="Ressources pédagogiques"></div>
     <section class="resources" aria-label="Ressources pédagogiques">
@@ -223,5 +223,5 @@
       }));
     })();
   </script>
-<footer class="rp-footer"><span><strong>Rebond</strong> · Association de prévention contre les violences dans le sport</span><span><a href="mailto:contact@assorebond.com">contact@assorebond.com</a> · RebondPlay Essentiel+ · © 2026</span></footer></body>
+<footer class="rp-footer"><span><strong>Rebond</strong> · Association de prévention contre les violences dans le sport</span><span><a href="mailto:contact@assorebond.com">contact@assorebond.com</a> · RebondPlay Essentiel+ · © 2026</span></footer><script>document.getElementById("ressources-link")?.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();window.location.assign(this.href)},true);</script></body>
 </html>
