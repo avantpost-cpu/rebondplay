@@ -40,7 +40,7 @@
 .resource.video:hover{z-index:2!important;translate:0 -6px!important;filter:drop-shadow(0 11px 9px rgba(3,42,56,.34))!important}
 .resource-image,.resource-inner{transition:none!important;transform:none!important;filter:none!important}
 .resource:hover{transform:none!important}
-<style id="video-close-size-fix">.video-modal-hotspot{width:clamp(28px,4vw,58px)!important;height:clamp(28px,4vw,58px)!important}.video-modal-hotspot img{width:50%!important;height:50%!important;display:block;margin:auto}</style></style><style>.rp-footer{width:min(90vw,1540px);margin:clamp(18px,2vw,32px) auto 0;padding:22px 0 28px;display:flex;justify-content:space-between;align-items:center;gap:16px;color:inherit;font-size:clamp(11px,.8vw,15px)}.rp-footer strong{font-weight:900}.rp-footer a{text-decoration:none;font-weight:800;color:inherit}.rp-footer a:hover{text-decoration:underline}@media(max-width:600px){.rp-footer{flex-direction:column;text-align:center}}</style><style>.rp-footer,.rp-footer a{color:#fff}</style><style id="rp-hide-secondary-login">#fullPilotGate form{display:none!important}#fullPilotGate::after{content:"Vérification de votre accès…";font:800 18px Nunito,Arial,sans-serif;color:#065269}</style></head>
+<style id="video-close-size-fix">.video-modal-hotspot{width:clamp(28px,4vw,58px)!important;height:clamp(28px,4vw,58px)!important}.video-modal-hotspot img{width:50%!important;height:50%!important;display:block;margin:auto}</style></style><style>.rp-footer{width:min(90vw,1540px);margin:clamp(18px,2vw,32px) auto 0;padding:22px 0 28px;display:flex;justify-content:space-between;align-items:center;gap:16px;color:inherit;font-size:clamp(11px,.8vw,15px)}.rp-footer strong{font-weight:900}.rp-footer a{text-decoration:none;font-weight:800;color:inherit}.rp-footer a:hover{text-decoration:underline}@media(max-width:600px){.rp-footer{flex-direction:column;text-align:center}}</style><style>.rp-footer,.rp-footer a{color:#fff}</style><style id="rp-hide-secondary-login">#fullPilotGate form{display:none!important}#fullPilotGate::after{content:"Vérification de votre accès…";font:800 18px Nunito,Arial,sans-serif;color:#065269}</style><style id="rp-resources-click-fix">#ressources-link{position:relative!important;z-index:50!important;pointer-events:auto!important;cursor:pointer!important}#ressources-link img{pointer-events:none!important}</style></head>
 <body>
 <div id="fullPilotGate"><form id="fullPilotForm"><h1>RebondPlay Full — accès sécurisé</h1><p>Connexion individuelle nécessaire pour consulter cette plateforme.</p><label for="fullPilotEmail">E-mail</label><input id="fullPilotEmail" type="email" autocomplete="username" required><label for="fullPilotPassword">Mot de passe</label><input id="fullPilotPassword" type="password" autocomplete="current-password" required><button type="submit">Accéder à Full</button><p id="fullPilotMessage" role="status"></p><p><a href="/index.html">Retour à l’accueil</a></p></form></div>
   <header class="topbar">
@@ -63,7 +63,7 @@
     <section class="feature-grid" aria-label="Espaces RebondPlay">
       <a class="feature feature-adults" id="adultes" href="../pageadultes/index.html"><img class="feature-block" src="blocadultes.png" alt="Pour les adultes"></a>
       <a class="feature feature-young" id="jeunes" href="../pagejeunes/index.html"><img class="feature-block" src="blocajeunes.png" alt="Pour les jeunes"></a>
-      <a class="feature feature-expo" id="ressources-link" href="../ressources/index.html"><img class="feature-block" src="blocressources.png" alt="Ressources"></a>
+      <a class="feature feature-expo" id="ressources-link" href="/ressources/index.html"><img class="feature-block" src="blocressources.png" alt="Ressources"></a>
     </section>
     <div class="section-title" id="ressources"><img src="titre1.png" alt="Ressources pédagogiques"></div>
     <section class="resources" aria-label="Ressources pédagogiques">
@@ -214,5 +214,5 @@
       }));
     })();
   </script>
-<footer class="rp-footer"><span><strong>Rebond</strong> · Association de prévention contre les violences dans le sport</span><span><a href="mailto:contact@assorebond.com">contact@assorebond.com</a> · RebondPlay Full · © 2026</span></footer></body>
+<footer class="rp-footer"><span><strong>Rebond</strong> · Association de prévention contre les violences dans le sport</span><span><a href="mailto:contact@assorebond.com">contact@assorebond.com</a> · RebondPlay Full · © 2026</span></footer><script>document.getElementById("ressources-link")?.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();window.location.assign(this.href)},true);</script></body>
 </html>
