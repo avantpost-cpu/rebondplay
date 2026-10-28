@@ -6,14 +6,15 @@
 </style></head><body>
 <header class="top"><a class="brand" href="../pagefull/"><img src="../Veille/logo_rebond_veille.png" alt="RebondPlay"></a><img class="headtitle" src="../Veille/titretetiere.png" alt="Titre Rebond Veille"></header>
 <main class="wrap">
+<nav class="rubric-nav" id="rubricNav" aria-label="Les onze rubriques de veille"></nav>
 <section class="cards" aria-label="Navigation"><button class="card" data-go="bibliotheque"><img src="../Veille/bouton_bibliotheque.png" alt=""></button><button class="card" data-go="suivi"><img src="../Veille/bouton_suivi.png" alt=""></button><button class="card" data-go="ajouter"><img src="../Veille/bouton_ajouter.png" alt=""></button><button class="card" data-go="evenements"><img src="../Veille/bouton_avenir.png" alt=""></button></section>
 <section class="paper" id="bibliotheque"><div id="gate"><h2>Accès à Rebond Veille</h2><p>Saisissez le mot de passe de consultation pour accéder à la bibliothèque.</p><form id="gateForm" class="toolbar"><input id="accessPassword" type="password" autocomplete="current-password" placeholder="Mot de passe" required><button class="add" type="submit">Accéder à la veille</button></form></div><div id="library" hidden><div class="toolbar" style="justify-content:space-between;align-items:center"><h2 id="sectionTitle">La bibliothèque de veille</h2><button id="logout" type="button">Fermer l'accès</button></div><div class="toolbar"><input id="search" type="search" placeholder="Rechercher une ressource…" aria-label="Rechercher"><select id="rubrique" aria-label="Filtrer par rubrique"><option value="">Toutes les rubriques</option></select></div><div class="list" id="list"></div></div><p id="notice" role="status" aria-live="polite"></p></section>
 <p class="foot">Rebond® 2026</p></main>
-<style>#gate{max-width:650px;margin:auto;text-align:center}#gateForm{justify-content:center}#notice{color:#b32d2d;font-weight:800}#logout{background:#e2e8e7;border:0;padding:12px;border-radius:10px;color:#063e54;font-weight:800}.item{display:block}.item p{margin:7px 0}.item a{color:#065269;overflow-wrap:anywhere}#library[hidden],#gate[hidden]{display:none}</style>
+<style>.rubric-nav{display:flex;gap:8px;align-items:stretch;overflow-x:auto;scrollbar-width:thin;padding:4px 2px 17px;margin-bottom:12px}.rubric-nav button{flex:0 0 auto;max-width:180px;min-width:100px;padding:11px 13px;border:1px solid #ffffff80;background:#f7f4efeb;border-radius:12px;color:#063e54;text-align:left;font-size:12px;line-height:1.25;font-weight:800;box-shadow:2px 3px 0 #063e5440}.rubric-nav button.active{background:#f47c4b;color:white;border-color:#f47c4b}.rubric-nav .count{display:inline-block;margin-left:7px;background:#063e54;color:white;border-radius:20px;padding:2px 7px;font-size:11px;font-weight:900}.rubric-nav button.active .count{background:white;color:#063e54}.rubric-nav button:focus-visible{outline:3px solid white;outline-offset:3px}#gate{max-width:650px;margin:auto;text-align:center}#gateForm{justify-content:center}#notice{color:#b32d2d;font-weight:800}#logout{background:#e2e8e7;border:0;padding:12px;border-radius:10px;color:#063e54;font-weight:800}.item{display:block}.item p{margin:7px 0}.item a{color:#065269;overflow-wrap:anywhere}#library[hidden],#gate[hidden]{display:none}</style>
 <script>
 const endpoint='https://tdsrqmpfdvntybdlvejy.supabase.co/functions/v1/quick-api';
 const $=id=>document.getElementById(id);
-let token=sessionStorage.getItem('rebond_veille_token')||'',resources=[],view='bibliotheque';
+let token=sessionStorage.getItem('rebond_veille_token')||'',resources=[],view='bibliotheque',selectedRubric='';
 const names=['Veille juridique','Actualités','Actualités européennes','Livres et publications','Films et podcasts','Outils pédagogiques','Événements et formations','Réseaux sociaux','Acteurs et initiatives','Bonnes pratiques','Appels à projets (AAP)'];
 function populateRubriques(){
   const select=$('rubrique');
@@ -24,14 +25,37 @@ function populateRubriques(){
   select.value=current;
 }
 populateRubriques();
+function rubricFor(r){
+  const raw=String(r.rubrique_nom||r.rubrique||'').trim();
+  if(names.includes(raw))return raw;
+  const n=Number(r.rubrique_ordre);
+  if(n>=1&&n<=names.length)return names[n-1];
+  return '';
+}
+function updateRubricNav(){
+  const nav=$('rubricNav');nav.replaceChildren();
+  for(const name of names){
+    const button=document.createElement('button');button.type='button';
+    button.className=selectedRubric===name?'active':'';
+    button.setAttribute('aria-pressed',String(selectedRubric===name));
+    const label=document.createElement('span');label.textContent=name;
+    const count=document.createElement('span');count.className='count';
+    const mapped=resources.filter(r=>rubricFor(r)===name).length;
+    count.textContent=token?String(mapped):'–';
+    button.append(label,count);
+    button.onclick=()=>{if(!token){$('bibliotheque').scrollIntoView({behavior:'smooth'});$('accessPassword').focus();return}selectedRubric=selectedRubric===name?'':name;view='bibliotheque';$('rubrique').value=selectedRubric?String(names.indexOf(selectedRubric)+1):'';render();$('bibliotheque').scrollIntoView({behavior:'smooth'})};
+    nav.append(button);
+  }
+}
+updateRubricNav();
 function safe(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 async function call(action,extra={}){const r=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,token,...extra})});const data=await r.json();if(!r.ok)throw Error(data.error||'Erreur de connexion');return data}
-function lock(){token='';sessionStorage.removeItem('rebond_veille_token');$('gate').hidden=false;$('library').hidden=true;$('accessPassword').value=''}
-async function load(){try{const r=await call('list');resources=r.data||[];$('gate').hidden=true;$('library').hidden=false;$('notice').textContent='';render()}catch(e){lock();$('notice').textContent=e.message}}
+function lock(){token='';selectedRubric='';updateRubricNav();sessionStorage.removeItem('rebond_veille_token');$('gate').hidden=false;$('library').hidden=true;$('accessPassword').value=''}
+async function load(){try{const r=await call('list');resources=r.data||[];$('gate').hidden=true;$('library').hidden=false;$('notice').textContent='';updateRubricNav();render()}catch(e){lock();$('notice').textContent=e.message}}
 $('gateForm').addEventListener('submit',async e=>{e.preventDefault();$('notice').textContent='Vérification…';try{const r=await call('login',{password:$('accessPassword').value});token=r.token;sessionStorage.setItem('rebond_veille_token',token);await load()}catch(err){$('notice').textContent=err.message}});
 $('logout').onclick=lock;
-$('search').oninput=render;$('rubrique').onchange=render;
-function render(){const q=$('search').value.toLocaleLowerCase('fr').trim(),cat=$('rubrique').value;let items=resources.filter(r=>(!cat||String(r.rubrique_ordre||'')===cat||r.rubrique_nom===names[Number(cat)-1]||r.rubrique_id===cat)&&(!q||[r.titre,r.resume,r.source,r.notes,r.type_contenu].join(' ').toLocaleLowerCase('fr').includes(q)));if(view==='suivi')items=items.filter(r=>['nouvelle','a_traiter','en_cours'].includes(r.statut));if(view==='evenements')items=items.filter(r=>r.date_evenement||r.date_cloture).sort((a,b)=>(a.date_evenement||a.date_cloture).localeCompare(b.date_evenement||b.date_cloture));$('sectionTitle').textContent=view==='suivi'?'Suivi des ressources':view==='evenements'?'Événements et échéances':'La bibliothèque de veille';const list=$('list');list.replaceChildren();if(!items.length){const empty=document.createElement('div');empty.className='empty';empty.textContent='Aucune ressource à afficher pour le moment.';list.append(empty)}for(const r of items){const item=document.createElement('article');item.className='item';const h=document.createElement('strong');h.textContent=r.titre||'Sans titre';item.append(h);const meta=document.createElement('small');meta.textContent=[r.type_contenu,r.source,r.statut,r.priorite,r.date_evenement||r.date_cloture||r.date_source].filter(Boolean).join(' · ');item.append(meta);if(r.resume){const p=document.createElement('p');p.textContent=r.resume;item.append(p)}if(r.url&&/^https?:\/\//i.test(r.url)){const a=document.createElement('a');a.href=r.url;a.target='_blank';a.rel='noopener noreferrer';a.textContent='Consulter la source';item.append(a)}list.append(item)}}
+$('search').oninput=render;$('rubrique').onchange=()=>{selectedRubric=names[Number($('rubrique').value)-1]||'';updateRubricNav();render()};
+function render(){const q=$('search').value.toLocaleLowerCase('fr').trim(),cat=$('rubrique').value;let items=resources.filter(r=>(!cat||rubricFor(r)===names[Number(cat)-1])&&(!q||[r.titre,r.resume,r.source,r.notes,r.type_contenu].join(' ').toLocaleLowerCase('fr').includes(q)));if(view==='suivi')items=items.filter(r=>['nouvelle','a_traiter','en_cours'].includes(r.statut));if(view==='evenements')items=items.filter(r=>r.date_evenement||r.date_cloture).sort((a,b)=>(a.date_evenement||a.date_cloture).localeCompare(b.date_evenement||b.date_cloture));$('sectionTitle').textContent=view==='suivi'?'Suivi des ressources':view==='evenements'?'Événements et échéances':'La bibliothèque de veille';const list=$('list');list.replaceChildren();if(!items.length){const empty=document.createElement('div');empty.className='empty';empty.textContent='Aucune ressource à afficher pour le moment.';list.append(empty)}for(const r of items){const item=document.createElement('article');item.className='item';const h=document.createElement('strong');h.textContent=r.titre||'Sans titre';item.append(h);const meta=document.createElement('small');meta.textContent=[r.type_contenu,r.source,r.statut,r.priorite,r.date_evenement||r.date_cloture||r.date_source].filter(Boolean).join(' · ');item.append(meta);if(r.resume){const p=document.createElement('p');p.textContent=r.resume;item.append(p)}if(r.url&&/^https?:\/\//i.test(r.url)){const a=document.createElement('a');a.href=r.url;a.target='_blank';a.rel='noopener noreferrer';a.textContent='Consulter la source';item.append(a)}list.append(item)}}
 document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>{view=b.dataset.go==='ajouter'?'bibliotheque':b.dataset.go;if(b.dataset.go==='ajouter')$('notice').textContent="L'ajout de ressources est réservé à l'administration.";if(token)render();$('bibliotheque').scrollIntoView({behavior:'smooth'})}));
 if(token)load();
 </script></body></html>
