@@ -67,3 +67,30 @@ jobs:
         with:
           persist-credentials: false
       - run: python3 scripts/security/dependencies.py --strict --output "$RUNNER_TEMP/cdn-policy"
+  jsr-audit:
+    name: Dependances Edge - Deno
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+
+      - name: Installer Deno 2.9.8
+        shell: bash
+        run: |
+          curl -fsSL https://deno.land/install.sh -o "$RUNNER_TEMP/install-deno.sh"
+          sh "$RUNNER_TEMP/install-deno.sh" v2.9.8
+          echo "$HOME/.deno/bin" >> "$GITHUB_PATH"
+
+      - name: Verifier les types et le verrouillage
+        run: >-
+          deno check --frozen
+          --lock=supabase/functions/send-quiz-summary/deno.lock
+          supabase/functions/send-quiz-summary/index.ts
+
+      - name: Rechercher les vulnerabilites connues
+        run: >-
+          deno audit
+          --lock=supabase/functions/send-quiz-summary/deno.lock
+          --frozen-lockfile

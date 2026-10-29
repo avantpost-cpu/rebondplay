@@ -210,9 +210,19 @@ def main():
     if report["unsupported"]:
         return 2
 
-    if args.strict and (
-        report["floating"] or report["jsr_not_audited_by_npm"]
-    ):
+    jsr_unpinned = [
+        item
+        for item in report["jsr_not_audited_by_npm"]
+        if not re.fullmatch(
+            r"jsr:(?:@[^/]+/)?[^/@]+@\d+\.\d+\.\d+(?:/.*)?",
+            item["import"],
+        )
+    ]
+
+    for item in jsr_unpinned:
+        print("IMPORT JSR NON FIGE : " + json.dumps(item))
+
+    if args.strict and (report["floating"] or jsr_unpinned):
         return 1
 
     return 0

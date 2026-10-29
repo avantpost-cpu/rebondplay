@@ -1,5 +1,5 @@
-import "jsr:@supabase/functions-js/edge-runtime.d.ts";
-import { withSupabase } from "jsr:@supabase/server@^1";
+import "jsr:@supabase/functions-js@2.118.0/edge-runtime.d.ts";
+import { withSupabase } from "jsr:@supabase/server@1.9.2";
 
 const escapeHtml = (value: unknown): string =>
   String(value ?? "").replace(
