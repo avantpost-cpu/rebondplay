@@ -38,6 +38,37 @@ body{
   padding:20px 10px;
 }
 
+.aide-suivi{
+  position:absolute;
+  left:15.75%;
+  top:79%;
+  width:66.3%;
+  height:18%;
+  z-index:9;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+
+  padding:8px 14px;
+  border-radius:14px;
+  background:#1b5f6e;
+  color:#fff;
+  text-align:center;
+}
+
+.aide-suivi strong{
+  font-size:clamp(11px,2vw,19px);
+}
+
+.aide-suivi p{
+  max-width:480px;
+  font-size:clamp(9px,1.5vw,14px);
+  line-height:1.35;
+}
+
 /* ======================================================
    CONTENEUR PRINCIPAL
 
@@ -842,46 +873,16 @@ body{
 
     </form>
 
-    <!-- RETROUVER UNE SESSION -->
+    <!-- INFORMATION POUR LES ORGANISATEURS -->
 
-    <form
-      id="formulaireRetrouver"
-      class="formulaire-retrouver">
-
-      <label
-        class="visuellement-cache"
-        for="codeRetrouver">
-        Code de session
-      </label>
-
-      <input
-        id="codeRetrouver"
-        class="code-retrouver"
-        name="codeRetrouver"
-        type="text"
-        placeholder="RBD-XXXX"
-        maxlength="8"
-        autocomplete="off"
-        required>
-
-      <button
-        id="boutonRetrouver"
-        class="bouton-retrouver"
-        type="submit"
-        aria-label="Valider le code et ouvrir le tableau de bord">
-
-        <span class="visuellement-cache">
-          Valider
-        </span>
-
-      </button>
-
-      <div
-        id="messageRetrouver"
-        class="message-retrouver"
-        aria-live="polite"></div>
-
-    </form>
+    <aside class="aide-suivi">
+      <strong>Lien de suivi perdu ?</strong>
+      <p>
+        Contactez Rebond pour retrouver votre accès.
+        Le code participant seul ne permet pas d'ouvrir le suivi.
+      </p>
+    </aside>
+    
 
     <!-- RÉSULTAT APRÈS CRÉATION -->
 
@@ -913,8 +914,10 @@ body{
         </a>
 
         <p class="avertissement">
-          Conserve ton code pour pouvoir retrouver
-          le tableau de bord ultérieurement.
+          Conservez le lien de suivi privé : faites un clic droit
+          sur « Ouvrir le suivi de la session », puis copiez
+          l'adresse du lien pour la sauvegarder.
+          Partagez uniquement le code participant avec les joueurs.
         </p>
 
       </div>
@@ -933,337 +936,115 @@ body{
 <script src="../js/supabase.js?v=3"></script>
 
 <script>
-const formulaireSession =
-  document.getElementById(
-    "formulaireSession"
-  );
+  const formulaireSession =
+    document.getElementById("formulaireSession");
 
-const boutonCreer =
-  document.getElementById(
-    "boutonCreer"
-  );
+  const boutonCreer =
+    document.getElementById("boutonCreer");
 
-const message =
-  document.getElementById(
-    "message"
-  );
+  const message =
+    document.getElementById("message");
 
-const resultat =
-  document.getElementById(
-    "resultat"
-  );
+  const resultat =
+    document.getElementById("resultat");
 
-const codeSession =
-  document.getElementById(
-    "codeSession"
-  );
+  const codeSession =
+    document.getElementById("codeSession");
 
-const lienSuivi =
-  document.getElementById(
-    "lienSuivi"
-  );
+  const lienSuivi =
+    document.getElementById("lienSuivi");
 
-const dateSession =
-  document.getElementById(
-    "dateSession"
-  );
+  const dateSession =
+    document.getElementById("dateSession");
 
-const formulaireRetrouver =
-  document.getElementById(
-    "formulaireRetrouver"
-  );
+  dateSession.value = new Date().toISOString().slice(0, 10);
 
-const codeRetrouver =
-  document.getElementById(
-    "codeRetrouver"
-  );
-
-const boutonRetrouver =
-  document.getElementById(
-    "boutonRetrouver"
-  );
-
-const messageRetrouver =
-  document.getElementById(
-    "messageRetrouver"
-  );
-
-/* ======================================================
-   DATE DU JOUR
-====================================================== */
-
-dateSession.value =
-  new Date()
-    .toISOString()
-    .slice(0,10);
-
-/* ======================================================
-   FORMATAGE DU CODE
-====================================================== */
-
-function nettoyerCode(valeur){
-
-  return String(
-    valeur || ""
-  )
-    .trim()
-    .toUpperCase()
-    .replace(
-      /[^A-Z0-9-]/g,
-      ""
-    );
-
-}
-
-codeRetrouver.addEventListener(
-  "input",
-  function(){
-
-    codeRetrouver.value =
-      nettoyerCode(
-        codeRetrouver.value
-      );
-
-  }
-);
-
-/* ======================================================
-   CRÉATION D’UNE SESSION
-====================================================== */
-
-formulaireSession.addEventListener(
-  "submit",
-  async function(event){
-
+  formulaireSession.addEventListener("submit", async function(event) {
     event.preventDefault();
 
+    if (boutonCreer.disabled) return;
+
     message.textContent = "";
-    message.className =
-      "message";
+    message.className = "message";
+    resultat.classList.remove("visible");
 
-    resultat.classList.remove(
-      "visible"
-    );
-
-    const ecole =
-      document
-        .getElementById("ecole")
-        .value
-        .trim();
-
-    const classe =
-      document
-        .getElementById("classe")
-        .value
-        .trim();
-
+    const ecole = document.getElementById("ecole").value.trim();
+    const classe = document.getElementById("classe").value.trim();
     const enseignant =
-      document
-        .getElementById("enseignant")
-        .value
-        .trim();
+      document.getElementById("enseignant").value.trim();
 
     const nombreEleves =
-      Number(
-        document
-          .getElementById("nombreEleves")
-          .value
-      );
+      Number(document.getElementById("nombreEleves").value);
 
-    const email =
-      document
-        .getElementById("email")
-        .value
-        .trim();
+    const email = document.getElementById("email").value.trim();
+    const date = dateSession.value;
 
-    const date =
-      dateSession.value;
-
-    if(
+    if (
       !ecole ||
       !classe ||
       !enseignant ||
       !email ||
       !date ||
       !Number.isInteger(nombreEleves) ||
-      nombreEleves < 1
-    ){
-
-      message.className =
-        "message erreur";
-
+      nombreEleves < 1 ||
+      nombreEleves > 200
+    ) {
+      message.className = "message erreur";
       message.textContent =
-        "Tous les champs sont obligatoires.";
-
+        "Complétez les champs et indiquez entre 1 et 200 participants.";
       return;
-
     }
 
-    boutonCreer.disabled =
-      true;
+    if (!formulaireSession.reportValidity()) return;
 
-    message.textContent =
-      "Création de la session…";
+    if (!window.REBOND_DB?.creerSession) {
+      message.className = "message erreur";
+      message.textContent =
+        "Le service de création est indisponible. Rechargez la page.";
+      return;
+    }
 
-    try{
+    boutonCreer.disabled = true;
+    message.textContent = "Création de la session…";
 
-      const session =
-        await window.REBOND_DB
-          .creerSession({
-            ecole,
-            classe,
-            email,
-            date,
-            enseignant,
-            nombreEleves
-          });
+    try {
+      const session = await window.REBOND_DB.creerSession({
+        ecole,
+        classe,
+        email,
+        date,
+        enseignant,
+        nombreEleves
+      });
 
-      codeSession.textContent =
-        session.code;
-
-      const adresseSuivi =
-        new URL(
-          "suivi-session.html",
-          window.location.href
+      if (!session?.code || !session?.cleGestion) {
+        throw new Error(
+          "Le résultat de la création est incomplet. Contactez Rebond avant de recommencer."
         );
+      }
 
-      adresseSuivi.searchParams.set(
-        "code",
-        session.code
+      codeSession.textContent = session.code;
+
+      const adresseSuivi = new URL(
+        "suivi-session.html",
+        window.location.href
       );
 
-      adresseSuivi.searchParams.set(
-        "cle",
-        session.cleGestion
-      );
+      adresseSuivi.searchParams.set("code", session.code);
+      adresseSuivi.searchParams.set("cle", session.cleGestion);
 
-      lienSuivi.href =
-        adresseSuivi.toString();
+      lienSuivi.href = adresseSuivi.toString();
 
       message.textContent = "";
-
-      resultat.classList.add(
-        "visible"
-      );
-
-    }
-    catch(error){
-
-      console.error(error);
-
-      message.className =
-        "message erreur";
-
+      resultat.classList.add("visible");
+    } catch {
+      message.className = "message erreur";
       message.textContent =
-        error.message ||
-        "La session n’a pas pu être créée.";
-
+        "Création non confirmée. Contactez Rebond avant de réessayer.";
+    } finally {
+      boutonCreer.disabled = false;
     }
-    finally{
-
-      boutonCreer.disabled =
-        false;
-
-    }
-
-  }
-);
-
-/* ======================================================
-   RETROUVER UNE SESSION
-====================================================== */
-
-formulaireRetrouver.addEventListener(
-  "submit",
-  async function(event){
-
-    event.preventDefault();
-
-    messageRetrouver.textContent = "";
-
-    messageRetrouver.className =
-      "message-retrouver";
-
-    const code =
-      nettoyerCode(
-        codeRetrouver.value
-      );
-
-    if(!code){
-
-      messageRetrouver.className =
-        "message-retrouver erreur";
-
-      messageRetrouver.textContent =
-        "Saisis le code de la session.";
-
-      return;
-
-    }
-
-    boutonRetrouver.disabled =
-      true;
-
-    try{
-
-      const session =
-        await window.REBOND_DB
-          .retrouverSession({
-            code
-          });
-
-      messageRetrouver.className =
-        "message-retrouver succes";
-
-      messageRetrouver.textContent =
-        "Session retrouvée. Ouverture…";
-
-      const adresseSuivi =
-        new URL(
-          "suivi-session.html",
-          window.location.href
-        );
-
-      adresseSuivi.searchParams.set(
-        "code",
-        session.code
-      );
-
-      adresseSuivi.searchParams.set(
-        "cle",
-        session.cleGestion
-      );
-
-      window.setTimeout(
-        function(){
-
-          window.location.href =
-            adresseSuivi.toString();
-
-        },
-        450
-      );
-
-    }
-    catch(error){
-
-      console.error(error);
-
-      messageRetrouver.className =
-        "message-retrouver erreur";
-
-      messageRetrouver.textContent =
-        error.message ||
-        "Impossible de retrouver cette session.";
-
-      boutonRetrouver.disabled =
-        false;
-
-    }
-
-  }
-);
+  });
 </script>
-
 </body>
 </html>
