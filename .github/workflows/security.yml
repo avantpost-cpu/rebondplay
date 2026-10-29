@@ -1,0 +1,69 @@
+name: Security checks
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: security-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  control-scripts:
+    name: Tests des scripts de controle
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - run: python3 -m unittest discover -s scripts/security -p 'test_*.py' -v
+  secrets:
+    name: Secrets - Gitleaks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Installer Gitleaks avec verification SHA-256
+        run: python3 scripts/security/install_gitleaks.py --output "$RUNNER_TEMP/gitleaks"
+      - name: Examiner tous les commits accessibles
+        run: '"$RUNNER_TEMP/gitleaks" git --redact=100 --no-banner --log-opts="--all" .'
+  dependency-audit:
+    name: Dependances CDN - npm audit
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Inventorier les bibliotheques chargees par CDN
+        run: python3 scripts/security/dependencies.py --output "$RUNNER_TEMP/cdn-audit"
+      - name: Resoudre sans installer ni executer de scripts npm
+        working-directory: ${{ runner.temp }}/cdn-audit
+        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+      - name: Rechercher les vulnerabilites connues
+        working-directory: ${{ runner.temp }}/cdn-audit
+        shell: bash
+        run: |
+          set +e
+          npm audit --json --audit-level=low > audit.json
+          audit_status=$?
+          set -e
+          python3 "$GITHUB_WORKSPACE/scripts/security/audit_summary.py" audit.json
+          exit "$audit_status"
+  inventory-policy:
+    name: Versions fixes et couverture
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - run: python3 scripts/security/dependencies.py --strict --output "$RUNNER_TEMP/cdn-policy"

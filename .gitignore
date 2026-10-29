@@ -1,0 +1,4 @@
+# Sorties locales des controles, jamais des fichiers applicatifs.
+.security-audit/
+security-fixtures.local.json
+__pycache__/
