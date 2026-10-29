@@ -16,12 +16,23 @@ class InventoryTests(unittest.TestCase):
             r=dependencies.inventory(root)
             self.assertEqual(r['dependencies'],{'jspdf':'2.5.2','@supabase/supabase-js':'2'})
             self.assertEqual(len(r['floating']),1);self.assertEqual(len(r['jsr_not_audited_by_npm']),1)
-    def test_multiple_versions_fail_coverage(self):
+    def test_multiple_versions_are_audited(self):
         with tempfile.TemporaryDirectory() as directory:
-            root=pathlib.Path(directory)
-            (root/'index.html').write_text('<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2"></script><script src="https://cdn.jsdelivr.net/npm/jspdf@4.2.1"></script>')
-            r=dependencies.inventory(root)
-            self.assertTrue(r['unsupported']);self.assertNotIn('jspdf',r['dependencies'])
+            root = pathlib.Path(directory)
+            (root / "index.html").write_text(
+                '<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2"></script>'
+                '<script src="https://cdn.jsdelivr.net/npm/jspdf@4.2.1"></script>'
+            )
+
+            result = dependencies.inventory(root)
+
+            self.assertEqual(result["unsupported"], [])
+            self.assertEqual(len(result["dependencies"]), 2)
+            self.assertEqual(
+                set(result["dependencies"].values()),
+                {"npm:jspdf@2.5.2", "npm:jspdf@4.2.1"},
+            )
+            self.assertEqual(result["floating"], [])
 
 class AccessTests(unittest.TestCase):
     def setUp(self):
