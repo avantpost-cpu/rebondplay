@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>RebondPlay — Connexion</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@500;600;700;800;900&display=swap');
+:root{font-family:'Nunito',Arial,sans-serif;color:#065269}*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 18px;background:#065269 url('/ressources/fond.jpg') center/cover fixed no-repeat}
+main{width:min(100%,680px);padding:clamp(26px,5vw,52px);border-radius:28px;background:#f8f6ef url('/fond.jpg') center/cover no-repeat;box-shadow:0 16px 34px #183f4a50;text-align:center}
+.brand{display:block;width:min(76%,330px);height:auto;margin:0 auto 20px}
+h1{margin:0 0 12px;font-size:clamp(22px,3.2vw,31px);font-weight:900;color:#065269}
+.intro{margin:0 auto 26px;max-width:480px;font-size:clamp(14px,1.7vw,18px);line-height:1.5;font-weight:700}
+form{max-width:490px;margin:auto;text-align:left}
+label{display:block;margin:16px 0 7px;font-size:15px;font-weight:900}
+input{width:100%;height:54px;padding:12px 15px;border:2px solid #c2c8c6;border-radius:12px;background:#fff;color:#065269;font:700 17px 'Nunito',Arial,sans-serif}
+input:focus{outline:3px solid #ff8a5577;border-color:#ff743b}
+button{display:block;width:min(100%,370px);margin:26px auto 0;padding:16px;border:0;border-radius:999px;background:#f47743;color:#fff;font:900 20px 'Nunito',Arial,sans-serif;cursor:pointer;box-shadow:0 5px 0 #c75d31}
+button:hover{background:#e96c37}button:disabled{opacity:.65;cursor:wait}
+#status{min-height:1.5em;margin:20px auto 0;max-width:490px;font-weight:800;line-height:1.4}
+small{display:block;max-width:480px;margin:25px auto 0;font-size:12px;font-weight:700;line-height:1.5;color:#065269}
+footer{margin:20px 0 0;font-size:12px;font-weight:900;color:#065269}
+@media(max-width:540px){body{padding:16px}main{padding:28px 22px}.brand{width:85%}input{height:50px}button{font-size:17px}}
+</style></head>
+<body><main><img class="brand" src="/logorebondsignature.png" alt="Rebond"><h1>Bienvenue sur RebondPlay</h1><p class="intro">Connectez-vous à votre espace personnel pour retrouver vos outils de sensibilisation.</p><form id="login"><label for="email">Adresse e-mail</label><input id="email" type="email" autocomplete="username" required><label for="password">Mot de passe</label><input id="password" type="password" autocomplete="current-password" required><button id="submit" type="submit">3… 2… 1… Partez !</button></form><p id="status" role="status" aria-live="polite"></p><small>Accès réservé aux utilisateurs autorisés par Rebond. Vos identifiants sont personnels.</small><footer>Rebond® 2026</footer></main>
+<script>
+(async()=>{
+const status=document.getElementById('status'),form=document.getElementById('login'),button=document.getElementById('submit');
+const client=window.supabase.createClient('https://tdsrqmpfdvntybdlvejy.supabase.co','sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO',{auth:{storageKey:'rebondplay-full-pilot-auth',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
+const routes={full:'/pagefull/',essentielplus:'/RPessentielleplus/',essentiel:'/Essentiel/'};
+async function route(){
+ const {data:user,error:userError}=await client.auth.getUser();
+ if(userError||!user?.user)return false;
+ const {data,error}=await client.rpc('rp_mon_abonnement');
+ if(error)throw error;
+ const subscription=data?.[0];
+ if(!subscription){status.textContent='Aucun abonnement actif et valide associé à ce compte.';return false}
+ 
+ if(!routes[subscription.offre]){status.textContent='Offre non reconnue. Contactez Rebond.';return false}
+ location.replace(routes[subscription.offre]);return true;
+}
+form.addEventListener('submit',async e=>{e.preventDefault();button.disabled=true;status.textContent='Vérification des droits…';try{const {error}=await client.auth.signInWithPassword({email:document.getElementById('email').value.trim(),password:document.getElementById('password').value});document.getElementById('password').value='';if(error)throw error;await route()}catch(e){status.textContent='Connexion impossible : '+(e.message||'Erreur de connexion')}finally{button.disabled=false}});
+try{const {data}=await client.auth.getSession();if(data?.session)await route()}catch(e){status.textContent='Vérification indisponible. Réessayez.'}
+})();
+</script></body></html>

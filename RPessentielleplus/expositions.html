@@ -14,7 +14,7 @@ main{width:min(90vw,1540px);margin:auto;padding:clamp(38px,6vw,110px) 0 100px;di
 @media(max-width:700px){.topbar{flex-wrap:wrap;gap:16px;padding:16px 18px}.account{font-size:12px}.close{top:10px;right:10px;width:36px;height:36px;font-size:24px}}
 .epreuves-video{position:absolute;left:43%;top:12%;width:53%;aspect-ratio:16/9;object-fit:contain}.epreuves-view{left:40%;top:66%;width:14%;height:33%}.pedagogique-slider-image{height:min(78vh,900px);object-fit:contain}.sport-slider-frame{min-width:0;text-align:center}.epreuves-slider[hidden]{display:none!important}
 </style>
-<style>.rp-footer{width:min(90vw,1540px);margin:clamp(35px,5vw,80px) auto 0;padding:22px 0 28px;border-top:0;display:flex;justify-content:space-between;align-items:center;gap:16px;color:#073e55;font-size:clamp(11px,.8vw,15px)}.rp-footer strong{font-weight:900}.rp-footer a{text-decoration:none;font-weight:800}.rp-footer a:hover{text-decoration:underline}@media(max-width:600px){.rp-footer{flex-direction:column;text-align:center}}</style><style>.rp-footer{margin-top:18px;color:#fff;border-top-color:transparent}.rp-footer a{color:#fff}</style></head>
+<style>.rp-footer{width:min(90vw,1540px);margin:clamp(35px,5vw,80px) auto 0;padding:22px 0 28px;border-top:0;display:flex;justify-content:space-between;align-items:center;gap:16px;color:#073e55;font-size:clamp(11px,.8vw,15px)}.rp-footer strong{font-weight:900}.rp-footer a{text-decoration:none;font-weight:800}.rp-footer a:hover{text-decoration:underline}@media(max-width:600px){.rp-footer{flex-direction:column;text-align:center}}</style><style>.rp-footer{margin-top:18px;color:#fff;border-top-color:transparent}.rp-footer a{color:#fff}</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head>
 <body>
 <header class="topbar"><div class="page-title"><img src="../pageexpo/titreexpo.png" alt="Expositions"></div><div class="account"><span class="avatar" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0z"/></svg></span><div class="account-copy"><div class="account-name">Bonjour</div><div class="account-meta">RebondPlay Essentiel+</div></div><button class="logout" id="logout">Se déconnecter</button></div></header>
 <main><button class="card" id="openPedagogique"><img src="../pageexpo/bouton2.png" alt="Exposition pédagogique"></button><button class="card" id="openEpreuves"><img src="../pageexpo/bouton3.png" alt="Exposition (é)preuves"></button></main>
@@ -22,7 +22,15 @@ main{width:min(90vw,1540px);margin:auto;padding:clamp(38px,6vw,110px) 0 100px;di
 <div class="modal" id="epreuvesModal" role="dialog" aria-modal="true" aria-label="Exposition (é)preuves"><div class="panel"><button class="close" id="epreuvesClose" aria-label="Fermer">×</button><div class="art" id="epreuvesPoster"><img src="../pageexpo/popupexpoepreuves.jpg" alt="Exposition (é)preuves"><video class="epreuves-video" controls playsinline preload="metadata"><source src="../pagevideo/Film_Expo-e-preuves_bdf2.mp4" type="video/mp4"></video><button class="hotspot epreuves-view" id="epreuvesView" type="button" aria-label="Voir Exposition (é)preuves"></button></div><div class="sport-slider" id="epreuvesSlider" hidden aria-label="Diaporama Exposition (é)preuves"><button class="sport-slider-arrow" id="epreuvesPrev" type="button" aria-label="Image précédente">‹</button><div class="sport-slider-frame"><img class="sport-slider-image " id="epreuvesImage" src="../pageexpo/expoepreuves/expoepreuves.jpg" alt="Exposition (é)preuves — planche 1 sur 36"><p class="sport-slider-count" id="epreuvesCount" aria-live="polite">1 / 36</p></div><button class="sport-slider-arrow" id="epreuvesNext" type="button" aria-label="Image suivante">›</button></div></div></div>
 <a class="back" href="index.html">← Accueil</a>
 <script>
-if(sessionStorage.getItem("rp_essentiel_plus_ok")!=="1")location.replace("../index.html");
+(async()=>{try{
+ const client=window.supabase.createClient("https://tdsrqmpfdvntybdlvejy.supabase.co","sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO",{auth:{storageKey:"rebondplay-full-pilot-auth",persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
+ const {data:user,error:identityError}=await client.auth.getUser();
+ if(identityError||!user?.user)throw Error("Connexion requise");
+ const {data,error}=await client.rpc("rp_mon_abonnement");
+ if(error||data?.[0]?.offre!=="essentielplus")throw Error("Abonnement Essentiel+ requis");
+ document.getElementById("logout").onclick=async()=>{await client.auth.signOut();location.replace("/index.html")};
+ }catch(e){console.error("Accès Essentiel+ Expositions",e);location.replace("/connexion-test/")}
+})();
 function initExpo(type,title,folder,total){
  const el=id=>document.getElementById(type+id),modal=el("Modal"),poster=el("Poster"),slider=el("Slider"),img=el("Image"),count=el("Count"),video=poster.querySelector("video");let index=0;
  function show(i){index=(i+total)%total;img.src="../pageexpo/"+folder+"/"+folder+(index?" "+(index+1):"")+".jpg";img.src=img.src.replace(/%20/g,"");img.alt=title+" — planche "+(index+1)+" sur "+total;count.textContent=(index+1)+" / "+total}
@@ -36,7 +44,7 @@ function initExpo(type,title,folder,total){
 }
 initExpo("pedagogique","Exposition pédagogique","expopedagogique",11);
 initExpo("epreuves","Exposition (é)preuves","expoepreuves",36);
-document.getElementById("logout").onclick=()=>{sessionStorage.removeItem("rp_essentiel_plus_ok");location.replace("index.html")};
+
 </script>
 <footer class="rp-footer"><span><strong>Rebond</strong> · Association de prévention contre les violences dans le sport</span><span><a href="mailto:contact@assorebond.com">contact@assorebond.com</a> · RebondPlay Essentiel+ · © 2026</span></footer></body>
 </html>

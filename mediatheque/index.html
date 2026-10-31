@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="fr">
 <head>
+<base href="/mediatheque/">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#f7f4ef">
@@ -30,14 +31,57 @@ html{scroll-behavior:smooth}body{margin:0;min-width:300px;background-color:#f7f4
 @media(max-width:760px){.search-wrap,.alphabet,.status,.grid{width:calc(100% - 28px)}.preview{height:220px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;padding-bottom:50px}.card{padding:16px}}@media(max-width:520px){.grid{grid-template-columns:1fr}}
 @media(max-width:600px){.rp-footer{flex-direction:column;text-align:center;padding-inline:10px}}
 </style>
-</head>
+<style id="rp-private-gate-clean">#privateGate form{display:none!important}#privateGate::after{content:"Vérification de votre accès…";font:800 18px Nunito,Arial,sans-serif;color:#065269}body:not(.private-ready) .topbar,body:not(.private-ready) main,body:not(.private-ready) footer{visibility:hidden}</style></head>
 <body>
 <header class="topbar"><div class="brand"><img src="./tetieremediateque.png" alt="Médiathèque RebondPlay"></div><div class="account" aria-label="Compte connecté"><span class="avatar" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0z"/></svg></span><div class="account-copy"><div class="account-name" id="accountName">Bonjour</div><div class="account-meta" id="accountMeta"></div></div><button class="logout" id="logoutButton" type="button">Se déconnecter</button></div></header>
 <section class="search-wrap"><div class="search-box"><label for="search">Rechercher un outil, un document ou un thème</label><input id="search" type="search" placeholder="Ex. : emprise, prévention, affiches…" autocomplete="off"><p id="searchHint">La recherche porte sur les titres, descriptions, thèmes, mots-clés et documents associés.</p></div></section>
 <nav class="alphabet" aria-label="Filtrer par première lettre"></nav>
 <div class="status" id="status" aria-live="polite"></div><main class="grid" id="grid"></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>#privateGate{position:fixed;inset:0;z-index:99999;background:#f7f1e8;display:flex;align-items:center;justify-content:center;font:16px Arial,sans-serif}#privateGate form{background:white;padding:32px;max-width:380px;width:90%;box-shadow:0 12px 40px #0002;border-radius:12px}#privateGate input,#privateGate button{display:block;width:100%;box-sizing:border-box;margin:12px 0;padding:12px}body:not(.private-ready) #grid{visibility:hidden}</style>
+<div id="privateGate"><form id="privateForm"><h2>Médiathèque — accès sécurisé</h2><p>Compte individuel Full ou Essentiel+</p><input id="privateEmail" type="email" autocomplete="username" placeholder="Adresse e-mail" required><input id="privatePassword" type="password" autocomplete="current-password" placeholder="Mot de passe" required><button type="submit">Se connecter</button><p id="privateMessage" role="status"></p></form></div>
 <script>
-(()=>{const keys=["rebondplay_access_ok","rebondplay_abonnement_id","rebondplay_nom_structure","rebondplay_code","rebondplay_date_fin","rebondplay_prenom_contact","rebondplay_nom_contact"],get=k=>sessionStorage.getItem(k)||"";if(get("rebondplay_access_ok")!=="1"&&get("rp_essentiel_plus_ok")!=="1"){location.replace("../index.html");return}const name=[get("rebondplay_prenom_contact"),get("rebondplay_nom_contact")].filter(Boolean).join(" ")||get("rebondplay_nom_structure");document.getElementById("accountName").textContent=`Bonjour ${name}`.trim();let meta=get("rebondplay_nom_structure");const end=get("rebondplay_date_fin");if(end){const days=Math.max(0,Math.ceil((new Date(`${end}T23:59:59`)-Date.now())/86400000));meta=`Votre abonnement est encore valable ${days} jour${days>1?"s":""}`}document.getElementById("accountMeta").textContent=meta;document.getElementById("logoutButton").addEventListener("click",()=>{keys.forEach(k=>sessionStorage.removeItem(k));location.replace("../index.html")})})();
+const privateClient=window.supabase?.createClient("https://tdsrqmpfdvntybdlvejy.supabase.co","sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO",{auth:{storageKey:"rebondplay-full-pilot-auth",persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
+let privateReady=false;
+async function privateCheck(){if(!privateClient)return false;const {data:u,error:e}=await privateClient.auth.getUser();if(e||!u?.user)return false;const {data,error}=await privateClient.rpc("rp_mon_abonnement");if(error)throw error;const a=data?.[0];if(!a||!["full","essentielplus"].includes(a.offre))return false;privateReady=true;queueMicrotask(()=>{if(typeof render==="function")render()});document.body.classList.add("private-ready");document.getElementById("privateGate").remove();document.getElementById("accountName").textContent="Bonjour "+(a.nom_structure||"");document.getElementById("accountMeta").textContent="Offre "+a.offre;document.getElementById("tierLabel").textContent=a.offre==="full"?"RebondPlay Full":"RebondPlay Essentiel+";document.getElementById("tierBack").href=a.offre==="full"?"/pagefull/index.html":"/RPessentielleplus/index.html";document.getElementById("logoutButton").addEventListener("click",async()=>{await privateClient.auth.signOut();location.href="/index.html"});return true}
+document.getElementById("privateForm").addEventListener("submit",async e=>{e.preventDefault();const msg=document.getElementById("privateMessage");msg.textContent="Connexion en cours…";try{const {error}=await privateClient.auth.signInWithPassword({email:document.getElementById("privateEmail").value.trim(),password:document.getElementById("privatePassword").value});document.getElementById("privatePassword").value="";if(error)throw error;if(!await privateCheck())msg.textContent="Abonnement Full ou Essentiel+ requis."}catch(err){msg.textContent=err.message||"Erreur de connexion"}});
+privateCheck().then(ok=>{if(!ok)location.replace("/connexion-test/")}).catch(()=>location.replace("/connexion-test/"));
+async function bindPrivateVideos(){
+ if(!privateReady)return;
+ for(const video of document.querySelectorAll("video.resource-video")){
+  const source=video.querySelector("source[data-private-path]");
+  if(!source?.dataset.privatePath)continue;
+  const wrap=video.closest(".preview");
+  if(!wrap||wrap.querySelector(".private-video-load"))continue;
+  wrap.style.position="relative";
+  const button=document.createElement("button");
+  button.type="button";button.className="private-video-load";
+  button.textContent="▶ Lire la vidéo";
+  button.style.cssText="position:absolute;inset:auto auto 50% 50%;transform:translate(-50%,50%);z-index:10;min-width:155px;padding:12px 16px;background:#1b5f6e;color:white;border:2px solid white;border-radius:9px;font-weight:700;cursor:pointer";
+  wrap.appendChild(button);
+  button.addEventListener("click",async()=>{
+   if(button.disabled)return;
+   button.disabled=true;button.textContent="Chargement…";
+   try{
+    const {data:session,error:authError}=await privateClient.auth.getSession();
+    if(authError||!session?.session?.access_token)throw Error("Session expirée");
+    const {data,error}=await privateClient.storage.from("rebondplay-prive").createSignedUrl(source.dataset.privatePath,3600);
+    if(error||!data?.signedUrl)throw Error(error?.message||"Vidéo indisponible");
+    source.src=data.signedUrl;
+    video.load();
+    button.textContent="▶ Démarrer";
+    await video.play();
+    button.remove();
+   }catch(err){
+    button.disabled=false;button.textContent="▶ Réessayer";
+    console.error("Vidéo privée RebondPlay",err);
+    alert("Impossible de lire cette vidéo : "+(err?.message||"Erreur inconnue"));
+   }
+  });
+ }
+}
+</script>
+<script>
 const alphabet='ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');let resources=[];let selectedLetter='';
 const grid=document.querySelector('#grid'), search=document.querySelector('#search'), nav=document.querySelector('.alphabet'), status=document.querySelector('#status');
 function norm(s){return (s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase()}
@@ -52,18 +96,48 @@ function card(r){
   const docPreview=firstDoc?new URL(firstDoc.url,location.href).href:'';
   const isAnimation=r.type==="Animation vidéo (MP4)";
   const docHtml=!isAnimation&&docs.length?`<div class="doc-list" aria-label="Documents à télécharger"><strong>Documents disponibles</strong>${docs.filter(d=>d.url).map(d=>{const u=new URL(d.url,location.href).href;return `<a class="document-download" href="${esc(u)}" target="_blank" rel="noopener" download>${esc(d.label||'Télécharger le document')} ↓</a>`}).join('')}</div>`:'';
-  const preview=r.previewImage?`<div class="preview"><img src="${esc(r.previewImage)}" alt="Aperçu : ${esc(r.title)}" style="width:100%;height:100%;object-fit:contain;background:#fff"></div>`:href&&r.type==="Animation vidéo (MP4)"?`<div class="preview"><video class="resource-video" controls controlsList="nodownload noremoteplayback" disablePictureInPicture disableRemotePlayback preload="none" playsinline aria-label="Lire ${esc(r.title)}"><source src="${esc(href)}" type="video/mp4"></video></div>`:docPreview?`<div class="preview"><div class="preview-file"><span class="file-icon" aria-hidden="true">▤</span><strong>${esc(r.type||"Document PDF")}</strong></div></div>`:href?`<div class="preview"><iframe loading="lazy" title="Aperçu : ${esc(r.title)}" src="${esc(href)}"></iframe></div>`:`<div class="preview"><div class="preview-file"><span class="file-icon" aria-hidden="true">▤</span><strong>${esc(r.type||'Ressource Rebond')}</strong></div></div>`;
-  const actions=href&&!isAnimation?`<div class="actions"><a class="open" href="${esc(href)}" target="_blank" rel="noopener">Ouvrir</a></div>`:'';
+  const preview=r.previewImage?`<div class="preview"><img src="${esc(r.previewImage)}" alt="Aperçu : ${esc(r.title)}" style="width:100%;height:100%;object-fit:contain;background:#fff"></div>`:(href||r.privatePath)&&r.type==="Animation vidéo (MP4)"?`<div class="preview"><video class="resource-video" controls controlsList="nodownload noremoteplayback" disablePictureInPicture disableRemotePlayback preload="none" playsinline aria-label="Lire ${esc(r.title)}"><source data-private-path="${esc(r.privatePath||'')}" type="video/mp4"></video></div>`:docPreview?`<div class="preview"><div class="preview-file"><span class="file-icon" aria-hidden="true">▤</span><strong>${esc(r.type||"Document PDF")}</strong></div></div>`:href?`<div class="preview"><iframe loading="lazy" title="Aperçu : ${esc(r.title)}" src="${esc(href)}"></iframe></div>`:`<div class="preview"><div class="preview-file"><span class="file-icon" aria-hidden="true">▤</span><strong>${esc(r.type||'Ressource Rebond')}</strong></div></div>`;
+  const pilotModule=typeof r.privateModule==="string"&&/^[a-z0-9_-]+\/[a-z0-9_-]+\.html$/i.test(r.privateModule)?r.privateModule:"";
+  const actions=pilotModule?`<div class="actions"><a class="open private-module-open" href="#" data-module="${esc(pilotModule)}">Ouvrir en accès privé</a></div>`:href&&!isAnimation?`<div class="actions"><a class="open" href="${esc(href)}" target="_blank" rel="noopener">Ouvrir</a></div>`:'';
   return `<article class="card" data-search="${esc(searchText(r))}"><h2>${esc(r.title)}</h2>${r.summary?`<p>${esc(r.summary)}</p>`:''}${preview}${tags?`<div class="docs" aria-label="Thèmes">${tags}</div>`:''}${docHtml}${actions}</article>`;
 }
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function render(){const q=norm(search.value.trim());let filtered=resources.filter(r=>{const first=(r.title||'').trim().charAt(0).toUpperCase();return (!selectedLetter||q||first===selectedLetter)&&(!q||q.split(/\s+/).filter(Boolean).every(term=>searchText(r).includes(term)))});status.textContent=`${filtered.length} ressource${filtered.length===1?'':'s'}${q?' trouvée'+(filtered.length===1?'':'s')+(search.value.trim()?' pour « '+search.value.trim()+' »':''):''}`;grid.innerHTML=filtered.length?filtered.map(card).join(''):'<div class="empty">Aucune ressource ne correspond à cette recherche.</div>';nav.querySelectorAll('[data-letter]').forEach(a=>a.classList.toggle('active',a.dataset.letter===selectedLetter))}
+function render(){const q=norm(search.value.trim());let filtered=resources.filter(r=>{const first=(r.title||'').trim().charAt(0).toUpperCase();return (!selectedLetter||q||first===selectedLetter)&&(!q||q.split(/\s+/).filter(Boolean).every(term=>searchText(r).includes(term)))});status.textContent=`${filtered.length} ressource${filtered.length===1?'':'s'}${q?' trouvée'+(filtered.length===1?'':'s')+(search.value.trim()?' pour « '+search.value.trim()+' »':''):''}`;grid.innerHTML=filtered.length?filtered.map(card).join(''):'<div class="empty">Aucune ressource ne correspond à cette recherche.</div>';bindPrivateVideos();nav.querySelectorAll('[data-letter]').forEach(a=>a.classList.toggle('active',a.dataset.letter===selectedLetter))}
 grid.addEventListener('contextmenu',event=>{if(event.target.closest('video'))event.preventDefault()});
 search.addEventListener('input',()=>render());
-fetch('./ressources.json').then(r=>{if(!r.ok)throw new Error('Catalogue absent');return r.json()}).then(data=>{resources=data.sort((a,b)=>a.title.localeCompare(b.title,'fr'));buildAlphabet();render()}).catch(()=>{grid.innerHTML='<div class="empty">Le catalogue des ressources n’a pas pu être chargé.</div>'});
+grid.addEventListener("click",async event=>{
+ const a=event.target.closest("a.private-module-open");if(!a)return;
+ event.preventDefault();
+ const popup=window.open("","_blank");
+ if(!popup){alert("Autorisez les fenêtres contextuelles pour ouvrir le module.");return}
+ popup.opener=null;
+ popup.document.write("<!doctype html><title>RebondPlay</title><p>Chargement sécurisé du module…</p>");
+ try{
+  const {data,error}=await privateClient.auth.getSession();
+  if(error||!data?.session?.access_token)throw Error("Connexion requise");
+  const response=await fetch("https://tdsrqmpfdvntybdlvejy.supabase.co/functions/v1/rp-module-render",{method:"POST",headers:{"Authorization":"Bearer "+data.session.access_token,"apikey":"sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO","Content-Type":"application/json"},body:JSON.stringify({path:a.dataset.module})});
+  const result=await response.json();
+  if(!response.ok||!result.html)throw Error(result.error||"Module indisponible");
+  popup.document.open();popup.document.write("<!doctype html><html><head><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Module privé RebondPlay</title><style>html,body{margin:0;width:100%;height:100%;overflow:hidden}iframe{border:0;width:100%;height:100%}</style></head><body><iframe id=\"rp-private-frame\" sandbox=\"allow-scripts allow-forms allow-modals allow-pointer-lock allow-downloads\" referrerpolicy=\"no-referrer\" title=\"Module privé RebondPlay\"></iframe></body></html>");popup.document.close();popup.document.getElementById("rp-private-frame").srcdoc=result.html;
+ }catch(e){popup.document.open();popup.document.write("<p>Impossible de charger ce module privé. Revenez à la médiathèque.</p>");popup.document.close();alert(e.message)}
+});
+const rpPrivateDocumentNames=new Set(["coloriages_15x21.pdf","A4_Cocotte_Rebond_générique_1.pdf","A4_Cocotte_Rebond_générique_2.pdf","Kit du relayeur_Print_A5_18052026.pdf","fresque_A3_A.pdf","fresque_A3_B.pdf"].map(x=>x.normalize("NFD")));
+grid.addEventListener("click",async event=>{
+ const a=event.target.closest("a.document-download");if(!a)return;
+ const file=decodeURIComponent(new URL(a.href).pathname.split("/").pop()).normalize("NFD");
+ if(!rpPrivateDocumentNames.has(file))return;
+ event.preventDefault();
+ if(a.dataset.loading==="1")return;
+ a.dataset.loading="1";const original=a.textContent;a.textContent="Préparation du téléchargement…";
+ try{
+  const {data,error}=await privateClient.auth.getSession();if(error||!data?.session?.access_token)throw Error("Connexion requise");
+  const response=await fetch("https://tdsrqmpfdvntybdlvejy.supabase.co/functions/v1/rp-document-prive",{method:"POST",headers:{"Authorization":"Bearer "+data.session.access_token,"apikey":"sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO","Content-Type":"application/json"},body:JSON.stringify({file})});
+  const result=await response.json();if(!response.ok||!result.url)throw Error(result.error||"Document indisponible");
+  const link=document.createElement("a");link.href=result.url;link.download=file;document.body.appendChild(link);link.click();link.remove();
+ }catch(e){alert("Téléchargement impossible : "+e.message)}finally{a.dataset.loading="";a.textContent=original}
+});
+fetch('/mediatheque/ressources.json').then(r=>{if(!r.ok)throw new Error('Catalogue absent');return r.json()}).then(data=>{resources=data.sort((a,b)=>a.title.localeCompare(b.title,'fr'));buildAlphabet();render()}).catch(()=>{grid.innerHTML='<div class="empty">Le catalogue des ressources n’a pas pu être chargé.</div>'});
 </script>
-<a class="back" id="tierBack" href="../pagefull/index.html" aria-label="Retour à l’accueil"><span aria-hidden="true">←</span> Retour à l’accueil</a>\n<footer class="rp-footer"><span><strong>Rebond</strong> · Association de prévention contre les violences dans le sport</span><span><a href="mailto:contact@assorebond.com">contact@assorebond.com</a> · <span id="tierLabel">RebondPlay Full</span> · © 2026</span></footer>
-<script>
-(()=>{const full=sessionStorage.getItem('rebondplay_access_ok')==='1',plus=sessionStorage.getItem('rp_essentiel_plus_ok')==='1';if(!full&&!plus){location.replace('../index.html');return}const activeTier=sessionStorage.getItem('rebondplay_tier');const tier=activeTier==='essentielplus'?'plus':activeTier==='full'?'full':location.search.includes('tier=essentielplus')?'plus':full?'full':'plus';if(tier==='full'&&!full){location.replace('../index.html');return}if(tier==='plus'&&!plus){location.replace('../index.html');return}document.getElementById('tierBack').href=tier==='plus'?'../RPessentielleplus/index.html':'../pagefull/index.html';document.getElementById('tierLabel').textContent=tier==='plus'?'RebondPlay Essentiel+':'RebondPlay Full'})()
-</script></body>
+<a class="back" id="tierBack" href="../pagefull/index.html"><span aria-hidden="true">←</span> Retour à l’accueil</a>\n<footer class="rp-footer"><span><strong>Rebond</strong> · Association de prévention contre les violences dans le sport</span><span><a href="mailto:contact@assorebond.com">contact@assorebond.com</a> · <span id="tierLabel">RebondPlay Full</span> · © 2026</span></footer>
+</body>
 </html>

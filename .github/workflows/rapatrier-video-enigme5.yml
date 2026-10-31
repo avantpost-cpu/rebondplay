@@ -1,0 +1,48 @@
+name: Rapatrier la vidéo exacte de l'énigme 5
+on:
+  push:
+    paths:
+      - '.github/workflows/rapatrier-video-enigme5.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: rapatrier-video-enigme5
+  cancel-in-progress: false
+jobs:
+  rapatrier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Copier et vérifier l'original sans remplacer la version locale différente
+        shell: bash
+        run: |
+          set -euo pipefail
+          git clone --depth=1 https://github.com/avantpost-cpu/depot-quiz.git /tmp/depot-quiz
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,shutil
+          src=Path('/tmp/depot-quiz/escapegame_digital/enigme5/enigme5.mp4')
+          dst=Path('enigme5/enigme5-original-depot-quiz.mp4')
+          page=Path('enigme5/enigme5.html')
+          assert src.is_file() and src.stat().st_size==4153889
+          assert Path('enigme5/enigme5.mp4').is_file()
+          assert hashlib.sha256(src.read_bytes()).digest()!=hashlib.sha256(Path('enigme5/enigme5.mp4').read_bytes()).digest()
+          shutil.copy2(src,dst)
+          assert hashlib.sha256(src.read_bytes()).digest()==hashlib.sha256(dst.read_bytes()).digest()
+          old='https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme5/enigme5.mp4'
+          html=page.read_text()
+          assert html.count(old)==1
+          page.write_text(html.replace(old,'./enigme5-original-depot-quiz.mp4'))
+          print('Copie exacte vérifiée; vidéo locale existante préservée.')
+          PY
+          git diff --exit-code -- elearning pagevideo
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add enigme5/enigme5.html enigme5/enigme5-original-depot-quiz.mp4
+          if ! git diff --cached --quiet; then
+            git commit -m 'Rapatrier la vidéo originale de l énigme 5 sans altérer les versions [skip ci]'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi

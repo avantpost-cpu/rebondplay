@@ -4,7 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#c697c7">
-  <title>RebondPlay Full</title>
+  <title>RebondPlay Full — accès sécurisé</title>
+  <meta name="robots" content="noindex,nofollow"><base href="/pagefull/">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>body:not(.full-pilot-ready) > :not(#fullPilotGate){visibility:hidden}#fullPilotGate[hidden]{display:none!important}#fullPilotGate{position:fixed;inset:0;z-index:999999;background:#bd8fbe;display:flex;align-items:center;justify-content:center;padding:20px;font:16px Arial;color:#063e54}#fullPilotGate form{background:#f7f4ef;padding:32px;border-radius:18px;max-width:480px;width:100%;box-shadow:0 8px 20px #0004}#fullPilotGate label{display:block;margin-top:14px;font-weight:700}#fullPilotGate input{width:100%;padding:12px;margin-top:6px;border:1px solid #065269;border-radius:8px}#fullPilotGate button{margin-top:20px;background:#065269;color:white;border:0;padding:12px 20px;border-radius:8px;font-weight:700}#fullPilotGate p{line-height:1.5}</style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&family=Patrick+Hand&display=swap" rel="stylesheet">
@@ -37,8 +40,9 @@
 .resource.video:hover{z-index:2!important;translate:0 -6px!important;filter:drop-shadow(0 11px 9px rgba(3,42,56,.34))!important}
 .resource-image,.resource-inner{transition:none!important;transform:none!important;filter:none!important}
 .resource:hover{transform:none!important}
-<style id="video-close-size-fix">.video-modal-hotspot{width:clamp(28px,4vw,58px)!important;height:clamp(28px,4vw,58px)!important}.video-modal-hotspot img{width:50%!important;height:50%!important;display:block;margin:auto}</style></style><style>.rp-footer{width:min(90vw,1540px);margin:clamp(18px,2vw,32px) auto 0;padding:22px 0 28px;display:flex;justify-content:space-between;align-items:center;gap:16px;color:inherit;font-size:clamp(11px,.8vw,15px)}.rp-footer strong{font-weight:900}.rp-footer a{text-decoration:none;font-weight:800;color:inherit}.rp-footer a:hover{text-decoration:underline}@media(max-width:600px){.rp-footer{flex-direction:column;text-align:center}}</style><style>.rp-footer,.rp-footer a{color:#fff}</style></head>
+<style id="video-close-size-fix">.video-modal-hotspot{width:clamp(28px,4vw,58px)!important;height:clamp(28px,4vw,58px)!important}.video-modal-hotspot img{width:50%!important;height:50%!important;display:block;margin:auto}</style></style><style>.rp-footer{width:min(90vw,1540px);margin:clamp(18px,2vw,32px) auto 0;padding:22px 0 28px;display:flex;justify-content:space-between;align-items:center;gap:16px;color:inherit;font-size:clamp(11px,.8vw,15px)}.rp-footer strong{font-weight:900}.rp-footer a{text-decoration:none;font-weight:800;color:inherit}.rp-footer a:hover{text-decoration:underline}@media(max-width:600px){.rp-footer{flex-direction:column;text-align:center}}</style><style>.rp-footer,.rp-footer a{color:#fff}</style><style id="rp-hide-secondary-login">#fullPilotGate form{display:none!important}#fullPilotGate::after{content:"Vérification de votre accès…";font:800 18px Nunito,Arial,sans-serif;color:#065269}</style><style id="rp-resources-click-fix">#ressources-link{position:relative!important;z-index:50!important;pointer-events:auto!important;cursor:pointer!important}#ressources-link img{pointer-events:none!important}</style></head>
 <body>
+<div id="fullPilotGate"><form id="fullPilotForm"><h1>RebondPlay Full — accès sécurisé</h1><p>Connexion individuelle nécessaire pour consulter cette plateforme.</p><label for="fullPilotEmail">E-mail</label><input id="fullPilotEmail" type="email" autocomplete="username" required><label for="fullPilotPassword">Mot de passe</label><input id="fullPilotPassword" type="password" autocomplete="current-password" required><button type="submit">Accéder à Full</button><p id="fullPilotMessage" role="status"></p><p><a href="/index.html">Retour à l’accueil</a></p></form></div>
   <header class="topbar">
     <a class="brand" href="#accueil" aria-label="RebondPlay Full — accueil"><img src="Logo_RebondPlay_full2.png" alt="RebondPlay Full"></a>
     <div class="account" aria-label="Compte connecté"><span class="avatar" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0z"/></svg></span><div class="account-copy"><div class="account-name" id="accountName">Bonjour</div><div class="account-meta" id="accountMeta"></div></div><button class="logout" id="logoutButton" type="button">Se déconnecter</button></div>
@@ -59,7 +63,7 @@
     <section class="feature-grid" aria-label="Espaces RebondPlay">
       <a class="feature feature-adults" id="adultes" href="../pageadultes/index.html"><img class="feature-block" src="blocadultes.png" alt="Pour les adultes"></a>
       <a class="feature feature-young" id="jeunes" href="../pagejeunes/index.html"><img class="feature-block" src="blocajeunes.png" alt="Pour les jeunes"></a>
-      <a class="feature feature-expo" id="ressources-link" href="../ressources/index.html"><img class="feature-block" src="blocressources.png" alt="Ressources"></a>
+      <a class="feature feature-expo" id="ressources-link" href="/ressources/index.html"><img class="feature-block" src="blocressources.png" alt="Ressources"></a>
     </section>
     <div class="section-title" id="ressources"><img src="titre1.png" alt="Ressources pédagogiques"></div>
     <section class="resources" aria-label="Ressources pédagogiques">
@@ -77,68 +81,161 @@
         <nav class="video-menu" aria-label="Liste des vidéos">
           <h3 class="video-theme">Exposition (é)preuves</h3>
           <div class="video-choice-row">
-            <button class="video-choice is-active" type="button" data-video="../pagevideo/Film_Expo-e-preuves_bdf2.mp4" data-description="(é)preuves est une exposition à la croisée de l’intime et du politique, du témoignage et de la création. Elle s’appuie sur des extraits du livre d’Angélique Cauchy, Si un jour quelqu’un te fait du mal, dans lequel l’autrice témoigne des violences sexuelles subies dans l’enfance et raconte son long chemin de reconstruction.">Exposition</button>
-            <button class="video-choice" type="button" data-video="../pagevideo/teaserexpo.mp4" data-description="(é)preuves est une exposition à la croisée de l’intime et du politique, du témoignage et de la création. Elle s’appuie sur des extraits du livre d’Angélique Cauchy, Si un jour quelqu’un te fait du mal, dans lequel l’autrice témoigne des violences sexuelles subies dans l’enfance et raconte son long chemin de reconstruction.">Teaser</button>
+            <button class="video-choice is-active" type="button" data-private-video="videos/Film_Expo-e-preuves_bdf2.mp4" data-description="(é)preuves est une exposition à la croisée de l’intime et du politique, du témoignage et de la création. Elle s’appuie sur des extraits du livre d’Angélique Cauchy, Si un jour quelqu’un te fait du mal, dans lequel l’autrice témoigne des violences sexuelles subies dans l’enfance et raconte son long chemin de reconstruction.">Exposition</button>
+            <button class="video-choice" type="button" data-private-video="videos/teaserexpo.mp4" data-description="(é)preuves est une exposition à la croisée de l’intime et du politique, du témoignage et de la création. Elle s’appuie sur des extraits du livre d’Angélique Cauchy, Si un jour quelqu’un te fait du mal, dans lequel l’autrice témoigne des violences sexuelles subies dans l’enfance et raconte son long chemin de reconstruction.">Teaser</button>
           </div>
           <h3 class="video-theme">Témoignage A. Cauchy</h3>
           <div class="video-subtheme">Les violences dans le sport</div>
           <div class="video-choice-row">
-            <button class="video-choice" type="button" data-video="../pagevideo/Angie_Les%20violences%20dans%20le%20sport.mp4" data-description="Angélique Cauchy témoigne des violences dans le sport.">Voir la vidéo</button>
+            <button class="video-choice" type="button" data-private-video="videos/Angie_Les violences dans le sport.mp4" data-description="Angélique Cauchy témoigne des violences dans le sport.">Voir la vidéo</button>
           </div>
           <div class="video-subtheme">L’emprise</div>
           <div class="video-choice-row">
-            <button class="video-choice" type="button" data-video="../pagevideo/Angie_emprise1.mp4" data-description="À partir de son propre vécu de jeune joueuse de tennis, Angélique Cauchy décrypte la manière dont une relation de confiance et d’autorité peut progressivement se transformer en emprise. Elle met en lumière les états vécus avant, pendant et après l’emprise : l’installation progressive de la relation, la confusion et la sidération, puis les conséquences durables et le long chemin de reconstruction. Ces témoignages, en lien avec son livre Si un jour quelqu’un te fait du mal, contribuent à mieux comprendre les mécanismes de domination et à prévenir les violences dans le sport.">Partie 1</button>
-            <button class="video-choice" type="button" data-video="../pagevideo/Angie_emprise2.mp4" data-description="À partir de son propre vécu de jeune joueuse de tennis, Angélique Cauchy décrypte la manière dont une relation de confiance et d’autorité peut progressivement se transformer en emprise. Elle met en lumière les états vécus avant, pendant et après l’emprise : l’installation progressive de la relation, la confusion et la sidération, puis les conséquences durables et le long chemin de reconstruction. Ces témoignages, en lien avec son livre Si un jour quelqu’un te fait du mal, contribuent à mieux comprendre les mécanismes de domination et à prévenir les violences dans le sport.">Partie 2</button>
-            <button class="video-choice" type="button" data-video="../pagevideo/Angie_emprise3.mp4" data-description="À partir de son propre vécu de jeune joueuse de tennis, Angélique Cauchy décrypte la manière dont une relation de confiance et d’autorité peut progressivement se transformer en emprise. Elle met en lumière les états vécus avant, pendant et après l’emprise : l’installation progressive de la relation, la confusion et la sidération, puis les conséquences durables et le long chemin de reconstruction. Ces témoignages, en lien avec son livre Si un jour quelqu’un te fait du mal, contribuent à mieux comprendre les mécanismes de domination et à prévenir les violences dans le sport.">Partie 3</button>
+            <button class="video-choice" type="button" data-private-video="videos/Angie_emprise1.mp4" data-description="À partir de son propre vécu de jeune joueuse de tennis, Angélique Cauchy décrypte la manière dont une relation de confiance et d’autorité peut progressivement se transformer en emprise. Elle met en lumière les états vécus avant, pendant et après l’emprise : l’installation progressive de la relation, la confusion et la sidération, puis les conséquences durables et le long chemin de reconstruction. Ces témoignages, en lien avec son livre Si un jour quelqu’un te fait du mal, contribuent à mieux comprendre les mécanismes de domination et à prévenir les violences dans le sport.">Partie 1</button>
+            <button class="video-choice" type="button" data-private-video="videos/Angie_emprise2.mp4" data-description="À partir de son propre vécu de jeune joueuse de tennis, Angélique Cauchy décrypte la manière dont une relation de confiance et d’autorité peut progressivement se transformer en emprise. Elle met en lumière les états vécus avant, pendant et après l’emprise : l’installation progressive de la relation, la confusion et la sidération, puis les conséquences durables et le long chemin de reconstruction. Ces témoignages, en lien avec son livre Si un jour quelqu’un te fait du mal, contribuent à mieux comprendre les mécanismes de domination et à prévenir les violences dans le sport.">Partie 2</button>
+            <button class="video-choice" type="button" data-private-video="videos/Angie_emprise3.mp4" data-description="À partir de son propre vécu de jeune joueuse de tennis, Angélique Cauchy décrypte la manière dont une relation de confiance et d’autorité peut progressivement se transformer en emprise. Elle met en lumière les états vécus avant, pendant et après l’emprise : l’installation progressive de la relation, la confusion et la sidération, puis les conséquences durables et le long chemin de reconstruction. Ces témoignages, en lien avec son livre Si un jour quelqu’un te fait du mal, contribuent à mieux comprendre les mécanismes de domination et à prévenir les violences dans le sport.">Partie 3</button>
           </div>
           <div class="video-subtheme">Les raisons du silence</div>
           <div class="video-choice-row">
-            <button class="video-choice" type="button" data-video="../pagevideo/Angie_raisonsilence1.mp4" data-description="À partir de son propre vécu de jeune joueuse de tennis, Angélique Cauchy décrypte la manière dont une relation de confiance et d’autorité peut progressivement se transformer en emprise. Elle met en lumière les états vécus avant, pendant et après l’emprise : l’installation progressive de la relation, la confusion et la sidération, puis les conséquences durables et le long chemin de reconstruction. Ces témoignages, en lien avec son livre Si un jour quelqu’un te fait du mal, contribuent à mieux comprendre les mécanismes de domination et à prévenir les violences dans le sport.">Partie 1</button>
-            <button class="video-choice" type="button" data-video="../pagevideo/Angie_raisonsilence2.mp4" data-description="À partir de son propre vécu de jeune joueuse de tennis, Angélique Cauchy décrypte la manière dont une relation de confiance et d’autorité peut progressivement se transformer en emprise. Elle met en lumière les états vécus avant, pendant et après l’emprise : l’installation progressive de la relation, la confusion et la sidération, puis les conséquences durables et le long chemin de reconstruction. Ces témoignages, en lien avec son livre Si un jour quelqu’un te fait du mal, contribuent à mieux comprendre les mécanismes de domination et à prévenir les violences dans le sport.">Partie 2</button>
-            <button class="video-choice" type="button" data-video="../pagevideo/Angie_raisonsilence3.mp4" data-description="À partir de son propre vécu de jeune joueuse de tennis, Angélique Cauchy décrypte la manière dont une relation de confiance et d’autorité peut progressivement se transformer en emprise. Elle met en lumière les états vécus avant, pendant et après l’emprise : l’installation progressive de la relation, la confusion et la sidération, puis les conséquences durables et le long chemin de reconstruction. Ces témoignages, en lien avec son livre Si un jour quelqu’un te fait du mal, contribuent à mieux comprendre les mécanismes de domination et à prévenir les violences dans le sport.">Partie 3</button>
+            <button class="video-choice" type="button" data-private-video="videos/Angie_raisonsilence1.mp4" data-description="À partir de son propre vécu de jeune joueuse de tennis, Angélique Cauchy décrypte la manière dont une relation de confiance et d’autorité peut progressivement se transformer en emprise. Elle met en lumière les états vécus avant, pendant et après l’emprise : l’installation progressive de la relation, la confusion et la sidération, puis les conséquences durables et le long chemin de reconstruction. Ces témoignages, en lien avec son livre Si un jour quelqu’un te fait du mal, contribuent à mieux comprendre les mécanismes de domination et à prévenir les violences dans le sport.">Partie 1</button>
+            <button class="video-choice" type="button" data-private-video="videos/Angie_raisonsilence2.mp4" data-description="À partir de son propre vécu de jeune joueuse de tennis, Angélique Cauchy décrypte la manière dont une relation de confiance et d’autorité peut progressivement se transformer en emprise. Elle met en lumière les états vécus avant, pendant et après l’emprise : l’installation progressive de la relation, la confusion et la sidération, puis les conséquences durables et le long chemin de reconstruction. Ces témoignages, en lien avec son livre Si un jour quelqu’un te fait du mal, contribuent à mieux comprendre les mécanismes de domination et à prévenir les violences dans le sport.">Partie 2</button>
+            <button class="video-choice" type="button" data-private-video="videos/Angie_raisonsilence3.mp4" data-description="À partir de son propre vécu de jeune joueuse de tennis, Angélique Cauchy décrypte la manière dont une relation de confiance et d’autorité peut progressivement se transformer en emprise. Elle met en lumière les états vécus avant, pendant et après l’emprise : l’installation progressive de la relation, la confusion et la sidération, puis les conséquences durables et le long chemin de reconstruction. Ces témoignages, en lien avec son livre Si un jour quelqu’un te fait du mal, contribuent à mieux comprendre les mécanismes de domination et à prévenir les violences dans le sport.">Partie 3</button>
           </div>
           <div class="video-subtheme">Les facteurs aggravants</div>
           <div class="video-choice-row">
-            <button class="video-choice" type="button" data-video="../pagevideo/Angie_facteursaggravants1.mp4" data-description="Dans ce témoignage complémentaire, Angélique Cauchy aborde les facteurs aggravants des violences dans le sport.">Partie 1</button>
-            <button class="video-choice" type="button" data-video="../pagevideo/Angie_facteursaggravants2.mp4" data-description="Dans ce témoignage complémentaire, Angélique Cauchy aborde les facteurs aggravants des violences dans le sport.">Partie 2</button>
-            <button class="video-choice" type="button" data-video="../pagevideo/Angie_facteursaggravants3.mp4" data-description="Dans ce témoignage complémentaire, Angélique Cauchy aborde les facteurs aggravants des violences dans le sport.">Partie 3</button>
+            <button class="video-choice" type="button" data-private-video="videos/Angie_facteursaggravants1.mp4" data-description="Dans ce témoignage complémentaire, Angélique Cauchy aborde les facteurs aggravants des violences dans le sport.">Partie 1</button>
+            <button class="video-choice" type="button" data-private-video="videos/Angie_facteursaggravants2.mp4" data-description="Dans ce témoignage complémentaire, Angélique Cauchy aborde les facteurs aggravants des violences dans le sport.">Partie 2</button>
+            <button class="video-choice" type="button" data-private-video="videos/Angie_facteursaggravants3.mp4" data-description="Dans ce témoignage complémentaire, Angélique Cauchy aborde les facteurs aggravants des violences dans le sport.">Partie 3</button>
           </div>
           <div class="video-subtheme">Libération de la parole</div>
           <div class="video-choice-row">
-            <button class="video-choice" type="button" data-video="../pagevideo/Angie_liberation1.mp4" data-description="Angélique Cauchy témoigne de la libération de la parole.">Partie 1</button>
-            <button class="video-choice" type="button" data-video="../pagevideo/Angie_liberation2.mp4" data-description="Angélique Cauchy témoigne de la libération de la parole.">Partie 2</button>
-            <button class="video-choice" type="button" data-video="../pagevideo/Angie_liberation3.mp4" data-description="Angélique Cauchy témoigne de la libération de la parole.">Partie 3</button>
+            <button class="video-choice" type="button" data-private-video="videos/Angie_liberation1.mp4" data-description="Angélique Cauchy témoigne de la libération de la parole.">Partie 1</button>
+            <button class="video-choice" type="button" data-private-video="videos/Angie_liberation2.mp4" data-description="Angélique Cauchy témoigne de la libération de la parole.">Partie 2</button>
+            <button class="video-choice" type="button" data-private-video="videos/Angie_liberation3.mp4" data-description="Angélique Cauchy témoigne de la libération de la parole.">Partie 3</button>
           </div>
           <div class="video-subtheme">Les conséquences</div>
           <div class="video-choice-row">
-            <button class="video-choice" type="button" data-video="../pagevideo/Angie_conséquence1.mp4" data-description="À partir de son propre vécu de jeune joueuse de tennis, Angélique Cauchy décrypte la manière dont une relation de confiance et d’autorité peut progressivement se transformer en emprise. Elle met en lumière les états vécus avant, pendant et après l’emprise : l’installation progressive de la relation, la confusion et la sidération, puis les conséquences durables et le long chemin de reconstruction. Ces témoignages, en lien avec son livre Si un jour quelqu’un te fait du mal, contribuent à mieux comprendre les mécanismes de domination et à prévenir les violences dans le sport.">Partie 1</button>
-            <button class="video-choice" type="button" data-video="../pagevideo/Angie_conséquence2.mp4" data-description="À partir de son propre vécu de jeune joueuse de tennis, Angélique Cauchy décrypte la manière dont une relation de confiance et d’autorité peut progressivement se transformer en emprise. Elle met en lumière les états vécus avant, pendant et après l’emprise : l’installation progressive de la relation, la confusion et la sidération, puis les conséquences durables et le long chemin de reconstruction. Ces témoignages, en lien avec son livre Si un jour quelqu’un te fait du mal, contribuent à mieux comprendre les mécanismes de domination et à prévenir les violences dans le sport.">Partie 2</button>
-            <button class="video-choice" type="button" data-video="../pagevideo/Angie_conséquence3.mp4" data-description="À partir de son propre vécu de jeune joueuse de tennis, Angélique Cauchy décrypte la manière dont une relation de confiance et d’autorité peut progressivement se transformer en emprise. Elle met en lumière les états vécus avant, pendant et après l’emprise : l’installation progressive de la relation, la confusion et la sidération, puis les conséquences durables et le long chemin de reconstruction. Ces témoignages, en lien avec son livre Si un jour quelqu’un te fait du mal, contribuent à mieux comprendre les mécanismes de domination et à prévenir les violences dans le sport.">Partie 3</button>
+            <button class="video-choice" type="button" data-private-video="videos/Angie_consequence1.mp4" data-description="À partir de son propre vécu de jeune joueuse de tennis, Angélique Cauchy décrypte la manière dont une relation de confiance et d’autorité peut progressivement se transformer en emprise. Elle met en lumière les états vécus avant, pendant et après l’emprise : l’installation progressive de la relation, la confusion et la sidération, puis les conséquences durables et le long chemin de reconstruction. Ces témoignages, en lien avec son livre Si un jour quelqu’un te fait du mal, contribuent à mieux comprendre les mécanismes de domination et à prévenir les violences dans le sport.">Partie 1</button>
+            <button class="video-choice" type="button" data-private-video="videos/Angie_consequence2.mp4" data-description="À partir de son propre vécu de jeune joueuse de tennis, Angélique Cauchy décrypte la manière dont une relation de confiance et d’autorité peut progressivement se transformer en emprise. Elle met en lumière les états vécus avant, pendant et après l’emprise : l’installation progressive de la relation, la confusion et la sidération, puis les conséquences durables et le long chemin de reconstruction. Ces témoignages, en lien avec son livre Si un jour quelqu’un te fait du mal, contribuent à mieux comprendre les mécanismes de domination et à prévenir les violences dans le sport.">Partie 2</button>
+            <button class="video-choice" type="button" data-private-video="videos/Angie_consequence3.mp4" data-description="À partir de son propre vécu de jeune joueuse de tennis, Angélique Cauchy décrypte la manière dont une relation de confiance et d’autorité peut progressivement se transformer en emprise. Elle met en lumière les états vécus avant, pendant et après l’emprise : l’installation progressive de la relation, la confusion et la sidération, puis les conséquences durables et le long chemin de reconstruction. Ces témoignages, en lien avec son livre Si un jour quelqu’un te fait du mal, contribuent à mieux comprendre les mécanismes de domination et à prévenir les violences dans le sport.">Partie 3</button>
           </div>
           <h3 class="video-theme">Animations sensibilisation</h3>
-          <button class="video-choice" type="button" data-video="../pagevideo/animations/strategie_demprise.mp4" data-description="Animation de sensibilisation : stratégie d’emprise.">Stratégie d’emprise</button>
-          <button class="video-choice" type="button" data-video="../pagevideo/animations/1%20enfant%20sur%207.mp4" data-description="Animation de sensibilisation : 1 enfant sur 7.">1 enfant sur 7</button>
-          <button class="video-choice" type="button" data-video="../pagevideo/animations/Exemple%20Franck%20Nicotra.mp4" data-description="Animation de sensibilisation : Exemple Franck Nicotra.">Exemple Franck Nicotra</button>
-          <button class="video-choice" type="button" data-video="../pagevideo/animations/Exemple%20de%20question%20sans%20signes%20d'alerte.mp4" data-description="Animation de sensibilisation : Exemple de question sans signes d'alerte.">Exemple de question sans signes d'alerte</button>
-          <button class="video-choice" type="button" data-video="../pagevideo/animations/Exemple%20de%20questions%20avec%20signes%20d'alerte.mp4" data-description="Animation de sensibilisation : Exemple de questions avec signes d'alerte.">Exemple de questions avec signes d'alerte</button>
-          <button class="video-choice" type="button" data-video="../pagevideo/animations/La%20France%20en%202023%E2%80%A6.mp4" data-description="Animation de sensibilisation : La France en 2023….">La France en 2023…</button>
-          <button class="video-choice" type="button" data-video="../pagevideo/animations/Le%20consentement.mp4" data-description="Animation de sensibilisation : Le consentement.">Le consentement</button>
-          <button class="video-choice" type="button" data-video="../pagevideo/animations/Le%20secret.mp4" data-description="Animation de sensibilisation : Le secret.">Le secret</button>
-          <button class="video-choice" type="button" data-video="../pagevideo/animations/Les%20auteurs.mp4" data-description="Animation de sensibilisation : Les auteurs.">Les auteurs</button>
-          <button class="video-choice" type="button" data-video="../pagevideo/animations/Les%20facteurs%20aggravants.mp4" data-description="Animation de sensibilisation : Les facteurs aggravants.">Les facteurs aggravants</button>
-          <button class="video-choice" type="button" data-video="../pagevideo/animations/Profil%20de%20l'agresseur.mp4" data-description="Animation de sensibilisation : Profil de l'agresseur.">Profil de l'agresseur</button>
-          <button class="video-choice" type="button" data-video="../pagevideo/animations/Re%CC%81sultat%20enque%CC%82te.mp4" data-description="Animation de sensibilisation : Résultat enquête.">Résultat enquête</button>
-          <button class="video-choice" type="button" data-video="../pagevideo/animations/Signaler%20n'est%20pas%20de%CC%81noncer.mp4" data-description="Animation de sensibilisation : Signaler n'est pas dénoncer.">Signaler n'est pas dénoncer</button>
-          <button class="video-choice" type="button" data-video="../pagevideo/animations/Strate%CC%81gie%20de%20l'agresseur.mp4" data-description="Animation de sensibilisation : Stratégie de l'agresseur.">Stratégie de l'agresseur</button>
+          <button class="video-choice" type="button" data-private-video="videos/strategie_demprise.mp4" data-description="Animation de sensibilisation : stratégie d’emprise.">Stratégie d’emprise</button>
+          <button class="video-choice" type="button" data-private-video="videos/1_enfant_sur_7.mp4" data-description="Animation de sensibilisation : 1 enfant sur 7.">1 enfant sur 7</button>
+          <button class="video-choice" type="button" data-private-video="videos/Exemple_Franck_Nicotra.mp4" data-description="Animation de sensibilisation : Exemple Franck Nicotra.">Exemple Franck Nicotra</button>
+          <button class="video-choice" type="button" data-private-video="videos/Exemple_question_sans_signes_alerte.mp4" data-description="Animation de sensibilisation : Exemple de question sans signes d'alerte.">Exemple de question sans signes d'alerte</button>
+          <button class="video-choice" type="button" data-private-video="videos/Exemple_questions_avec_signes_alerte.mp4" data-description="Animation de sensibilisation : Exemple de questions avec signes d'alerte.">Exemple de questions avec signes d'alerte</button>
+          <button class="video-choice" type="button" data-private-video="videos/La_France_en_2023.mp4" data-description="Animation de sensibilisation : La France en 2023….">La France en 2023…</button>
+          <button class="video-choice" type="button" data-private-video="videos/Le_consentement.mp4" data-description="Animation de sensibilisation : Le consentement.">Le consentement</button>
+          <button class="video-choice" type="button" data-private-video="videos/Le_secret.mp4" data-description="Animation de sensibilisation : Le secret.">Le secret</button>
+          <button class="video-choice" type="button" data-private-video="videos/Les_auteurs.mp4" data-description="Animation de sensibilisation : Les auteurs.">Les auteurs</button>
+          <button class="video-choice" type="button" data-private-video="videos/Les_facteurs_aggravants.mp4" data-description="Animation de sensibilisation : Les facteurs aggravants.">Les facteurs aggravants</button>
+          <button class="video-choice" type="button" data-private-video="videos/Profil_agresseur.mp4" data-description="Animation de sensibilisation : Profil de l'agresseur.">Profil de l'agresseur</button>
+          <button class="video-choice" type="button" data-private-video="videos/Resultat_enquete.mp4" data-description="Animation de sensibilisation : Résultat enquête.">Résultat enquête</button>
+          <button class="video-choice" type="button" data-private-video="videos/Signaler_n_est_pas_denoncer.mp4" data-description="Animation de sensibilisation : Signaler n'est pas dénoncer.">Signaler n'est pas dénoncer</button>
+          <button class="video-choice" type="button" data-private-video="videos/Strategie_agresseur.mp4" data-description="Animation de sensibilisation : Stratégie de l'agresseur.">Stratégie de l'agresseur</button>
         </nav>
-        <div class="video-column"><div class="video-stage"><video id="popupVideo" controls controlsList="nodownload noremoteplayback" disablePictureInPicture disableRemotePlayback playsinline preload="metadata"><source src="../pagevideo/Film_Expo-e-preuves_bdf2.mp4" type="video/mp4">Votre navigateur ne peut pas lire cette vidéo.</video></div><p class="video-description" id="videoDescription">(é)preuves est une exposition à la croisée de l’intime et du politique, du témoignage et de la création. Elle s’appuie sur des extraits du livre d’Angélique Cauchy, Si un jour quelqu’un te fait du mal, dans lequel l’autrice témoigne des violences sexuelles subies dans l’enfance et raconte son long chemin de reconstruction.</p></div>
+        <div class="video-column"><div class="video-stage"><video id="popupVideo" controls controlsList="nodownload noremoteplayback" disablePictureInPicture disableRemotePlayback playsinline preload="metadata"><source type="video/mp4">Votre navigateur ne peut pas lire cette vidéo.</video></div><p class="video-description" id="videoDescription">(é)preuves est une exposition à la croisée de l’intime et du politique, du témoignage et de la création. Elle s’appuie sur des extraits du livre d’Angélique Cauchy, Si un jour quelqu’un te fait du mal, dans lequel l’autrice témoigne des violences sexuelles subies dans l’enfance et raconte son long chemin de reconstruction.</p></div>
       </div>
     </div>
   </div>
   <script>
-    (()=>{const storageKeys=["rebondplay_access_ok","rebondplay_abonnement_id","rebondplay_nom_structure","rebondplay_code","rebondplay_date_fin","rebondplay_prenom_contact","rebondplay_nom_contact"],get=key=>sessionStorage.getItem(key)||"";if(get("rebondplay_access_ok")!=="1"){location.replace("../index.html");return}const name=[get("rebondplay_prenom_contact"),get("rebondplay_nom_contact")].filter(Boolean).join(" ")||get("rebondplay_nom_structure");document.getElementById("accountName").textContent=`Bonjour ${name}`.trim();const endValue=get("rebondplay_date_fin");let meta=get("rebondplay_nom_structure");if(endValue){const end=new Date(`${endValue}T23:59:59`),days=Math.max(0,Math.ceil((end-Date.now())/86400000));meta=`Votre abonnement est encore valable ${days} jour${days>1?"s":""}`}document.getElementById("accountMeta").textContent=meta;document.getElementById("logoutButton").addEventListener("click",()=>{storageKeys.forEach(key=>sessionStorage.removeItem(key));location.replace("../index.html")});const slider=document.getElementById("slider"),track=document.getElementById("sliderTrack"),slides=[...track.children],dotsBox=document.getElementById("sliderDots"),reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;let current=0,timer=0,touchStart=0;const dots=slides.map((_,index)=>{const dot=document.createElement("button");dot.type="button";dot.className="slider-dot";dot.setAttribute("aria-label",`Afficher la slide ${index+1}`);dot.addEventListener("click",()=>{show(index);restart()});dotsBox.append(dot);return dot});function show(index){current=(index+slides.length)%slides.length;track.style.transform=`translateX(-${current*100}%)`;dots.forEach((dot,i)=>dot.classList.toggle("active",i===current))}function stop(){clearInterval(timer);timer=0}function start(){if(!reduced&&!timer)timer=setInterval(()=>show(current+1),3000)}function restart(){stop();start()}document.getElementById("prevSlide").addEventListener("click",()=>{show(current-1);restart()});document.getElementById("nextSlide").addEventListener("click",()=>{show(current+1);restart()});slider.addEventListener("mouseenter",stop);slider.addEventListener("mouseleave",start);slider.addEventListener("focusin",stop);slider.addEventListener("focusout",start);slider.addEventListener("touchstart",event=>{touchStart=event.changedTouches[0].clientX;stop()},{passive:true});slider.addEventListener("touchend",event=>{const distance=event.changedTouches[0].clientX-touchStart;if(Math.abs(distance)>45)show(current+(distance<0?1:-1));start()},{passive:true});document.addEventListener("visibilitychange",()=>document.hidden?stop():start());show(0);start()})()
+    (async()=>{
+      const gate=document.getElementById("fullPilotGate"),form=document.getElementById("fullPilotForm"),message=document.getElementById("fullPilotMessage");
+      if(!window.supabase){message.textContent="Le service de connexion n'a pas chargé. Recharge la page.";return}
+      const client=window.supabase.createClient("https://tdsrqmpfdvntybdlvejy.supabase.co","sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO",{auth:{storageKey:"rebondplay-full-pilot-auth",persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
+      let activeSubscription=null;
+      async function check(){
+        const {data:user,error:userError}=await client.auth.getUser();
+        if(userError||!user?.user)return null;
+        const {data,error}=await client.rpc("rp_mon_abonnement");
+        if(error)throw error;
+        return data?.[0]||null;
+      }
+      async function unlock(){
+        gate.hidden=true;document.body.classList.add("full-pilot-ready");
+        document.getElementById("accountName").textContent="Bonjour "+(activeSubscription.nom_structure||"");
+        const days=Math.max(0,Math.ceil((new Date(activeSubscription.date_fin+"T23:59:59")-Date.now())/86400000));
+        document.getElementById("accountMeta").textContent="Votre abonnement est encore valable "+days+" jour"+(days>1?"s":"");
+        document.getElementById("logoutButton").addEventListener("click",async()=>{await client.auth.signOut();location.replace("/index.html")});
+      }
+      let resolveAccess;
+      const access=new Promise(resolve=>{resolveAccess=resolve});
+      form.addEventListener("submit",async event=>{
+        event.preventDefault();
+        const button=form.querySelector("button");button.disabled=true;message.textContent="Connexion en cours…";
+        try{
+          const {error}=await client.auth.signInWithPassword({email:document.getElementById("fullPilotEmail").value.trim(),password:document.getElementById("fullPilotPassword").value});
+          document.getElementById("fullPilotPassword").value="";
+          if(error)throw error;
+          activeSubscription=await check();
+          if(!activeSubscription){message.textContent="Aucun abonnement actif associé à ce compte.";await client.auth.signOut();return}
+          if(activeSubscription.offre!=="full"){message.textContent="Accès Full refusé : ce compte appartient à l'offre "+activeSubscription.offre+".";await client.auth.signOut();return}
+          resolveAccess();
+        }catch(error){message.textContent="Connexion impossible : "+(error.message||"Erreur réseau")}
+        finally{button.disabled=false}
+      });
+      try{
+        const {data}=await client.auth.getSession();
+        if(data?.session){activeSubscription=await check();if(activeSubscription?.offre==="full")resolveAccess();else location.replace("/connexion-test/")}
+        else location.replace("/connexion-test/");
+      }catch(error){location.replace("/connexion-test/")}
+      await access;
+      await unlock();
+      const slider=document.getElementById("slider"),track=document.getElementById("sliderTrack"),slides=[...track.children],dotsBox=document.getElementById("sliderDots"),reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;let current=0,timer=0,touchStart=0;const dots=slides.map((_,index)=>{const dot=document.createElement("button");dot.type="button";dot.className="slider-dot";dot.setAttribute("aria-label",`Afficher la slide ${index+1}`);dot.addEventListener("click",()=>{show(index);restart()});dotsBox.append(dot);return dot});function show(index){current=(index+slides.length)%slides.length;track.style.transform=`translateX(-${current*100}%)`;dots.forEach((dot,i)=>dot.classList.toggle("active",i===current))}function stop(){clearInterval(timer);timer=0}function start(){if(!reduced&&!timer)timer=setInterval(()=>show(current+1),3000)}function restart(){stop();start()}document.getElementById("prevSlide").addEventListener("click",()=>{show(current-1);restart()});document.getElementById("nextSlide").addEventListener("click",()=>{show(current+1);restart()});slider.addEventListener("mouseenter",stop);slider.addEventListener("mouseleave",start);slider.addEventListener("focusin",stop);slider.addEventListener("focusout",start);slider.addEventListener("touchstart",event=>{touchStart=event.changedTouches[0].clientX;stop()},{passive:true});slider.addEventListener("touchend",event=>{const distance=event.changedTouches[0].clientX-touchStart;if(Math.abs(distance)>45)show(current+(distance<0?1:-1));start()},{passive:true});document.addEventListener("visibilitychange",()=>document.hidden?stop():start());show(0);start();
       const videoLink=document.querySelector(".resource.video"),videoModal=document.getElementById("videoModal"),videoClose=document.getElementById("videoModalClose");function closeVideoModal(){videoModal.classList.remove("is-open");popupVideo.pause();document.body.style.overflow=""}videoLink.addEventListener("click",event=>{event.preventDefault();videoModal.classList.add("is-open");document.body.style.overflow="hidden";videoClose.focus()});videoClose.addEventListener("click",closeVideoModal);videoModal.addEventListener("click",event=>{if(event.target===videoModal)closeVideoModal()});document.addEventListener("keydown",event=>{if(event.key==="Escape"&&videoModal.classList.contains("is-open"))closeVideoModal()});
-      const popupVideo=document.getElementById("popupVideo");popupVideo.addEventListener("contextmenu",event=>event.preventDefault());const videoChoices=[...document.querySelectorAll(".video-choice")];videoChoices.forEach(choice=>choice.addEventListener("click",()=>{popupVideo.pause();popupVideo.querySelector("source").src=choice.dataset.video;popupVideo.load();document.getElementById("videoDescription").textContent=choice.dataset.description||"";popupVideo.play().catch(()=>{});videoChoices.forEach(item=>item.classList.toggle("is-active",item===choice))}));
+      const popupVideo=document.getElementById("popupVideo");popupVideo.addEventListener("contextmenu",event=>event.preventDefault());const videoChoices=[...document.querySelectorAll(".video-choice")];let videoRequest=0;
+      videoChoices.forEach(choice=>choice.addEventListener("click",async()=>{
+        const request=++videoRequest;
+        popupVideo.pause();popupVideo.removeAttribute("src");popupVideo.querySelector("source").removeAttribute("src");popupVideo.load();
+        const description=document.getElementById("videoDescription");
+        description.textContent=choice.dataset.description||"";
+        videoChoices.forEach(item=>item.classList.toggle("is-active",item===choice));
+        try{
+          let url=choice.dataset.video;
+          if(choice.dataset.privateVideo){
+            description.textContent="Chargement de la vidéo protégée…";
+            const {data:user,error:userError}=await client.auth.getUser();
+            if(userError||!user?.user)throw new Error("Connexion expirée. Reconnectez-vous.");
+            const subscription=await check();
+            if(subscription?.offre!=="full")throw new Error("Votre abonnement ne permet pas de lire cette vidéo.");
+            const {data,error}=await client.storage.from("rebondplay-prive").createSignedUrl(choice.dataset.privateVideo,900);
+            if(error||!data?.signedUrl)throw error||new Error("Lien de lecture indisponible.");
+            url=data.signedUrl;
+          }
+          if(request!==videoRequest)return;
+          popupVideo.querySelector("source").src=url;
+          popupVideo.load();
+          description.textContent=choice.dataset.description||"";
+          await popupVideo.play().catch(()=>{});
+        }catch(error){
+          if(request===videoRequest)description.textContent="Lecture impossible : "+(error?.message||"Erreur inconnue");
+        }
+      }));
+    })();
   </script>
-<footer class="rp-footer"><span><strong>Rebond</strong> · Association de prévention contre les violences dans le sport</span><span><a href="mailto:contact@assorebond.com">contact@assorebond.com</a> · RebondPlay Full · © 2026</span></footer></body>
+<footer class="rp-footer"><span><strong>Rebond</strong> · Association de prévention contre les violences dans le sport</span><span><a href="mailto:contact@assorebond.com">contact@assorebond.com</a> · RebondPlay Full · © 2026</span></footer><script>document.getElementById("ressources-link")?.addEventListener("click",function(e){e.preventDefault();e.stopPropagation();window.location.assign(this.href)},true);</script><style id="rp-navigation-repair">
+.feature-grid>a,.resources>a,.expo-slide>a{pointer-events:auto!important;cursor:pointer!important;position:relative;z-index:5}
+.feature-grid>a>img,.resources>a>img{pointer-events:none!important}
+</style>
+<script id="rp-navigation-repair-script">
+(function(){
+ const routes={
+  "adultes":"/pageadultes/index.html",
+  "jeunes":"/pagejeunes/index.html",
+  "ressources-link":"/ressources/index.html"
+ };
+ document.querySelectorAll("#adultes,#jeunes,#ressources-link,.expo-slide-link").forEach(function(link){
+  const target=routes[link.id]||(link.classList.contains("expo-slide-link")?"/pageexpo/index.html":null);
+  if(!target)return;
+  link.setAttribute("href",target);
+  link.addEventListener("click",function(event){
+   if(event.defaultPrevented)return;
+   if(event.button!==0||event.ctrlKey||event.metaKey||event.shiftKey||event.altKey)return;
+   event.preventDefault();window.location.assign(target);
+  });
+ });
+})();
+</script>
+</body>
 </html>

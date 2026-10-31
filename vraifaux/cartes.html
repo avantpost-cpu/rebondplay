@@ -92,7 +92,7 @@
       display:flex;
       flex-direction:column;
       background:
-        url("https://avantpost-cpu.github.io/depot-quiz/cartes/tapis.png")
+        url("./tapis.png")
         center center / 120% no-repeat;
       box-shadow: var(--boardStroke), var(--boardShadow2), var(--boardShadow1);
     }
@@ -866,11 +866,11 @@
 
         <div class="top">
           <div class="brand">
-            <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/logo.png" alt="REBOND">
+            <img src="./logo.png" alt="REBOND">
           </div>
 
           <div class="mid-ange" aria-hidden="true">
-            <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/ange.png" alt="">
+            <img src="./ange.png" alt="">
           </div>
 
           <button class="fsBtn" id="btn-fs">Plein écran</button>
@@ -925,16 +925,16 @@
 
             <div class="backs" aria-label="Dos des cartes">
               <div class="back" id="start-by-card" title="Commencer (carte Situation)">
-                <img alt="Dos carte — Situation" src="https://avantpost-cpu.github.io/depot-quiz/cartes/a.png">
+                <img alt="Dos carte — Situation" src="./a.png">
               </div>
               <div class="back">
-                <img alt="Dos carte — Type(s) de violence" src="https://avantpost-cpu.github.io/depot-quiz/cartes/b.png">
+                <img alt="Dos carte — Type(s) de violence" src="./b.png">
               </div>
               <div class="back">
-                <img alt="Dos carte — Qualification pénale" src="https://avantpost-cpu.github.io/depot-quiz/cartes/c.png">
+                <img alt="Dos carte — Qualification pénale" src="./c.png">
               </div>
               <div class="back">
-                <img alt="Dos carte — Obligations" src="https://avantpost-cpu.github.io/depot-quiz/cartes/d.png">
+                <img alt="Dos carte — Obligations" src="./d.png">
               </div>
             </div>
 
@@ -954,7 +954,7 @@
                     <div class="cardLayer layerFan4" id="layerD" hidden></div>
 
                     <div class="cardLayer layerA" id="layerA">
-                      <img id="frontImg" src="https://avantpost-cpu.github.io/depot-quiz/cartes/a1.png" alt="Carte tirée">
+                      <img id="frontImg" src="./a1.png" alt="Carte tirée">
                       <div class="cardOverlay" aria-hidden="true">
                         <div class="txt" id="overlayText"></div>
                       </div>
@@ -988,7 +988,7 @@
               <div class="rightStage">
                 <div id="step1Chooser" hidden>
                   <div class="sectionHeader">
-                    <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/a.png" alt="Carte — Situation">
+                    <img src="./a.png" alt="Carte — Situation">
                     <div>
                       <div class="sectionK">Situation(s)</div>
                       <div class="sectionPrompt">Choisissez une carte</div>
@@ -1000,7 +1000,7 @@
 
                 <div id="ui-violences" hidden>
                   <div class="sectionHeader">
-                    <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/b.png" alt="Carte — V.">
+                    <img src="./b.png" alt="Carte — V.">
                     <div>
                       <div class="sectionK">Type(s) de violence</div>
                       <div class="sectionPrompt">Choisissez un ou plusieurs type(s) de violence auquel correspond la situation</div>
@@ -1018,7 +1018,7 @@
 
                 <div id="ui-penal" hidden>
                   <div class="sectionHeader">
-                    <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/c.png" alt="Carte — Qualification pénale">
+                    <img src="./c.png" alt="Carte — Qualification pénale">
                     <div>
                       <div class="sectionK">Qualification pénale</div>
                       <div class="sectionPrompt">Choisissez une ou plusieurs qualification(s) pénale(s) possible(s)</div>
@@ -1036,7 +1036,7 @@
 
                 <div id="ui-oblig" hidden>
                   <div class="sectionHeader">
-                    <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/d.png" alt="Carte — Obligations & réactions">
+                    <img src="./d.png" alt="Carte — Obligations & réactions">
                     <div>
                       <div class="sectionK">Obligations & réactions</div>
                       <div class="sectionPrompt">Choisissez les réactions attendues (et évitez celles à risque)</div>
@@ -1066,11 +1066,11 @@
       const $ = (id) => document.getElementById(id);
 
       const IMG = {
-        aFront:"https://avantpost-cpu.github.io/depot-quiz/cartes/a1.png",
-        aBack:"https://avantpost-cpu.github.io/depot-quiz/cartes/a.png",
-        bBack: "https://avantpost-cpu.github.io/depot-quiz/cartes/b.png",
-        cBack: "https://avantpost-cpu.github.io/depot-quiz/cartes/c.png",
-        dBack: "https://avantpost-cpu.github.io/depot-quiz/cartes/d.png",
+        aFront:"./a1.png",
+        aBack:"./a.png",
+        bBack: "./b.png",
+        cBack: "./c.png",
+        dBack: "./d.png",
       };
 
       const SITUATIONS = [
