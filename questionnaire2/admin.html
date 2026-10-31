@@ -1,130 +1,1301 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Gestion — Quiz Formation</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
-:root{--blue:#073e55;--pink:#cb8095;--paper:#f7f3ed;--green:#217a54;--orange:#df8a35;--red:#b74b4b}*{box-sizing:border-box}body{margin:0;background:var(--blue);color:#fff;font:16px Arial,sans-serif}.box{width:min(1180px,92vw);margin:4vh auto 7vh}h1{font-size:clamp(28px,5vw,48px);margin:0}.admin-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 26px;flex-wrap:wrap}.admin-actions{display:flex;gap:8px;flex-wrap:wrap}.export-btn,.mail-btn{background:#e65013;color:#fff;margin:0;white-space:nowrap}h2{margin:34px 0 14px}input,button{padding:12px;border-radius:9px;border:0;margin:5px}button{font-weight:800;cursor:pointer;background:var(--pink);color:#fff}button:disabled{opacity:.55;cursor:wait}.login{display:flex;flex-wrap:wrap;align-items:center}.login input{min-width:230px}#error{color:#ffd5d5}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:#fff;color:var(--blue);border-radius:16px;padding:18px;min-height:112px}.card small{display:block;color:#60727a;font-weight:700;text-transform:uppercase;letter-spacing:.04em}.card b{display:block;font-size:30px;margin-top:12px}.accent{border-top:7px solid var(--pink)}.green{border-top:7px solid var(--green)}.orange{border-top:7px solid var(--orange)}.red{border-top:7px solid var(--red)}.panels{display:grid;grid-template-columns:1fr 1fr;gap:18px}.panel{background:rgba(255,255,255,.12);border-radius:16px;padding:18px}table{width:100%;background:#fff;color:var(--blue);border-collapse:collapse;border-radius:12px;overflow:hidden}td,th{padding:10px;border-bottom:1px solid #ddd;text-align:left}th{background:#eef1f2}tbody tr:last-child td{border-bottom:0}.bar{height:10px;background:#e4e7e8;border-radius:20px;overflow:hidden;min-width:90px}.bar span{display:block;height:100%;background:var(--pink)}.muted{color:#d5e0e4;font-size:14px}@media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}.panels{grid-template-columns:1fr}}@media(max-width:520px){.grid{grid-template-columns:1fr}.box{width:min(94vw,1180px)}td,th{padding:8px 6px;font-size:13px}}.delete-btn{background:var(--red);font-size:13px;padding:8px 10px;margin:0}.reset-box{max-width:520px}.reset-box h2{margin:0 0 16px}.reset-box input{display:block;width:100%;box-sizing:border-box;margin:0 0 12px}.reset-box button{width:100%;margin-top:4px}#login[hidden],#reset[hidden],#dash[hidden]{display:none!important}.delete-btn:hover{filter:brightness(1.08)}dialog{border:0;border-radius:18px;padding:0;max-width:520px;width:calc(100% - 32px);box-shadow:0 20px 60px rgba(0,0,0,.35)}dialog::backdrop{background:rgba(0,30,40,.6)}.mailbox{padding:22px;color:#123}.mailbox input{width:100%;padding:12px;border:1px solid #ccd8d8;border-radius:10px;font:inherit}.mailactions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}.mailstatus{min-height:20px;margin-top:10px;font-size:14px}
-/* Actions disponibles uniquement après connexion */
-main:has(#login:not([hidden])) #exportEmails,
-main:has(#login:not([hidden])) #emailReport{display:none!important}
-
-/* Cartouche de connexion Rebond */
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Gestion — Quiz Formation</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script>
+<style>
+:root{--blue:#073e55;--pink:#cb8095;--paper:#f7f3ed;--green:#217a54;--orange:#df8a35;--red:#b74b4b}
+*{box-sizing:border-box}
+body{margin:0;background:var(--blue);color:#fff;font:16px Arial,sans-serif}
+.box{width:min(1180px,92vw);margin:4vh auto 7vh}
+h1{font-size:clamp(28px,5vw,48px);margin:0}
+.admin-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 26px;flex-wrap:wrap}
+.admin-actions{display:flex;gap:8px;flex-wrap:wrap}
+h2{margin:34px 0 14px}
+input,button{padding:12px;border-radius:9px;border:0;margin:5px}
+button{font-weight:800;cursor:pointer;background:var(--pink);color:#fff}
+button:disabled{opacity:.55;cursor:wait}
+[hidden]{display:none!important}
+#error{color:#ffd5d5}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.card{background:#fff;color:var(--blue);border-radius:16px;padding:18px;min-height:112px}
+.card small{display:block;color:#60727a;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.card b{display:block;font-size:30px;margin-top:12px}
+.accent{border-top:7px solid var(--pink)}
+.green{border-top:7px solid var(--green)}
+.orange{border-top:7px solid var(--orange)}
+.red{border-top:7px solid var(--red)}
+.panels{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+table{width:100%;background:#fff;color:var(--blue);border-collapse:collapse;border-radius:12px;overflow:hidden}
+td,th{padding:10px;border-bottom:1px solid #ddd;text-align:left}
+th{background:#eef1f2}
+tbody tr:last-child td{border-bottom:0}
+.bar{height:10px;background:#e4e7e8;border-radius:20px;overflow:hidden;min-width:90px}
+.bar span{display:block;height:100%;background:var(--pink)}
+.muted{color:#d5e0e4;font-size:14px}
+.delete-btn{background:var(--red);font-size:13px;padding:8px 10px;margin:0}
+.delete-btn:hover{filter:brightness(1.08)}
+.reset-box{max-width:520px}
+.reset-box h2{margin:0 0 16px}
+.reset-box input{display:block;width:100%;box-sizing:border-box;margin:0 0 12px}
+.reset-box button{width:100%;margin-top:4px}
+dialog{border:0;border-radius:18px;padding:0;max-width:520px;width:calc(100% - 32px);box-shadow:0 20px 60px #0006}
+dialog::backdrop{background:rgba(0,30,40,.6)}
+.mailbox{padding:22px;color:#123}
+.mailbox input{width:100%;padding:12px;border:1px solid #ccd8d8;border-radius:10px;font:inherit}
+.mailactions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px}
+.mailstatus{min-height:20px;margin-top:10px;font-size:14px}
 body:has(#login:not([hidden])){background:#065269}
 body:has(#login:not([hidden])) main{display:flex;min-height:100vh;align-items:center;justify-content:center;flex-direction:column}
 body:has(#login:not([hidden])) .admin-head{display:none}
-#login.login{box-sizing:border-box;width:min(520px,calc(100vw - 36px));max-width:520px;margin:0 auto;padding:38px 42px;background:#eee4d2;border-radius:18px;text-align:center;box-shadow:0 14px 40px rgba(0,0,0,.16)}
-#login.login .login-logo{display:block;width:min(147px,41%);height:auto;margin:0 auto 26px}
-#login.login h2{color:#065269;margin:0 0 10px}
-#login.login p{color:#355;margin:0 0 18px}
-#login.login input{box-sizing:border-box;width:100%;margin:0 0 10px;background:#fff}
-#login.login #connect{width:100%;background:#e65013;color:#fff}
-@media(max-width:600px){#login.login{padding:30px 24px}}
-
-/* Le cartouche de connexion disparaît dès que le tableau de bord est affiché */
-#login[hidden]{display:none!important}
-
-#login.login .login-destination{margin:-8px 0 20px;color:#065269;font-size:15px;font-weight:700;line-height:1.3}
-
+#login.login{box-sizing:border-box;width:min(520px,calc(100vw - 36px));max-width:520px;margin:0 auto;padding:38px 42px;background:#eee4d2;border-radius:18px;text-align:center;box-shadow:0 14px 40px #0003}
+#login .login-logo{display:block;width:min(147px,41%);height:auto;margin:0 auto 26px}
+#login p{color:#355;margin:0 0 18px}
+#login input{box-sizing:border-box;width:100%;margin:0 0 10px;background:#fff}
+#login #connect{width:100%;background:#e65013;color:#fff}
+.login-destination{margin:-8px 0 20px;color:#065269;font-size:15px;font-weight:700;line-height:1.3}
 .login-copyright{display:none;text-align:center;color:#fff;font-size:11px;line-height:1.35;margin:14px auto 0;width:100%}
 body:has(#login:not([hidden])) .login-copyright{display:block}
-
 .login-copyright span{display:inline-block;margin-top:4px;font-size:10px;font-style:italic;opacity:.82}
-</style><style id="globalAdminReturnStyle">#globalAdminReturn{position:fixed;top:12px;left:12px;z-index:2147483647;display:inline-flex;align-items:center;gap:6px;padding:10px 15px;border-radius:999px;background:#065269;color:#fff!important;font:700 13px Arial,sans-serif;text-decoration:none;box-shadow:0 3px 12px #0004}#globalAdminReturn:hover{background:#e65013}@media(max-width:600px){#globalAdminReturn{top:7px;left:7px;padding:8px 11px;font-size:11px}}#login[hidden],#dash[hidden]{display:none!important}.admin-auth-check .login-copyright{display:none!important}</style></head><body><a id="globalAdminReturn" href="/administration-questionnaires/" aria-label="Retour à l’administration générale des questionnaires">← Administration générale</a><main class="box"><div class="admin-head"><h1>Gestion — Quiz Formation</h1><div class="admin-actions"></div></div><section id="reset" class="login reset-box" hidden><h2>Définir un nouveau mot de passe</h2><input id="newPassword" type="password" placeholder="Nouveau mot de passe"><input id="newPassword2" type="password" placeholder="Confirmer le nouveau mot de passe"><button id="savePassword" type="button">Enregistrer le nouveau mot de passe</button><p id="resetMsg"></p></section><section id="login" class="login" hidden><img class="login-logo" src="../logorebondsignature.png" alt="Rebond"><div class="login-destination">Administration — Quiz Formation</div><input id="email" type="email" placeholder="E-mail administrateur"><input id="password" type="password" placeholder="Mot de passe"><button id="connect" type="button">Se connecter</button><button id="forgot" type="button" style="background:none;color:#065269;text-decoration:underline;padding:6px 0;margin-top:6px">Mot de passe oublié ?</button><p id="error"></p></section><div class="login-copyright">Rebond® 2026<br><span>Espace privé — accès réservé aux personnes autorisées</span></div><section id="dash" hidden><section id="sessionManager" style="background:#fff;color:#065269;border-radius:16px;padding:22px;margin:18px 0 26px"><h2 style="margin:0 0 14px">Créer une session</h2><div style="display:flex;flex-wrap:wrap;gap:10px"><input id="sessionEvent" placeholder="Nom de l’événement" style="flex:2;min-width:180px;border:1px solid #ccd"><input id="sessionDate" type="date" style="flex:1;min-width:150px;border:1px solid #ccd"><input id="sessionPlace" placeholder="Lieu" style="flex:2;min-width:160px;border:1px solid #ccd"><button id="sessionCreate" type="button" style="background:#e65013">Créer</button></div><p id="sessionMessage" role="status"></p><h2 style="margin:22px 0 10px">Mes sessions</h2><div id="sessionList">Chargement…</div></section><div id="resultsDashboard" hidden><div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:24px 0"><button id="backToSessions" type="button" style="background:#e65013">← Retour aux sessions</button><h2 id="resultsTitle" style="margin:0">Résultats</h2></div><p class="muted" id="updated"></p><div class="grid"><div class="card accent"><small>Participants inscrits</small><b id="participants">—</b></div><div class="card green"><small>Questionnaires terminés</small><b id="completed">—</b></div><div class="card orange"><small>Taux de complétion</small><b id="rate">—</b></div><div class="card accent"><small>Score moyen</small><b id="average">—</b></div><div class="card green"><small>Réussite moyenne</small><b id="success">—</b></div><div class="card orange"><small>Durée moyenne</small><b id="duration">—</b></div><div class="card red"><small>Meilleur score</small><b id="best">—</b></div><div class="card red"><small>Score le plus faible</small><b id="worst">—</b></div></div><div class="panels"><section><h2>Répartition des résultats</h2><table><thead><tr><th>Résultat</th><th>Nombre</th><th>Part</th></tr></thead><tbody id="distribution"></tbody></table></section><section><h2>Activité récente</h2><table><thead><tr><th>Date</th><th>Participant</th><th>Score</th></tr></thead><tbody id="recent"></tbody></table></section></div><h2>Réussite par question</h2><table><thead><tr><th>Question</th><th>Réponses</th><th>Correctes</th><th>Taux</th><th>Progression</th></tr></thead><tbody id="questions"></tbody></table><section style="background:#fff;color:#065269;border-radius:16px;padding:22px;margin:24px 0"><h2>Attestations de participation</h2><p>Générer une attestation nominative avec l’intitulé exact de la session.</p><p id="certificateInfo" role="status"></p><button id="certificateBatch" type="button" style="background:#e65013">Préparer les attestations</button><p style="font-size:13px">Aucun e-mail n’est envoyé : l’envoi automatique et manuel nécessite encore le service serveur sécurisé.</p></section><h2>Participants</h2><table><thead><tr><th>Nom</th><th>E-mail</th><th>Score</th><th>Durée</th><th>Date</th><th>Action</th></tr></thead><tbody id="participantsTable"></tbody></table></div></section></main><dialog id="mailDialog"><div class="mailbox"><h2>Envoyer le récapitulatif</h2><p>Le bilan de ce quiz sera envoyé par e-mail.</p><label><b>Destinataire</b><input id="mailTo" type="email" placeholder="nom@domaine.fr"></label><div class="mailstatus" id="mailStatus"></div><div class="mailactions"><button type="button" id="mailCancel">Annuler</button><button type="button" id="mailSend" style="background:#e65013">Envoyer</button></div></div></dialog><script>
-const quizCategory="formation";
-const $=id=>document.getElementById(id),U="https://tdsrqmpfdvntybdlvejy.supabase.co",K="sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO",db=supabase.createClient(U,K),TOTAL_QUESTIONS=20;
-$("forgot").onclick=async()=>{const email=$("email").value.trim();if(!email){$("error").textContent="Indiquez d’abord votre adresse e-mail.";return}const r=await db.auth.resetPasswordForEmail(email,{redirectTo:"https://rebondplay.com/questionnaire2/admin.html"});$("error").textContent=r.error?(String(r.error.message||"").toLowerCase().includes("rate limit")?"Trop de demandes ont été effectuées. Merci de patienter quelques minutes avant de réessayer.":r.error.message):"Un e-mail de réinitialisation vient de vous être envoyé."};
-db.auth.onAuthStateChange((event,session)=>{if(event==="PASSWORD_RECOVERY"){ $("login").hidden=true;$("dash").hidden=true;$("reset").hidden=false; }});
-$("savePassword").onclick=async()=>{const p=$("newPassword").value,p2=$("newPassword2").value;if(p.length<8){$("resetMsg").textContent="Le mot de passe doit contenir au moins 8 caractères.";return}if(p!==p2){$("resetMsg").textContent="Les deux mots de passe ne correspondent pas.";return}const r=await db.auth.updateUser({password:p});if(r.error){$("resetMsg").textContent=r.error.message;return}$("resetMsg").textContent="Mot de passe modifié. Vous pouvez maintenant vous connecter.";setTimeout(async()=>{await db.auth.signOut();$("reset").hidden=true;$("login").hidden=false;$("password").value="";},1200)};
-async function enterExistingAdmin(){$("error").textContent="";$("login").hidden=true;$("dash").hidden=false;const code=new URLSearchParams(location.search).get("session");if(code){$("sessionManager").style.setProperty("display","none","important");$("resultsDashboard").hidden=false;$("resultsTitle").textContent="Résultats de la session "+code;selectedSession=code;await load()}else if(selectedSession!==null){await showSessionResults(selectedSession,archivesMode?"Résultats du 06/10/2026":undefined)}else{await loadQuizSessions()}}
-$("connect").onclick=async()=>{const b=$("connect");b.disabled=true;$("error").textContent="Connexion en cours…";try{const r=await db.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});if(r.error)throw r.error;await enterExistingAdmin();}catch(e){const msg=e?.message||String(e)||"Erreur inconnue";$("error").textContent=msg;if(!$("dash").hidden){$("sessionManager").hidden=true;$("resultsDashboard").hidden=false;$("updated").textContent="Erreur de chargement : "+msg}b.disabled=false}};
-const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[c])),date=v=>v?new Date(v).toLocaleDateString("fr-FR"): "—",dur=s=>s?Math.floor(s/60)+" min "+String(Math.round(s%60)).padStart(2,"0")+" s":"—";
-async function deleteParticipant(id,name){
-  if(!id)return;
-  if(!confirm("Supprimer définitivement la participation de "+name+" et ses réponses ?"))return;
-  const btn=document.querySelector('button[data-delete-id="'+CSS.escape(String(id))+'"]');
-  if(btn){btn.disabled=true;btn.textContent="Suppression…"}
-  const participantRow=(await db.from("questionnaire2_participants").select("email").eq("id",id).single()).data;const ar=await db.from("questionnaire2_answers").delete().eq("participant_id",participantRow?.email||"");
-  if(ar.error){alert("Impossible de supprimer les réponses : "+ar.error.message);if(btn){btn.disabled=false;btn.textContent="Supprimer"}return}
-  const pr=await db.from("questionnaire2_participants").delete().eq("id",id);
-  if(pr.error){alert("Impossible de supprimer la participation : "+pr.error.message);if(btn){btn.disabled=false;btn.textContent="Supprimer"}return}
-  await load();
+#globalAdminReturn{position:fixed;top:12px;left:12px;z-index:100;display:inline-flex;align-items:center;gap:6px;padding:10px 15px;border-radius:999px;background:#065269;color:#fff;font:700 13px Arial,sans-serif;text-decoration:none;box-shadow:0 3px 12px #0004}
+#globalAdminReturn:hover{background:#e65013}
+@media(max-width:850px){
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .panels{grid-template-columns:1fr}
 }
-let currentRows=[],currentAnswers=[];
-async function certificateSession(){if(!selectedSession)return null;const {data,error}=await db.from("rebond_quiz_sessions").select("event_name,event_date,event_place").eq("code",selectedSession).maybeSingle();if(error)throw Error(error.message);return data}
-function certificateUrl(x,session){return "attestation-modele.html?"+new URLSearchParams({nom:[x.first_name,x.last_name].filter(Boolean).join(" "),titre:session.event_name,date:session.event_date||"",lieu:session.event_place||""})}
-async function openCertificate(x){try{if(x.score===null)throw Error("Quiz non terminé");const session=await certificateSession();if(!session)throw Error("Session non identifiée");window.open(certificateUrl(x,session),"_blank","noopener")}catch(e){alert(e.message)}}
-$("certificateBatch").onclick=async()=>{const status=$("certificateInfo");try{const session=await certificateSession();if(!session)throw Error("Choisir une session nommée, pas les archives.");const rows=currentRows.filter(x=>x.score!==null&&x.first_name&&x.last_name);if(!rows.length)throw Error("Aucun participant ayant terminé son quiz.");if(rows.length>10&&!confirm("Ouvrir les 10 premières attestations ?"))return;rows.slice(0,10).forEach(x=>window.open(certificateUrl(x,session),"_blank"));status.textContent="Attestations ouvertes dans de nouveaux onglets (maximum 10). Utiliser Imprimer / Enregistrer en PDF."}catch(e){status.textContent=e.message}};
-if(document.getElementById("exportEmails"))document.getElementById("exportEmails").onclick=()=>{const emails=[...new Set(currentRows.map(x=>(x.email||"").trim()).filter(Boolean))];if(!emails.length){alert("Aucune adresse e-mail à extraire.");return}const blob=new Blob(["Adresse e-mail\n"+emails.map(e=>'"'+e.replace(/"/g,'""')+'"').join("\n")],{type:"text/csv;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="emails-quiz-06-10-2026.csv";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url)};
-const archivesMode=new URLSearchParams(location.search).get("archives")==="2026-10-06";
-const directSessionCode=new URLSearchParams(location.search).get("session");
-if(directSessionCode){document.head.insertAdjacentHTML("beforeend",'<style>#sessionManager{display:none!important}#resultsDashboard{display:block!important}</style>');}
-let selectedSession=archivesMode?"":new URLSearchParams(location.search).get("session");
-if(archivesMode){document.title="Gestion — Archives du 06/10/2026";document.querySelector("h1").textContent="Archives — Quiz du 06/10/2026";}
-async function load(){
- $("updated").textContent="Chargement des résultats pour "+(selectedSession||"les archives")+"…";
- const query=table=>{let q=db.from(table).select("*");q=selectedSession?q.eq("session_code",selectedSession):q.or("session_code.is.null,session_code.eq.");return q.order("created_at",{ascending:false})};
- let p,a;
- try{
-   [p,a]=await Promise.race([
-     Promise.all([query("questionnaire2_participants"),query("questionnaire2_answers")]),
-     new Promise((_,reject)=>setTimeout(()=>reject(new Error("Supabase ne répond pas après 12 secondes. Vérifier la connexion et les autorisations.")),12000))
-   ]);
- }catch(e){$("updated").textContent="Impossible de charger les résultats : "+e.message;return}
- if(p.error||a.error){const e=p.error||a.error;$("updated").textContent="Impossible de récupérer les résultats de "+(selectedSession||"la session")+" : "+e.message+(e.code?" (code "+e.code+")":"")+". Vérifier que la colonne session_code existe dans les tables questionnaire2_participants et questionnaire2_answers et que les droits de lecture sont actifs.";return}const allRows=(p.data||[]).filter(x=>selectedSession?x.session_code===selectedSession:!x.session_code),allAns=(a.data||[]).filter(x=>selectedSession?x.session_code===selectedSession:!x.session_code),key=x=>(x.email||"").trim().toLowerCase()||("__noemail__"+x.id),bestByEmail=new Map();allRows.forEach(x=>{const k=key(x),prev=bestByEmail.get(k),xs=Number(x.score),ps=prev?Number(prev.score):NaN;if(!prev||(Number.isFinite(xs)&&(!Number.isFinite(ps)||xs>ps))||(xs===ps&&new Date(x.created_at)>new Date(prev.created_at)))bestByEmail.set(k,x)});const rows=[...bestByEmail.values()].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at)),keptEmails=new Set(rows.map(x=>(x.email||"").trim().toLowerCase()).filter(Boolean)),ans=allAns.filter(x=>!x.participant_id||keptEmails.has(String(x.participant_id).trim().toLowerCase()));currentRows=rows;currentAnswers=ans;$("certificateInfo").textContent=selectedSession?rows.filter(x=>x.score!==null).length+" participation(s) terminée(s).":"Archives sans session nommée : attestations indisponibles.";const done=rows.filter(x=>x.score!==null),n=done.length,avg=n?done.reduce((s,x)=>s+(Number(x.score)||0),0)/n:0,success=n?done.reduce((s,x)=>s+(Number(x.score)||0)/(Number(x.total_questions)||TOTAL_QUESTIONS)*100,0)/n:0,ds=done.filter(x=>x.duration_seconds),avd=ds.length?ds.reduce((s,x)=>s+Number(x.duration_seconds),0)/ds.length:0,best=n?Math.max(...done.map(x=>Number(x.score)||0)):0,worst=n?Math.min(...done.map(x=>Number(x.score)||0)):0;
-$("participants").textContent=rows.length;$("completed").textContent=n;$("rate").textContent=rows.length?Math.round(n/rows.length*100)+"%":"0%";$("average").textContent=n?avg.toFixed(1)+"/"+(Number(done[0].total_questions)||TOTAL_QUESTIONS):"0";$("success").textContent=n?Math.round(success)+"%":"0%";$("duration").textContent=ds.length?dur(avd):"—";$("best").textContent=n?best+"/"+(Number(done[0].total_questions)||TOTAL_QUESTIONS):"—";$("worst").textContent=n?worst+"/"+(Number(done[0].total_questions)||TOTAL_QUESTIONS):"—";$("updated").textContent="Données actualisées le "+new Date().toLocaleString("fr-FR");
-const groups={"100 %":0,"75–99 %":0,"50–74 %":0,"Moins de 50 %":0};done.forEach(x=>{const z=Math.round((Number(x.score)||0)/(Number(x.total_questions)||TOTAL_QUESTIONS)*100);groups[z===100?"100 %":z>=75?"75–99 %":z>=50?"50–74 %":"Moins de 50 %"]++});$("distribution").innerHTML=Object.keys(groups).map(k=>"<tr><td>"+k+"</td><td>"+groups[k]+"</td><td>"+(n?Math.round(groups[k]/n*100):0)+"%</td></tr>").join("");
-$("recent").innerHTML=rows.slice(0,8).map(x=>"<tr><td>"+date(x.created_at)+"</td><td>"+esc(x.first_name)+" "+esc(x.last_name)+"</td><td>"+x.score+"/"+(Number(x.total_questions)||TOTAL_QUESTIONS)+"</td></tr>").join("")||"<tr><td colspan=3>Aucune participation</td></tr>";
-$("participantsTable").innerHTML=rows.map(x=>{const name=esc(x.first_name)+" "+esc(x.last_name);return "<tr><td>"+name+"</td><td>"+esc(x.email)+"</td><td>"+x.score+"/"+(Number(x.total_questions)||TOTAL_QUESTIONS)+"</td><td>"+dur(x.duration_seconds)+"</td><td>"+date(x.created_at)+"</td><td><button class=\"delete-btn\" data-delete-id=\""+esc(x.id)+"\" data-delete-name=\""+esc(name)+"\">Supprimer</button> <button class=\"certificate-one\" data-certificate-id=\""+esc(x.id)+"\" type=\"button\" style=\"background:#065269;color:white\">Attestation</button></td></tr>"}).join("")||"<tr><td colspan=6>Aucun participant</td></tr>";document.querySelectorAll(".delete-btn").forEach(b=>b.onclick=()=>deleteParticipant(b.dataset.deleteId,b.dataset.deleteName));document.querySelectorAll(".certificate-one").forEach(b=>b.onclick=()=>{const x=currentRows.find(x=>String(x.id)===b.dataset.certificateId);if(x)openCertificate(x)});
-$("questions").innerHTML=Array.from({length:TOTAL_QUESTIONS},(_,i)=>{const q=ans.filter(x=>Number(x.question_index)===i+1),ok=q.filter(x=>x.correct===true).length,r=q.length?Math.round(ok/q.length*100):0;return"<tr><td>"+(i+1)+"</td><td>"+q.length+"</td><td>"+ok+"</td><td>"+r+"%</td><td><div class=bar><span style=\"width:"+r+"%\"></span></div></td></tr>"}).join("")}
-
-if(document.getElementById("emailReport"))document.getElementById("emailReport").onclick=()=>{document.getElementById("mailStatus").textContent="";document.getElementById("mailDialog").showModal()};document.getElementById("mailCancel").onclick=()=>document.getElementById("mailDialog").close();document.getElementById("mailSend").onclick=async()=>{const to=document.getElementById("mailTo").value.trim(),st=document.getElementById("mailStatus"),btn=document.getElementById("mailSend");if(!to||!to.includes("@")){st.textContent="Indique une adresse e-mail valide.";return}btn.disabled=true;st.textContent="Envoi en cours…";const done=currentRows.filter(x=>x.score!==null),n=done.length,avg=n?done.reduce((a,x)=>a+Number(x.score||0),0)/n:0,success=n?done.reduce((a,x)=>a+Number(x.score||0)/(Number(x.total_questions)||20)*100,0)/n:0,ds=done.filter(x=>x.duration_seconds),avd=ds.length?ds.reduce((a,x)=>a+Number(x.duration_seconds),0)/ds.length:0,best=n?Math.max(...done.map(x=>Number(x.score)||0)):0,worst=n?Math.min(...done.map(x=>Number(x.score)||0)):0,questions=Array.from({length:20},(_,i)=>{const q=currentAnswers.filter(x=>Number(x.question_index)===i+1),ok=q.filter(x=>x.correct===true).length;return{question:i+1,responses:q.length,correct:ok,rate:q.length?Math.round(ok/q.length*100):0}});const {data:{session}}=await db.auth.getSession();if(!session?.access_token){btn.disabled=false;st.textContent="Envoi impossible : session administrateur expirée.";return}const payload={type:"quiz",quiz_date:"06/10/2026",to,stats:{participants:currentRows.length,completed:n,completion_rate:currentRows.length?Math.round(n/currentRows.length*100):0,average_score:Number(avg.toFixed(1)),total_questions:20,success_rate:Math.round(success),average_duration_seconds:Math.round(avd),best_score:best,worst_score:worst,questions}};const {data,error}=await db.functions.invoke("hyper-service",{body:payload,headers:{Authorization:"Bearer "+session.access_token}});btn.disabled=false;if(error){st.textContent="Envoi impossible : "+(error.message||"Erreur d’envoi");return}st.textContent="Récapitulatif envoyé à "+to+".";setTimeout(()=>document.getElementById("mailDialog").close(),1400)};
-
-
-const htmlEscape=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-async function loadQuizSessions(){
- const el=$("sessionList");const {data,error}=await db.from("rebond_quiz_sessions").select("code,event_name,event_date,event_place").eq("category",quizCategory).order("event_date",{ascending:false});
- if(error){el.textContent="Impossible de charger les sessions : "+error.message;return}
- el.innerHTML=(data||[]).map(x=>{const link=location.origin+location.pathname.replace(/admin\.html$/,"")+"?session="+encodeURIComponent(x.code),stats=location.pathname+"?session="+encodeURIComponent(x.code);
- return '<div style="border-top:1px solid #ddd;padding:14px 0"><strong>'+htmlEscape(x.event_name)+'</strong> <small>'+htmlEscape(x.event_date)+' '+htmlEscape(x.event_place)+'</small><p style="overflow-wrap:anywhere"><a href="'+htmlEscape(link)+'" target="_blank" rel="noopener">'+htmlEscape(link)+'</a></p><button type="button" class="open-session-results" data-session="'+htmlEscape(x.code)+'" data-name="'+htmlEscape(x.event_name)+'" style="background:#e65013;color:#fff">Voir les résultats</button> <button type="button" class="delete-session" data-code="'+htmlEscape(x.code)+'" data-name="'+htmlEscape(x.event_name)+'" style="background:#b74b4b;color:#fff">Supprimer</button></div>'}).join("")||"Aucune session créée.";
- el.innerHTML+='<div style="border-top:1px solid #ddd;padding:16px 0"><strong>Résultats historiques</strong><p style="font-size:14px">Participations antérieures à la création des sessions.</p><button type="button" id="openHistory" style="background:#065269;color:#fff">Voir les résultats historiques</button></div>';
- el.querySelectorAll(".open-session-results").forEach(b=>b.onclick=()=>showSessionResults(b.dataset.session,b.dataset.name));
- el.querySelectorAll(".delete-session").forEach(b=>b.onclick=()=>deleteQuizSession(b));
- const deleteRequested=new URLSearchParams(location.search).get("deleteSession");
- if(deleteRequested){const target=[...el.querySelectorAll(".delete-session")].find(b=>b.dataset.code===deleteRequested);if(target){target.style.outline="3px solid #b74b4b";target.style.outlineOffset="3px";target.scrollIntoView({block:"center"});$("sessionMessage").textContent="Pour supprimer cette session, utilisez le bouton Supprimer encadré en rouge. Une confirmation sera demandée."}else{$("sessionMessage").textContent="Session à supprimer introuvable dans cette liste."}}
-
- $("openHistory").onclick=()=>showSessionResults("","Résultats historiques");
+@media(max-width:600px){
+  #login.login{padding:30px 24px}
+  #globalAdminReturn{top:7px;left:7px;padding:8px 11px;font-size:11px}
 }
-async function deleteQuizSession(btn){
- const code=btn.dataset.code,name=btn.dataset.name;
- if(!confirm('Supprimer définitivement la session « '+name+' » ?\\nCette action supprimera également ses participations et ses réponses. Elle est irréversible.'))return;
- btn.disabled=true;btn.textContent="Suppression…";
- try{
-   for(const table of ["questionnaire2_answers","questionnaire2_participants"]){
-     const {error}=await db.from(table).delete().eq("session_code",code);
-     if(error)throw new Error(table+" : "+error.message);
-   }
-   const {error}=await db.from("rebond_quiz_sessions").delete().eq("code",code).eq("category",quizCategory);
-   if(error)throw new Error(error.message);
-   await loadQuizSessions();
- }catch(e){alert("Suppression incomplète ou impossible : "+e.message+"\\nVérifie les droits Supabase avant de réessayer.");btn.disabled=false;btn.textContent="Supprimer";}
+@media(max-width:520px){
+  .grid{grid-template-columns:1fr}
+  .box{width:min(94vw,1180px)}
+  td,th{padding:8px 6px;font-size:13px}
 }
-async function showSessionResults(code,name){
- selectedSession=code;$("resultsDashboard").hidden=false;$("resultsTitle").textContent=name||"Résultats de la session";
- $("sessionManager").hidden=true;
- const url=new URL(location.href);url.searchParams.delete("utm_source");if(code){url.searchParams.delete("archives");url.searchParams.set("session",code)}else{url.searchParams.delete("session");url.searchParams.set("archives","2026-10-06")}history.replaceState(null,"",url);
- await load();$("resultsDashboard").scrollIntoView({behavior:"smooth",block:"start"});
+</style>
+</head>
+
+<body>
+<a id="globalAdminReturn" href="/administration-questionnaires/">
+  ← Administration générale
+</a>
+
+<main class="box">
+  <div class="admin-head">
+    <h1>Gestion — Quiz Formation</h1>
+    <div class="admin-actions"></div>
+  </div>
+
+  <section id="reset" class="login reset-box" hidden>
+    <h2>Définir un nouveau mot de passe</h2>
+    <input id="newPassword" type="password"
+      autocomplete="new-password" placeholder="Nouveau mot de passe">
+    <input id="newPassword2" type="password"
+      autocomplete="new-password" placeholder="Confirmer le nouveau mot de passe">
+    <button id="savePassword" type="button">
+      Enregistrer le nouveau mot de passe
+    </button>
+    <p id="resetMsg" role="status"></p>
+  </section>
+
+  <section id="login" class="login">
+    <img class="login-logo" src="../logorebondsignature.png" alt="Rebond">
+    <div class="login-destination">Administration — Quiz Formation</div>
+    <input id="email" type="email" autocomplete="username"
+      placeholder="E-mail administrateur">
+    <input id="password" type="password" autocomplete="current-password"
+      placeholder="Mot de passe">
+    <button id="connect" type="button">Se connecter</button>
+    <button id="forgot" type="button"
+      style="background:none;color:#065269;text-decoration:underline;padding:6px 0;margin-top:6px">
+      Mot de passe oublié ?
+    </button>
+    <p id="error" role="status">Vérification de l’accès…</p>
+  </section>
+
+  <div class="login-copyright">
+    Rebond® 2026<br>
+    <span>Espace privé — accès réservé aux personnes autorisées</span>
+  </div>
+
+  <section id="dash" hidden>
+    <section id="sessionManager"
+      style="background:#fff;color:#065269;border-radius:16px;padding:22px;margin:18px 0 26px">
+      <h2 style="margin:0 0 14px">Créer une session</h2>
+      <div style="display:flex;flex-wrap:wrap;gap:10px">
+        <input id="sessionEvent" placeholder="Nom de l’événement"
+          style="flex:2;min-width:180px;border:1px solid #ccd">
+        <input id="sessionDate" type="date"
+          style="flex:1;min-width:150px;border:1px solid #ccd">
+        <input id="sessionPlace" placeholder="Lieu"
+          style="flex:2;min-width:160px;border:1px solid #ccd">
+        <button id="sessionCreate" type="button"
+          style="background:#e65013">Créer</button>
+      </div>
+      <p id="sessionMessage" role="status"></p>
+      <h2 style="margin:22px 0 10px">Mes sessions</h2>
+      <div id="sessionList">Chargement…</div>
+    </section>
+
+    <div id="resultsDashboard" hidden>
+      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:24px 0">
+        <button id="backToSessions" type="button"
+          style="background:#e65013">← Retour aux sessions</button>
+        <h2 id="resultsTitle" style="margin:0">Résultats</h2>
+      </div>
+
+      <p class="muted" id="updated"></p>
+
+      <div class="grid">
+        <div class="card accent"><small>Participants inscrits</small><b id="participants">—</b></div>
+        <div class="card green"><small>Questionnaires terminés</small><b id="completed">—</b></div>
+        <div class="card orange"><small>Taux de complétion</small><b id="rate">—</b></div>
+        <div class="card accent"><small>Score moyen</small><b id="average">—</b></div>
+        <div class="card green"><small>Réussite moyenne</small><b id="success">—</b></div>
+        <div class="card orange"><small>Durée moyenne</small><b id="duration">—</b></div>
+        <div class="card red"><small>Meilleur score</small><b id="best">—</b></div>
+        <div class="card red"><small>Score le plus faible</small><b id="worst">—</b></div>
+      </div>
+
+      <div class="panels">
+        <section>
+          <h2>Répartition des résultats</h2>
+          <table>
+            <thead><tr><th>Résultat</th><th>Nombre</th><th>Part</th></tr></thead>
+            <tbody id="distribution"></tbody>
+          </table>
+        </section>
+        <section>
+          <h2>Activité récente</h2>
+          <table>
+            <thead><tr><th>Date</th><th>Participant</th><th>Score</th></tr></thead>
+            <tbody id="recent"></tbody>
+          </table>
+        </section>
+      </div>
+
+      <h2>Réussite par question</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Question</th><th>Réponses</th><th>Correctes</th>
+            <th>Taux</th><th>Progression</th>
+          </tr>
+        </thead>
+        <tbody id="questions"></tbody>
+      </table>
+
+      <section style="background:#fff;color:#065269;border-radius:16px;padding:22px;margin:24px 0">
+        <h2>Attestations de participation</h2>
+        <p>Générer une attestation nominative avec l’intitulé exact de la session.</p>
+        <p id="certificateInfo" role="status"></p>
+        <button id="certificateBatch" type="button"
+          style="background:#e65013">Préparer les attestations</button>
+        <p style="font-size:13px">
+          Aucun e-mail n’est envoyé : l’envoi automatique et manuel
+          nécessite encore le service serveur sécurisé.
+        </p>
+      </section>
+
+      <h2>Participants</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Nom</th><th>E-mail</th><th>Score</th>
+            <th>Durée</th><th>Date</th><th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="participantsTable"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<dialog id="mailDialog">
+  <div class="mailbox">
+    <h2>Envoyer le récapitulatif</h2>
+    <p>Le bilan de ce quiz sera envoyé par e-mail.</p>
+    <label>
+      <b>Destinataire</b>
+      <input id="mailTo" type="email" placeholder="nom@domaine.fr">
+    </label>
+    <div class="mailstatus" id="mailStatus"></div>
+    <div class="mailactions">
+      <button type="button" id="mailCancel">Annuler</button>
+      <button type="button" id="mailSend"
+        style="background:#e65013">Envoyer</button>
+    </div>
+  </div>
+</dialog>
+
+<script>
+const quizCategory = "formation";
+const $ = id => document.getElementById(id);
+const U = "https://tdsrqmpfdvntybdlvejy.supabase.co";
+const K = "sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO";
+const TOTAL_QUESTIONS = 20;
+
+const db = window.supabase?.createClient
+  ? window.supabase.createClient(U, K)
+  : null;
+
+if (!db) {
+  $("dash").hidden = true;
+  $("reset").hidden = true;
+  $("login").hidden = false;
+  $("connect").disabled = true;
+  $("forgot").disabled = true;
+  $("error").textContent =
+    "La bibliothèque de connexion n’a pas pu être chargée. Recharge la page.";
+  throw new Error("Bibliothèque Supabase indisponible");
 }
-$("backToSessions").onclick=()=>{selectedSession=null;$("resultsDashboard").hidden=true;$("sessionManager").hidden=false;const url=new URL(location.href);url.searchParams.delete("session");history.replaceState(null,"",url);};
-$("sessionCreate").onclick=async()=>{
- const name=$("sessionEvent").value.trim(),date=$("sessionDate").value,place=$("sessionPlace").value.trim(),msg=$("sessionMessage"),btn=$("sessionCreate");
- if(!name||!date){msg.textContent="Nom de l’événement et date obligatoires.";return}
- btn.disabled=true;msg.textContent="Création en cours…";
- const code=(quizCategory==="formation"?"FOR-":"SEN-")+Array.from(crypto.getRandomValues(new Uint8Array(8)),x=>x.toString(16).padStart(2,"0")).join("").toUpperCase();
- const {error}=await db.from("rebond_quiz_sessions").insert({code,category:quizCategory,event_name:name,event_date:date,event_place:place});
- btn.disabled=false;if(error){msg.textContent="Erreur : "+error.message;return}
- msg.textContent="Session créée.";$("sessionEvent").value="";$("sessionDate").value="";$("sessionPlace").value="";await loadQuizSessions();
+
+let adminAccessVersion = 0;
+let adminRecheckTimer;
+let recoveryMode = false;
+let currentRows = [];
+let currentAnswers = [];
+
+const archivesMode =
+  new URLSearchParams(location.search).get("archives") === "2026-10-06";
+
+let selectedSession = archivesMode
+  ? ""
+  : new URLSearchParams(location.search).get("session");
+
+if (archivesMode) {
+  document.title = "Gestion — Archives du 06/10/2026";
+  document.querySelector("h1").textContent =
+    "Archives — Quiz du 06/10/2026";
+}
+
+const esc = value => String(value ?? "").replace(
+  /[&<>"']/g,
+  character => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  }[character])
+);
+
+const date = value =>
+  value ? new Date(value).toLocaleDateString("fr-FR") : "—";
+
+const dur = seconds =>
+  seconds
+    ? Math.floor(seconds / 60) + " min " +
+      String(Math.round(seconds % 60)).padStart(2, "0") + " s"
+    : "—";
+
+function closeAdminAccess(message = "") {
+  $("dash").hidden = true;
+  $("reset").hidden = true;
+  $("login").hidden = false;
+  $("error").textContent = message;
+  $("sessionList").replaceChildren();
+  $("resultsDashboard").hidden = true;
+  $("sessionManager").hidden = false;
+  $("sessionManager").style.removeProperty("display");
+  $("mailDialog").close();
+
+  currentRows = [];
+  currentAnswers = [];
+
+  for (const id of [
+    "participantsTable", "recent", "questions", "distribution"
+  ]) {
+    $(id).replaceChildren();
+  }
+}
+
+async function enterExistingAdmin() {
+  if (recoveryMode) return;
+
+  const version = ++adminAccessVersion;
+  closeAdminAccess("Vérification de l’accès…");
+
+  try {
+    const { data, error } = await db.auth.getSession();
+
+    if (version !== adminAccessVersion || recoveryMode) return;
+    if (error) throw error;
+
+    if (!data?.session) {
+      closeAdminAccess();
+      location.replace(
+        "/administration-questionnaires/?retour=" +
+        encodeURIComponent(location.pathname + location.search)
+      );
+      return;
+    }
+
+    const { data: isAdmin, error: roleError } =
+      await db.rpc("rebond_is_admin");
+
+    if (version !== adminAccessVersion || recoveryMode) return;
+    if (roleError) throw roleError;
+
+    if (isAdmin !== true) {
+      closeAdminAccess(
+        "Accès réservé aux administrateurs. " +
+        "Connecte-toi avec un compte autorisé."
+      );
+      return;
+    }
+
+    $("error").textContent = "";
+    $("login").hidden = true;
+    $("dash").hidden = false;
+
+    if (selectedSession !== null) {
+      await showSessionResults(
+        selectedSession,
+        archivesMode ? "Résultats du 06/10/2026" : undefined
+      );
+    } else {
+      await loadQuizSessions();
+    }
+  } catch {
+    if (version === adminAccessVersion && !recoveryMode) {
+      closeAdminAccess(
+        "Impossible de vérifier l’accès ou de charger la page. Réessaie."
+      );
+    }
+  }
+}
+
+$("connect").onclick = async () => {
+  const button = $("connect");
+  if (button.disabled || recoveryMode) return;
+
+  button.disabled = true;
+  ++adminAccessVersion;
+  closeAdminAccess("Connexion en cours…");
+
+  try {
+    const { error } = await db.auth.signInWithPassword({
+      email: $("email").value.trim(),
+      password: $("password").value
+    });
+
+    $("password").value = "";
+
+    if (error) {
+      closeAdminAccess("Connexion impossible. Vérifie tes identifiants.");
+      return;
+    }
+
+    clearTimeout(adminRecheckTimer);
+    await enterExistingAdmin();
+  } catch {
+    if (!recoveryMode) {
+      closeAdminAccess("Connexion indisponible. Réessaie.");
+    }
+  } finally {
+    $("password").value = "";
+    button.disabled = false;
+  }
 };
 
-document.body.classList.add("admin-auth-check");
-db.auth.getSession().then(async ({data:{session}})=>{
- if($("reset")?.hidden===false)return;
- if(!session){location.replace("/administration-questionnaires/?retour="+encodeURIComponent(location.pathname+location.search));return}
- try{await enterExistingAdmin()}catch(e){$("error").textContent=e.message||"Erreur de chargement";$("login").hidden=true;$("dash").hidden=false}
-}).catch(()=>{location.replace("/administration-questionnaires/?retour="+encodeURIComponent(location.pathname+location.search))});
-</script></body></html>
+$("forgot").onclick = async () => {
+  const email = $("email").value.trim();
+
+  if (!email) {
+    $("error").textContent = "Indiquez d’abord votre adresse e-mail.";
+    return;
+  }
+
+  const button = $("forgot");
+  button.disabled = true;
+
+  try {
+    const { error } = await db.auth.resetPasswordForEmail(email, {
+      redirectTo: "https://rebondplay.com/questionnaire2/admin.html"
+    });
+
+    $("error").textContent = error
+      ? "Demande impossible pour le moment. Réessaie plus tard."
+      : "Si cette adresse correspond à un compte, un e-mail de réinitialisation sera envoyé.";
+  } catch {
+    $("error").textContent =
+      "Le service est indisponible. Réessaie plus tard.";
+  } finally {
+    button.disabled = false;
+  }
+};
+
+$("savePassword").onclick = async () => {
+  if (!recoveryMode) return;
+
+  const password = $("newPassword").value;
+  const confirmation = $("newPassword2").value;
+  const button = $("savePassword");
+
+  if (password.length < 8) {
+    $("resetMsg").textContent =
+      "Le mot de passe doit contenir au moins 8 caractères.";
+    return;
+  }
+
+  if (password !== confirmation) {
+    $("resetMsg").textContent =
+      "Les deux mots de passe ne correspondent pas.";
+    return;
+  }
+
+  button.disabled = true;
+
+  try {
+    const { error } = await db.auth.updateUser({ password });
+
+    if (error) {
+      $("resetMsg").textContent = error.message;
+      return;
+    }
+
+    $("newPassword").value = "";
+    $("newPassword2").value = "";
+
+    const { error: signOutError } = await db.auth.signOut();
+
+    if (signOutError) {
+      $("resetMsg").textContent =
+        "Mot de passe modifié, mais déconnexion non confirmée. Recharge la page.";
+      return;
+    }
+
+    recoveryMode = false;
+    closeAdminAccess(
+      "Mot de passe modifié. Connecte-toi avec ton nouveau mot de passe."
+    );
+    $("password").value = "";
+  } catch {
+    $("resetMsg").textContent =
+      "Résultat non confirmé. Réessaie de te connecter avant de recommencer.";
+  } finally {
+    button.disabled = false;
+  }
+};
+
+async function deleteParticipant(id, name) {
+  if (!id) return;
+
+  if (!confirm(
+    "Supprimer définitivement la participation de " +
+    name + " et ses réponses ?"
+  )) return;
+
+  const button = document.querySelector(
+    'button[data-delete-id="' + CSS.escape(String(id)) + '"]'
+  );
+
+  if (button) {
+    button.disabled = true;
+    button.textContent = "Suppression…";
+  }
+
+  try {
+    const { data: participant, error: lookupError } = await db
+      .from("questionnaire2_participants")
+      .select("email")
+      .eq("id", id)
+      .single();
+
+    if (lookupError || !participant?.email) {
+      throw Error("Participant introuvable ou inaccessible.");
+    }
+
+    const answersResult = await db
+      .from("questionnaire2_answers")
+      .delete()
+      .eq("participant_id", participant.email);
+
+    if (answersResult.error) throw answersResult.error;
+
+    const participantResult = await db
+      .from("questionnaire2_participants")
+      .delete()
+      .eq("id", id);
+
+    if (participantResult.error) throw participantResult.error;
+
+    await load();
+  } catch (error) {
+    alert("Suppression incomplète ou impossible : " + error.message);
+  } finally {
+    if (button) {
+      button.disabled = false;
+      button.textContent = "Supprimer";
+    }
+  }
+}
+
+async function certificateSession() {
+  if (!selectedSession) return null;
+
+  const { data, error } = await db
+    .from("rebond_quiz_sessions")
+    .select("event_name,event_date,event_place")
+    .eq("code", selectedSession)
+    .maybeSingle();
+
+  if (error) throw Error(error.message);
+  return data;
+}
+
+function certificateUrl(participant, session) {
+  return "attestation-modele.html?" + new URLSearchParams({
+    nom: [
+      participant.first_name,
+      participant.last_name
+    ].filter(Boolean).join(" "),
+    titre: session.event_name,
+    date: session.event_date || "",
+    lieu: session.event_place || ""
+  });
+}
+
+async function openCertificate(participant) {
+  try {
+    if (participant.score === null) throw Error("Quiz non terminé.");
+
+    const session = await certificateSession();
+
+    if (!session) throw Error("Session non identifiée.");
+
+    window.open(certificateUrl(participant, session), "_blank", "noopener");
+  } catch (error) {
+    alert(error.message);
+  }
+}
+
+$("certificateBatch").onclick = async () => {
+  const status = $("certificateInfo");
+
+  try {
+    const session = await certificateSession();
+
+    if (!session) {
+      throw Error("Choisir une session nommée, pas les archives.");
+    }
+
+    const rows = currentRows.filter(
+      row => row.score !== null && row.first_name && row.last_name
+    );
+
+    if (!rows.length) {
+      throw Error("Aucun participant ayant terminé son quiz.");
+    }
+
+    if (
+      rows.length > 10 &&
+      !confirm("Ouvrir les 10 premières attestations ?")
+    ) return;
+
+    rows.slice(0, 10).forEach(row => {
+      window.open(certificateUrl(row, session), "_blank", "noopener");
+    });
+
+    status.textContent =
+      "Attestations ouvertes dans de nouveaux onglets (maximum 10). " +
+      "Utiliser Imprimer / Enregistrer en PDF.";
+  } catch (error) {
+    status.textContent = error.message;
+  }
+};
+
+if ($("exportEmails")) {
+  $("exportEmails").onclick = () => {
+    const emails = [...new Set(
+      currentRows.map(row => (row.email || "").trim()).filter(Boolean)
+    )];
+
+    if (!emails.length) {
+      alert("Aucune adresse e-mail à extraire.");
+      return;
+    }
+
+    const blob = new Blob([
+      "Adresse e-mail\n" +
+      emails.map(email => '"' + email.replace(/"/g, '""') + '"').join("\n")
+    ], { type: "text/csv;charset=utf-8" });
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "emails-quiz-06-10-2026.csv";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  };
+}
+
+async function load() {
+  if ($("dash").hidden || recoveryMode) return;
+
+  const version = adminAccessVersion;
+  const sessionCode = selectedSession;
+
+  $("updated").textContent =
+    "Chargement des résultats pour " + (sessionCode || "les archives") + "…";
+
+  const query = table => {
+    let request = db.from(table).select("*");
+
+    request = sessionCode
+      ? request.eq("session_code", sessionCode)
+      : request.or("session_code.is.null,session_code.eq.");
+
+    return request.order("created_at", { ascending: false });
+  };
+
+  let participantsResult;
+  let answersResult;
+  let timeout;
+
+  try {
+    [participantsResult, answersResult] = await Promise.race([
+      Promise.all([
+        query("questionnaire2_participants"),
+        query("questionnaire2_answers")
+      ]),
+      new Promise((_, reject) => {
+        timeout = setTimeout(
+          () => reject(Error("Supabase ne répond pas après 12 secondes.")),
+          12000
+        );
+      })
+    ]);
+  } finally {
+    clearTimeout(timeout);
+  }
+
+  if (
+    version !== adminAccessVersion ||
+    recoveryMode ||
+    $("dash").hidden ||
+    sessionCode !== selectedSession
+  ) return;
+
+  if (participantsResult.error || answersResult.error) {
+    throw Error("Impossible de récupérer les résultats.");
+  }
+
+  const allRows = (participantsResult.data || []).filter(row =>
+    sessionCode ? row.session_code === sessionCode : !row.session_code
+  );
+
+  const allAnswers = (answersResult.data || []).filter(answer =>
+    sessionCode
+      ? answer.session_code === sessionCode
+      : !answer.session_code
+  );
+
+  const key = row =>
+    (row.email || "").trim().toLowerCase() || "__noemail__" + row.id;
+
+  const bestByEmail = new Map();
+
+  allRows.forEach(row => {
+    const participantKey = key(row);
+    const previous = bestByEmail.get(participantKey);
+    const score = Number(row.score);
+    const previousScore = previous ? Number(previous.score) : NaN;
+
+    if (
+      !previous ||
+      (
+        Number.isFinite(score) &&
+        (!Number.isFinite(previousScore) || score > previousScore)
+      ) ||
+      (
+        score === previousScore &&
+        new Date(row.created_at) > new Date(previous.created_at)
+      )
+    ) {
+      bestByEmail.set(participantKey, row);
+    }
+  });
+
+  const rows = [...bestByEmail.values()].sort(
+    (a, b) => new Date(b.created_at) - new Date(a.created_at)
+  );
+
+  const keptEmails = new Set(
+    rows.map(row => (row.email || "").trim().toLowerCase()).filter(Boolean)
+  );
+
+  const answers = allAnswers.filter(answer =>
+    !answer.participant_id ||
+    keptEmails.has(String(answer.participant_id).trim().toLowerCase())
+  );
+
+  currentRows = rows;
+  currentAnswers = answers;
+
+  $("certificateInfo").textContent = sessionCode
+    ? rows.filter(row => row.score !== null).length +
+      " participation(s) terminée(s)."
+    : "Archives sans session nommée : attestations indisponibles.";
+
+  const done = rows.filter(row => row.score !== null);
+  const count = done.length;
+
+  const average = count
+    ? done.reduce((sum, row) => sum + (Number(row.score) || 0), 0) / count
+    : 0;
+
+  const success = count
+    ? done.reduce(
+        (sum, row) => sum + (Number(row.score) || 0) /
+        (Number(row.total_questions) || TOTAL_QUESTIONS) * 100,
+        0
+      ) / count
+    : 0;
+
+  const durations = done.filter(row => row.duration_seconds);
+
+  const averageDuration = durations.length
+    ? durations.reduce(
+        (sum, row) => sum + Number(row.duration_seconds), 0
+      ) / durations.length
+    : 0;
+
+  const best = count
+    ? Math.max(...done.map(row => Number(row.score) || 0))
+    : 0;
+
+  const worst = count
+    ? Math.min(...done.map(row => Number(row.score) || 0))
+    : 0;
+
+  const total = count
+    ? Number(done[0].total_questions) || TOTAL_QUESTIONS
+    : TOTAL_QUESTIONS;
+
+  $("participants").textContent = rows.length;
+  $("completed").textContent = count;
+  $("rate").textContent =
+    rows.length ? Math.round(count / rows.length * 100) + "%" : "0%";
+  $("average").textContent =
+    count ? average.toFixed(1) + "/" + total : "0";
+  $("success").textContent = count ? Math.round(success) + "%" : "0%";
+  $("duration").textContent =
+    durations.length ? dur(averageDuration) : "—";
+  $("best").textContent = count ? best + "/" + total : "—";
+  $("worst").textContent = count ? worst + "/" + total : "—";
+  $("updated").textContent =
+    "Données actualisées le " + new Date().toLocaleString("fr-FR");
+
+  const groups = {
+    "100 %": 0,
+    "75–99 %": 0,
+    "50–74 %": 0,
+    "Moins de 50 %": 0
+  };
+
+  done.forEach(row => {
+    const percentage = Math.round(
+      (Number(row.score) || 0) /
+      (Number(row.total_questions) || TOTAL_QUESTIONS) * 100
+    );
+
+    const group =
+      percentage === 100 ? "100 %" :
+      percentage >= 75 ? "75–99 %" :
+      percentage >= 50 ? "50–74 %" : "Moins de 50 %";
+
+    groups[group]++;
+  });
+
+  $("distribution").innerHTML = Object.keys(groups).map(group =>
+    "<tr><td>" + group + "</td><td>" + groups[group] +
+    "</td><td>" +
+    (count ? Math.round(groups[group] / count * 100) : 0) +
+    "%</td></tr>"
+  ).join("");
+
+  $("recent").innerHTML = rows.slice(0, 8).map(row =>
+    "<tr><td>" + esc(date(row.created_at)) +
+    "</td><td>" + esc(row.first_name) + " " + esc(row.last_name) +
+    "</td><td>" + esc(row.score) + "/" +
+    (Number(row.total_questions) || TOTAL_QUESTIONS) +
+    "</td></tr>"
+  ).join("") || "<tr><td colspan='3'>Aucune participation</td></tr>";
+
+  $("participantsTable").innerHTML = rows.map(row => {
+    const name = [row.first_name, row.last_name].filter(Boolean).join(" ");
+
+    return (
+      "<tr><td>" + esc(name) +
+      "</td><td>" + esc(row.email) +
+      "</td><td>" + esc(row.score) + "/" +
+      (Number(row.total_questions) || TOTAL_QUESTIONS) +
+      "</td><td>" + esc(dur(row.duration_seconds)) +
+      "</td><td>" + esc(date(row.created_at)) +
+      '</td><td><button class="delete-btn" data-delete-id="' +
+      esc(row.id) + '" data-delete-name="' + esc(name) +
+      '">Supprimer</button> ' +
+      '<button class="certificate-one" data-certificate-id="' +
+      esc(row.id) +
+      '" type="button" style="background:#065269;color:white">' +
+      "Attestation</button></td></tr>"
+    );
+  }).join("") || "<tr><td colspan='6'>Aucun participant</td></tr>";
+
+  document.querySelectorAll(".delete-btn").forEach(button => {
+    button.onclick = () =>
+      deleteParticipant(button.dataset.deleteId, button.dataset.deleteName);
+  });
+
+  document.querySelectorAll(".certificate-one").forEach(button => {
+    button.onclick = () => {
+      const participant = currentRows.find(
+        row => String(row.id) === button.dataset.certificateId
+      );
+      if (participant) openCertificate(participant);
+    };
+  });
+
+  $("questions").innerHTML = Array.from(
+    { length: TOTAL_QUESTIONS },
+    (_, index) => {
+      const questionAnswers = answers.filter(
+        answer => Number(answer.question_index) === index + 1
+      );
+
+      const correct = questionAnswers.filter(
+        answer => answer.correct === true
+      ).length;
+
+      const rate = questionAnswers.length
+        ? Math.round(correct / questionAnswers.length * 100)
+        : 0;
+
+      return (
+        "<tr><td>" + (index + 1) +
+        "</td><td>" + questionAnswers.length +
+        "</td><td>" + correct +
+        "</td><td>" + rate +
+        '%</td><td><div class="bar"><span style="width:' +
+        rate + '%"></span></div></td></tr>'
+      );
+    }
+  ).join("");
+}
+
+if ($("emailReport")) {
+  $("emailReport").onclick = () => {
+    $("mailStatus").textContent = "";
+    $("mailDialog").showModal();
+  };
+}
+
+$("mailCancel").onclick = () => $("mailDialog").close();
+
+$("mailSend").onclick = async () => {
+  const to = $("mailTo").value.trim();
+  const status = $("mailStatus");
+  const button = $("mailSend");
+
+  if (!to || !to.includes("@")) {
+    status.textContent = "Indique une adresse e-mail valide.";
+    return;
+  }
+
+  button.disabled = true;
+  status.textContent = "Envoi en cours…";
+
+  try {
+    const done = currentRows.filter(row => row.score !== null);
+    const count = done.length;
+
+    const average = count
+      ? done.reduce((sum, row) => sum + Number(row.score || 0), 0) / count
+      : 0;
+
+    const success = count
+      ? done.reduce(
+          (sum, row) => sum + Number(row.score || 0) /
+          (Number(row.total_questions) || TOTAL_QUESTIONS) * 100,
+          0
+        ) / count
+      : 0;
+
+    const durations = done.filter(row => row.duration_seconds);
+
+    const averageDuration = durations.length
+      ? durations.reduce(
+          (sum, row) => sum + Number(row.duration_seconds), 0
+        ) / durations.length
+      : 0;
+
+    const best = count
+      ? Math.max(...done.map(row => Number(row.score) || 0))
+      : 0;
+
+    const worst = count
+      ? Math.min(...done.map(row => Number(row.score) || 0))
+      : 0;
+
+    const questions = Array.from(
+      { length: TOTAL_QUESTIONS },
+      (_, index) => {
+        const answers = currentAnswers.filter(
+          answer => Number(answer.question_index) === index + 1
+        );
+
+        const correct = answers.filter(
+          answer => answer.correct === true
+        ).length;
+
+        return {
+          question: index + 1,
+          responses: answers.length,
+          correct,
+          rate: answers.length
+            ? Math.round(correct / answers.length * 100)
+            : 0
+        };
+      }
+    );
+
+    const { data: authData, error: authError } =
+      await db.auth.getSession();
+
+    if (authError || !authData?.session?.access_token) {
+      status.textContent =
+        "Envoi impossible : session administrateur expirée.";
+      return;
+    }
+
+    const payload = {
+      type: "quiz",
+      quiz_date: "06/10/2026",
+      to,
+      stats: {
+        participants: currentRows.length,
+        completed: count,
+        completion_rate: currentRows.length
+          ? Math.round(count / currentRows.length * 100)
+          : 0,
+        average_score: Number(average.toFixed(1)),
+        total_questions: TOTAL_QUESTIONS,
+        success_rate: Math.round(success),
+        average_duration_seconds: Math.round(averageDuration),
+        best_score: best,
+        worst_score: worst,
+        questions
+      }
+    };
+
+    const { error } = await db.functions.invoke("hyper-service", {
+      body: payload,
+      headers: {
+        Authorization: "Bearer " + authData.session.access_token
+      }
+    });
+
+    if (error) {
+      status.textContent =
+        "Envoi impossible : " + (error.message || "Erreur d’envoi");
+      return;
+    }
+
+    status.textContent = "Récapitulatif envoyé à " + to + ".";
+    setTimeout(() => $("mailDialog").close(), 1400);
+  } catch {
+    status.textContent =
+      "Résultat de l’envoi non confirmé. Ne relance pas immédiatement.";
+  } finally {
+    button.disabled = false;
+  }
+};
+
+async function loadQuizSessions() {
+  if ($("dash").hidden || recoveryMode) return;
+
+  const version = adminAccessVersion;
+  const element = $("sessionList");
+
+  const { data, error } = await db
+    .from("rebond_quiz_sessions")
+    .select("code,event_name,event_date,event_place")
+    .eq("category", quizCategory)
+    .order("event_date", { ascending: false });
+
+  if (
+    version !== adminAccessVersion ||
+    recoveryMode ||
+    $("dash").hidden
+  ) return;
+
+  if (error) throw Error("Impossible de charger les sessions.");
+
+  element.innerHTML = (data || []).map(session => {
+    const link =
+      location.origin +
+      location.pathname.replace(/admin\.html$/, "") +
+      "?session=" + encodeURIComponent(session.code);
+
+    return (
+      '<div style="border-top:1px solid #ddd;padding:14px 0">' +
+      "<strong>" + esc(session.event_name) + "</strong> <small>" +
+      esc(session.event_date) + " " + esc(session.event_place) +
+      '</small><p style="overflow-wrap:anywhere"><a href="' +
+      esc(link) + '" target="_blank" rel="noopener">' +
+      esc(link) + "</a></p>" +
+      '<button type="button" class="open-session-results" data-session="' +
+      esc(session.code) + '" data-name="' + esc(session.event_name) +
+      '" style="background:#e65013;color:#fff">Voir les résultats</button> ' +
+      '<button type="button" class="delete-session" data-code="' +
+      esc(session.code) + '" data-name="' + esc(session.event_name) +
+      '" style="background:#b74b4b;color:#fff">Supprimer</button></div>'
+    );
+  }).join("") || "Aucune session créée.";
+
+  element.innerHTML +=
+    '<div style="border-top:1px solid #ddd;padding:16px 0">' +
+    "<strong>Résultats historiques</strong>" +
+    '<p style="font-size:14px">' +
+    "Participations antérieures à la création des sessions.</p>" +
+    '<button type="button" id="openHistory" ' +
+    'style="background:#065269;color:#fff">' +
+    "Voir les résultats historiques</button></div>";
+
+  element.querySelectorAll(".open-session-results").forEach(button => {
+    button.onclick = () =>
+      showSessionResults(button.dataset.session, button.dataset.name);
+  });
+
+  element.querySelectorAll(".delete-session").forEach(button => {
+    button.onclick = () => deleteQuizSession(button);
+  });
+
+  const deleteRequested =
+    new URLSearchParams(location.search).get("deleteSession");
+
+  if (deleteRequested) {
+    const target = [...element.querySelectorAll(".delete-session")].find(
+      button => button.dataset.code === deleteRequested
+    );
+
+    if (target) {
+      target.style.outline = "3px solid #b74b4b";
+      target.style.outlineOffset = "3px";
+      target.scrollIntoView({ block: "center" });
+      $("sessionMessage").textContent =
+        "Pour supprimer cette session, utilisez le bouton Supprimer " +
+        "encadré en rouge. Une confirmation sera demandée.";
+    } else {
+      $("sessionMessage").textContent =
+        "Session à supprimer introuvable dans cette liste.";
+    }
+  }
+
+  $("openHistory").onclick = () =>
+    showSessionResults("", "Résultats historiques");
+}
+
+async function deleteQuizSession(button) {
+  const code = button.dataset.code;
+  const name = button.dataset.name;
+
+  if (!confirm(
+    "Supprimer définitivement la session « " + name + " » ?\n" +
+    "Cette action supprimera également ses participations et ses réponses. " +
+    "Elle est irréversible."
+  )) return;
+
+  button.disabled = true;
+  button.textContent = "Suppression…";
+
+  try {
+    for (const table of [
+      "questionnaire2_answers",
+      "questionnaire2_participants"
+    ]) {
+      const { error } = await db
+        .from(table)
+        .delete()
+        .eq("session_code", code);
+
+      if (error) throw Error(table + " : " + error.message);
+    }
+
+    const { error } = await db
+      .from("rebond_quiz_sessions")
+      .delete()
+      .eq("code", code)
+      .eq("category", quizCategory);
+
+    if (error) throw Error(error.message);
+
+    await loadQuizSessions();
+  } catch (error) {
+    alert(
+      "Suppression incomplète ou impossible : " + error.message +
+      "\nVérifie les droits Supabase avant de réessayer."
+    );
+    button.disabled = false;
+    button.textContent = "Supprimer";
+  }
+}
+
+async function showSessionResults(code, name) {
+  if ($("dash").hidden || recoveryMode) return;
+
+  const version = adminAccessVersion;
+  selectedSession = code;
+
+  $("resultsDashboard").hidden = false;
+  $("resultsTitle").textContent =
+    name || (code ? "Résultats de la session " + code : "Résultats historiques");
+  $("sessionManager").hidden = true;
+
+  const url = new URL(location.href);
+  url.searchParams.delete("utm_source");
+
+  if (code) {
+    url.searchParams.delete("archives");
+    url.searchParams.set("session", code);
+  } else {
+    url.searchParams.delete("session");
+    url.searchParams.set("archives", "2026-10-06");
+  }
+
+  history.replaceState(null, "", url);
+
+  try {
+    await load();
+
+    if (
+      version !== adminAccessVersion ||
+      recoveryMode ||
+      $("dash").hidden
+    ) return;
+
+    $("resultsDashboard").scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+  } catch {
+    if (version === adminAccessVersion && !recoveryMode) {
+      closeAdminAccess("Impossible de charger les résultats. Réessaie.");
+    }
+  }
+}
+
+$("backToSessions").onclick = () => {
+  selectedSession = null;
+  $("resultsDashboard").hidden = true;
+  $("sessionManager").hidden = false;
+
+  const url = new URL(location.href);
+  url.searchParams.delete("session");
+  url.searchParams.delete("archives");
+  history.replaceState(null, "", url);
+
+  loadQuizSessions().catch(() => {
+    $("sessionList").textContent =
+      "Impossible de charger les sessions. Recharge la page.";
+  });
+};
+
+$("sessionCreate").onclick = async () => {
+  const name = $("sessionEvent").value.trim();
+  const day = $("sessionDate").value;
+  const place = $("sessionPlace").value.trim();
+  const message = $("sessionMessage");
+  const button = $("sessionCreate");
+
+  if (!name || !day) {
+    message.textContent = "Nom de l’événement et date obligatoires.";
+    return;
+  }
+
+  button.disabled = true;
+  message.textContent = "Création en cours…";
+  let created = false;
+
+  try {
+    const code =
+      (quizCategory === "formation" ? "FOR-" : "SEN-") +
+      Array.from(
+        crypto.getRandomValues(new Uint8Array(8)),
+        value => value.toString(16).padStart(2, "0")
+      ).join("").toUpperCase();
+
+    const { error } = await db
+      .from("rebond_quiz_sessions")
+      .insert({
+        code,
+        category: quizCategory,
+        event_name: name,
+        event_date: day,
+        event_place: place
+      });
+
+    if (error) {
+      message.textContent = "Erreur : " + error.message;
+      return;
+    }
+
+    created = true;
+    message.textContent = "Session créée.";
+    $("sessionEvent").value = "";
+    $("sessionDate").value = "";
+    $("sessionPlace").value = "";
+
+    await loadQuizSessions();
+  } catch {
+    message.textContent = created
+      ? "Session créée, mais liste indisponible. Recharge la page."
+      : "Résultat non confirmé. Recharge la liste avant de réessayer.";
+  } finally {
+    button.disabled = false;
+  }
+};
+
+db.auth.onAuthStateChange(event => {
+  if (event === "PASSWORD_RECOVERY") {
+    clearTimeout(adminRecheckTimer);
+    ++adminAccessVersion;
+    recoveryMode = true;
+    closeAdminAccess();
+    $("login").hidden = true;
+    $("reset").hidden = false;
+    return;
+  }
+
+  if (event === "SIGNED_OUT") {
+    clearTimeout(adminRecheckTimer);
+    ++adminAccessVersion;
+    recoveryMode = false;
+    closeAdminAccess("Tu es déconnecté.");
+    return;
+  }
+
+  if (
+    (event === "SIGNED_IN" || event === "TOKEN_REFRESHED") &&
+    !recoveryMode
+  ) {
+    ++adminAccessVersion;
+    closeAdminAccess("Vérification de l’accès…");
+    clearTimeout(adminRecheckTimer);
+
+    adminRecheckTimer = setTimeout(() => {
+      enterExistingAdmin();
+    }, 0);
+  }
+});
+
+enterExistingAdmin();
+</script>
+</body>
+</html>

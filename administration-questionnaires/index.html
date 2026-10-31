@@ -1,29 +1,385 @@
 <!doctype html>
-<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Rebond — Administration questionnaires</title>
-<style>
-*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Arial,Helvetica,sans-serif;color:#063e54;background:#cb8095 url("../RPessentielleplus/motifsplus.jpg") center/cover fixed}.wrap{max-width:1050px;margin:42px auto;padding:34px 34px 42px;background:#f4efe8;border-radius:26px;box-shadow:0 16px 50px #60354445}.head{text-align:center;margin-bottom:30px}.logo{max-width:294px;max-height:108px;object-fit:contain;margin-bottom:12px}.head h1{font-size:clamp(30px,5vw,46px);margin:5px 0;color:#065269}.head p{margin:8px auto;max-width:650px;color:#526b73}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.card{background:#fffaf4;border-radius:20px;padding:24px;display:flex;flex-direction:column;min-height:0}.subcards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}.sub{background:#f4efe8;border-radius:14px;padding:15px;display:flex;flex-direction:column}.sub h3{margin:0 0 8px;color:#065269;font-size:18px}.sub p{font-size:14px;margin:0 0 14px}.sub .buttons{margin-top:auto}@media(max-width:620px){.subcards{grid-template-columns:1fr}}.tag{font-size:12px;font-weight:bold;text-transform:uppercase;letter-spacing:.08em;color:#e65013}.card h2{font-size:23px;line-height:1.15;margin:10px 0;color:#065269}.card p{line-height:1.45;color:#5e6d72;flex:none}.card>.buttons{margin-top:14px}.card>.subcards{margin-top:12px}.sub p{min-height:42px}.sub .buttons{margin-top:auto}.session-list{margin-top:12px}.session-item{margin-top:9px}.card{align-self:start}.card>.buttons .btn{width:100%}.buttons{display:grid;gap:9px}.btn{display:block;text-align:center;text-decoration:none;padding:13px 12px;border-radius:12px;font-weight:bold;background:#065269;color:white}.btn.admin{background:#e65013}.btn:hover{filter:brightness(.94)}.pending{background:#f4efe8;padding:14px;border-radius:12px;font-weight:bold;color:#065269!important}[hidden]{display:none!important}.note{margin:25px 0 -65px;text-align:center;color:#fff;font-size:11px}@media(max-width:800px){.grid{grid-template-columns:1fr}.wrap{margin:14px 10px;padding:25px 16px}.card{min-height:0}}.session-list{margin-top:12px}.session-item{background:#f4efe8;padding:13px;border-radius:12px;margin-top:9px}.session-item strong{display:block;margin-bottom:5px}.session-item small{display:block;color:#526b73;margin-bottom:9px}.session-item a{font-size:13px;color:#065269;font-weight:bold}.session-item .btn{font-size:13px;color:#fff;margin-top:9px;padding:9px}</style></head>
-<body><section id="centralLogin" style="max-width:470px;margin:10vh auto;padding:30px;border-radius:20px;background:#f7f3ed;color:#065269" hidden><img src="../logorebondsignature.png" alt="Rebond" style="display:block;max-width:150px;margin:0 auto 18px"><h2>Administration Rebond</h2><p>Connexion administrateur</p><form id="centralLoginForm"><input id="centralEmail" type="email" autocomplete="username" required placeholder="E-mail" style="width:100%;padding:13px;margin:8px 0;border-radius:10px"><input id="centralPassword" type="password" autocomplete="current-password" required placeholder="Mot de passe" style="width:100%;padding:13px;margin:8px 0;border-radius:10px"><button type="submit" style="background:#e65013;color:#fff;border:0;border-radius:10px;padding:13px;width:100%;cursor:pointer">Se connecter</button></form><p id="centralError" role="status"></p></section><main class="wrap" id="centralContent" hidden><header class="head"><img class="logo" src="../logorebondsignature.png" alt="Rebond"><h1>Administration Rebond</h1><p>Accès central aux questionnaires, aux sessions et aux résultats.</p></header>
-<section class="grid">
-<article class="card"><span class="tag">Fin de session</span><h2>Quiz Sensibilisation</h2><p>Quiz de sensibilisation existants : accès aux questionnaires, sessions et résultats conservés.</p><div class="buttons"><a class="btn admin" href="../administration-quiz/?categorie=sensibilisation">Gérer les sessions de sensibilisation</a></div><div class="subcards">
-<div class="sub"><h3>22/09/2026</h3><p>Quiz fin de session du 22/09/2026.</p><div class="buttons"><a class="btn" href="../questionnaire/?apercu=admin" target="_blank">Ouvrir le questionnaire</a><a class="btn admin" href="../questionnaire/admin.html">Ouvrir l’administration</a></div></div>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Rebond — Administration questionnaires</title>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;font-family:Arial,Helvetica,sans-serif;color:#063e54;background:#cb8095 url("../RPessentielleplus/motifsplus.jpg") center/cover fixed}
+    .wrap{max-width:1050px;margin:42px auto;padding:34px 34px 42px;background:#f4efe8;border-radius:26px;box-shadow:0 16px 50px #60354445}
+    .head{text-align:center;margin-bottom:30px}
+    .logo{max-width:294px;max-height:108px;object-fit:contain;margin-bottom:12px}
+    .head h1{font-size:clamp(30px,5vw,46px);margin:5px 0;color:#065269}
+    .head p{margin:8px auto;max-width:650px;color:#526b73}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+    .card{background:#fffaf4;border-radius:20px;padding:24px;display:flex;flex-direction:column;min-height:0;align-self:start}
+    .subcards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}
+    .sub{background:#f4efe8;border-radius:14px;padding:15px;display:flex;flex-direction:column}
+    .sub h3{margin:0 0 8px;color:#065269;font-size:18px}
+    .sub p{font-size:14px;margin:0 0 14px;min-height:42px}
+    .sub .buttons{margin-top:auto}
+    .tag{font-size:12px;font-weight:bold;text-transform:uppercase;letter-spacing:.08em;color:#e65013}
+    .card h2{font-size:23px;line-height:1.15;margin:10px 0;color:#065269}
+    .card p{line-height:1.45;color:#5e6d72;flex:none}
+    .card>.buttons{margin-top:14px}
+    .card>.subcards{margin-top:12px}
+    .card>.buttons .btn{width:100%}
+    .buttons{display:grid;gap:9px}
+    .btn{display:block;text-align:center;text-decoration:none;padding:13px 12px;border-radius:12px;font-weight:bold;background:#065269;color:white}
+    .btn.admin{background:#e65013}
+    .btn:hover{filter:brightness(.94)}
+    [hidden]{display:none!important}
+    .note{margin:25px 0 -65px;text-align:center;color:#fff;font-size:11px}
+    .session-list{margin-top:12px}
+    .session-item{background:#f4efe8;padding:13px;border-radius:12px;margin-top:9px}
+    .session-item strong{display:block;margin-bottom:5px}
+    .session-item small{display:block;color:#526b73;margin-bottom:9px}
+    .session-item .btn{font-size:13px;color:#fff;margin-top:9px;padding:9px}
+    .login{max-width:470px;margin:10vh auto;padding:30px;border-radius:20px;background:#f7f3ed;color:#065269}
+    .login-logo{display:block;max-width:150px;margin:0 auto 18px}
+    .login input{width:100%;padding:13px;margin:8px 0;border-radius:10px}
+    .login button{background:#e65013;color:#fff;border:0;border-radius:10px;padding:13px;width:100%;cursor:pointer}
+    .login button:disabled{opacity:.6;cursor:wait}
+    @media(max-width:800px){
+      .grid{grid-template-columns:1fr}
+      .wrap{margin:14px 10px;padding:25px 16px}
+    }
+    @media(max-width:620px){
+      .subcards{grid-template-columns:1fr}
+      .login{margin:10vh 12px}
+    }
+  </style>
+</head>
+<body>
+  <section id="centralLogin" class="login">
+    <img class="login-logo" src="../logorebondsignature.png" alt="Rebond">
+    <h2>Administration Rebond</h2>
+    <p>Connexion administrateur</p>
 
-</div></article>
-<article class="card"><span class="tag">Fin de session</span><h2>Quiz Formation</h2><p>Quiz de formation existants : accès aux questionnaires, sessions et résultats conservés.</p><div class="buttons"><a class="btn admin" href="../administration-quiz/?categorie=formation">Gérer les sessions de formation</a></div><div class="subcards"><div class="sub"><h3>06/10/2026</h3><p>Quiz fin de session du 06/10/2026.</p><div class="buttons"><a class="btn" href="../questionnaire2/?apercu=admin" target="_blank">Ouvrir le questionnaire</a><a class="btn admin" href="../questionnaire2/admin-archives-06102026.html">Ouvrir l’administration</a></div></div></div><div id="formationSessions" class="session-list" aria-live="polite">Chargement des sessions…</div></article>
-<article class="card"><span class="tag">Fin de Session</span><h2>Questionnaire de satisfaction</h2><p>Création des sessions des questionnaires, consultation des résultats et envoi du bilan par e-mail.</p><div class="buttons"><a class="btn" href="../questionnaire-satisfaction/" target="_blank">Ouvrir le questionnaire</a><a class="btn admin" href="../questionnaire-satisfaction/admin/">Ouvrir l’administration</a></div></article>
-</section><p class="note">Rebond® 2026</p></main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
-(async function(){
- const el=document.getElementById("formationSessions");
- const db=supabase.createClient("https://tdsrqmpfdvntybdlvejy.supabase.co","sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO");
- const login=document.getElementById("centralLogin"),content=document.getElementById("centralContent");
- const retour=new URLSearchParams(location.search).get("retour");const safeRetour=retour&&/^\/(?:questionnaire\/admin\.html|questionnaire2\/admin(?:-archives-06102026)?\.html)(?:\?.*)?$/.test(retour)?retour:null;
- async function enter(){const {data:{session}}=await db.auth.getSession();if(session){if(safeRetour){location.replace(safeRetour);return true}login.hidden=true;content.hidden=false;return true}login.hidden=false;content.hidden=true;return false}
- document.getElementById("centralLoginForm").onsubmit=async e=>{e.preventDefault();const button=e.currentTarget.querySelector("button");button.disabled=true;const {error}=await db.auth.signInWithPassword({email:document.getElementById("centralEmail").value.trim(),password:document.getElementById("centralPassword").value});button.disabled=false;if(error){document.getElementById("centralError").textContent=error.message;return}document.getElementById("centralError").textContent="";if(await enter())location.reload()};
- if(!(await enter()))return;
- const {data,error}=await db.from("rebond_quiz_sessions").select("code,event_name,event_date,event_place").eq("category","formation").order("event_date",{ascending:false});
- if(error){el.textContent="Impossible de charger les sessions : "+error.message;return}
- if(!data?.length){el.textContent="";return}
- const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
- el.innerHTML="<strong>Sessions de formation</strong>"+data.map(x=>'<div class="session-item"><strong>'+esc(x.event_name)+'</strong><small>'+esc(x.event_date)+' — '+esc(x.event_place)+'</small><a class="btn" href="../questionnaire2/admin.html?session='+encodeURIComponent(x.code)+'">Voir les résultats</a><a class="btn admin" style="background:#b74b4b;margin-left:8px" href="../questionnaire2/admin.html?deleteSession='+encodeURIComponent(x.code)+'" aria-label="Supprimer la session '+esc(x.event_name)+'">Supprimer</a></div>').join("");
-})().catch(e=>{document.getElementById("formationSessions").textContent="Chargement impossible : "+e.message});
-</script></body></html>
+    <form id="centralLoginForm">
+      <input
+        id="centralEmail"
+        type="email"
+        autocomplete="username"
+        required
+        placeholder="E-mail"
+      >
+      <input
+        id="centralPassword"
+        type="password"
+        autocomplete="current-password"
+        required
+        placeholder="Mot de passe"
+      >
+      <button id="centralSubmit" type="submit" disabled>
+        Se connecter
+      </button>
+    </form>
+
+    <p id="centralError" role="status">Vérification de l’accès…</p>
+    <noscript>JavaScript doit être activé pour accéder à cette page.</noscript>
+  </section>
+
+  <main class="wrap" id="centralContent" hidden>
+    <header class="head">
+      <img class="logo" src="../logorebondsignature.png" alt="Rebond">
+      <h1>Administration Rebond</h1>
+      <p>Accès central aux questionnaires, aux sessions et aux résultats.</p>
+    </header>
+
+    <section class="grid">
+      <article class="card">
+        <span class="tag">Fin de session</span>
+        <h2>Quiz Sensibilisation</h2>
+        <p>Quiz de sensibilisation existants : accès aux questionnaires, sessions et résultats conservés.</p>
+
+        <div class="buttons">
+          <a class="btn admin" href="../administration-quiz/?categorie=sensibilisation">
+            Gérer les sessions de sensibilisation
+          </a>
+        </div>
+
+        <div class="subcards">
+          <div class="sub">
+            <h3>22/09/2026</h3>
+            <p>Quiz fin de session du 22/09/2026.</p>
+            <div class="buttons">
+              <a class="btn" href="../questionnaire/?apercu=admin" target="_blank" rel="noopener">
+                Ouvrir le questionnaire
+              </a>
+              <a class="btn admin" href="../questionnaire/admin.html">
+                Ouvrir l’administration
+              </a>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <span class="tag">Fin de session</span>
+        <h2>Quiz Formation</h2>
+        <p>Quiz de formation existants : accès aux questionnaires, sessions et résultats conservés.</p>
+
+        <div class="buttons">
+          <a class="btn admin" href="../administration-quiz/?categorie=formation">
+            Gérer les sessions de formation
+          </a>
+        </div>
+
+        <div class="subcards">
+          <div class="sub">
+            <h3>06/10/2026</h3>
+            <p>Quiz fin de session du 06/10/2026.</p>
+            <div class="buttons">
+              <a class="btn" href="../questionnaire2/?apercu=admin" target="_blank" rel="noopener">
+                Ouvrir le questionnaire
+              </a>
+              <a class="btn admin" href="../questionnaire2/admin-archives-06102026.html">
+                Ouvrir l’administration
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div id="formationSessions" class="session-list" aria-live="polite">
+          Chargement des sessions…
+        </div>
+      </article>
+
+      <article class="card">
+        <span class="tag">Fin de Session</span>
+        <h2>Questionnaire de satisfaction</h2>
+        <p>Création des sessions des questionnaires, consultation des résultats et envoi du bilan par e-mail.</p>
+
+        <div class="buttons">
+          <a class="btn" href="../questionnaire-satisfaction/" target="_blank" rel="noopener">
+            Ouvrir le questionnaire
+          </a>
+          <a class="btn admin" href="../questionnaire-satisfaction/admin/">
+            Ouvrir l’administration
+          </a>
+        </div>
+      </article>
+    </section>
+
+    <p class="note">Rebond® 2026</p>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script>
+  <script>
+    (async function () {
+      const login = document.getElementById("centralLogin");
+      const content = document.getElementById("centralContent");
+      const message = document.getElementById("centralError");
+      const form = document.getElementById("centralLoginForm");
+      const submit = document.getElementById("centralSubmit");
+      const password = document.getElementById("centralPassword");
+      const sessionsElement = document.getElementById("formationSessions");
+
+      function closeAccess(text) {
+        content.hidden = true;
+        login.hidden = false;
+        sessionsElement.replaceChildren();
+        message.textContent = text;
+      }
+
+      if (!window.supabase?.createClient) {
+        closeAccess(
+          "Le service de connexion n’a pas pu être chargé. Recharge la page."
+        );
+        return;
+      }
+
+      const db = window.supabase.createClient(
+        "https://tdsrqmpfdvntybdlvejy.supabase.co",
+        "sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO"
+      );
+
+      const retour = new URLSearchParams(location.search).get("retour");
+      const allowedReturn =
+        /^\/(?:questionnaire\/admin\.html|questionnaire2\/admin(?:-archives-06102026)?\.html)(?:\?.*)?$/;
+
+      const safeRetour =
+        retour && allowedReturn.test(retour) ? retour : null;
+
+      let accessVersion = 0;
+
+      async function loadSessions(version) {
+        sessionsElement.textContent = "Chargement des sessions…";
+
+        const { data, error } = await db
+          .from("rebond_quiz_sessions")
+          .select("code,event_name,event_date,event_place")
+          .eq("category", "formation")
+          .order("event_date", { ascending: false });
+
+        // Ne pas réafficher des données après une déconnexion.
+        if (version !== accessVersion || content.hidden) return;
+
+        sessionsElement.replaceChildren();
+
+        if (error) {
+          sessionsElement.textContent =
+            "Impossible de charger les sessions. Réessaie plus tard.";
+          return;
+        }
+
+        if (!data?.length) return;
+
+        const heading = document.createElement("strong");
+        heading.textContent = "Sessions de formation";
+        sessionsElement.append(heading);
+
+        for (const session of data) {
+          const item = document.createElement("div");
+          item.className = "session-item";
+
+          const title = document.createElement("strong");
+          title.textContent = session.event_name ?? "";
+
+          const details = document.createElement("small");
+          details.textContent =
+            (session.event_date ?? "") + " — " +
+            (session.event_place ?? "");
+
+          const results = document.createElement("a");
+          results.className = "btn";
+          results.textContent = "Voir les résultats";
+          results.href =
+            "../questionnaire2/admin.html?session=" +
+            encodeURIComponent(session.code);
+
+          const remove = document.createElement("a");
+          remove.className = "btn admin";
+          remove.style.background = "#b74b4b";
+          remove.style.marginLeft = "8px";
+          remove.textContent = "Supprimer";
+          remove.href =
+            "../questionnaire2/admin.html?deleteSession=" +
+            encodeURIComponent(session.code);
+          remove.setAttribute(
+            "aria-label",
+            "Supprimer la session " + (session.event_name ?? "")
+          );
+
+          item.append(title, details, results, remove);
+          sessionsElement.append(item);
+        }
+      }
+
+      async function checkAccess() {
+        const version = ++accessVersion;
+        closeAccess("Vérification de l’accès…");
+
+        try {
+          const { data, error } = await db.auth.getSession();
+
+          if (version !== accessVersion) return;
+
+          if (error) {
+            closeAccess(
+              "Impossible de vérifier la connexion. Réessaie."
+            );
+            return;
+          }
+
+          if (!data?.session) {
+            closeAccess("");
+            return;
+          }
+
+          const { data: isAdmin, error: roleError } =
+            await db.rpc("rebond_is_admin");
+
+          if (version !== accessVersion) return;
+
+          if (roleError) {
+            closeAccess(
+              "Impossible de vérifier tes droits. Réessaie."
+            );
+            return;
+          }
+
+          if (isAdmin !== true) {
+            closeAccess(
+              "Accès réservé aux administrateurs. " +
+              "Connecte-toi avec un compte autorisé."
+            );
+            return;
+          }
+
+          // La redirection est autorisée seulement après le contrôle du rôle.
+          if (safeRetour) {
+            location.replace(safeRetour);
+            return;
+          }
+
+          message.textContent = "";
+          login.hidden = true;
+          content.hidden = false;
+
+          await loadSessions(version);
+        } catch {
+          if (version === accessVersion) {
+            closeAccess(
+              "Impossible de vérifier l’accès. Réessaie."
+            );
+          }
+        }
+      }
+
+      form.addEventListener("submit", async function (event) {
+        event.preventDefault();
+        if (submit.disabled) return;
+
+        submit.disabled = true;
+
+        // Invalide une éventuelle vérification précédente.
+        ++accessVersion;
+        closeAccess("Connexion en cours…");
+
+        try {
+          const { error } = await db.auth.signInWithPassword({
+            email: document.getElementById("centralEmail").value.trim(),
+            password: password.value
+          });
+
+          password.value = "";
+
+          if (error) {
+            closeAccess(
+              "Connexion impossible. Vérifie tes identifiants."
+            );
+            return;
+          }
+
+          await checkAccess();
+        } catch {
+          closeAccess(
+            "Le service de connexion est indisponible. Réessaie."
+          );
+        } finally {
+          password.value = "";
+          submit.disabled = false;
+        }
+      });
+
+      db.auth.onAuthStateChange(function (event) {
+        if (event === "SIGNED_OUT") {
+          ++accessVersion;
+          closeAccess("Tu es déconnecté.");
+        }
+      });
+
+      await checkAccess();
+      submit.disabled = false;
+    })().catch(function () {
+      document.getElementById("centralContent").hidden = true;
+      document.getElementById("centralLogin").hidden = false;
+      document.getElementById("centralError").textContent =
+        "Impossible d’initialiser la connexion. Recharge la page.";
+    });
+  </script>
+</body>
+</html>

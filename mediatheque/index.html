@@ -37,7 +37,7 @@ html{scroll-behavior:smooth}body{margin:0;min-width:300px;background-color:#f7f4
 <section class="search-wrap"><div class="search-box"><label for="search">Rechercher un outil, un document ou un thème</label><input id="search" type="search" placeholder="Ex. : emprise, prévention, affiches…" autocomplete="off"><p id="searchHint">La recherche porte sur les titres, descriptions, thèmes, mots-clés et documents associés.</p></div></section>
 <nav class="alphabet" aria-label="Filtrer par première lettre"></nav>
 <div class="status" id="status" aria-live="polite"></div><main class="grid" id="grid"></main>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script>
 <style>#privateGate{position:fixed;inset:0;z-index:99999;background:#f7f1e8;display:flex;align-items:center;justify-content:center;font:16px Arial,sans-serif}#privateGate form{background:white;padding:32px;max-width:380px;width:90%;box-shadow:0 12px 40px #0002;border-radius:12px}#privateGate input,#privateGate button{display:block;width:100%;box-sizing:border-box;margin:12px 0;padding:12px}body:not(.private-ready) #grid{visibility:hidden}</style>
 <div id="privateGate"><form id="privateForm"><h2>Médiathèque — accès sécurisé</h2><p>Compte individuel Full ou Essentiel+</p><input id="privateEmail" type="email" autocomplete="username" placeholder="Adresse e-mail" required><input id="privatePassword" type="password" autocomplete="current-password" placeholder="Mot de passe" required><button type="submit">Se connecter</button><p id="privateMessage" role="status"></p></form></div>
 <script>

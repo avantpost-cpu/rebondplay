@@ -1,895 +1,421 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Rebond — Sessions Escape Game</title>
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-
-html,
-body{
-  width:100%;
-  min-height:100%;
-  background:#1b5f6e;
-  font-family:Arial, Helvetica, sans-serif;
-  color:#044e61;
-}
-
-body{
-  padding:36px 18px;
-}
-
-.page{
-  width:100%;
-  max-width:1040px;
-  margin:0 auto;
-}
-
-.entete{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:22px;
-  margin-bottom:24px;
-}
-
-.entete h1{
-  margin-bottom:8px;
-  color:#ffffff;
-  font-size:36px;
-  line-height:1.1;
-}
-
-.entete p{
-  color:rgba(255,255,255,.82);
-  font-size:16px;
-  line-height:1.45;
-}
-
-.compte{
-  flex:0 0 auto;
-  text-align:right;
-}
-
-.email{
-  margin-bottom:10px;
-  color:#ffffff;
-  font-size:14px;
-  font-weight:bold;
-}
-
-.bouton-deconnexion{
-  min-height:42px;
-  padding:8px 18px;
-  border:1px solid rgba(255,255,255,.65);
-  border-radius:999px;
-  background:transparent;
-  color:#ffffff;
-  font-size:14px;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.bouton-deconnexion:hover{
-  background:rgba(255,255,255,.12);
-}
-
-.barre-actions{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:18px;
-  margin-bottom:22px;
-}
-
-.bouton-principal{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  min-height:52px;
-  padding:11px 24px;
-  border:0;
-  border-radius:999px;
-  background:#edb01a;
-  color:#044e61;
-  font-size:17px;
-  font-weight:bold;
-  text-decoration:none;
-  cursor:pointer;
-}
-
-.bouton-secondaire{
-  min-height:46px;
-  padding:9px 20px;
-  border:0;
-  border-radius:999px;
-  background:#ffffff;
-  color:#044e61;
-  font-size:15px;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.bouton-secondaire:disabled{
-  opacity:.55;
-  cursor:wait;
-}
-
-.message{
-  display:none;
-  margin-bottom:20px;
-  padding:16px 18px;
-  border-radius:14px;
-  font-weight:bold;
-  line-height:1.4;
-}
-
-.message.visible{
-  display:block;
-}
-
-.message.succes{
-  background:#e4f4e9;
-  color:#16824a;
-}
-
-.message.erreur{
-  background:#f8e3e3;
-  color:#a52d2d;
-}
-
-.message.information{
-  background:#eaf5f2;
-  color:#044e61;
-}
-
-.resume-global{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:16px;
-  margin-bottom:22px;
-}
-
-.indicateur{
-  padding:20px;
-  border-radius:18px;
-  background:#ffffff;
-}
-
-.indicateur .libelle{
-  display:block;
-  margin-bottom:7px;
-  color:#56747b;
-  font-size:14px;
-  font-weight:bold;
-}
-
-.indicateur .valeur{
-  display:block;
-  color:#044e61;
-  font-size:34px;
-  line-height:1;
-  font-weight:900;
-}
-
-.liste{
-  display:grid;
-  gap:16px;
-}
-
-.session{
-  padding:22px;
-  border-radius:20px;
-  background:#ffffff;
-}
-
-.session-entete{
-  display:flex;
-  align-items:flex-start;
-  justify-content:space-between;
-  gap:18px;
-  margin-bottom:18px;
-}
-
-.session-titre{
-  min-width:0;
-}
-
-.session-titre h2{
-  margin-bottom:6px;
-  font-size:23px;
-  line-height:1.2;
-}
-
-.session-date{
-  color:#60777d;
-  font-size:14px;
-}
-
-.code{
-  flex:0 0 auto;
-  padding:9px 14px;
-  border-radius:12px;
-  background:#eaf5f2;
-  color:#044e61;
-  font-size:18px;
-  font-weight:900;
-  letter-spacing:1.5px;
-}
-
-.session-infos{
-  display:grid;
-  grid-template-columns:1.4fr 1fr 1fr;
-  gap:16px;
-  margin-bottom:18px;
-}
-
-.info{
-  min-width:0;
-}
-
-.info .label{
-  display:block;
-  margin-bottom:5px;
-  color:#6b7f84;
-  font-size:12px;
-  font-weight:bold;
-  text-transform:uppercase;
-  letter-spacing:.4px;
-}
-
-.info .contenu{
-  display:block;
-  overflow-wrap:anywhere;
-  color:#244f58;
-  font-size:15px;
-  font-weight:bold;
-}
-
-.progression{
-  display:flex;
-  align-items:center;
-  gap:14px;
-}
-
-.barre{
-  flex:1;
-  height:10px;
-  overflow:hidden;
-  border-radius:999px;
-  background:#dfe9eb;
-}
-
-.remplissage{
-  height:100%;
-  width:0;
-  border-radius:999px;
-  background:#18A558;
-}
-
-.texte-progression{
-  flex:0 0 auto;
-  color:#476b73;
-  font-size:14px;
-  font-weight:bold;
-}
-
-.vide{
-  display:none;
-  padding:34px 24px;
-  border-radius:20px;
-  background:#ffffff;
-  color:#56747b;
-  text-align:center;
-  line-height:1.5;
-}
-
-.vide.visible{
-  display:block;
-}
-
-.chargement{
-  display:none;
-  padding:34px 24px;
-  border-radius:20px;
-  background:#ffffff;
-  color:#56747b;
-  text-align:center;
-  font-weight:bold;
-}
-
-.chargement.visible{
-  display:block;
-}
-
-@media screen and (max-width:760px){
-
-  body{
-    padding:22px 12px;
-  }
-
-  .entete{
-    flex-direction:column;
-  }
-
-  .compte{
-    width:100%;
-    text-align:left;
-  }
-
-  .barre-actions{
-    flex-direction:column;
-    align-items:stretch;
-  }
-
-  .bouton-principal,
-  .bouton-secondaire{
-    width:100%;
-  }
-
-  .resume-global{
-    grid-template-columns:1fr;
-  }
-
-  .session-entete{
-    flex-direction:column;
-  }
-
-  .session-infos{
-    grid-template-columns:1fr;
-  }
-
-  .progression{
-    align-items:flex-start;
-    flex-direction:column;
-  }
-
-  .barre{
-    width:100%;
-  }
-
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;min-height:100%;background:#1b5f6e;font-family:Arial,Helvetica,sans-serif;color:#044e61}
+body{padding:36px 18px}
+[hidden]{display:none!important}
+.page{width:100%;max-width:1040px;margin:0 auto}
+.entete{display:flex;align-items:flex-start;justify-content:space-between;gap:22px;margin-bottom:24px}
+.entete h1{margin-bottom:8px;color:#fff;font-size:36px;line-height:1.1}
+.entete p{color:#ffffffd1;font-size:16px;line-height:1.45}
+.compte{flex:0 0 auto;text-align:right}
+.email{margin-bottom:10px;color:#fff;font-size:14px;font-weight:bold}
+.bouton-deconnexion{min-height:42px;padding:8px 18px;border:1px solid #ffffffa6;border-radius:999px;background:transparent;color:#fff;font-size:14px;font-weight:bold;cursor:pointer}
+.bouton-deconnexion:hover{background:#ffffff1f}
+button:disabled{opacity:.55;cursor:wait}
+.barre-actions{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:22px}
+.bouton-principal{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:11px 24px;border:0;border-radius:999px;background:#edb01a;color:#044e61;font-size:17px;font-weight:bold;text-decoration:none;cursor:pointer}
+.bouton-secondaire{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:9px 20px;border:0;border-radius:999px;background:#fff;color:#044e61;font-size:15px;font-weight:bold;text-decoration:none;cursor:pointer}
+.message{margin-bottom:20px;padding:16px 18px;border-radius:14px;background:#e4f4e9;color:#16824a;font-weight:bold;line-height:1.4}
+.resume-global{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:22px}
+.indicateur{padding:20px;border-radius:18px;background:#fff}
+.indicateur .libelle{display:block;margin-bottom:7px;color:#56747b;font-size:14px;font-weight:bold}
+.indicateur .valeur{display:block;color:#044e61;font-size:34px;line-height:1;font-weight:900}
+.liste{display:grid;gap:16px}
+.session{padding:22px;border-radius:20px;background:#fff}
+.session-entete{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:18px}
+.session-titre{min-width:0}
+.session-titre h2{margin-bottom:6px;font-size:23px;line-height:1.2}
+.session-date{color:#60777d;font-size:14px}
+.code{flex:0 0 auto;padding:9px 14px;border-radius:12px;background:#eaf5f2;color:#044e61;font-size:18px;font-weight:900;letter-spacing:1.5px}
+.session-infos{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:16px;margin-bottom:18px}
+.info{min-width:0}
+.info .label{display:block;margin-bottom:5px;color:#6b7f84;font-size:12px;font-weight:bold;text-transform:uppercase;letter-spacing:.4px}
+.info .contenu{display:block;overflow-wrap:anywhere;color:#244f58;font-size:15px;font-weight:bold}
+.progression{display:flex;align-items:center;gap:14px}
+.barre{flex:1;height:10px;overflow:hidden;border-radius:999px;background:#dfe9eb}
+.remplissage{height:100%;width:0;border-radius:999px;background:#18a558}
+.texte-progression{flex:0 0 auto;color:#476b73;font-size:14px;font-weight:bold}
+.vide{padding:34px 24px;border-radius:20px;background:#fff;color:#56747b;text-align:center;line-height:1.5}
+.acces{padding:28px;border-radius:20px;background:#fff}
+.acces p{margin-bottom:20px;line-height:1.5}
+.acces-actions{display:flex;gap:12px;flex-wrap:wrap}
+@media(max-width:760px){
+  body{padding:22px 12px}
+  .entete{flex-direction:column}
+  .compte{width:100%;text-align:left}
+  .barre-actions{flex-direction:column;align-items:stretch}
+  .bouton-principal,.bouton-secondaire{width:100%}
+  .resume-global{grid-template-columns:1fr}
+  .session-entete{flex-direction:column}
+  .session-infos{grid-template-columns:1fr}
+  .progression{align-items:flex-start;flex-direction:column}
+  .barre{width:100%}
 }
 </style>
 </head>
 
 <body>
-
 <main class="page">
+  <section id="acces" class="acces">
+    <h2>Administration — Sessions Escape Game</h2>
+    <p id="messageAcces" role="status">Vérification de l’accès…</p>
 
-  <header class="entete">
-
-    <div>
-
-      <h1>Sessions Escape Game</h1>
-
-      <p>
-        Tableau de bord réservé à Rebond :
-        suivi des écoles, classes et équipes participantes.
-      </p>
-
+    <div class="acces-actions">
+      <a class="bouton-principal"
+        href="/administration-questionnaires/">
+        Connexion administrateur
+      </a>
+      <button id="changerCompte" class="bouton-secondaire" type="button">
+        Se déconnecter / Changer de compte
+      </button>
     </div>
+  </section>
 
-    <div class="compte">
-
-      <div
-        id="emailConnecte"
-        class="email">
+  <div id="dashboard" hidden>
+    <header class="entete">
+      <div>
+        <h1>Sessions Escape Game</h1>
+        <p>
+          Tableau de bord réservé à Rebond :
+          suivi des écoles, classes et équipes participantes.
+        </p>
       </div>
 
-      <button
-        id="boutonDeconnexion"
-        class="bouton-deconnexion"
-        type="button">
-        Se déconnecter
+      <div class="compte">
+        <div id="emailConnecte" class="email"></div>
+        <button id="boutonDeconnexion"
+          class="bouton-deconnexion" type="button">
+          Se déconnecter
+        </button>
+      </div>
+    </header>
+
+    <div class="barre-actions">
+      <a class="bouton-principal" href="creer-session.html">
+        Créer une nouvelle session
+      </a>
+
+      <button id="boutonActualiser"
+        class="bouton-secondaire" type="button">
+        Actualiser les données
       </button>
-
     </div>
 
-  </header>
+    <div id="message" class="message" aria-live="polite"></div>
 
-  <div class="barre-actions">
+    <section class="resume-global" aria-label="Résumé global">
+      <div class="indicateur">
+        <span class="libelle">Sessions</span>
+        <span id="totalSessions" class="valeur">0</span>
+      </div>
 
-    <a
-      class="bouton-principal"
-      href="creer-session.html">
-      Créer une nouvelle session
-    </a>
+      <div class="indicateur">
+        <span class="libelle">Équipes inscrites</span>
+        <span id="totalEquipes" class="valeur">0</span>
+      </div>
 
-    <button
-      id="boutonActualiser"
-      class="bouton-secondaire"
-      type="button">
-      Actualiser les données
-    </button>
+      <div class="indicateur">
+        <span class="libelle">Équipes terminées</span>
+        <span id="totalTerminees" class="valeur">0</span>
+      </div>
+    </section>
 
-  </div>
+    <section id="listeSessions" class="liste"></section>
 
-  <div
-    id="message"
-    class="message"
-    aria-live="polite">
-  </div>
-
-  <section
-    id="resumeGlobal"
-    class="resume-global"
-    aria-label="Résumé global">
-
-    <div class="indicateur">
-
-      <span class="libelle">
-        Sessions
-      </span>
-
-      <span
-        id="totalSessions"
-        class="valeur">
-        0
-      </span>
-
+    <div id="aucuneSession" class="vide" hidden>
+      Aucune session n’a encore été créée.
     </div>
-
-    <div class="indicateur">
-
-      <span class="libelle">
-        Équipes inscrites
-      </span>
-
-      <span
-        id="totalEquipes"
-        class="valeur">
-        0
-      </span>
-
-    </div>
-
-    <div class="indicateur">
-
-      <span class="libelle">
-        Équipes terminées
-      </span>
-
-      <span
-        id="totalTerminees"
-        class="valeur">
-        0
-      </span>
-
-    </div>
-
-  </section>
-
-  <div
-    id="chargement"
-    class="chargement visible">
-    Chargement des sessions…
   </div>
-
-  <section
-    id="listeSessions"
-    class="liste">
-  </section>
-
-  <div
-    id="aucuneSession"
-    class="vide">
-    Aucune session n’a encore été créée.
-  </div>
-
 </main>
 
-<script
-  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-</script>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script>
 <script src="../js/config.js"></script>
 
 <script>
-const client =
-  window.supabase.createClient(
-    window.REBOND_CONFIG.supabaseUrl,
-    window.REBOND_CONFIG.supabaseKey
-  );
+(async function () {
+  const $ = id => document.getElementById(id);
+  const LOGIN_URL = "/administration-questionnaires/";
 
-const emailConnecte =
-  document.getElementById("emailConnecte");
+  let version = 0;
+  let timer;
 
-const boutonDeconnexion =
-  document.getElementById("boutonDeconnexion");
-
-const boutonActualiser =
-  document.getElementById("boutonActualiser");
-
-const message =
-  document.getElementById("message");
-
-const chargement =
-  document.getElementById("chargement");
-
-const listeSessions =
-  document.getElementById("listeSessions");
-
-const aucuneSession =
-  document.getElementById("aucuneSession");
-
-const totalSessions =
-  document.getElementById("totalSessions");
-
-const totalEquipes =
-  document.getElementById("totalEquipes");
-
-const totalTerminees =
-  document.getElementById("totalTerminees");
-
-function afficherMessage(
-  texte,
-  type
-){
-
-  message.textContent =
-    texte;
-
-  message.className =
-    "message visible " + type;
-
-}
-
-function masquerMessage(){
-
-  message.textContent = "";
-  message.className = "message";
-
-}
-
-function afficherDate(
-  dateBrute
-){
-
-  if(!dateBrute){
-    return "Date non renseignée";
+  function fermerAcces(texte) {
+    $("dashboard").hidden = true;
+    $("acces").hidden = false;
+    $("messageAcces").textContent = texte;
+    $("emailConnecte").textContent = "";
+    $("listeSessions").replaceChildren();
+    $("totalSessions").textContent = "0";
+    $("totalEquipes").textContent = "0";
+    $("totalTerminees").textContent = "0";
+    $("message").textContent = "";
+    $("aucuneSession").hidden = true;
   }
 
-  const date =
-    new Date(
-      dateBrute + "T12:00:00"
+  fermerAcces("Vérification de l’accès…");
+
+  const config = window.REBOND_CONFIG;
+
+  if (
+    !window.supabase?.createClient ||
+    !config?.supabaseUrl ||
+    !config?.supabaseKey
+  ) {
+    fermerAcces(
+      "Impossible de charger la connexion ou la configuration. Recharge la page."
     );
-
-  return date.toLocaleDateString(
-    "fr-FR",
-    {
-      day:"2-digit",
-      month:"2-digit",
-      year:"numeric"
-    }
-  );
-
-}
-
-function creerElementSession(
-  session
-){
-
-  const article =
-    document.createElement("article");
-
-  article.className =
-    "session";
-
-  const total =
-    Number(
-      session.teams_count || 0
-    );
-
-  const terminees =
-    Number(
-      session.completed_count || 0
-    );
-
-  const pourcentage =
-    total > 0
-      ? Math.round(
-          (terminees / total) * 100
-        )
-      : 0;
-
-  article.innerHTML = `
-    <div class="session-entete">
-
-      <div class="session-titre">
-
-        <h2>
-          ${echapperHTML(session.school_name)}
-        </h2>
-
-        <div class="session-date">
-          ${afficherDate(session.session_date)}
-        </div>
-
-      </div>
-
-      <div class="code">
-        ${echapperHTML(session.session_code)}
-      </div>
-
-    </div>
-
-    <div class="session-infos">
-
-      <div class="info">
-
-        <span class="label">
-          Classe
-        </span>
-
-        <span class="contenu">
-          ${echapperHTML(session.class_name)}
-        </span>
-
-      </div>
-
-      <div class="info">
-
-        <span class="label">
-          E-mail adulte
-        </span>
-
-        <span class="contenu">
-          ${echapperHTML(session.organizer_email)}
-        </span>
-
-      </div>
-
-      <div class="info">
-
-        <span class="label">
-          Équipes
-        </span>
-
-        <span class="contenu">
-          ${total}
-        </span>
-
-      </div>
-
-    </div>
-
-    <div class="progression">
-
-      <div
-        class="barre"
-        aria-label="${terminees} équipe(s) terminée(s) sur ${total}">
-
-        <div
-          class="remplissage"
-          style="width:${pourcentage}%">
-        </div>
-
-      </div>
-
-      <div class="texte-progression">
-        ${terminees} terminée(s) sur ${total}
-      </div>
-
-    </div>
-  `;
-
-  return article;
-
-}
-
-function echapperHTML(
-  valeur
-){
-
-  const element =
-    document.createElement("div");
-
-  element.textContent =
-    String(valeur ?? "");
-
-  return element.innerHTML;
-
-}
-
-async function verifierConnexion(){
-
-  const {
-    data:{
-      session
-    },
-    error
-  } =
-    await client.auth.getSession();
-
-  if(error){
-    throw error;
+    return;
   }
 
-  if(!session){
+  const client = window.supabase.createClient(
+    config.supabaseUrl,
+    config.supabaseKey
+  );
 
-    window.location.href =
-      "connexion.html";
+  const nombre = valeur => {
+    const n = Number(valeur);
+    return Number.isFinite(n) && n >= 0 ? Math.floor(n) : 0;
+  };
 
-    return null;
+  function element(tag, texte, classe) {
+    const el = document.createElement(tag);
 
+    if (texte !== undefined) {
+      el.textContent = String(texte);
+    }
+
+    if (classe) {
+      el.className = classe;
+    }
+
+    return el;
   }
 
-  emailConnecte.textContent =
-    session.user.email;
+  function date(valeur) {
+    return valeur
+      ? new Date(valeur + "T12:00:00").toLocaleDateString("fr-FR")
+      : "Date non renseignée";
+  }
 
-  return session;
+  function creerSession(session) {
+    const article = element("article", undefined, "session");
+    const entete = element("div", undefined, "session-entete");
+    const titre = element("div", undefined, "session-titre");
 
-}
+    titre.append(
+      element("h2", session.school_name ?? ""),
+      element("div", date(session.session_date), "session-date")
+    );
 
-async function chargerSessions(){
+    entete.append(
+      titre,
+      element("div", session.session_code ?? "", "code")
+    );
 
-  boutonActualiser.disabled = true;
+    const infos = element("div", undefined, "session-infos");
+    const total = nombre(session.teams_count);
+    const terminees = nombre(session.completed_count);
 
-  chargement.classList.add(
-    "visible"
-  );
+    for (const [label, contenu] of [
+      ["Classe", session.class_name ?? ""],
+      ["E-mail adulte", session.organizer_email ?? ""],
+      ["Équipes", total]
+    ]) {
+      const info = element("div", undefined, "info");
 
-  aucuneSession.classList.remove(
-    "visible"
-  );
+      info.append(
+        element("span", label, "label"),
+        element("span", contenu, "contenu")
+      );
 
-  listeSessions.innerHTML = "";
-
-  masquerMessage();
-
-  try{
-
-    const session =
-      await verifierConnexion();
-
-    if(!session){
-      return;
+      infos.append(info);
     }
 
-    const {
-      data,
-      error
-    } =
-      await client.rpc(
-        "rebond_admin_sessions"
-      );
+    const progression = element("div", undefined, "progression");
+    const barre = element("div", undefined, "barre");
 
-    if(error){
-      throw error;
-    }
+    barre.setAttribute(
+      "aria-label",
+      terminees + " équipe(s) terminée(s) sur " + total
+    );
 
-    const sessions =
-      Array.isArray(data)
-        ? data
-        : [];
+    const remplissage = element("div", undefined, "remplissage");
 
-    const nombreSessions =
-      sessions.length;
+    remplissage.style.width = (
+      total ? Math.min(100, Math.round(terminees / total * 100)) : 0
+    ) + "%";
 
-    const nombreEquipes =
-      sessions.reduce(
-        function(total, item){
+    barre.append(remplissage);
 
-          return total +
-            Number(item.teams_count || 0);
+    progression.append(
+      barre,
+      element(
+        "div",
+        terminees + " terminée(s) sur " + total,
+        "texte-progression"
+      )
+    );
 
-        },
-        0
-      );
+    article.append(entete, infos, progression);
 
-    const nombreTerminees =
-      sessions.reduce(
-        function(total, item){
+    return article;
+  }
 
-          return total +
-            Number(item.completed_count || 0);
+  async function chargerSessions() {
+    const courant = ++version;
 
-        },
-        0
-      );
+    fermerAcces("Vérification de l’accès…");
+    $("boutonActualiser").disabled = true;
 
-    totalSessions.textContent =
-      nombreSessions;
+    try {
+      const { data: auth, error: authError } =
+        await client.auth.getSession();
 
-    totalEquipes.textContent =
-      nombreEquipes;
+      if (courant !== version) return;
 
-    totalTerminees.textContent =
-      nombreTerminees;
-
-    if(nombreSessions === 0){
-
-      aucuneSession.classList.add(
-        "visible"
-      );
-
-      return;
-
-    }
-
-    sessions.forEach(
-      function(session){
-
-        listeSessions.appendChild(
-          creerElementSession(session)
-        );
-
+      if (authError) {
+        throw Error("Impossible de vérifier la connexion.");
       }
-    );
 
-    afficherMessage(
-      "Les données ont été actualisées.",
-      "succes"
-    );
+      if (!auth?.session) {
+        fermerAcces(
+          "Connexion requise. Utilise le bouton Connexion administrateur."
+        );
+        return;
+      }
 
-  }
-  catch(error){
+      const { data: admin, error: roleError } =
+        await client.rpc("rebond_is_admin");
 
-    console.error(error);
+      if (courant !== version) return;
 
-    afficherMessage(
-      error.message ||
-      "Impossible de charger les sessions.",
-      "erreur"
-    );
+      if (roleError) {
+        throw Error("Impossible de vérifier tes droits.");
+      }
 
-  }
-  finally{
+      if (admin !== true) {
+        fermerAcces("Accès réservé aux administrateurs.");
+        return;
+      }
 
-    chargement.classList.remove(
-      "visible"
-    );
+      $("messageAcces").textContent = "Chargement des sessions…";
 
-    boutonActualiser.disabled = false;
+      const { data, error } =
+        await client.rpc("rebond_admin_sessions");
 
-  }
+      if (courant !== version) return;
 
-}
+      if (error) {
+        throw Error(
+          "Les sessions sont inaccessibles ou impossibles à charger."
+        );
+      }
 
-boutonActualiser.addEventListener(
-  "click",
-  chargerSessions
-);
+      if (!Array.isArray(data)) {
+        throw Error("Réponse inattendue du serveur.");
+      }
 
-boutonDeconnexion.addEventListener(
-  "click",
-  async function(){
+      $("emailConnecte").textContent =
+        auth.session.user?.email ?? "";
 
-    boutonDeconnexion.disabled = true;
+      $("totalSessions").textContent = String(data.length);
 
-    try{
-
-      await client.auth.signOut();
-
-      window.location.href =
-        "connexion.html";
-
-    }
-    catch(error){
-
-      console.error(error);
-
-      afficherMessage(
-        "La déconnexion a échoué.",
-        "erreur"
+      $("totalEquipes").textContent = String(
+        data.reduce(
+          (sum, item) => sum + nombre(item.teams_count),
+          0
+        )
       );
 
-      boutonDeconnexion.disabled = false;
+      $("totalTerminees").textContent = String(
+        data.reduce(
+          (sum, item) => sum + nombre(item.completed_count),
+          0
+        )
+      );
 
+      data.forEach(session => {
+        $("listeSessions").append(creerSession(session));
+      });
+
+      $("aucuneSession").hidden = data.length !== 0;
+      $("message").textContent = "Les données ont été actualisées.";
+      $("acces").hidden = true;
+      $("dashboard").hidden = false;
+    } catch (error) {
+      if (courant === version) {
+        fermerAcces(
+          error.message || "Impossible de charger les sessions."
+        );
+      }
+    } finally {
+      if (courant === version) {
+        $("boutonActualiser").disabled = false;
+      }
+    }
+  }
+
+  async function deconnecter() {
+    ++version;
+    clearTimeout(timer);
+    fermerAcces("Déconnexion en cours…");
+
+    $("boutonDeconnexion").disabled = true;
+    $("changerCompte").disabled = true;
+
+    try {
+      const { error } = await client.auth.signOut();
+
+      if (error) throw error;
+
+      location.replace(LOGIN_URL);
+    } catch {
+      fermerAcces(
+        "Déconnexion non confirmée. Réessaie avant de quitter ce poste."
+      );
+    } finally {
+      $("boutonDeconnexion").disabled = false;
+      $("changerCompte").disabled = false;
+    }
+  }
+
+  $("boutonActualiser").onclick = chargerSessions;
+  $("boutonDeconnexion").onclick = deconnecter;
+  $("changerCompte").onclick = deconnecter;
+
+  client.auth.onAuthStateChange(event => {
+    if (event === "SIGNED_OUT") {
+      ++version;
+      clearTimeout(timer);
+      fermerAcces("Tu es déconnecté.");
+      return;
     }
 
-  }
-);
+    if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED") {
+      ++version;
+      fermerAcces("Vérification de l’accès…");
+      clearTimeout(timer);
 
-chargerSessions();
+      timer = setTimeout(() => {
+        chargerSessions();
+      }, 0);
+    }
+  });
+
+  await chargerSessions();
+})().catch(() => {
+  document.getElementById("dashboard").hidden = true;
+  document.getElementById("acces").hidden = false;
+  document.getElementById("messageAcces").textContent =
+    "Impossible d’initialiser la page. Recharge-la.";
+});
 </script>
-
 </body>
 </html>

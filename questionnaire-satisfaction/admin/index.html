@@ -1,37 +1,513 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Rebond — Satisfaction admin</title><style>*{box-sizing:border-box}body{margin:0;background:#065269;font-family:Arial,sans-serif;color:#123}.w{max-width:1100px;margin:auto;padding:32px 16px}h1{color:#fff}.box{background:#fff;border-radius:20px;padding:22px;margin:14px 0}.row{display:grid;grid-template-columns:2fr 1fr 2fr auto;gap:10px}input,button{padding:12px;border-radius:10px;border:1px solid #ccd;font:inherit}button{background:#e65013;color:#fff;font-weight:bold;cursor:pointer}.session{display:grid;grid-template-columns:1fr auto;gap:12px;border-top:1px solid #eee;padding:16px 0}.muted{color:#678;font-size:13px}.stats{display:flex;gap:12px;flex-wrap:wrap}.stat{background:#eef5f4;padding:10px 14px;border-radius:12px;font-weight:bold}.link{word-break:break-all;color:#065269}.login{max-width:520px;margin:80px auto}@media(max-width:700px){.row{grid-template-columns:1fr}.session{grid-template-columns:1fr}}
-/* Cartouche de connexion Rebond */
-body:has(#login:not([hidden])){background:#065269}
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rebond — Satisfaction admin</title>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#065269;font-family:Arial,sans-serif;color:#123}
+.w{max-width:1100px;margin:auto;padding:32px 16px}
+h1{color:#fff}
+.box{background:#fff;border-radius:20px;padding:22px;margin:14px 0}
+.row{display:grid;grid-template-columns:2fr 1fr 2fr auto;gap:10px}
+input,button{padding:12px;border-radius:10px;border:1px solid #ccd;font:inherit}
+button{background:#e65013;color:#fff;font-weight:bold;cursor:pointer}
+button:disabled{opacity:.55;cursor:wait}
+.session{display:grid;grid-template-columns:1fr auto;gap:12px;border-top:1px solid #eee;padding:16px 0}
+.muted{color:#678;font-size:13px}
+.stats{display:flex;gap:12px;flex-wrap:wrap;margin:10px 0}
+.stat{background:#eef5f4;padding:10px 14px;border-radius:12px;font-weight:bold}
+.link{word-break:break-all}
+.link a{color:#065269}
+.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-start}
+.action-link{display:inline-block;background:#e65013;color:#fff;text-decoration:none;font-weight:bold;padding:12px;border-radius:10px}
+.action-link.secondary{background:#065269}
+.danger{background:#fff;color:#b42318;border:1px solid #b42318}
+[hidden]{display:none!important}
 body:has(#login:not([hidden])) main{display:flex;min-height:100vh;align-items:center;justify-content:center;flex-direction:column}
-body:has(#login:not([hidden])) .admin-head{display:none}
-#login.login{box-sizing:border-box;width:min(520px,calc(100vw - 36px));max-width:520px;margin:0 auto;padding:38px 42px;background:#eee4d2;border-radius:18px;text-align:center;box-shadow:0 14px 40px rgba(0,0,0,.16)}
-#login.login .login-logo{display:block;width:min(147px,41%);height:auto;margin:0 auto 26px}
-#login.login h2{color:#065269;margin:0 0 10px}
-#login.login p{color:#355;margin:0 0 18px}
-#login.login input{box-sizing:border-box;width:100%;margin:0 0 10px;background:#fff}
-#login.login #connect{width:100%;background:#e65013;color:#fff}
-@media(max-width:600px){#login.login{padding:30px 24px}}
-
-/* Le cartouche de connexion disparaît après authentification */
-#login[hidden]{display:none!important}
-
-#login.login .login-destination{margin:-8px 0 20px;color:#065269;font-size:15px;font-weight:700;line-height:1.3}
-
+#login.login{width:min(520px,calc(100vw - 36px));margin:0 auto;padding:38px 42px;background:#eee4d2;border-radius:18px;text-align:center;box-shadow:0 14px 40px #0003}
+#login .login-logo{display:block;width:min(147px,41%);height:auto;margin:0 auto 26px}
+#login h2{color:#065269;margin:0 0 10px}
+#login p{color:#355;margin:12px 0 18px}
+#login input{width:100%;margin:0 0 10px;background:#fff}
+#login #connect{width:100%;background:#e65013;color:#fff}
+.login-destination{margin:-8px 0 20px;color:#065269;font-size:15px;font-weight:700;line-height:1.3}
 .login-copyright{display:none;text-align:center;color:#fff;font-size:11px;line-height:1.35;margin:14px auto 0;width:100%}
 body:has(#login:not([hidden])) .login-copyright{display:block}
-
 .login-copyright span{display:inline-block;margin-top:4px;font-size:10px;font-style:italic;opacity:.82}
-</style><style id="globalAdminReturnStyle">#globalAdminReturn{position:fixed;top:12px;left:12px;z-index:2147483647;display:inline-flex;align-items:center;gap:6px;padding:10px 15px;border-radius:999px;background:#065269;color:#fff!important;font:700 13px Arial,sans-serif;text-decoration:none;box-shadow:0 3px 12px #0004}#globalAdminReturn:hover{background:#e65013}@media(max-width:600px){#globalAdminReturn{top:7px;left:7px;padding:8px 11px;font-size:11px}}</style></head><body><a id="globalAdminReturn" href="/administration-questionnaires/" aria-label="Retour à l’administration générale des questionnaires">← Administration générale</a><main class="w"><section id="login" class="box login"><img class="login-logo" src="../../logorebondsignature.png" alt="Rebond"><div class="login-destination">Administration — Questionnaire de satisfaction</div><h2>Administration Rebond</h2><p>Connectez-vous avec le compte administrateur Supabase.</p><input id="email" type="email" placeholder="Adresse e-mail"><input id="password" type="password" placeholder="Mot de passe"><button id="connect">Se connecter</button><p id="lm"></p></section><div class="login-copyright">Rebond® 2026<br><span>Espace privé — accès réservé aux personnes autorisées</span></div><div id="app" hidden><h1>Questionnaire de satisfaction</h1><section class="box"><h2>Créer une session</h2><div class="row"><input id="event" placeholder="Nom de l'événement"><input id="date" type="date"><input id="place" placeholder="Lieu"><button id="create" type="button">Créer</button></div><p id="cm"></p></section><section class="box"><h2>Mes sessions</h2><div id="sessions">Chargement…</div></section></div></main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>window.REBOND_CONFIG={supabaseUrl:"https://tdsrqmpfdvntybdlvejy.supabase.co",supabaseKey:"sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO"};</script><script>
-const c=window.supabase.createClient(window.REBOND_CONFIG.supabaseUrl,window.REBOND_CONFIG.supabaseKey),login=document.querySelector("#login"),app=document.querySelector("#app");
-const emailEl=document.querySelector("#email"),passwordEl=document.querySelector("#password"),lmEl=document.querySelector("#lm"),eventEl=document.querySelector("#event"),dateEl=document.querySelector("#date"),placeEl=document.querySelector("#place"),cmEl=document.querySelector("#cm"),sessionsEl=document.querySelector("#sessions");
-async function boot(){let {data:{session}}=await c.auth.getSession();if(session){login.hidden=true;app.hidden=false;load()}}
-document.querySelector("#connect").onclick=async()=>{let {error}=await c.auth.signInWithPassword({email:emailEl.value,password:passwordEl.value});if(error){lmEl.textContent=error.message}else boot()};
-function code(){return "SAT-"+Math.random().toString(36).slice(2,7).toUpperCase()}
-document.querySelector("#create").addEventListener("click",async()=>{cmEl.textContent="Création en cours…";if(!eventEl.value.trim()||!dateEl.value){cmEl.textContent="Nom et date obligatoires.";return}try{const {error}=await c.from("satisfaction_sessions").insert({code:code(),event_name:eventEl.value.trim(),event_date:dateEl.value,event_place:placeEl.value.trim()});if(error){cmEl.textContent="Erreur Supabase : "+error.message;return}cmEl.textContent="Session créée.";eventEl.value="";dateEl.value="";placeEl.value="";await load()}catch(e){cmEl.textContent="Erreur : "+(e?.message||e)}});
-async function load(){let {data:s,error}=await c.from("satisfaction_sessions").select("*,satisfaction_responses(id,satisfaction,newsletter)").order("event_date",{ascending:false});if(error){sessionsEl.textContent=error.message;return}sessionsEl.innerHTML=s.map(x=>{let r=x.satisfaction_responses||[],avg=r.length?(r.reduce((a,b)=>a+Number(b.satisfaction||0),0)/r.length).toFixed(1):"—",news=r.filter(y=>y.newsletter==="Oui").length,url=location.origin+location.pathname.replace(/admin\/?$/,"")+"?session="+x.code;return `<article class="session"><div><strong>${x.event_name}</strong> <span class="muted">• ${new Date(x.event_date+"T12:00").toLocaleDateString("fr-FR")} ${x.event_place?"• "+x.event_place:""}</span><div class="stats"><span class="stat">${r.length} réponse(s)</span><span class="stat">Satisfaction ${avg}/5</span><span class="stat">${news} newsletter</span></div><div class="link"><a href="${url}" target="_blank" rel="noopener">${x.event_name}</a></div></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button onclick="location.href='resultats.html?id=${x.id}'">Voir les résultats</button><button style="background:#065269;color:#fff" onclick="window.open('${url}','_blank')">Ouvrir le questionnaire</button><button style="background:#fff;color:#b42318;border:1px solid #b42318" onclick="deleteSession('${x.id}')">Supprimer</button></div></article>`}).join("")||"Aucune session."}
-async function deleteSession(id){
-  if(!confirm("Supprimer définitivement cet événement et toutes ses réponses ?")) return;
-  const {error}=await c.from("satisfaction_sessions").delete().eq("id",id);
-  if(error){alert("Suppression impossible : "+error.message);return}
-  await load();
+#globalAdminReturn{position:fixed;top:12px;left:12px;z-index:100;padding:10px 15px;border-radius:999px;background:#065269;color:#fff;font:700 13px Arial,sans-serif;text-decoration:none;box-shadow:0 3px 12px #0004}
+#globalAdminReturn:hover{background:#e65013}
+@media(max-width:700px){
+  .row{grid-template-columns:1fr}
+  .session{grid-template-columns:1fr}
 }
-boot();</script></body></html>
+@media(max-width:600px){
+  #login.login{padding:30px 24px}
+  #globalAdminReturn{top:7px;left:7px;padding:8px 11px;font-size:11px}
+}
+</style>
+</head>
+
+<body>
+<a id="globalAdminReturn" href="/administration-questionnaires/">
+  ← Administration générale
+</a>
+
+<main class="w">
+  <section id="login" class="box login">
+    <img class="login-logo" src="../../logorebondsignature.png" alt="Rebond">
+
+    <div class="login-destination">
+      Administration — Questionnaire de satisfaction
+    </div>
+
+    <h2>Administration Rebond</h2>
+    <p>Connectez-vous avec un compte autorisé.</p>
+
+    <form id="loginForm">
+      <input id="email" type="email" autocomplete="username"
+        placeholder="Adresse e-mail" required>
+      <input id="password" type="password" autocomplete="current-password"
+        placeholder="Mot de passe" required>
+      <button id="connect" type="submit" disabled>Se connecter</button>
+    </form>
+
+    <p id="lm" role="status">Vérification de l’accès…</p>
+    <noscript>JavaScript doit être activé pour utiliser cette page.</noscript>
+  </section>
+
+  <div class="login-copyright">
+    Rebond® 2026<br>
+    <span>Espace privé — accès réservé aux personnes autorisées</span>
+  </div>
+
+  <div id="app" hidden>
+    <h1>Questionnaire de satisfaction</h1>
+
+    <section class="box">
+      <h2>Créer une session</h2>
+
+      <form id="createForm">
+        <div class="row">
+          <input id="event" placeholder="Nom de l’événement" required>
+          <input id="date" type="date" required>
+          <input id="place" placeholder="Lieu">
+          <button id="create" type="submit" disabled>Créer</button>
+        </div>
+      </form>
+
+      <p id="cm" role="status"></p>
+    </section>
+
+    <section class="box">
+      <h2>Mes sessions</h2>
+      <div id="sessions">Chargement…</div>
+    </section>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script>
+
+<script>
+(async function () {
+  const $ = id => document.getElementById(id);
+  const login = $("login"), app = $("app");
+  const loginMessage = $("lm"), createMessage = $("cm");
+  const sessions = $("sessions");
+
+  let authorized = false;
+  let version = 0;
+  let timer;
+  let creating = false;
+
+  function closeAccess(message = "") {
+    authorized = false;
+    app.hidden = true;
+    login.hidden = false;
+    $("create").disabled = true;
+    sessions.replaceChildren();
+    createMessage.textContent = "";
+    loginMessage.textContent = message;
+  }
+
+  $("connect").disabled = true;
+  closeAccess("Vérification de l’accès…");
+
+  if (!window.supabase?.createClient) {
+    closeAccess(
+      "La connexion n’a pas pu être chargée. Recharge la page."
+    );
+    return;
+  }
+
+  const c = window.supabase.createClient(
+    "https://tdsrqmpfdvntybdlvejy.supabase.co",
+    "sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO"
+  );
+
+  async function checkAdmin() {
+    const current = version;
+
+    try {
+      const { data, error } = await c.auth.getSession();
+
+      if (current !== version) return false;
+      if (error) throw error;
+
+      if (!data?.session) {
+        closeAccess();
+        return false;
+      }
+
+      const { data: isAdmin, error: roleError } =
+        await c.rpc("rebond_is_admin");
+
+      if (current !== version) return false;
+      if (roleError) throw roleError;
+
+      if (isAdmin !== true) {
+        closeAccess(
+          "Accès réservé aux administrateurs. " +
+          "Connecte-toi avec un compte autorisé."
+        );
+        return false;
+      }
+
+      return true;
+    } catch {
+      if (current === version) {
+        closeAccess("Impossible de vérifier tes droits. Réessaie.");
+      }
+      return false;
+    }
+  }
+
+  function node(tag, text, className) {
+    const element = document.createElement(tag);
+
+    if (text !== undefined) {
+      element.textContent = String(text);
+    }
+
+    if (className) {
+      element.className = className;
+    }
+
+    return element;
+  }
+
+  async function load() {
+    if (!authorized) return;
+
+    const current = version;
+    sessions.textContent = "Chargement…";
+
+    const { data, error } = await c
+      .from("satisfaction_sessions")
+      .select(
+        "id,code,event_name,event_date,event_place," +
+        "satisfaction_responses(id,satisfaction,newsletter)"
+      )
+      .order("event_date", { ascending: false });
+
+    if (!authorized || current !== version) return;
+    if (error) throw error;
+
+    sessions.replaceChildren();
+
+    if (!data?.length) {
+      sessions.textContent = "Aucune session.";
+      return;
+    }
+
+    for (const session of data) {
+      const responses = session.satisfaction_responses || [];
+
+      const average = responses.length
+        ? (
+            responses.reduce(
+              (sum, response) =>
+                sum + Number(response.satisfaction || 0),
+              0
+            ) / responses.length
+          ).toFixed(1)
+        : "—";
+
+      const newsletter = responses.filter(
+        response => response.newsletter === "Oui"
+      ).length;
+
+      const url = new URL("../", location.href);
+      url.search = "";
+      url.hash = "";
+      url.searchParams.set("session", session.code);
+
+      const resultsUrl = new URL("resultats.html", location.href);
+      resultsUrl.searchParams.set("id", session.id);
+
+      const article = node("article", undefined, "session");
+      const details = node("div");
+
+      const name = node("strong", session.event_name ?? "");
+
+      const day = session.event_date
+        ? new Date(
+            session.event_date + "T12:00"
+          ).toLocaleDateString("fr-FR")
+        : "";
+
+      const info = node(
+        "span",
+        " • " + day +
+          (session.event_place ? " • " + session.event_place : ""),
+        "muted"
+      );
+
+      const stats = node("div", undefined, "stats");
+
+      stats.append(
+        node("span", responses.length + " réponse(s)", "stat"),
+        node("span", "Satisfaction " + average + "/5", "stat"),
+        node("span", newsletter + " newsletter", "stat")
+      );
+
+      const linkBox = node("div", undefined, "link");
+
+      const link = node(
+        "a",
+        session.event_name ?? "Ouvrir le questionnaire"
+      );
+
+      link.href = url.href;
+      link.target = "_blank";
+      link.rel = "noopener";
+      linkBox.append(link);
+
+      details.append(name, info, stats, linkBox);
+
+      const actions = node("div", undefined, "actions");
+
+      const results = node(
+        "a",
+        "Voir les résultats",
+        "action-link"
+      );
+      results.href = resultsUrl.href;
+
+      const open = node(
+        "a",
+        "Ouvrir le questionnaire",
+        "action-link secondary"
+      );
+      open.href = url.href;
+      open.target = "_blank";
+      open.rel = "noopener";
+
+      const remove = node("button", "Supprimer", "danger");
+      remove.type = "button";
+      remove.onclick = () => deleteSession(session.id, remove);
+
+      actions.append(results, open, remove);
+      article.append(details, actions);
+      sessions.append(article);
+    }
+  }
+
+  async function boot() {
+    closeAccess("Vérification de l’accès…");
+
+    if (!(await checkAdmin())) return;
+
+    authorized = true;
+    login.hidden = true;
+    app.hidden = false;
+    loginMessage.textContent = "";
+    $("create").disabled = creating;
+
+    try {
+      await load();
+    } catch {
+      if (authorized) {
+        sessions.textContent =
+          "Impossible de charger les sessions. Recharge la page.";
+      }
+    }
+  }
+
+  $("loginForm").addEventListener("submit", async event => {
+    event.preventDefault();
+
+    const button = $("connect");
+    if (button.disabled) return;
+
+    button.disabled = true;
+    ++version;
+    closeAccess("Connexion en cours…");
+
+    try {
+      const { error } = await c.auth.signInWithPassword({
+        email: $("email").value.trim(),
+        password: $("password").value
+      });
+
+      $("password").value = "";
+
+      if (error) {
+        closeAccess(
+          "Connexion impossible. Vérifie tes identifiants."
+        );
+        return;
+      }
+
+      clearTimeout(timer);
+      await boot();
+    } catch {
+      closeAccess("Connexion indisponible. Réessaie.");
+    } finally {
+      $("password").value = "";
+      button.disabled = false;
+    }
+  });
+
+  $("createForm").addEventListener("submit", async event => {
+    event.preventDefault();
+
+    if (!authorized || creating) return;
+
+    const name = $("event").value.trim();
+    const day = $("date").value;
+
+    if (!name || !day) {
+      createMessage.textContent = "Nom et date obligatoires.";
+      return;
+    }
+
+    const place = $("place").value.trim();
+    creating = true;
+    $("create").disabled = true;
+
+    let created = false;
+
+    try {
+      if (!(await checkAdmin())) return;
+
+      const current = version;
+      createMessage.textContent = "Création en cours…";
+
+      const code =
+        "SAT-" + Math.random().toString(36).slice(2, 7).toUpperCase();
+
+      const { error } = await c
+        .from("satisfaction_sessions")
+        .insert({
+          code,
+          event_name: name,
+          event_date: day,
+          event_place: place
+        });
+
+      if (!authorized || current !== version) return;
+
+      if (error) {
+        createMessage.textContent =
+          "Création refusée ou impossible. " +
+          "Recharge la liste avant de réessayer.";
+        return;
+      }
+
+      created = true;
+      createMessage.textContent = "Session créée.";
+      $("event").value = "";
+      $("date").value = "";
+      $("place").value = "";
+
+      await load();
+    } catch {
+      if (authorized) {
+        createMessage.textContent = created
+          ? "Session créée, mais liste indisponible. Recharge la page."
+          : "Résultat non confirmé. Recharge la liste avant de réessayer.";
+      }
+    } finally {
+      creating = false;
+      $("create").disabled = !authorized;
+    }
+  });
+
+  async function deleteSession(id, button) {
+    if (!authorized || button.disabled) return;
+
+    if (!confirm(
+      "Supprimer définitivement cet événement et toutes ses réponses ?"
+    )) return;
+
+    button.disabled = true;
+
+    try {
+      if (!(await checkAdmin())) return;
+
+      const current = version;
+
+      const { data, error } = await c
+        .from("satisfaction_sessions")
+        .delete()
+        .eq("id", id)
+        .select("id");
+
+      if (!authorized || current !== version) return;
+
+      if (error) {
+        alert("Suppression refusée ou impossible.");
+        return;
+      }
+
+      if (data?.length !== 1) {
+        alert("Aucune suppression confirmée. Recharge la liste.");
+        return;
+      }
+
+      await load();
+    } catch {
+      if (authorized) {
+        alert(
+          "Résultat non confirmé ou liste indisponible. " +
+          "Recharge la page avant de réessayer."
+        );
+      }
+    } finally {
+      button.disabled = false;
+    }
+  }
+
+  c.auth.onAuthStateChange(event => {
+    if (event === "SIGNED_OUT") {
+      clearTimeout(timer);
+      ++version;
+      closeAccess("Tu es déconnecté.");
+      return;
+    }
+
+    if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED") {
+      ++version;
+      closeAccess("Vérification de l’accès…");
+      clearTimeout(timer);
+
+      timer = setTimeout(() => {
+        boot();
+      }, 0);
+    }
+  });
+
+  await boot();
+  $("connect").disabled = false;
+})().catch(() => {
+  document.getElementById("app").hidden = true;
+  document.getElementById("login").hidden = false;
+  document.getElementById("lm").textContent =
+    "Impossible d’initialiser la connexion. Recharge la page.";
+});
+</script>
+</body>
+</html>

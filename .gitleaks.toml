@@ -1,0 +1,10 @@
+title = "RebondPlay - regles par defaut et cles publiques Supabase"
+[extend]
+useDefault = true
+
+# Exclusion ciblee : les publishable keys Supabase sont publiques par conception.
+# Ne pas exclure les fichiers, les JWT anon en bloc ni les cles sb_secret_/service_role.
+[[allowlists]]
+description = "Cle publique Supabase publishable uniquement"
+targetRules = ["generic-api-key"]
+regexes = ['''^sb_publishable_[A-Za-z0-9_-]+$''']
