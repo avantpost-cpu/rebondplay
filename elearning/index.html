@@ -756,7 +756,7 @@ function updateChapterNav(){
  const quizAria=currentLanguage==='en'?'Go to quiz':'Aller au quiz';
 
  if(activeSeq===3){
-   nav.innerHTML=`<span class="chapter-nav-label">${label}</span>${['A','B','C','Q'].map((key,i)=>'<button type="button" onclick="showSeq4Section(String.fromCharCode('+[65,66,67,81][i]+'))" aria-label="'+(key==='Q'?quizAria:ariaPrefix+key)+'"><img class="nav-arrow" src="./fleche.png" alt="" aria-hidden="true">'+key+'</button>').join('')}<span class="chapter-nav-current" id="chapterNavCurrent" aria-live="polite"></span>`;
+   nav.innerHTML=`<span class="chapter-nav-label">${label}</span>${['A','B','C','Q'].map((key,i)=>'<button type="button" onclick="showSeq4Section('+String.fromCharCode(39)+key+String.fromCharCode(39)+')" aria-label="'+(key==='Q'?quizAria:ariaPrefix+key)+'"><img class="nav-arrow" src="./fleche.png" alt="" aria-hidden="true">'+key+'</button>').join('')}<span class="chapter-nav-current" id="chapterNavCurrent" aria-live="polite"></span>`;
  }else if(activeSeq===1){
    nav.innerHTML=`<span class="chapter-nav-label">${label}</span><button type="button" onclick="showSeq2Section(\'A\')" aria-label="${ariaPrefix}A"><img class="nav-arrow" src="./fleche.png" alt="" aria-hidden="true">A</button><button type="button" onclick="showSeq2Section(\'B\')" aria-label="${ariaPrefix}B"><img class="nav-arrow" src="./fleche.png" alt="" aria-hidden="true">B</button><button type="button" onclick="showSeq2Section(\'Q\')" aria-label="${quizAria}"><img class="nav-arrow" src="./fleche.png" alt="" aria-hidden="true">Q</button><span class="chapter-nav-current" id="chapterNavCurrent" aria-live="polite"></span>`;
  }else if(activeSeq===2){
