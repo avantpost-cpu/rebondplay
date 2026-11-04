@@ -7,12 +7,33 @@ function rebondChapter4Html(){
   1:{28:'deÌ_placements.jpg',33:'partagechambres.jpg'},
   2:{5:'Toise_Rebond-GeÌ_neÌ_rique.jpg',8:'Cocotte.jpg',11:'escapeGame.jpg',14:'Panneaux-peÌ_da.jpg',18:'Image_ProjetsEduction.jpg',20:'epreuves.jpg',25:'Mise-en-avant-Livre_Angie.jpg',26:'LivretpeÌ_da.jpg',27:'Sensibilisation.jpg',28:'Formations.jpg',29:'Animations.jpg',32:'Rebondcup.jpg',35:'Plaque_Label.jpg',36:'RG.jpg',38:'marquepages.jpg'}
  };
- const figure=(filename,alt)=>'<figure style="margin:22px auto 36px;max-width:100%"><img loading="lazy" src="./chapitre4/'+encodeURIComponent(filename)+'" alt="'+esc(alt)+'" style="display:block;max-width:100%;height:auto;margin:auto"></figure>';
- return '<section class="course-part seq2-part seq4-part"><div class="lesson-kicker">'+(currentLanguage==='fr'?'Séquence 4 · 40 min':'Sequence 4 · 40 min')+'</div><h2>'+esc(d.title)+'</h2></section>'+
- d.parts.map((part,i)=>'<section class="course-part seq2-part seq4-part" id="seq4-'+['A','B','C'][i]+'"><h3 class="seq2-major-title">'+esc(part[0])+'</h3>'+part[1].map((item,j)=>{
+ const style='<style>'+
+ '.seq4-part{--s4blue:#07566a;--s4aqua:#75cbd1;--s4coral:#f18b68}.seq4-part .seq4-major{font-size:clamp(29px,3.6vw,42px)!important;color:var(--s4blue)!important;border:0!important;border-top:5px solid var(--s4coral)!important;padding:18px 0 0!important;margin:20px 0 34px!important}.seq4-part .seq4-block{margin:12px 0 26px;max-width:860px}.seq4-part .seq4-block:nth-of-type(3n){margin-bottom:39px}.seq4-part .seq4-heading{font-family:"Special Gothic Condensed One",Poppins,sans-serif;font-size:clamp(22px,2.5vw,31px);line-height:1.2;color:var(--s4blue);margin:35px 0 14px;padding:0 0 10px;border-bottom:3px solid var(--s4aqua)}.seq4-part .seq4-subheading{font-family:"Special Gothic Condensed One",Poppins,sans-serif;font-size:clamp(19px,2.1vw,25px);color:var(--s4blue);margin:26px 0 12px}.seq4-part .seq4-body{font-size:16px;line-height:1.8;margin:9px 0 18px;white-space:pre-line}.seq4-part .seq4-bullet{position:relative;margin:0;padding:13px 18px 13px 43px;background:#f2f8f7;border-bottom:1px solid #d8e9e8;line-height:1.65}.seq4-part .seq4-bullet:before{content:"✦";position:absolute;left:17px;top:14px;color:#ed865e}.seq4-part .seq4-bullet-first{border-left:5px solid var(--s4aqua);border-radius:0 12px 0 0}.seq4-part .seq4-bullet-last{border-radius:0 0 12px 0;margin-bottom:25px}.seq4-part .seq4-rule{width:70px;height:5px;background:var(--s4coral);border-radius:8px;margin:38px auto}.seq4-part .seq4-note{padding:19px 24px;background:#fff6ee;border-left:6px solid var(--s4coral);border-radius:0 12px 12px 0;margin:22px 0;line-height:1.7}.seq4-part .seq4-media{margin:28px auto 43px;max-width:860px}.seq4-part .seq4-media img{width:100%;height:auto;display:block;box-shadow:0 10px 25px rgba(6,62,84,.08)}.seq4-part .seq4-media:nth-of-type(even){max-width:790px}.seq4-part .seq4-media:nth-of-type(3n){max-width:830px}@media(max-width:600px){.seq4-part .seq4-bullet{padding:12px 12px 12px 36px}.seq4-part .seq4-bullet:before{left:12px}.seq4-part .seq4-note{padding:15px 17px}}'+
+ '</style>';
+ const classify=(item,prev,next)=>{
+ const body=String(item[1]||''),title=String(item[0]||''),t=body.trim();
+ if(/^[_\\-\\s]{5,}$/.test(t))return 'rule';
+ if(/^[✸✹✦•▪]/u.test(t))return 'bullet';
+ if(/^(NB\\s*:|Attention\\s*$)/i.test(t))return 'note';
+ if(title.trim() && title.trim()===t)return 'heading';
+ if(title.trim())return 'subheading';
+ return 'body';
+ };
+ const renderText=(item,prev,next)=>{
+ const kind=classify(item,prev,next),value=esc(item[1]);
+ if(kind==='rule')return '<div class="seq4-rule" aria-hidden="true"></div>';
+ if(kind==='bullet'){const p=prev&&classify(prev)==='bullet',n=next&&classify(next)==='bullet';return '<p class="seq4-bullet'+(!p?' seq4-bullet-first':'')+(!n?' seq4-bullet-last':'')+'">'+value+'</p>';}
+ if(kind==='note')return '<aside class="seq4-note">'+value+'</aside>';
+ if(kind==='heading')return '<h4 class="seq4-heading">'+value+'</h4>';
+ if(kind==='subheading')return '<div class="seq4-subheading">'+esc(item[0])+'</div><p class="seq4-body">'+value+'</p>';
+ return '<p class="seq4-body">'+value+'</p>';
+ };
+ const figure=(filename,alt)=>'<figure class="seq4-media"><img loading="lazy" src="./chapitre4/'+encodeURIComponent(filename)+'" alt="'+esc(alt)+'" style="display:block;max-width:100%;height:auto;margin:auto"></figure>';
+ return style+'<section class="course-part seq2-part seq4-part"><div class="lesson-kicker">'+(currentLanguage==='fr'?'Séquence 4 · 40 min':'Sequence 4 · 40 min')+'</div><h2>'+esc(d.title)+'</h2></section>'+
+ d.parts.map((part,i)=>'<section class="course-part seq2-part seq4-part" id="seq4-'+['A','B','C'][i]+'"><h3 class="seq2-major-title seq4-major">'+esc(part[0])+'</h3>'+part[1].map((item,j)=>{
  const image=currentLanguage==='fr'?(i===2?(media[2][j]||null):i===1?(media[1][j]||null):item[2]):item[2];
  const caption=item[0]||item[1];
- return '<h4>'+esc(item[0])+'</h4><p>'+esc(item[1])+'</p>'+
+ return '<div class="seq4-block">'+renderText(item,part[1][j-1],part[1][j+1])+'</div>'+
  (image?figure(image,caption):'')+
  (i===0 && /Passez votre curseur de souris|Hover over the different elements/i.test(item[1])?'<div class="interactive-embed" style="max-width:100%;margin:24px auto 38px;overflow:hidden"><iframe loading="lazy" title="Histoire du contrôle d’honorabilité — frise interactive" src="https://avantpost-cpu.github.io/depot-quiz/hono/hono.html" style="display:block;width:100%;height:880px;border:0" allowfullscreen></iframe></div>':'')+
  (i===1 && /Respecter le consentement et l.intimit|respect everyone.s consent and privacy/i.test(item[1].normalize('NFD').replace(/[\u0300-\u036f]/g,''))?'<div class="video-card" style="max-width:720px;margin:24px auto 38px"><video autoplay muted loop playsinline controls preload="metadata" aria-label="Les parties sensibles" style="display:block;width:100%;height:auto"><source src="https://avantpost-cpu.github.io/depot-quiz/parties.mp4" type="video/mp4">Votre navigateur ne prend pas en charge la vidéo.</video></div>':'');
