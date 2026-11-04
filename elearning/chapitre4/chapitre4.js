@@ -70,9 +70,9 @@ function rebondChapter4Html(){
  if(i===0&&j===43){
   blockHtml='<p class="seq4-body"><a href="https://avantpost-cpu.github.io/Pagesweb/kitrebond.pdf" target="_blank" rel="noopener noreferrer" style="color:#07566a;font-weight:700;text-decoration:underline">'+esc(item[1])+'</a></p>';
  }else if(i===2&&j===19){
-  blockHtml='<div class="seq4-editorial-title">Outils pédagogiques pour adultes :</div><div class="seq4-illustrated-label"><p class="seq4-illustrated-name">'+esc(String(item[1]).split('\\n').slice(1).join('\\n').replace(/^\\s*•\\s*/u,'').trim())+'</p></div>';
+  blockHtml='<div class="seq4-editorial-title">Outils pédagogiques pour adultes :</div><div class="seq4-illustrated-label"><p class="seq4-illustrated-name">'+esc(String(item[1]).split('\n').slice(1).join('\n').replace(/^\s*•\s*/u,'').trim())+'</p></div>';
  }else if(i===2&&[4,6,9,12,15,21,26,27,28,29,31,33,36,37,38].includes(j)){
-  blockHtml='<div class="seq4-illustrated-label"><p class="seq4-illustrated-name">'+esc(String(item[1]).replace(/^\\s*•\\s*/u,'').trim())+'</p></div>';
+  blockHtml='<div class="seq4-illustrated-label"><p class="seq4-illustrated-name">'+esc(String(item[1]).replace(/^\s*•\s*/u,'').trim())+'</p></div>';
  }else{
   blockHtml=renderText(item,part[1][j-1],part[1][j+1]);
  }
