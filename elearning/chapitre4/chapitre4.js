@@ -4,7 +4,7 @@ function rebondChapter4Html(){
  const d=REBOND_CHAPTER4[currentLanguage]||REBOND_CHAPTER4.fr;
  const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const media={
-  0:{7:'Mise-en-avant-CartePro_big.jpg',40:'Mise-en-avant-Affiches.jpg',43:'Mise-en-avant-Affiches_Rebond.jpg'},
+  0:{7:'Mise-en-avant-CartePro_big.jpg',13:'Illustration_Chiffres_Partie-4.jpg',40:'Mise-en-avant-Affiches.jpg',43:'Mise-en-avant-Affiches_Rebond.jpg'},
   1:{0:'Image_Groupe.jpg',21:'Appareilphotointerdit.png',28:'deÌ_placements.jpg',33:'partagechambres.jpg'},
   2:{5:'Toise_Rebond-GeÌ_neÌ_rique.jpg',8:'Cocotte.jpg',11:'escapeGame.jpg',14:'Panneaux-peÌ_da.jpg',17:'Image_ProjetsEduction.jpg',20:'epreuves.jpg',25:'Mise-en-avant-Livre_Angie.jpg',26:'LivretpeÌ_da.jpg',27:'Sensibilisation.jpg',28:'Formations.jpg',29:'Animations.jpg',32:'Rebondcup.jpg',35:'Plaque_Label.jpg',36:'RG.jpg',38:'marquepages.jpg'}
  };
