@@ -3,10 +3,20 @@ const REBOND_CHAPTER4={"fr":{"title":"Chapitre 4 : prévenir les violences","par
 function rebondChapter4Html(){
  const d=REBOND_CHAPTER4[currentLanguage]||REBOND_CHAPTER4.fr;
  const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+ const media={
+  1:{18:'deÌ_placements.jpg',23:'partagechambres.jpg'},
+  2:{5:'Toise_Rebond-GeÌ_neÌ_rique.jpg',8:'Cocotte.jpg',11:'escapeGame.jpg',14:'Panneaux-peÌ_da.jpg',18:'Image_ProjetsEduction.jpg',20:'epreuves.jpg',25:'Mise-en-avant-Livre_Angie.jpg',26:'LivretpeÌ_da.jpg',27:'Sensibilisation.jpg',28:'Formations.jpg',29:'Animations.jpg',32:'Rebondcup.jpg',35:'Plaque_Label.jpg',36:'RG.jpg',38:'marquepages.jpg'}
+ };
+ const figure=(filename,alt)=>'<figure style="margin:22px auto 36px;max-width:100%"><img loading="lazy" src="./chapitre4/'+encodeURIComponent(filename)+'" alt="'+esc(alt)+'" style="display:block;max-width:100%;height:auto;margin:auto"></figure>';
  return '<section class="course-part seq2-part seq4-part"><div class="lesson-kicker">'+(currentLanguage==='fr'?'Séquence 4 · 40 min':'Sequence 4 · 40 min')+'</div><h2>'+esc(d.title)+'</h2></section>'+
- d.parts.map((part,i)=>'<section class="course-part seq2-part seq4-part" id="seq4-'+['A','B','C'][i]+'"><h3 class="seq2-major-title">'+esc(part[0])+'</h3>'+part[1].map(item=>'<h4>'+esc(item[0])+'</h4><p>'+esc(item[1])+'</p>'+(item[2]?'<figure style="margin:18px 0 30px"><img loading="lazy" src="./chapitre4/'+encodeURIComponent(item[2])+'" alt="'+esc(item[0])+'" style="display:block;max-width:100%;height:auto;margin:auto"></figure>':'')+
+ d.parts.map((part,i)=>'<section class="course-part seq2-part seq4-part" id="seq4-'+['A','B','C'][i]+'"><h3 class="seq2-major-title">'+esc(part[0])+'</h3>'+part[1].map((item,j)=>{
+ const image=currentLanguage==='fr'?(i===2?(media[2][j]||null):i===1?(media[1][j]||null):item[2]):item[2];
+ const caption=item[0]||item[1];
+ return '<h4>'+esc(item[0])+'</h4><p>'+esc(item[1])+'</p>'+
+ (image?figure(image,caption):'')+
  (i===0 && /Passez votre curseur de souris|Hover over the different elements/i.test(item[1])?'<div class="interactive-embed" style="max-width:100%;margin:24px auto 38px;overflow:hidden"><iframe loading="lazy" title="Histoire du contrôle d’honorabilité — frise interactive" src="https://avantpost-cpu.github.io/depot-quiz/hono/hono.html" style="display:block;width:100%;height:880px;border:0" allowfullscreen></iframe></div>':'')+
- (i===1 && /Respecter le consentement et l’intimite|respect everyone.s consent and privacy/i.test(item[1])?'<div class="video-card" style="max-width:720px;margin:24px auto 38px"><video autoplay muted loop playsinline controls preload="metadata" aria-label="Les parties sensibles" style="display:block;width:100%;height:auto"><source src="https://avantpost-cpu.github.io/depot-quiz/parties.mp4" type="video/mp4">Votre navigateur ne prend pas en charge la vidéo.</video></div>':'')).join(')+'</section>').join('');
+ (i===1 && /Respecter le consentement et l’intimite|respect everyone.s consent and privacy/i.test(item[1])?'<div class="video-card" style="max-width:720px;margin:24px auto 38px"><video autoplay muted loop playsinline controls preload="metadata" aria-label="Les parties sensibles" style="display:block;width:100%;height:auto"><source src="https://avantpost-cpu.github.io/depot-quiz/parties.mp4" type="video/mp4">Votre navigateur ne prend pas en charge la vidéo.</video></div>':'');
+ }).join('')+'</section>').join('');
 }
 function rebondChapter4QuizHtml(){
  const d=REBOND_CHAPTER4[currentLanguage]||REBOND_CHAPTER4.fr;
