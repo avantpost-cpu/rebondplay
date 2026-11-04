@@ -109,7 +109,7 @@ function rebondChapter4Html(){
  if(i===2 && (j===45||j===51))return '<div class="seq4-adhesion-section"><h4 class="seq4-adhesion-heading">'+esc(item[1])+'</h4>'+adhesionTable(part[1],j+1,j===45?50:57)+'</div>';
  const englishImages={7:'Cartes professionnelles et message de prévention_anglais.png',13:'Contrôles d’antécédents en chiffres_anglais.png',40:'Campagne française de sensibilisation au sport_anglais.png',43:'Affiches sportives Signaler c’est protéger_anglais.png'};
  const englishSafetyImages={21:'Interdiction des appareils photo et mobiles.png',28:'Encourageons le transport partagé.png',33:'Interdiction de partager une chambre.png'};
- const image=(currentLanguage==='en'&&i===0&&englishImages[j])?'../'+englishImages[j]:(currentLanguage==='en'&&i===1&&englishSafetyImages[j])?'../'+englishSafetyImages[j]:(media[i]?.[j]||null);
+ const image=(currentLanguage==='en'&&i===0&&englishImages[j])?'../'+englishImages[j]:(currentLanguage==='en'&&i===1&&englishSafetyImages[j])?'../'+englishSafetyImages[j]:(currentLanguage==='en'&&i===2&&j===5)?'../Grandir sans pression _ les droits de l’enfant.png':(media[i]?.[j]||null);
  const caption=item[0]||item[1];
  let blockHtml;
  if(i===0&&j===43){
