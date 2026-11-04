@@ -13,28 +13,35 @@ function rebondChapter4Html(){
  '</style>';
  const emphasize=(raw)=>{
   const value=String(raw||'');
-  const m=value.match(/^(\\s*[✸•]?\\s*[^\\n:]{3,105}\\s*:\\s*)(?=\\S)/u);
+  const m=value.match(/^(\s*[✸•]?\s*[^\n:]{3,105}\s*:\s*)(?=\S)/u);
   if(m && !/^(https?:|mailto:)/i.test(m[1]))return '<strong class="seq4-emphasis">'+esc(m[1])+'</strong>'+esc(value.slice(m[1].length));
-  const n=value.match(/^(\\s*(?:NB\\s*:|Attention\\s*:?|Important\\s*:|Pour rappel\\s*:))/iu);
-  if(n)return '<strong class="seq4-emphasis">'+esc(n[1])+'</strong>'+esc(value.slice(n[1].length));
   return esc(value);
  };
  const classify=(item,prev,next)=>{
   const t=String(item[1]||'').trim(),title=String(item[0]||'').trim();
-  if(/^[_\\s-]{5,}$/.test(t))return 'rule';
+  if(/^[_\s-]{5,}$/.test(t))return 'rule';
   if(/^[✸✹✦•▪]/u.test(t)&&!title)return 'bullet';
-  if(/^Attention\\s*:?$/i.test(t)||/^NB\\s*:/i.test(t))return 'note';
-  if(title && title===t)return /^(?:[1-9]\\.|[IVX]+\\.)\\s/u.test(t)?'heading':'subheading';
+  if(/^Attention\s*:?$/i.test(t)||/^NB\s*:/i.test(t))return 'note';
+  if(title && title===t){
+   if(/^\d+\.\s/u.test(t))return t.length>105?'numbered':'heading';
+   return 'subheading';
+  }
   if(title && t.startsWith(title))return 'subheading';
-  if(/^(?:[1-9]\\.)\\s+[^\\n]{3,95}$/u.test(t))return 'heading';
-  if(/^(?:Infographie(?: interactive)?|Qui est concerné ?|Quand est-il réalisé ?|Vestiaires et douches|Attention|Formation|Animations d.ateliers|Conférences de sensibilisation\\s*:|Outils de communication Rebond\\s*:|Les Projets Rebond\\s*:)$/iu.test(t))return 'subheading';
+  if(/^\d+\.\s/u.test(t))return t.length>105?'numbered':'heading';
+  if(/^(?:Infographie(?: interactive)?|Qui est concerné ?|Quand est-il réalisé ?|Vestiaires et douches|Formation)$/iu.test(t))return 'subheading';
   return 'body';
  };
  const renderText=(item,prev,next)=>{
   const kind=classify(item,prev,next),value=emphasize(item[1]);
   if(kind==='rule')return '<div class="seq4-rule" aria-hidden="true"></div>';
   if(kind==='bullet'){const p=prev&&classify(prev)==='bullet',n=next&&classify(next)==='bullet';return '<p class="seq4-bullet'+(!p?' seq4-bullet-first':'')+(!n?' seq4-bullet-last':'')+'">'+value+'</p>';}
-  if(kind==='note')return '<aside class="seq4-note"><strong>'+value+'</strong></aside>';
+  if(kind==='note')return '<div class="seq4-attention"><span>'+value+'</span></div>';
+  if(kind==='numbered'){
+   const raw=String(item[1]);const match=raw.match(/^(\d+\.\s*)([\s\S]*)$/u);
+   const number=match?esc(match[1]):'',body=match?match[2]:raw;
+   const highlighted=body.replace(/soient expressément consentis car ils peuvent être mal vécus|il doit sans arrêt être ré-interrogé/giu,m=>'\u0001'+m+'\u0002');
+   return '<p class="seq4-body seq4-numbered"><strong class="seq4-number">'+number+'</strong>'+highlighted.split(/(\u0001[^\u0002]*\u0002)/u).map(t=>t.startsWith('\u0001')?'<strong class="seq4-orange">'+esc(t.slice(1,-1))+'</strong>':esc(t)).join('')+'</p>';
+  }
   if(kind==='heading')return '<h4 class="seq4-heading">'+value+'</h4>';
   if(kind==='subheading')return '<h5 class="seq4-subheading">'+value+'</h5>';
   return '<p class="seq4-body">'+value+'</p>';
