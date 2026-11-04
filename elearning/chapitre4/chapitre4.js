@@ -107,7 +107,8 @@ function rebondChapter4Html(){
  d.parts.map((part,i)=>'<section class="course-part seq2-part seq4-part" id="seq4-'+['A','B','C'][i]+'"><h3 class="seq4-major"><span class="seq4-letter">'+esc(part[0].slice(0,1))+'</span><span class="seq4-major-title">'+esc(part[0].slice(1))+'</span></h3>'+part[1].map((item,j)=>{
  if(i===2 && ((j>=46&&j<=50)||(j>=52&&j<=57)))return '';
  if(i===2 && (j===45||j===51))return '<div class="seq4-adhesion-section"><h4 class="seq4-adhesion-heading">'+esc(item[1])+'</h4>'+adhesionTable(part[1],j+1,j===45?50:57)+'</div>';
- const image=(currentLanguage==='en'&&i===0&&j===7)?'../Cartes professionnelles et message de prévention_anglais.png':(currentLanguage==='en'&&i===0&&j===13)?'../Contrôles d’antécédents en chiffres_anglais.png':(media[i]?.[j]||null);
+ const englishImages={7:'Cartes professionnelles et message de prévention_anglais.png',13:'Contrôles d’antécédents en chiffres_anglais.png',40:'Campagne française de sensibilisation au sport_anglais.png',43:'Affiches sportives Signaler c’est protéger_anglais.png'};
+ const image=(currentLanguage==='en'&&i===0&&englishImages[j])?'../'+englishImages[j]:(media[i]?.[j]||null);
  const caption=item[0]||item[1];
  let blockHtml;
  if(i===0&&j===43){
