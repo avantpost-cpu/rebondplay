@@ -30,7 +30,25 @@ jobs:
       - name: Installer Gitleaks avec verification SHA-256
         run: python3 scripts/security/install_gitleaks.py --output "$RUNNER_TEMP/gitleaks"
       - name: Examiner tous les commits accessibles
-        run: '"$RUNNER_TEMP/gitleaks" git --redact=100 --no-banner --log-opts="--all" .'
+        shell: bash
+        run: |
+          set +e
+          "$RUNNER_TEMP/gitleaks" git --redact=100 --no-banner --log-opts="--all" --report-format json --report-path "$RUNNER_TEMP/gitleaks-findings.json" .
+          status=$?
+          set -e
+          python3 - "$RUNNER_TEMP/gitleaks-findings.json" <<'PY'
+          import json, pathlib, sys
+          path = pathlib.Path(sys.argv[1])
+          findings = json.loads(path.read_text()) if path.exists() else []
+          print(f"Detected findings: {len(findings)}")
+          for index, finding in enumerate(findings, 1):
+              rule = finding.get("RuleID", "unknown")
+              file = finding.get("File", "unknown")
+              commit = finding.get("Commit", "")[:12]
+              print(f"Finding {index}: rule={rule!r}; file={file!r}; commit={commit}")
+          # Never print secret, match, fingerprint or source line.
+          PY
+          exit "$status"
   dependency-audit:
     name: Dependances CDN - npm audit
     runs-on: ubuntu-24.04
