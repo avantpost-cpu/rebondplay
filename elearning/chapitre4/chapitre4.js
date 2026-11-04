@@ -21,6 +21,36 @@ function rebondChapter4Html(){
  const accentPhrases=['La déclaration est obligatoire','Le contrôle d’honorabilité','Le contrôle d’honorabilite','L’objectif est','Le consentement','La prévention','La vigilance','Le signalement'];
  const emphasize=(raw)=>{
   const value=String(raw||'');
+  // Mise en relief éditoriale du contrôle d'honorabilité, sans modifier le texte source.
+  if(currentLanguage==='fr'){
+   const groups=[
+    ['Les révélations liées au mouvement MeToo',[
+      'un besoin et une demande des fédérations comme des pratiquants de mieux vérifier l’honorabilité des bénévoles'
+    ]],
+    ['C’est pourquoi le ministère chargé des Sports',[
+      'le ministère chargé des Sports a mis en place un contrôle de l’honorabilité des éducateurs sportifs bénévoles et des exploitants d’établissements d’activités physiques et sportives (EPS) depuis 2021'
+    ]],
+    ['Ce contrôle d’honorabilité s’effectue',[
+      'vérification automatisée du Fichier Judiciaire Automatisé des auteurs d’Infractions Sexuelles et Violentes (FIJAISV)'
+    ]],
+    ['Rebond plaide pour un nouvel élargissement',[
+      'toute personne en contact avec des mineurs',
+      'toute personne accréditée sur un évènements sportif'
+    ]]
+   ];
+   const normalized=value.normalize('NFC');
+   const match=groups.find(g=>normalized.startsWith(g[0]));
+   if(match){
+    let html='',position=0;
+    for(const phrase of match[1]){
+     const start=normalized.indexOf(phrase,position);
+     if(start<0)continue;
+     html+=esc(normalized.slice(position,start))+'<strong class="seq4-emphasis seq4-honorabilite-emphasis">'+esc(normalized.slice(start,start+phrase.length))+'</strong>';
+     position=start+phrase.length;
+    }
+    return html+esc(normalized.slice(position));
+   }
+  }
   const m=value.match(/^(\s*[✸•]?\s*[^\n:]{3,105}\s*:\s*)(?=\S)/u);
   if(m && !/^(https?:|mailto:)/i.test(m[1]))return '<strong class="seq4-emphasis">'+esc(m[1])+'</strong>'+esc(value.slice(m[1].length));
   const trimmed=value.trim();
