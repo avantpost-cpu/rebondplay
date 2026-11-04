@@ -66,7 +66,17 @@ function rebondChapter4Html(){
  if(i===2 && (j===45||j===51))return '<div class="seq4-adhesion-section"><h4 class="seq4-adhesion-heading">'+esc(item[1])+'</h4>'+adhesionTable(part[1],j+1,j===45?50:57)+'</div>';
  const image=currentLanguage==='fr'?(media[i]?.[j]||null):null;
  const caption=item[0]||item[1];
- return '<div class="seq4-block">'+(i===0&&j===43?'<p class="seq4-body"><a href="https://avantpost-cpu.github.io/Pagesweb/kitrebond.pdf" target="_blank" rel="noopener noreferrer" style="color:#07566a;font-weight:700;text-decoration:underline">'+esc(item[1])+'</a></p>':((i===2 && j===19)?'<div class="seq4-editorial-title">Outils pédagogiques pour adultes :</div><div class="seq4-illustrated-label"><p class="seq4-illustrated-name">'+esc(String(item[1]).split('\n').slice(1).join('\n').replace(/^\s*•\s*/u,'').trim())+'</p></div>':((i===2 && [4,6,9,12,15,21,26,27,28,29,31,33,36,37,38].includes(j))?'<div class="seq4-illustrated-label"><p class="seq4-illustrated-name">'+esc(String(item[1]).replace(/^\s*•\s*/u,'').trim())+'</p></div>':renderText(item,part[1][j-1],part[1][j+1])))+'</div>'+
+ let blockHtml;
+ if(i===0&&j===43){
+  blockHtml='<p class="seq4-body"><a href="https://avantpost-cpu.github.io/Pagesweb/kitrebond.pdf" target="_blank" rel="noopener noreferrer" style="color:#07566a;font-weight:700;text-decoration:underline">'+esc(item[1])+'</a></p>';
+ }else if(i===2&&j===19){
+  blockHtml='<div class="seq4-editorial-title">Outils pédagogiques pour adultes :</div><div class="seq4-illustrated-label"><p class="seq4-illustrated-name">'+esc(String(item[1]).split('\\n').slice(1).join('\\n').replace(/^\\s*•\\s*/u,'').trim())+'</p></div>';
+ }else if(i===2&&[4,6,9,12,15,21,26,27,28,29,31,33,36,37,38].includes(j)){
+  blockHtml='<div class="seq4-illustrated-label"><p class="seq4-illustrated-name">'+esc(String(item[1]).replace(/^\\s*•\\s*/u,'').trim())+'</p></div>';
+ }else{
+  blockHtml=renderText(item,part[1][j-1],part[1][j+1]);
+ }
+ return '<div class="seq4-block">'+blockHtml+'</div>'+
  (image?figure(image,caption):'')+
  (i===2 && j===37?'<div class="seq4-spot-video" style="max-width:860px;margin:20px auto 42px"><video controls playsinline preload="metadata" style="display:block;width:100%;height:auto;aspect-ratio:16/9;background:#fff" aria-label="Spot publicitaire Rebond diffusé pendant Roland-Garros"><source src="./Rebond_Film_30_Sous-titres_2_nouveaulogo_bdf.mp4" type="video/mp4">Votre navigateur ne prend pas en charge la vidéo.</video></div>':'')+
 
