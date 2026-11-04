@@ -102,12 +102,12 @@ function rebondChapter4Html(){
   return '<p class="seq4-body">'+value+'</p>';
  };
  const adhesionTable=(items,start,end)=>'<div class="seq4-adhesion-table" role="list">'+items.slice(start,end+1).map((entry,n)=>'<div class="seq4-adhesion-row" role="listitem"><div class="seq4-adhesion-index"><span class="seq4-adhesion-cross">×</span><span>'+String(n+1).padStart(2,'0')+'</span></div><div class="seq4-adhesion-text">'+esc(String(entry[1]||'').replace(/^\s*•[\s\u2060\u200b]*/u,''))+'</div></div>').join('')+'</div>';
- const figure=(filename,alt)=>'<figure class="seq4-media"><img loading="lazy" src="./chapitre4/'+encodeURIComponent(filename)+'" alt="'+esc(alt)+'" style="display:block;max-width:100%;height:auto;margin:auto"></figure>';
+ const figure=(filename,alt)=>'<figure class="seq4-media"><img loading="lazy" src="'+(filename.startsWith('../')?'./'+encodeURIComponent(filename.slice(3)):'./chapitre4/'+encodeURIComponent(filename))+'" alt="'+esc(alt)+'" style="display:block;max-width:100%;height:auto;margin:auto"></figure>';
  return style+'<section class="course-part seq2-part seq4-part seq4-intro"><div class="lesson-kicker">'+(currentLanguage==='fr'?'Séquence 4 · 40 min':'Sequence 4 · 40 min')+'</div><h2>'+esc(d.title)+'</h2></section>'+
  d.parts.map((part,i)=>'<section class="course-part seq2-part seq4-part" id="seq4-'+['A','B','C'][i]+'"><h3 class="seq4-major"><span class="seq4-letter">'+esc(part[0].slice(0,1))+'</span><span class="seq4-major-title">'+esc(part[0].slice(1))+'</span></h3>'+part[1].map((item,j)=>{
  if(i===2 && ((j>=46&&j<=50)||(j>=52&&j<=57)))return '';
  if(i===2 && (j===45||j===51))return '<div class="seq4-adhesion-section"><h4 class="seq4-adhesion-heading">'+esc(item[1])+'</h4>'+adhesionTable(part[1],j+1,j===45?50:57)+'</div>';
- const image=media[i]?.[j]||null;
+ const image=(currentLanguage==='en'&&i===0&&j===7)?'../Cartes professionnelles et message de prévention_anglais.png':(media[i]?.[j]||null);
  const caption=item[0]||item[1];
  let blockHtml;
  if(i===0&&j===43){
