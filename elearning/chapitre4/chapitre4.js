@@ -123,7 +123,7 @@ function rebondChapter4Html(){
  }
  return '<div class="seq4-block">'+blockHtml+'</div>'+
  (image?figure(image,caption):'')+
- (i===2 && j===37?'<div class="seq4-spot-video" style="max-width:860px;margin:20px auto 42px"><video controls playsinline preload="metadata" style="display:block;width:100%;height:auto;aspect-ratio:16/9;background:#fff" aria-label="Spot publicitaire Rebond diffusé pendant Roland-Garros"><source src="./Rebond_Film_30_Sous-titres_2_nouveaulogo_bdf.mp4" type="video/mp4">Votre navigateur ne prend pas en charge la vidéo.</video></div>':'')+
+ (i===2 && j===37?'<div class="seq4-spot-video" style="max-width:860px;margin:20px auto 42px"><video controls playsinline preload="metadata" style="display:block;width:100%;height:auto;aspect-ratio:16/9;background:#fff" aria-label="Spot publicitaire Rebond diffusé pendant Roland-Garros"><source src="./Rebond_Film_30_Sous-titres_2_nouveaulogo_bdf.mp4" type="video/mp4">'+(currentLanguage==='en'?'<track kind="subtitles" src="./Rebond_Film_30_EN.vtt" srclang="en" label="English" default>':'')+'Votre navigateur ne prend pas en charge la vidéo.</video></div>':'')+
 
  (i===2 && j===20?'<div class="seq4-expo-video" style="max-width:860px;margin:20px auto 42px"><video controls playsinline preload="metadata" style="display:block;width:100%;height:auto;aspect-ratio:16/9;background:#fff" aria-label="Vidéo de présentation de l’exposition (é)preuves"><source src="../pagevideo/Film_Expo-e-preuves_bdf2.mp4" type="video/mp4">Votre navigateur ne prend pas en charge la vidéo.</video></div>':'')+
 
