@@ -107,4 +107,9 @@ function bindRebondChapter4Quiz(){
  else{done.add(3);renderCards();const result=document.getElementById('seq4-complete');result.hidden=false;result.textContent=currentLanguage==='fr'?'Chapitre 4 terminé.':'Chapter 4 completed.';}
  }));
 }
-function showSeq4Section(key){document.getElementById('seq4-'+key)?.scrollIntoView({behavior:'smooth',block:'start'});}
+function showSeq4Section(key){
+ const target=document.getElementById('seq4-'+key);
+ if(!target)return;
+ const top=window.scrollY+target.getBoundingClientRect().top-24;
+ window.scrollTo({top:Math.max(0,top),behavior:'smooth'});
+}
