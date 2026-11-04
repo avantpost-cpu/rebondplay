@@ -59,6 +59,8 @@ function rebondChapter4Html(){
  const caption=item[0]||item[1];
  return '<div class="seq4-block">'+(i===0&&j===43?'<p class="seq4-body"><a href="https://avantpost-cpu.github.io/Pagesweb/kitrebond.pdf" target="_blank" rel="noopener noreferrer" style="color:#07566a;font-weight:700;text-decoration:underline">'+esc(item[1])+'</a></p>':renderText(item,part[1][j-1],part[1][j+1]))+'</div>'+
  (image?figure(image,caption):'')+
+ (i===2 && j===37?'<div class="seq4-spot-video" style="max-width:860px;margin:20px auto 42px"><video controls playsinline preload="metadata" style="display:block;width:100%;height:auto;aspect-ratio:16/9;background:#fff" aria-label="Spot publicitaire Rebond diffusé pendant Roland-Garros"><source src="./Rebond_Film_30_Sous-titres_2_nouveaulogo_bdf.mp4" type="video/mp4">Votre navigateur ne prend pas en charge la vidéo.</video></div>':'')+
+
  (i===2 && j===20?'<div class="seq4-expo-video" style="max-width:860px;margin:20px auto 42px"><video controls playsinline preload="metadata" style="display:block;width:100%;height:auto;aspect-ratio:16/9;background:#fff" aria-label="Vidéo de présentation de l’exposition (é)preuves"><source src="../pagevideo/Film_Expo-e-preuves_bdf2.mp4" type="video/mp4">Votre navigateur ne prend pas en charge la vidéo.</video></div>':'')+
 
  (i===0 && /Passez votre curseur de souris|Hover over the different elements/i.test(item[1])?'<div class="interactive-embed" style="max-width:100%;margin:24px auto 38px;overflow:hidden"><iframe loading="lazy" title="Histoire du contrôle d’honorabilité — frise interactive" src="https://avantpost-cpu.github.io/depot-quiz/hono/hono.html" style="display:block;width:100%;height:880px;border:0" allowfullscreen></iframe></div>':'')+
