@@ -58,7 +58,7 @@ function rebondChapter4Html(){
   if(kind==='subheading')return '<h5 class="seq4-subheading">'+value+'</h5>';
   return '<p class="seq4-body">'+value+'</p>';
  };
- const adhesionTable=(items,start,end)=>'<div class="seq4-adhesion-table" role="list">'+items.slice(start,end+1).map((entry,n)=>'<div class="seq4-adhesion-row" role="listitem"><div class="seq4-adhesion-index"><span class="seq4-adhesion-cross">×</span><span>'+String(n+1).padStart(2,'0')+'</span></div><div class="seq4-adhesion-text">'+esc(String(entry[1]||'').replace(/^\\s*•[\\s\\u2060\\u200b]*/u,''))+'</div></div>').join('')+'</div>';
+ const adhesionTable=(items,start,end)=>'<div class="seq4-adhesion-table" role="list">'+items.slice(start,end+1).map((entry,n)=>'<div class="seq4-adhesion-row" role="listitem"><div class="seq4-adhesion-index"><span class="seq4-adhesion-cross">×</span><span>'+String(n+1).padStart(2,'0')+'</span></div><div class="seq4-adhesion-text">'+esc(String(entry[1]||'').replace(/^\s*•[\s\u2060\u200b]*/u,''))+'</div></div>').join('')+'</div>';
  const figure=(filename,alt)=>'<figure class="seq4-media"><img loading="lazy" src="./chapitre4/'+encodeURIComponent(filename)+'" alt="'+esc(alt)+'" style="display:block;max-width:100%;height:auto;margin:auto"></figure>';
  return style+'<section class="course-part seq2-part seq4-part seq4-intro"><div class="lesson-kicker">'+(currentLanguage==='fr'?'Séquence 4 · 40 min':'Sequence 4 · 40 min')+'</div><h2>'+esc(d.title)+'</h2></section>'+
  d.parts.map((part,i)=>'<section class="course-part seq2-part seq4-part" id="seq4-'+['A','B','C'][i]+'"><h3 class="seq4-major"><span class="seq4-letter">'+esc(part[0].slice(0,1))+'</span><span class="seq4-major-title">'+esc(part[0].slice(1))+'</span></h3>'+part[1].map((item,j)=>{
