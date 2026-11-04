@@ -4,7 +4,7 @@ function rebondChapter4Html(){
  const d=REBOND_CHAPTER4[currentLanguage]||REBOND_CHAPTER4.fr;
  const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const media={
-  1:{18:'deÌ_placements.jpg',23:'partagechambres.jpg'},
+  1:{28:'deÌ_placements.jpg',33:'partagechambres.jpg'},
   2:{5:'Toise_Rebond-GeÌ_neÌ_rique.jpg',8:'Cocotte.jpg',11:'escapeGame.jpg',14:'Panneaux-peÌ_da.jpg',18:'Image_ProjetsEduction.jpg',20:'epreuves.jpg',25:'Mise-en-avant-Livre_Angie.jpg',26:'LivretpeÌ_da.jpg',27:'Sensibilisation.jpg',28:'Formations.jpg',29:'Animations.jpg',32:'Rebondcup.jpg',35:'Plaque_Label.jpg',36:'RG.jpg',38:'marquepages.jpg'}
  };
  const figure=(filename,alt)=>'<figure style="margin:22px auto 36px;max-width:100%"><img loading="lazy" src="./chapitre4/'+encodeURIComponent(filename)+'" alt="'+esc(alt)+'" style="display:block;max-width:100%;height:auto;margin:auto"></figure>';
@@ -15,7 +15,7 @@ function rebondChapter4Html(){
  return '<h4>'+esc(item[0])+'</h4><p>'+esc(item[1])+'</p>'+
  (image?figure(image,caption):'')+
  (i===0 && /Passez votre curseur de souris|Hover over the different elements/i.test(item[1])?'<div class="interactive-embed" style="max-width:100%;margin:24px auto 38px;overflow:hidden"><iframe loading="lazy" title="Histoire du contrôle d’honorabilité — frise interactive" src="https://avantpost-cpu.github.io/depot-quiz/hono/hono.html" style="display:block;width:100%;height:880px;border:0" allowfullscreen></iframe></div>':'')+
- (i===1 && /Respecter le consentement et l’intimite|respect everyone.s consent and privacy/i.test(item[1])?'<div class="video-card" style="max-width:720px;margin:24px auto 38px"><video autoplay muted loop playsinline controls preload="metadata" aria-label="Les parties sensibles" style="display:block;width:100%;height:auto"><source src="https://avantpost-cpu.github.io/depot-quiz/parties.mp4" type="video/mp4">Votre navigateur ne prend pas en charge la vidéo.</video></div>':'');
+ (i===1 && /Respecter le consentement et l.intimit|respect everyone.s consent and privacy/i.test(item[1].normalize('NFD').replace(/[\u0300-\u036f]/g,''))?'<div class="video-card" style="max-width:720px;margin:24px auto 38px"><video autoplay muted loop playsinline controls preload="metadata" aria-label="Les parties sensibles" style="display:block;width:100%;height:auto"><source src="https://avantpost-cpu.github.io/depot-quiz/parties.mp4" type="video/mp4">Votre navigateur ne prend pas en charge la vidéo.</video></div>':'');
  }).join('')+'</section>').join('');
 }
 function rebondChapter4QuizHtml(){
