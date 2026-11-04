@@ -9,6 +9,7 @@ function rebondChapter4Html(){
   2:{58:'Image_Groupe.jpg',5:'Toise_Rebond-GeÌ_neÌ_rique.jpg',8:'Cocotte.jpg',11:'escapeGame.jpg',14:'Panneaux-peÌ_da.jpg',17:'Image_ProjetsEduction.jpg',20:'epreuves.jpg',25:'Mise-en-avant-Livre_Angie.jpg',26:'LivretpeÌ_da.jpg',27:'Sensibilisation.jpg',28:'Formations.jpg',29:'Animations.jpg',32:'Rebondcup.jpg',35:'Plaque_Label.jpg',36:'RG.jpg',38:'marquepages.jpg'}
  };
  const style='<style>'+
+ '.seq4-part .seq4-hono-title{font-family:Poppins,sans-serif;font-size:16px;font-weight:700;color:#3e9ba2;text-align:center;margin:35px 0 27px;line-height:1.45}.seq4-part .seq4-hono-bullet{font-size:16px;line-height:1.75;color:#111;margin:0 0 4px;padding:0 0 0 21px;position:relative;background:transparent;border:0}.seq4-part .seq4-hono-star{position:absolute;left:0;top:0;color:#399ca4;font-size:17px;font-weight:700}.seq4-part .seq4-hono-body{font-size:16px;line-height:1.8;color:#111;margin:28px 0 32px;text-align:justify}@media(max-width:600px){.seq4-part .seq4-hono-body{text-align:left}}'+
  '.seq4-part .seq4-adhesion-section{margin:40px 0 48px}.seq4-part .seq4-adhesion-heading{font-family:"Special Gothic Condensed One",Poppins,sans-serif;font-size:clamp(23px,2.8vw,30px);color:#07566a;margin:0 0 18px;font-weight:600}.seq4-part .seq4-adhesion-table{border:1px solid #d2dfdf;border-radius:15px;overflow:hidden;box-shadow:0 6px 14px rgba(6,55,63,.06)}.seq4-part .seq4-adhesion-row{display:grid;grid-template-columns:minmax(90px,22%) 1fr;border-bottom:1px solid #d2dfdf}.seq4-part .seq4-adhesion-row:last-child{border-bottom:0}.seq4-part .seq4-adhesion-index{display:flex;align-items:center;gap:18px;background:#e6f1ef;padding:18px 22px;font-weight:700;color:#07566a}.seq4-part .seq4-adhesion-cross{color:#ff764b;font-size:19px;font-weight:400}.seq4-part .seq4-adhesion-text{padding:18px 20px;line-height:1.55;color:#07566a}@media(max-width:600px){.seq4-part .seq4-adhesion-row{grid-template-columns:62px 1fr}.seq4-part .seq4-adhesion-index{padding:14px 10px;gap:4px;flex-direction:column}.seq4-part .seq4-adhesion-text{padding:14px}}'+
 
  '.seq4-part .seq4-footnote{font-size:.82em!important;line-height:1.55!important;color:#47636c!important;margin-top:8px!important;white-space:pre-line}'+
@@ -71,8 +72,18 @@ function rebondChapter4Html(){
   if(/^(?:Infographie(?: interactive)?|Qui est concerné ?|Quand est-il réalisé ?|Vestiaires et douches|Formation)$/iu.test(t))return 'subheading';
   return 'body';
  };
+ const honoListStart='✸ Encadrants sportifs professionnels et bénévoles';
+ const honoListEnd='✸ Tout intervenant auprès de mineurs au sein d’un EAPS';
+ const isHonoBullet=t=>/^✸ (?:Encadrants sportifs|Les exploitants d’établissements|Les arbitres et juges|Les surveillants de baignades|Tout intervenant auprès de mineurs)/u.test(String(t||'').trim());
  const renderText=(item,prev,next)=>{
   const kind=classify(item,prev,next),value=emphasize(item[1]);
+  const t=String(item[1]||'').trim();
+  if(currentLanguage==='fr' && (t==='Qui est concerné ?'||t==='Quand est-il réalisé ?'))
+   return '<h3 class="seq4-hono-title">'+esc(t)+'</h3>';
+  if(currentLanguage==='fr' && isHonoBullet(t))
+   return '<p class="seq4-hono-bullet"><span class="seq4-hono-star" aria-hidden="true">✸</span>'+esc(t.replace(/^✸\s*/u,''))+'</p>';
+  if(currentLanguage==='fr' && t==='Il est réalisé à chaque recrutement et ensuite il est renouvelé chaque année par le ministère des Sports.')
+   return '<p class="seq4-hono-body">'+esc(t)+'</p>';
   const sectionHead=String(item[1]||'').match(/^(Outils pédagogiques pour adultes\s*:|Les Projets Rebond\s*:|Outils de communication Rebond\s*:|Outils pédagogiques à destination des jeunes)(?:\s*\n([\s\S]*))?$/iu);
   if(sectionHead)return '<div class="seq4-editorial-title">'+esc(sectionHead[1].trim())+'</div>'+(sectionHead[2]?'<div class="seq4-editorial-follow">'+emphasize(sectionHead[2].trim())+'</div>':'');
   if(/^\s*\*/u.test(String(item[1]||'')))return '<p class="seq4-body seq4-footnote">'+value+'</p>';
