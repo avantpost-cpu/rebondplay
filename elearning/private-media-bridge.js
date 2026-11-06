@@ -77,5 +77,41 @@ function activate(options){
  }};
  return current;
 }
-global.RebondPrivateMediaBridge=Object.freeze({activate,sourcePath,disconnect(){current?.disconnect();current=null}});
+async function connectSupabase({client,publicKey}){
+ if(!client?.auth?.getSession||!client?.auth?.onAuthStateChange||!publicKey)throw new Error("Client Supabase et clé publique nécessaires");
+ let closed=false;
+ let activeParticipant=null;
+ let activeToken=null;
+ let generation=0;
+ async function refresh(){
+  const version=++generation;
+  const {data:{session},error}=await client.auth.getSession();
+  if(closed||version!==generation)return;
+  if(error||!session?.access_token){
+   activeParticipant=null;activeToken=null;
+   global.RebondPrivateMediaBridge.disconnect();
+   return;
+  }
+  if(activeToken===session.access_token&&activeParticipant)return;
+  const response=await fetch("https://tdsrqmpfdvntybdlvejy.supabase.co/functions/v1/elearning-learner-access",{
+   method:"POST",headers:{"Authorization":"Bearer "+session.access_token,"apikey":publicKey,"Content-Type":"application/json"},
+   body:"{}",cache:"no-store"
+  });
+  if(closed||version!==generation)return;
+  if(!response.ok){global.RebondPrivateMediaBridge.disconnect();throw new Error("Accès participant non vérifié");}
+  const data=await response.json();
+  const participant=data.campaigns?.find(c=>c.active);
+  if(!participant?.participant_id){global.RebondPrivateMediaBridge.disconnect();activeParticipant=null;activeToken=null;return;}
+  activeParticipant=participant.participant_id;
+  activeToken=session.access_token;
+  activate({participantId:activeParticipant,accessToken:activeToken,publicKey});
+ }
+ const {data:{subscription}}=client.auth.onAuthStateChange(()=>{
+  // Supabase recommande de ne pas appeler son API d'auth synchroniquement dans le callback.
+  queueMicrotask(()=>{if(!closed)void refresh().catch(()=>global.RebondPrivateMediaBridge.disconnect())});
+ });
+ await refresh();
+ return {disconnect(){closed=true;generation++;subscription.unsubscribe();global.RebondPrivateMediaBridge.disconnect();}};
+}
+global.RebondPrivateMediaBridge=Object.freeze({activate,connectSupabase,sourcePath,disconnect(){current?.disconnect();current=null}});
 })(window);
