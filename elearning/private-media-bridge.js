@@ -28,7 +28,7 @@ function activate(options){
   if(disconnected||!video.isConnected)return;
   const source=video.querySelector("source")||video;
   const raw=source.getAttribute("src");
-  const path=video.dataset.rebondOriginalPath||sourcePath(raw);
+  const path=video.dataset.rebondOriginalPath||sourcePath(raw)||sourcePath(video.getAttribute("src"));
   if(!path||tracked.has(video))return;
   tracked.set(video,{source,path});
   video.dataset.rebondOriginalPath=path;
