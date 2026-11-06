@@ -9,6 +9,14 @@ const RENAMES=Object.freeze({
  "pagevideo/animations/Signaler n'est pas dénoncer.mp4":"pagevideo/animations/signaler_nest_pas_denoncer.mp4",
  "pagevideo/animations/Stratégie de l'agresseur.mp4":"pagevideo/animations/strategie_de_l_agresseur.mp4"
 });
+function normalizeLegacyPath(path){
+ const normalized=path.normalize("NFC").toLowerCase();
+ if(normalized.startsWith("pagevideo/animations/")&&normalized.endsWith(".mp4")){
+  if(normalized.includes("signaler")&&normalized.includes("dénoncer"))return "pagevideo/animations/signaler_nest_pas_denoncer.mp4";
+  if(normalized.includes("stratégie de l'agresseur"))return "pagevideo/animations/strategie_de_l_agresseur.mp4";
+ }
+ return RENAMES[path]||path;
+}
 function pathFor(source){
  if(typeof source!=="string")throw new TypeError("Chemin manquant");
  let path=source.replace(/^\.\//,"").replace(/^\/+/, "");
