@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Accéder à ma formation — Rebond</title>
-<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#1b5f6e;color:#173f49;font:16px Arial,sans-serif}main{background:#fffaf2;max-width:540px;margin:20px;padding:36px;border-radius:18px;box-shadow:0 12px 35px #1238}h1{font-size:32px}p{line-height:1.55}a{color:#1b5f6e}small{letter-spacing:.1em}input,button{box-sizing:border-box;width:100%;padding:12px;margin-top:10px;font:inherit;border-radius:7px}button{background:#ef7652;color:white;border:0}button:disabled{opacity:.5}</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.0/dist/umd/supabase.min.js"></script></head>
+<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#1b5f6e;color:#173f49;font:16px Arial,sans-serif}main{background:#fffaf2;max-width:540px;margin:20px;padding:36px;border-radius:18px;box-shadow:0 12px 35px #1238}h1{font-size:32px}p{line-height:1.55}a{color:#1b5f6e}small{letter-spacing:.1em}input,button{box-sizing:border-box;width:100%;padding:12px;margin-top:10px;font:inherit;border-radius:7px}button{background:#ef7652;color:white;border:0}button:disabled{opacity:.5} .campaign{border-top:1px solid #c7d5d1;margin-top:22px;padding-top:14px}.campaign h2{font-size:21px}.campaign progress{width:100%;height:14px;accent-color:#1b5f6e}.chapters{padding-left:23px}.chapters li{margin:12px 0;padding:8px 0;border-bottom:1px solid #dce3df}.chapters strong{display:block}.chapters span{font-size:14px;color:#52666a}.access-note{font-size:13px;color:#52666a}</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.0/dist/umd/supabase.min.js"></script></head>
 <body><main><small>ASSOCIATION REBOND</small><h1>Accéder à ma formation</h1>
 <p>Votre invitation à la sensibilisation e-learning de l’association Rebond reste utilisable pendant toute votre session.</p>
 <p>Pour garantir la sécurité de votre compte, un code temporaire à huit chiffres vous sera envoyé à votre adresse e-mail lorsque vous en ferez la demande.</p>
@@ -35,7 +35,21 @@ async function check(){
  if(!active.length){status.textContent='Aucune formation active pour cette identité. Vérifiez l’adresse affichée ci-dessous, puis utilisez « Se déconnecter » pour essayer avec le compte invité.';return}
  status.textContent='Votre inscription à la sensibilisation e-learning est confirmée.';
  const area=document.querySelector('#access');area.replaceChildren();
- for(const p of active){const el=document.createElement('p');el.textContent=p.titre+' — '+(p.langue==='en'?'English':'Français')+' · '+(p.started?'Formation commencée':'Pas encore commencée')+' · '+(p.chapters||[]).filter(x=>x.completed).length+' chapitre(s) terminé(s). Accès aux contenus en préparation.';area.append(el)}
+ for(const p of active){
+  const section=document.createElement('section');section.className='campaign';
+  const heading=document.createElement('h2');heading.textContent=p.titre;section.append(heading);
+  const lang=document.createElement('p');lang.textContent='Langue : '+(p.langue==='en'?'English':'Français')+' · '+(p.started?'Formation commencée':'Pas encore commencée');section.append(lang);
+  const chapters=[['Comprendre et prévenir','Understand and prevent'],['Repérer les violences','Recognize abuse'],['Accueillir la parole – Agir','Listen and take action'],['Contrôle d’honorabilité','Background checks']];
+  const progress=p.chapters||[];
+  const count=chapters.filter((_,i)=>progress.some(x=>Number(x.chapter)===i+1&&x.completed)).length;
+  const summary=document.createElement('p');summary.textContent=count+' / '+chapters.length+' chapitres terminés';section.append(summary);
+  const track=document.createElement('progress');track.max=chapters.length;track.value=count;track.setAttribute('aria-label','Chapitres terminés');section.append(track);
+  const list=document.createElement('ol');list.className='chapters';
+  chapters.forEach((names,i)=>{const item=document.createElement('li'),state=progress.find(x=>Number(x.chapter)===i+1);const title=document.createElement('strong');title.textContent=(p.langue==='en'?names[1]:names[0]);item.append(title);const detail=document.createElement('span');detail.textContent=state?.quiz_passed?'Quiz validé':state?.completed?'Chapitre terminé':'À suivre';item.append(detail);list.append(item)});
+  section.append(list);
+  const note=document.createElement('p');note.className='access-note';note.textContent='L’accès sécurisé aux contenus pédagogiques sera activé après leur transfert dans un espace protégé. Cette page affiche uniquement votre inscription et votre progression enregistrée.';section.append(note);
+  area.append(section);
+ }
 }
 const params=new URLSearchParams(location.search),fragment=new URLSearchParams(location.hash.slice(1));
 const errorCode=params.get('error_code')||fragment.get('error_code');
