@@ -16,7 +16,8 @@
   if(!session?.access_token){location.replace("./acces/");return}
   const connection=await window.RebondPrivateMediaBridge.connectSupabase({client,publicKey});
   window.addEventListener("pagehide",()=>connection.disconnect(),{once:true});
-  banner.textContent="Mode test : les vidéos du parcours utilisent des liens privés temporaires.";
+  document.getElementById("rebond-access-guard")?.remove();
+  banner.textContent="Accès apprenant vérifié · vidéos privées activées.";
  }catch(error){
   banner.textContent="Accès privé non vérifié : retour à la connexion.";
   location.replace("./acces/");
