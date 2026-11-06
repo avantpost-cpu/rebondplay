@@ -1,0 +1,23 @@
+name: Vérification médias privés e-learning
+on:
+  push:
+    branches:
+      - test/elearning-medias-prives-20261106
+  pull_request:
+    paths:
+      - 'elearning/private-media-*.js'
+      - 'elearning/tests/**'
+      - '.github/workflows/test-elearning-private-media.yml'
+  workflow_dispatch:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Tests statiques des chemins médias
+        run: node elearning/tests/private-media.test.cjs

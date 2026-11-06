@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="fr">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RebondPlay — contrôle des médias privés</title>
+<style>body{margin:0;background:#f7f4ef;color:#063e54;font:16px Arial,sans-serif}main{max-width:760px;margin:35px auto;padding:30px;background:#fff;border-top:10px solid #ff764b}h1{color:#064e61}button{padding:12px 18px;background:#ff764b;border:0;font-weight:bold;cursor:pointer}pre{background:#e8f4f1;padding:16px;white-space:pre-wrap}code{overflow-wrap:anywhere}</style></head>
+<body><main>
+<h1>Contrôle technique — médias privés</h1>
+<p>Cette page de test n'utilise aucun compte ni mot de passe. Elle vérifie que l'API ne délivre pas de média sans authentification et que les chemins sont correctement préparés.</p>
+<button id="run">Exécuter les contrôles</button>
+<pre id="output">En attente.</pre>
+<p>La lecture avec un compte autorisé devra ensuite être testée depuis le parcours de formation connecté.</p>
+</main>
+<script src="./private-media-adapter.js"></script>
+<script>
+document.getElementById("run").onclick=async()=>{
+ const out=document.getElementById("output");const lines=[];
+ function check(label,ok){lines.push((ok?"OK":"ÉCHEC")+" — "+label)}
+ try{check("Remappage stratégie",RebondPrivateMedia.pathFor("pagevideo/animations/Stratégie de l'agresseur.mp4")==="pagevideo/animations/strategie_de_l_agresseur.mp4");
+ let refused=false;try{RebondPrivateMedia.pathFor("../secrets")}catch{refused=true}check("Refus des chemins hors dossier",refused);
+ const response=await fetch(RebondPrivateMedia.ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({participant_id:"00000000-0000-0000-0000-000000000000",path:"pagevideo/animations/strategie_de_l_agresseur.mp4"})});
+ check("API refuse un appel sans authentification",response.status===401||response.status===403);
+ lines.push("Réponse HTTP : "+response.status);
+ }catch(e){lines.push("Contrôle interrompu : "+e.message)}
+ out.textContent=lines.join("\n");
+};
+</script></body></html>
