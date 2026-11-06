@@ -1,63 +1,81 @@
-/* RebondPlay — raccordement des vidéos e-learning au stockage privé.
- * À activer seulement après authentification d'un participant.
- * Aucun mot de passe ni clé secrète dans ce module.
+/* RebondPlay : pont vidéos privées pour une session apprenant déjà authentifiée.
+ * Usage après contrôle de la session par le portail :
+ * RebondPrivateMediaBridge.activate({ participantId, accessToken, publicKey })
  */
 (function(global){
 "use strict";
 function sourcePath(value){
  if(typeof value!=="string")return null;
- let path;
  try{
   const url=new URL(value,global.location.href);
   if(url.origin!==global.location.origin)return null;
-  path=url.pathname;
+  const match=url.pathname.match(/(?:^|\/)pagevideo\/(.+)$/);
+  if(!match)return null;
+  const path="pagevideo/"+decodeURIComponent(match[1]);
+  return global.RebondPrivateMedia.pathFor(path);
  }catch{return null}
- const match=path.match(/(?:^|\/)pagevideo\/(.+)$/);
- return match?"pagevideo/"+decodeURIComponent(match[1]):null;
 }
+let current=null;
 function activate(options){
- if(!global.RebondPrivateMedia)throw new Error("Adaptateur de médias privés absent");
+ if(!global.RebondPrivateMedia)throw new Error("Adaptateur privé absent");
  const {participantId,accessToken,publicKey}=options||{};
- if(!participantId||!accessToken||!publicKey)throw new Error("Session participant obligatoire");
- const completed=new WeakSet();
- const pending=new WeakSet();
+ if(typeof participantId!=="string"||typeof accessToken!=="string"||typeof publicKey!=="string"||!participantId||!accessToken||!publicKey)throw new Error("Session participant obligatoire");
+ if(current)current.disconnect();
+ const tracked=new WeakMap();
+ const active=new Set();
+ let disconnected=false;
  async function secure(video){
-  if(completed.has(video)||pending.has(video))return;
-  const element=video.querySelector("source[src]")||video;
-  const raw=element.getAttribute("src");
+  if(disconnected||!video.isConnected)return;
+  const source=video.querySelector("source[src]")||video;
+  const raw=source.getAttribute("src");
   const path=sourcePath(raw);
-  if(!path)return;
-  pending.add(video);
+  if(!path||tracked.has(video))return;
+  tracked.set(video,{source,path});
+  active.add(video);
   video.pause();
   video.removeAttribute("autoplay");
-  const original=raw;
-  element.removeAttribute("src");
+  source.removeAttribute("src");
   video.load();
+  video.dataset.privateMedia="loading";
   try{
    const url=await global.RebondPrivateMedia.authorizedMediaUrl({sourcePath:path,participantId,accessToken,publicKey});
-   if(!video.isConnected)return;
-   element.setAttribute("src",url);
-   video.load();
-   completed.add(video);
+   if(disconnected||!video.isConnected)return;
+   source.setAttribute("src",url);
    video.dataset.privateMedia="ready";
+   video.load();
   }catch(error){
+   if(disconnected)return;
    video.dataset.privateMedia="denied";
    video.dispatchEvent(new CustomEvent("rebond:private-media-error",{detail:{path,message:error.message}}));
-   console.warn("RebondPlay : média privé indisponible",path);
-  }finally{pending.delete(video)}
+  }
  }
- function scan(root){
-  if(root.matches?.("video"))secure(root);
-  root.querySelectorAll?.("video").forEach(secure);
+ function scan(node){
+  if(node.nodeType!==1)return;
+  if(node.matches?.("video"))void secure(node);
+  node.querySelectorAll?.("video").forEach(v=>void secure(v));
  }
- scan(document);
- const observer=new MutationObserver(mutations=>{
-  for(const mutation of mutations){
-   for(const node of mutation.addedNodes)if(node.nodeType===1)scan(node);
+ const observer=new MutationObserver(changes=>{
+  for(const change of changes){
+   for(const node of change.addedNodes)scan(node);
+   if(change.type==="attributes"&&change.target.matches?.("video,source"))scan(change.target.closest("video")||change.target);
   }
  });
- observer.observe(document.body,{subtree:true,childList:true});
- return {disconnect(){observer.disconnect()}};
+ observer.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:["src"]});
+ scan(document.body);
+ current={disconnect(){
+  disconnected=true;
+  observer.disconnect();
+  for(const video of active){
+   const entry=tracked.get(video);
+   if(!entry)continue;
+   video.pause();
+   entry.source.removeAttribute("src");
+   video.removeAttribute("data-private-media");
+   video.load();
+  }
+  active.clear();
+ }};
+ return current;
 }
-global.RebondPrivateMediaBridge=Object.freeze({activate,sourcePath});
+global.RebondPrivateMediaBridge=Object.freeze({activate,sourcePath,disconnect(){current?.disconnect();current=null}});
 })(window);
