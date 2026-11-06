@@ -851,7 +851,6 @@ function syncVideoSubtitles(){
  });
 }
 function privateVideoMarkup(html){
- if(new URLSearchParams(location.search).get('private-test')!=='1')return html;
  return html.replace(/<video\b[^>]*>[\s\S]*?<\/video>/gi,block=>
   block.replace(/\bsrc=(["'])(.*?)\1/gi,(match,quote,url)=>
    /(?:^|\/)pagevideo\//.test(url)?'data-private-src='+quote+url+quote:match));
