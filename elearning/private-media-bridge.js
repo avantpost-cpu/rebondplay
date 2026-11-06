@@ -109,7 +109,7 @@ async function connectSupabase({client,publicKey}){
  }
  const {data:{subscription}}=client.auth.onAuthStateChange(()=>{
   // Supabase recommande de ne pas appeler son API d'auth synchroniquement dans le callback.
-  queueMicrotask(()=>{if(!closed)void refresh().catch(()=>global.RebondPrivateMediaBridge.disconnect())});
+  setTimeout(()=>{if(!closed)void refresh().catch(()=>global.RebondPrivateMediaBridge.disconnect())},0);
  });
  await refresh();
  return {disconnect(){closed=true;generation++;subscription.unsubscribe();global.RebondPrivateMediaBridge.disconnect();}};
