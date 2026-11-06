@@ -58,7 +58,7 @@ async function check(){
   const list=document.createElement('ol');list.className='chapters';
   chapters.forEach((names,i)=>{const item=document.createElement('li'),state=progress.find(x=>Number(x.chapter)===i+1);const title=document.createElement('strong');title.textContent=(p.langue==='en'?names[1]:names[0]);item.append(title);const detail=document.createElement('span');detail.textContent=state?.quiz_passed?'Quiz validé':state?.completed?'Chapitre terminé':'À suivre';item.append(detail);list.append(item)});
   section.append(list);
-  const courseLink=document.createElement('a');courseLink.className='course-link';courseLink.href='../index.html?private-test=1';courseLink.textContent=p.started?'Reprendre le parcours e-learning':'Accéder au parcours e-learning';section.append(courseLink);
+  const courseLink=document.createElement('a');courseLink.className='course-link';courseLink.href='../index.html';courseLink.textContent=p.started?'Reprendre le parcours e-learning':'Accéder au parcours e-learning';section.append(courseLink);
   const note=document.createElement('p');note.className='access-note';note.textContent='Le parcours actuel est encore publié en accès public : ce lien permet de le consulter sans seconde identification, mais la protection des contenus et la synchronisation de la progression restent à finaliser.';section.append(note);
   area.append(section);
  }
