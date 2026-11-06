@@ -1,10 +1,37 @@
 <!doctype html>
 <html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Accéder à ma formation — RebondPlay</title>
-<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#1b5f6e;color:#173f49;font:16px Arial,sans-serif}main{background:#fffaf2;max-width:540px;margin:20px;padding:36px;border-radius:18px;box-shadow:0 12px 35px #1238}h1{font-size:32px}p{line-height:1.55}a{color:#1b5f6e}small{letter-spacing:.1em}</style></head>
+<style>body{margin:0;min-height:100vh;display:grid;place-items:center;background:#1b5f6e;color:#173f49;font:16px Arial,sans-serif}main{background:#fffaf2;max-width:540px;margin:20px;padding:36px;border-radius:18px;box-shadow:0 12px 35px #1238}h1{font-size:32px}p{line-height:1.55}a{color:#1b5f6e}small{letter-spacing:.1em}input,button{box-sizing:border-box;width:100%;padding:12px;margin-top:10px;font:inherit;border-radius:7px}button{background:#ef7652;color:white;border:0}button:disabled{opacity:.5}</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.0/dist/umd/supabase.min.js"></script></head>
 <body><main><small>ASSOCIATION REBOND</small><h1>Accéder à ma formation</h1>
 <p>Votre invitation RebondPlay est valable pendant la durée de votre session de formation.</p>
 <p>Pour garantir la sécurité de votre compte, un lien de connexion temporaire vous sera envoyé à votre adresse e-mail lorsque le service d'accès sera activé.</p>
-<p><strong>La connexion des participants n'est pas encore ouverte.</strong> Aucun compte ni message n'est créé depuis cette page.</p>
+<form id="login"><label for="email">Adresse e-mail de votre invitation</label><input id="email" type="email" required autocomplete="email"><button id="send">Recevoir mon lien sécurisé</button></form><p id="status" role="status"></p><div id="access"></div><p>Seuls les comptes préalablement créés par Rebond peuvent se connecter.</p>
 <p>En attendant, contactez votre organisme ou l'association Rebond pour toute question.</p>
-<p><a href="https://rebondplay.com/">Retour à RebondPlay</a></p></main></body></html>
+<p><a href="https://rebondplay.com/">Retour à RebondPlay</a></p></main><script>
+const sb=window.supabase.createClient('https://tdsrqmpfdvntybdlvejy.supabase.co','sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO');
+const status=document.querySelector('#status'),form=document.querySelector('#login'),button=document.querySelector('#send');
+form.onsubmit=async(e)=>{
+ e.preventDefault();
+ const email=document.querySelector('#email').value.trim().toLowerCase();
+ if(email.endsWith('.invalid')){status.textContent='Adresse de démonstration : aucun courriel envoyé.';return}
+ button.disabled=true;status.textContent='Demande en cours…';
+ try{
+ const {error}=await sb.auth.signInWithOtp({email,options:{shouldCreateUser:false,emailRedirectTo:'https://rebondplay.com/elearning/acces/'}});
+ status.textContent=error?'Demande indisponible. Veuillez réessayer plus tard.':'Si un compte autorisé existe, vous recevrez un lien de connexion.';
+ }catch{status.textContent='Service temporairement indisponible.'}
+ finally{button.disabled=false}
+};
+async function check(){
+ const {data:{session}}=await sb.auth.getSession();
+ if(!session)return;
+ form.hidden=true;status.textContent='Vérification de votre inscription…';
+ const {data,error}=await sb.functions.invoke('elearning-learner-access');
+ if(error||!data?.ok){status.textContent='Vérification momentanément indisponible.';return}
+ const active=(data.campaigns||[]).filter(x=>x.active);
+ if(!active.length){status.textContent='Aucune session active associée à ce compte.';return}
+ status.textContent='Compte reconnu.';
+ const area=document.querySelector('#access');
+ for(const p of active){const el=document.createElement('p');el.textContent=p.titre+' — '+(p.langue==='en'?'English':'Français')+' (accès pédagogique en préparation)';area.append(el)}
+}
+check();
+</script></body></html>
