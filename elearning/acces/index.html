@@ -35,5 +35,10 @@ async function check(){
  const area=document.querySelector('#access');
  for(const p of active){const el=document.createElement('p');el.textContent=p.titre+' — '+(p.langue==='en'?'English':'Français')+' · '+(p.started?'Formation commencée':'Pas encore commencée')+' · '+(p.chapters||[]).filter(x=>x.completed).length+' chapitre(s) terminé(s). Accès aux contenus en préparation.';area.append(el)}
 }
+const params=new URLSearchParams(location.search),fragment=new URLSearchParams(location.hash.slice(1));
+const errorCode=params.get('error_code')||fragment.get('error_code');
+const errorDescription=params.get('error_description')||fragment.get('error_description');
+if(errorCode){status.textContent='Le lien de connexion a été refusé ('+errorCode+'). '+(errorDescription||'Demandez un nouveau lien.');history.replaceState(null,'',location.pathname)}
+sb.auth.onAuthStateChange((event)=>{if(event==='SIGNED_IN'){setTimeout(()=>check(),0)}});
 check();
 </script></body></html>
