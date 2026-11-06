@@ -15,7 +15,7 @@
 <div class="toolbar"><div><h2>Fiche de session · Babolat</h2><p class="muted">Configuration de la campagne et préparation du suivi.</p></div><button class="secondary" id="back">← Toutes les sessions</button></div>
 <div class="tabs" id="tabs"><button class="active" data-tab="param">Paramètres</button><button data-tab="people">Participants</button><button data-tab="mail">Invitations</button><button data-tab="results">Résultats</button><button data-tab="docs">Diplômes et certificats</button><button data-tab="report">Bilan global</button></div>
 <section class="panel" id="param"><h2>Paramètres de la campagne</h2><div class="grid"><div class="field"><label>Organisme client</label><input value="Babolat" readonly></div><div class="field"><label>Nom de la session</label><input id="sessionName" value="Sensibilisation internationale Babolat"></div><div class="field"><label>Date de début</label><input id="start" type="date"></div><div class="field"><label>Date de fin</label><input id="end" type="date"></div><div class="field"><label>Nombre de participants prévus</label><input id="capacity" type="number" min="1" value="200"></div><div class="field"><label>Langues proposées</label><input value="Français et anglais" readonly></div><div class="field"><label>Adresse d'expédition envisagée</label><input value="elearning@assorebond.com" readonly></div><div class="field"><label>Statut</label><select id="status"><option>Projet</option><option>Planifiée</option><option>En cours</option><option>Terminée</option></select></div></div><p class="notice">Les modifications restent uniquement dans cette page. Aucun enregistrement dans Supabase ou Odoo n'est effectué.</p><button id="save">Vérifier les paramètres</button><p id="feedback" role="status"></p></section>
-<section class="panel" id="people" hidden><h2>Participants</h2><p>Import CSV prévu : prénom, nom, e-mail professionnel, langue d'invitation. Déduplication et validation avant toute création de compte.</p><div class="empty">Aucun participant réel n'est enregistré dans cette maquette.</div><p class="muted">Seuls les administrateurs Rebond autorisés pourront accéder à la liste nominative.</p></section>
+<section class="panel" id="people" hidden><h2>Participants</h2><p>Import CSV prévu : prénom, nom, e-mail professionnel, langue d'invitation. Déduplication et validation avant toute création de compte.</p><div class="field"><label>Choisir un fichier CSV (prévisualisation locale uniquement)</label><input id="csvFile" type="file" accept=".csv,text/csv"></div><p class="muted">Colonnes attendues : prenom, nom, email, langue. Les données restent dans votre navigateur et ne sont pas transmises à Supabase.</p><p id="csvStatus" role="status"></p><div style="overflow:auto"><table id="csvTable" hidden><thead><tr><th>Prénom</th><th>Nom</th><th>E-mail</th><th>Langue</th><th>Contrôle</th></tr></thead><tbody></tbody></table></div><button id="csvClear" class="secondary" type="button">Effacer la prévisualisation</button><p class="muted">Seuls les administrateurs Rebond autorisés pourront accéder à la liste nominative.</p></section>
 <section class="panel" id="mail" hidden><h2>Invitations et rappels</h2><p>Expéditeur prévu : <strong>elearning@assorebond.com</strong> (adresse à créer et à vérifier).</p><div class="grid"><div><label>Invitation initiale</label><input type="date"></div><div><label>Rappel avant clôture</label><input type="date"></div></div><p class="notice">L'envoi est désactivé tant que l'authentification, les modèles FR/EN et les autorisations serveur ne sont pas déployés.</p><button disabled>Envoyer les invitations</button></section>
 <section class="panel" id="results" hidden><h2>Suivi pédagogique</h2><div class="cards"><div class="stat"><b>0</b><small>Invités</small></div><div class="stat"><b>0</b><small>En cours</small></div><div class="stat"><b>0</b><small>Validés</small></div><div class="stat"><b>0</b><small>À relancer</small></div></div><p>Validation requise : quatre chapitres terminés et quatre quiz réussis aux seuils pédagogiques prévus.</p><div class="empty">Aucune donnée pédagogique connectée.</div></section>
 <section class="panel" id="docs" hidden><h2>Diplômes et certificats</h2><p>Deux PDF personnels seront délivrés après validation complète : <strong>diplôme</strong> et <strong>certificat de validation</strong>, en français ou en anglais.</p><div class="empty">Aucun document émis. La génération et l'envoi nécessitent une validation côté serveur.</div></section>
@@ -45,6 +45,23 @@ async function loadCampaign(){
 document.querySelector('#authForm').onsubmit=async ev=>{ev.preventDefault();const {error}=await sb.auth.signInWithPassword({email:document.querySelector('#email').value,password:document.querySelector('#password').value});document.querySelector('#authStatus').textContent=error?'Connexion refusée.':'';if(!error)await authCheck()};
 document.querySelector('#signout').onclick=async()=>{await sb.auth.signOut();await authCheck()};
 authCheck();
+function parseCSV(source){
+ const lines=[];let row=[],cell='',quoted=false;
+ for(let i=0;i<source.length;i++){const ch=source[i];if(ch==='"'){if(quoted&&source[i+1]==='"'){cell+='"';i++}else quoted=!quoted}else if(!quoted&&(ch===','||ch===';'||ch==='\t')){row.push(cell.trim());cell=''}else if(!quoted&&(ch==='\n'||ch==='\r')){if(ch==='\r'&&source[i+1]==='\n')i++;row.push(cell.trim());if(row.some(x=>x))lines.push(row);row=[];cell=''}else cell+=ch}
+ if(quoted)throw Error('Guillemets non fermés dans le CSV');
+ row.push(cell.trim());if(row.some(x=>x))lines.push(row);return lines;
+}
+document.querySelector('#csvFile').onchange=async ev=>{
+ const file=ev.target.files[0],status=document.querySelector('#csvStatus'),table=document.querySelector('#csvTable'),body=table.querySelector('tbody');body.replaceChildren();table.hidden=true;if(!file)return;
+ if(file.size>1024*1024){status.textContent='Fichier trop volumineux (maximum 1 Mo).';return}
+ try{const rows=parseCSV((await file.text()).replace(/^\uFEFF/,''));if(rows.length<2)throw Error('CSV vide');
+ const headers=rows.shift().map(x=>x.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim());
+ const idx=['prenom','nom','email','langue'].map(h=>headers.indexOf(h));if(idx.some(x=>x<0))throw Error('Colonnes requises : prenom, nom, email, langue');
+ const seen=new Set();let invalid=0;for(const r of rows.slice(0,500)){const [prenom,nom,email,langue]=idx.map(i=>(r[i]||'').trim()),key=email.toLowerCase();const ok=!!prenom&&!!nom&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)&&['fr','en'].includes(langue.toLowerCase())&&!seen.has(key);seen.add(key);if(!ok)invalid++;const tr=document.createElement('tr');for(const val of [prenom,nom,email,langue,ok?'Valide':'À corriger']){const td=document.createElement('td');td.textContent=val;tr.append(td)}body.append(tr)}
+ table.hidden=false;status.textContent=rows.length+' lignes détectées ; '+invalid+' anomalies dans les '+Math.min(rows.length,500)+' premières lignes. '+(rows.length>500?'Prévisualisation limitée à 500 lignes. ':'')+'Aucun import effectué.';
+ }catch(err){status.textContent='Lecture impossible : '+err.message}
+};
+document.querySelector('#csvClear').onclick=()=>{document.querySelector('#csvFile').value='';document.querySelector('#csvTable').hidden=true;document.querySelector('#csvTable tbody').replaceChildren();document.querySelector('#csvStatus').textContent='Prévisualisation effacée.'};
 const listing=document.querySelector('#listing'),detail=document.querySelector('#detail'),empty=document.querySelector('#empty');
 function show(view){listing.hidden=view!=='listing';detail.hidden=view!=='detail';empty.hidden=view!=='empty'}
 document.querySelector('#open').onclick=()=>show('detail');document.querySelector('#back').onclick=()=>show('listing');document.querySelector('#new').onclick=()=>show('detail');
@@ -52,14 +69,14 @@ document.querySelectorAll('#states button').forEach(b=>b.onclick=()=>{document.q
 document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#tabs button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(x=>x.hidden=x.id!==b.dataset.tab)});
 document.querySelector('#save').onclick=async()=>{
  const s=document.querySelector('#start').value,e=document.querySelector('#end').value,msg=document.querySelector('#feedback');
- if(!s||!e||e<=s){msg.textContent='Dates invalides.';return}
+ if((s&&!e)||(!s&&e)||(s&&e&&e<=s)){msg.textContent='Indiquez deux dates cohérentes, ou laissez les deux vides pour un projet.';return}
  if(!['super_admin','gestionnaire'].includes(adminRole)){msg.textContent='Accès refusé.';return}
  const titre=document.querySelector('#sessionName').value.trim(),capacite=Number(document.querySelector('#capacity').value);
  if(!titre||!Number.isInteger(capacite)||capacite<1){msg.textContent='Nom ou capacité invalide.';return}
  try{
   if(!clientId){const r=await sb.from('el_organismes').insert({nom:'Babolat'}).select('id').single();if(r.error)throw r.error;clientId=r.data.id}
   const statut=({Projet:'projet',Planifiée:'planifiee','En cours':'en_cours',Terminée:'terminee'})[document.querySelector('#status').value];
-  const record={organisme_id:clientId,titre,capacite,statut,debut:new Date(s+'T00:00:00Z').toISOString(),fin:new Date(e+'T23:59:59Z').toISOString()};
+  const record={organisme_id:clientId,titre,capacite,statut,debut:s?new Date(s+'T00:00:00Z').toISOString():null,fin:e?new Date(e+'T23:59:59Z').toISOString():null};
   const r=campaignId?await sb.from('el_campagnes').update(record).eq('id',campaignId).select('id').single():await sb.from('el_campagnes').insert(record).select('id').single();
   if(r.error)throw r.error;campaignId=r.data.id;msg.textContent='Session enregistrée dans Supabase.';
  }catch(err){msg.textContent='Enregistrement impossible : '+err.message}
