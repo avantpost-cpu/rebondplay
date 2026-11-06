@@ -21,7 +21,7 @@ function pathFor(source){
  if(typeof source!=="string")throw new TypeError("Chemin manquant");
  let path=source.replace(/^\.\//,"").replace(/^\/+/, "");
  if(!path.startsWith("pagevideo/")||path.includes("..")||path.includes("//")||path.includes("\\")||/[?#%]/.test(path))throw new Error("Chemin interdit");
- return RENAMES[path]||path;
+ return normalizeLegacyPath(path);
 }
 async function authorizedMediaUrl({sourcePath,participantId,accessToken,publicKey}){
  const path=pathFor(sourcePath);
