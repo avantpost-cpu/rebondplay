@@ -850,6 +850,12 @@ function syncVideoSubtitles(){
   track.addEventListener('load',apply,{once:true});
  });
 }
+function privateVideoMarkup(html){
+ if(new URLSearchParams(location.search).get('private-test')!=='1')return html;
+ return html.replace(/<video\b[^>]*>[\s\S]*?<\/video>/gi,block=>
+  block.replace(/\bsrc=(["'])(.*?)\1/gi,(match,quote,url)=>
+   /(?:^|\/)pagevideo\//.test(url)?'data-private-src='+quote+url+quote:match));
+}
 function renderLesson(){
  updateChapterNav();
  const isFirst=activeSeq===0;
@@ -857,22 +863,22 @@ function renderLesson(){
  if(isFirst){
    const lessonSections=sections.filter(a=>a.title!=='Quiz de fin de chapitre');
    const quizSection=sections.find(a=>a.title==='Quiz de fin de chapitre');
-   document.getElementById('lesson').innerHTML=lessonSections.map((a,i)=>`<section class="course-part" id="part-${i}">${localizeHtml(a.html)}</section>`).join('');
+   document.getElementById('lesson').innerHTML=privateVideoMarkup(lessonSections.map((a,i)=>`<section class="course-part" id="part-${i}">${localizeHtml(a.html)}</section>`).join(''));
    quizPanel.innerHTML=localizeHtml(quizSection.html);
    bindQuizFeedback(quizPanel);
    quizPanel.hidden=false;
  } else if(activeSeq===1) {
-   document.getElementById('lesson').innerHTML=localizeHtml(seq2Html);
+   document.getElementById('lesson').innerHTML=privateVideoMarkup(localizeHtml(seq2Html));
    bindSeq2Quiz(document.getElementById('lesson'));
    quizPanel.innerHTML='';
    quizPanel.hidden=true;
  } else if(activeSeq===2) {
-   document.getElementById('lesson').innerHTML=localizeHtml(seq3Html);
+   document.getElementById('lesson').innerHTML=privateVideoMarkup(localizeHtml(seq3Html));
    quizPanel.innerHTML=localizeHtml(seq3Quiz);
    bindChapter3Quiz(quizPanel);
    quizPanel.hidden=false;
  } else if(activeSeq===3){
-   document.getElementById('lesson').innerHTML=rebondChapter4Html();
+   document.getElementById('lesson').innerHTML=privateVideoMarkup(rebondChapter4Html());
    quizPanel.innerHTML=rebondChapter4QuizHtml();
    quizPanel.hidden=false;
    bindRebondChapter4Quiz();
