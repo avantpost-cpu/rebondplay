@@ -863,7 +863,7 @@ function renderLesson(){
    const lessonSections=sections.filter(a=>a.title!=='Quiz de fin de chapitre');
    const quizSection=sections.find(a=>a.title==='Quiz de fin de chapitre');
    document.getElementById('lesson').innerHTML=privateVideoMarkup(lessonSections.map((a,i)=>`<section class="course-part" id="part-${i}">${localizeHtml(a.html)}</section>`).join(''));
-   quizPanel.innerHTML=localizeHtml(quizSection.html);
+   quizPanel.innerHTML=privateVideoMarkup(localizeHtml(quizSection.html));
    bindQuizFeedback(quizPanel);
    quizPanel.hidden=false;
  } else if(activeSeq===1) {
@@ -873,12 +873,12 @@ function renderLesson(){
    quizPanel.hidden=true;
  } else if(activeSeq===2) {
    document.getElementById('lesson').innerHTML=privateVideoMarkup(localizeHtml(seq3Html));
-   quizPanel.innerHTML=localizeHtml(seq3Quiz);
+   quizPanel.innerHTML=privateVideoMarkup(localizeHtml(seq3Quiz));
    bindChapter3Quiz(quizPanel);
    quizPanel.hidden=false;
  } else if(activeSeq===3){
    document.getElementById('lesson').innerHTML=privateVideoMarkup(rebondChapter4Html());
-   quizPanel.innerHTML=rebondChapter4QuizHtml();
+   quizPanel.innerHTML=privateVideoMarkup(rebondChapter4QuizHtml());
    quizPanel.hidden=false;
    bindRebondChapter4Quiz();
  } else {
