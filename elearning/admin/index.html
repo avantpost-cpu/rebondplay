@@ -20,7 +20,7 @@
 <section class="panel" id="results" hidden><h2>Suivi pédagogique</h2><div class="cards"><div class="stat"><b>0</b><small>Invités</small></div><div class="stat"><b>0</b><small>En cours</small></div><div class="stat"><b>0</b><small>Validés</small></div><div class="stat"><b>0</b><small>À relancer</small></div></div><p>Validation requise : quatre chapitres terminés et quatre quiz réussis aux seuils pédagogiques prévus.</p><div class="empty">Aucune donnée pédagogique connectée.</div></section>
 <section class="panel" id="docs" hidden><h2>Diplômes et certificats</h2><p>Deux PDF personnels seront délivrés après validation complète : <strong>diplôme</strong> et <strong>certificat de validation</strong>, en français ou en anglais.</p><div class="empty">Aucun document émis. La génération et l'envoi nécessitent une validation côté serveur.</div></section>
 <section class="panel" id="report" hidden><h2>Bilan global destiné à Babolat</h2><p>Indicateurs prévus : invitations, démarrages, complétions, taux de réussite agrégés, langues et difficultés pédagogiques globales.</p><p class="notice">Le rapport Babolat n'inclura aucun nom, e-mail ni résultat individuel. Les données nominatives seront réservées à Rebond.</p><button disabled>Générer le bilan PDF</button></section>
-</div><section><h2>Connexion Odoo · diagnostic</h2><p>Test en lecture seule, réservé aux administrateurs. Aucune donnée client n'est affichée.</p><button id="odooTest" type="button">Tester la connexion Odoo</button><p id="odooResult" role="status"></p></section><p class="footer">Prototype d'interface · Sans connexion à Supabase, Odoo ou Resend · Aucune donnée personnelle à saisir.</p>
+</div><section><h2>Connexion Odoo · diagnostic</h2><p>Test en lecture seule, réservé aux administrateurs. Aucune donnée client n'est affichée.</p><button id="odooTest" type="button">Tester la connexion Odoo</button><p id="odooResult" role="status"></p><button id="odooRights" type="button">Vérifier les droits de création de produits</button><p id="odooRightsResult" role="status"></p></section><p class="footer">Prototype d'interface · Sans connexion à Supabase, Odoo ou Resend · Aucune donnée personnelle à saisir.</p>
 </div></main><script>
 
 const sb=window.supabase.createClient('https://tdsrqmpfdvntybdlvejy.supabase.co','sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO');
@@ -50,6 +50,14 @@ document.querySelector('#odooTest').onclick=async()=>{
  const {data,error}=await sb.functions.invoke('elearning-odoo-test',{body:{}});
  if(error){out.textContent='Test non abouti : '+error.message;return}
  out.textContent=data?.ok?'Connexion Odoo validée.':('Connexion non confirmée : '+(data?.message||'Réponse inconnue')+(data?.http_status?' (HTTP '+data.http_status+')':''));
+};
+document.querySelector('#odooRights').onclick=async()=>{
+ const out=document.querySelector('#odooRightsResult');out.textContent='Vérification en cours…';
+ const {data,error}=await sb.functions.invoke('elearning-odoo-test',{body:{mode:'product_rights'}});
+ if(error){out.textContent='Vérification non aboutie : '+error.message;return}
+ if(data?.stage==='rights'&&data?.ok&&typeof data.can_create_product==='boolean'){
+ out.textContent=data.can_create_product?'Odoo autorise ce compte à créer des produits.':'Odoo ne permet pas à ce compte de créer des produits.';
+ }else{out.textContent='Droits non confirmés : '+(data?.message||'Réponse inattendue')+(data?.http_status?' (HTTP '+data.http_status+')':'');}
 };
 function parseCSV(source){
  const lines=[];let row=[],cell='',quoted=false;
