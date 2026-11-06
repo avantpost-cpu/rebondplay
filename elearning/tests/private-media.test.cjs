@@ -11,4 +11,7 @@ assert.equal(api.pathFor("pagevideo/animations/Stratégie de l'agresseur.mp4"),"
 assert.equal(api.pathFor("pagevideo/animations/Signaler n'est pas dénoncer.mp4"),"pagevideo/animations/signaler_nest_pas_denoncer.mp4");
 assert.throws(()=>api.pathFor("../secret"));
 assert.throws(()=>api.pathFor("https://example.com/video.mp4"));
-console.log("5 contrôles statiques réussis.");
+assert.equal(api.pathFor("pagevideo/animations/Stratégie de l'agresseur.mp4"),"pagevideo/animations/strategie_de_l_agresseur.mp4");
+assert.equal(api.pathFor("pagevideo/animations/Signaler n'est pas dénoncer.mp4"),"pagevideo/animations/signaler_nest_pas_denoncer.mp4");
+assert.throws(()=>api.pathFor("pagevideo/%2e%2e/secret.mp4"));
+console.log("8 contrôles statiques réussis.");
