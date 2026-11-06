@@ -852,8 +852,8 @@ function syncVideoSubtitles(){
 }
 function privateVideoMarkup(html){
  return html.replace(/<video\b[^>]*>[\s\S]*?<\/video>/gi,block=>
-  block.replace(/\bsrc=(["'])(.*?)\1/gi,(match,quote,url)=>
-   /(?:^|\/)pagevideo\//.test(url)?'data-private-src='+quote+url+quote:match));
+  block.replace(/(^|\s)src=(["'])(.*?)\2/gi,(match,prefix,quote,url)=>
+   /(?:^|\/)pagevideo\//.test(url)?prefix+'data-private-src='+quote+url+quote:match));
 }
 function renderLesson(){
  updateChapterNav();
