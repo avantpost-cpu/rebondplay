@@ -3,9 +3,9 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 :root{--blue:#1b5f6e;--coral:#ff7858;--paper:#faf7f0;--ink:#163c47;--line:#d9e1df}*{box-sizing:border-box}body{margin:0;background:#f3f1ed;color:var(--ink);font-family:Poppins,Arial,sans-serif;font-size:14px}header{background:var(--blue);color:white;padding:24px max(20px,calc((100vw - 1160px)/2));display:flex;align-items:center;justify-content:space-between;gap:18px}header strong{font-size:26px;letter-spacing:-1px}header small{display:block;font-size:11px;letter-spacing:2px;text-transform:uppercase}.flag{background:#fff0d9;color:#764a12;padding:9px 14px;border-radius:40px;font-size:12px;font-weight:700}main{max-width:1160px;margin:28px auto;padding:0 18px 60px}h1{font-size:30px;margin:0 0 8px}h2{font-size:20px;margin:0 0 14px}p{line-height:1.6}.muted{color:#62777b}.toolbar,.flex{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}button{font:inherit;cursor:pointer;border:0;border-radius:9px;background:var(--blue);color:white;padding:11px 16px;font-weight:600}button.secondary{background:white;color:var(--blue);border:1px solid #bacdcd}button:disabled{opacity:.45;cursor:not-allowed}nav{display:flex;gap:8px;overflow:auto;margin:22px 0}nav button{white-space:nowrap;background:white;color:var(--ink);border:1px solid var(--line)}nav button.active{background:var(--blue);color:white}section{background:white;border:1px solid var(--line);border-radius:16px;padding:22px;margin-bottom:18px}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.stat{background:var(--paper);padding:17px;border-radius:12px}.stat b{display:block;font-size:26px}.stat small{color:#64777a}.session{border-left:6px solid var(--coral);background:#fbfaf6}.pill{display:inline-block;border-radius:30px;background:#e9e0ff;color:#6542a8;padding:5px 10px;font-size:11px;font-weight:700}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}label{display:block;font-weight:600;font-size:12px;margin:0 0 7px}input,select,textarea{width:100%;padding:11px;border:1px solid #b8cbca;border-radius:8px;font:inherit;background:white;color:var(--ink)}textarea{min-height:85px}.field{margin-bottom:14px}.tabs{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px}.tabs button{background:#eef3f1;color:var(--ink)}.tabs button.active{background:var(--blue);color:white}.panel[hidden],.view[hidden]{display:none!important}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:12px;border-bottom:1px solid var(--line)}th{font-size:12px;color:#687b80}.notice{background:#fff4e8;border:1px solid #f3d5ad;padding:12px 15px;border-radius:10px}.empty{padding:22px;background:var(--paper);border-radius:10px;color:#66797a}.footer{font-size:12px;color:#61777c;margin-top:25px}@media(max-width:740px){header{padding:20px}header strong{font-size:21px}.cards,.grid{grid-template-columns:1fr 1fr}section{padding:16px}h1{font-size:24px}}@media(max-width:460px){.cards,.grid{grid-template-columns:1fr}}
-</style></head><body>
+</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.0/dist/umd/supabase.min.js"></script></head><body>
 <header><div><small>Association Rebond</small><strong>Administration · E-learning</strong></div><span class="flag">MAQUETTE · aucune donnée réelle</span></header>
-<main>
+<main><section id="authPanel"><h2>Connexion administrateur</h2><form id="authForm"><label>E-mail</label><input id="email" type="email" required><label>Mot de passe</label><input id="password" type="password" required><button>Se connecter</button></form><p id="authStatus" role="status"></p></section><div id="protectedApp" hidden><div class="toolbar"><span id="userInfo"></span><button class="secondary" id="signout">Déconnexion</button></div>
 <div class="toolbar"><div><h1>Sessions de sensibilisation</h1><p class="muted">Préparer, suivre et clôturer les campagnes de sensibilisation.</p></div><button id="new">+ Créer une session</button></div>
 <div class="cards"><div class="stat"><b id="count">1</b><small>Projets</small></div><div class="stat"><b>0</b><small>Planifiées</small></div><div class="stat"><b>0</b><small>En cours</small></div><div class="stat"><b>0</b><small>Terminées</small></div></div>
 <nav id="states"><button class="active" data-state="Projets">Projets</button><button data-state="Planifiées">Planifiées</button><button data-state="En cours">En cours</button><button data-state="Terminées">Terminées</button></nav>
@@ -21,11 +21,47 @@
 <section class="panel" id="docs" hidden><h2>Diplômes et certificats</h2><p>Deux PDF personnels seront délivrés après validation complète : <strong>diplôme</strong> et <strong>certificat de validation</strong>, en français ou en anglais.</p><div class="empty">Aucun document émis. La génération et l'envoi nécessitent une validation côté serveur.</div></section>
 <section class="panel" id="report" hidden><h2>Bilan global destiné à Babolat</h2><p>Indicateurs prévus : invitations, démarrages, complétions, taux de réussite agrégés, langues et difficultés pédagogiques globales.</p><p class="notice">Le rapport Babolat n'inclura aucun nom, e-mail ni résultat individuel. Les données nominatives seront réservées à Rebond.</p><button disabled>Générer le bilan PDF</button></section>
 </div><p class="footer">Prototype d'interface · Sans connexion à Supabase, Odoo ou Resend · Aucune donnée personnelle à saisir.</p>
-</main><script>
+</div></main><script>
+
+const sb=window.supabase.createClient('https://tdsrqmpfdvntybdlvejy.supabase.co','sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO');
+let adminRole=null,clientId=null,campaignId=null;
+async function authCheck(){
+ const {data:{user}}=await sb.auth.getUser();
+ let role=null;
+ if(user){const {data}=await sb.from('el_admin_roles').select('role').eq('user_id',user.id).maybeSingle();role=data?.role}
+ if(!role&&user){await sb.auth.signOut();document.querySelector('#authStatus').textContent='Compte non autorisé pour le e-learning.'}
+ adminRole=role;document.querySelector('#authPanel').hidden=!!role;document.querySelector('#protectedApp').hidden=!role;
+ if(role){document.querySelector('#userInfo').textContent=user.email+' · '+role;document.querySelector('#save').disabled=role==='consultation';await loadCampaign()}
+}
+async function loadCampaign(){
+ const {data:org}=await sb.from('el_organismes').select('id').eq('nom','Babolat').limit(1);
+ if(!org?.length)return;clientId=org[0].id;
+ const {data:rows}=await sb.from('el_campagnes').select('*').eq('organisme_id',clientId).order('created_at',{ascending:false}).limit(1);
+ if(!rows?.length)return;const x=rows[0];campaignId=x.id;
+ document.querySelector('#sessionName').value=x.titre;document.querySelector('#capacity').value=x.capacite;
+ document.querySelector('#start').value=x.debut?.slice(0,10)||'';document.querySelector('#end').value=x.fin?.slice(0,10)||'';
+ document.querySelector('#status').value=({projet:'Projet',planifiee:'Planifiée',en_cours:'En cours',terminee:'Terminée'})[x.statut]||'Projet';
+}
+document.querySelector('#authForm').onsubmit=async ev=>{ev.preventDefault();const {error}=await sb.auth.signInWithPassword({email:document.querySelector('#email').value,password:document.querySelector('#password').value});document.querySelector('#authStatus').textContent=error?'Connexion refusée.':'';if(!error)await authCheck()};
+document.querySelector('#signout').onclick=async()=>{await sb.auth.signOut();await authCheck()};
+authCheck();
 const listing=document.querySelector('#listing'),detail=document.querySelector('#detail'),empty=document.querySelector('#empty');
 function show(view){listing.hidden=view!=='listing';detail.hidden=view!=='detail';empty.hidden=view!=='empty'}
 document.querySelector('#open').onclick=()=>show('detail');document.querySelector('#back').onclick=()=>show('listing');document.querySelector('#new').onclick=()=>show('detail');
 document.querySelectorAll('#states button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#states button').forEach(x=>x.classList.toggle('active',x===b));show(b.dataset.state==='Projets'?'listing':'empty')});
 document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#tabs button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(x=>x.hidden=x.id!==b.dataset.tab)});
-document.querySelector('#save').onclick=()=>{const s=document.querySelector('#start').value,e=document.querySelector('#end').value;const msg=document.querySelector('#feedback');msg.textContent=!s||!e?'Renseignez les dates de début et de fin.':e<s?'La date de fin doit suivre la date de début.':'Paramètres cohérents. Enregistrement réel non activé dans cette maquette.'};
+document.querySelector('#save').onclick=async()=>{
+ const s=document.querySelector('#start').value,e=document.querySelector('#end').value,msg=document.querySelector('#feedback');
+ if(!s||!e||e<=s){msg.textContent='Dates invalides.';return}
+ if(!['super_admin','gestionnaire'].includes(adminRole)){msg.textContent='Accès refusé.';return}
+ const titre=document.querySelector('#sessionName').value.trim(),capacite=Number(document.querySelector('#capacity').value);
+ if(!titre||!Number.isInteger(capacite)||capacite<1){msg.textContent='Nom ou capacité invalide.';return}
+ try{
+  if(!clientId){const r=await sb.from('el_organismes').insert({nom:'Babolat'}).select('id').single();if(r.error)throw r.error;clientId=r.data.id}
+  const statut=({Projet:'projet',Planifiée:'planifiee','En cours':'en_cours',Terminée:'terminee'})[document.querySelector('#status').value];
+  const record={organisme_id:clientId,titre,capacite,statut,debut:new Date(s+'T00:00:00Z').toISOString(),fin:new Date(e+'T23:59:59Z').toISOString()};
+  const r=campaignId?await sb.from('el_campagnes').update(record).eq('id',campaignId).select('id').single():await sb.from('el_campagnes').insert(record).select('id').single();
+  if(r.error)throw r.error;campaignId=r.data.id;msg.textContent='Session enregistrée dans Supabase.';
+ }catch(err){msg.textContent='Enregistrement impossible : '+err.message}
+}
 </script></body></html>
