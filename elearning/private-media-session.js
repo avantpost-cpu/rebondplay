@@ -2,7 +2,6 @@
  * Branche test uniquement. La session Supabase reste gérée par le portail.
  */
 (async function(){
- if(new URLSearchParams(location.search).get("private-test")!=="1")return;
  const project="https://tdsrqmpfdvntybdlvejy.supabase.co";
  const publicKey="sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO";
  const banner=document.createElement("div");
