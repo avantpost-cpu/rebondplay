@@ -102,7 +102,7 @@ async function connectSupabase({client,publicKey}){
   if(!response.ok){global.RebondPrivateMediaBridge.disconnect();throw new Error("Accès participant non vérifié");}
   const data=await response.json();
   const participant=data.campaigns?.find(c=>c.active);
-  if(!participant?.participant_id){global.RebondPrivateMediaBridge.disconnect();activeParticipant=null;activeToken=null;return;}
+  if(!participant?.participant_id){global.RebondPrivateMediaBridge.disconnect();activeParticipant=null;activeToken=null;throw new Error("Aucune campagne active");}
   activeParticipant=participant.participant_id;
   activeToken=session.access_token;
   activate({participantId:activeParticipant,accessToken:activeToken,publicKey});
