@@ -34,6 +34,10 @@ function activate(options){
   video.dataset.rebondOriginalPath=path;
   active.add(video);
   video.pause();
+  video.setAttribute("controlsList","nodownload noremoteplayback");
+  video.setAttribute("disablePictureInPicture","");
+  video.disableRemotePlayback=true;
+  video.addEventListener("contextmenu",event=>event.preventDefault());
   video.removeAttribute("autoplay");
   source.removeAttribute("src");
   video.removeAttribute("src");
