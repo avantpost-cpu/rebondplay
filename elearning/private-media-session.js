@@ -15,7 +15,8 @@
   const client=window.supabase.createClient(project,publicKey);
   const {data:{session}}=await client.auth.getSession();
   if(!session?.access_token){location.replace("./acces/");return}
-  await window.RebondPrivateMediaBridge.connectSupabase({client,publicKey});
+  const connection=await window.RebondPrivateMediaBridge.connectSupabase({client,publicKey});
+  window.addEventListener("pagehide",()=>connection.disconnect(),{once:true});
   banner.textContent="Mode test : les vidéos du parcours utilisent des liens privés temporaires.";
  }catch(error){
   banner.textContent="Accès privé non vérifié : retour à la connexion.";
