@@ -36,6 +36,7 @@ function activate(options){
   video.pause();
   video.removeAttribute("autoplay");
   source.removeAttribute("src");
+  video.removeAttribute("src");
   video.load();
   video.dataset.privateMedia="loading";
   try{
@@ -71,6 +72,7 @@ function activate(options){
    if(!entry)continue;
    video.pause();
    entry.source.removeAttribute("src");
+   video.removeAttribute("src");
    video.removeAttribute("data-private-media");
    video.load();
   }
