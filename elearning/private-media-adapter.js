@@ -29,7 +29,7 @@ async function authorizedMediaUrl({sourcePath,participantId,accessToken,publicKe
  const response=await fetch(ENDPOINT,{method:"POST",headers:{"Authorization":"Bearer "+accessToken,"apikey":publicKey,"Content-Type":"application/json"},body:JSON.stringify({participant_id:participantId,path}),cache:"no-store"});
  const data=await response.json().catch(()=>({}));
  if(!response.ok||!data.ok||!data.url)throw new Error("Média inaccessible ("+response.status+")");
- const url=new URL(data.url);
+ const url=new URL(data.url,"https://tdsrqmpfdvntybdlvejy.supabase.co");
  if(url.protocol!=="https:"||url.hostname!=="tdsrqmpfdvntybdlvejy.supabase.co"||!url.pathname.startsWith("/storage/v1/object/sign/rebond-elearning-prive/"))throw new Error("Réponse serveur inattendue");
  return url.href;
 }
