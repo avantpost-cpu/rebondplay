@@ -31,7 +31,7 @@ async function check(){
  if(!active.length){status.textContent='Aucune session active associée à ce compte.';return}
  status.textContent='Compte reconnu.';
  const area=document.querySelector('#access');
- for(const p of active){const el=document.createElement('p');el.textContent=p.titre+' — '+(p.langue==='en'?'English':'Français')+' (accès pédagogique en préparation)';area.append(el)}
+ for(const p of active){const el=document.createElement('p');el.textContent=p.titre+' — '+(p.langue==='en'?'English':'Français')+' · '+(p.started?'Formation commencée':'Pas encore commencée')+' · '+(p.chapters||[]).filter(x=>x.completed).length+' chapitre(s) terminé(s). Accès aux contenus en préparation.';area.append(el)}
 }
 check();
 </script></body></html>
