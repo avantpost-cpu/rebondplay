@@ -34,7 +34,7 @@ async function check(){
  const active=(data.campaigns||[]).filter(x=>x.active);
  if(!active.length){status.textContent='Aucune formation active pour cette identité. Vérifiez l’adresse affichée ci-dessous, puis utilisez « Se déconnecter » pour essayer avec le compte invité.';return}
  status.textContent='Votre inscription à la sensibilisation e-learning est confirmée.';
- const area=document.querySelector('#access');
+ const area=document.querySelector('#access');area.replaceChildren();
  for(const p of active){const el=document.createElement('p');el.textContent=p.titre+' — '+(p.langue==='en'?'English':'Français')+' · '+(p.started?'Formation commencée':'Pas encore commencée')+' · '+(p.chapters||[]).filter(x=>x.completed).length+' chapitre(s) terminé(s). Accès aux contenus en préparation.';area.append(el)}
 }
 const params=new URLSearchParams(location.search),fragment=new URLSearchParams(location.hash.slice(1));
