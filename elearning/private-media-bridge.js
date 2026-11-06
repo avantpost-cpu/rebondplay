@@ -28,9 +28,10 @@ function activate(options){
   if(disconnected||!video.isConnected)return;
   const source=video.querySelector("source[src]")||video;
   const raw=source.getAttribute("src");
-  const path=sourcePath(raw);
+  const path=video.dataset.rebondOriginalPath||sourcePath(raw);
   if(!path||tracked.has(video))return;
   tracked.set(video,{source,path});
+  video.dataset.rebondOriginalPath=path;
   active.add(video);
   video.pause();
   video.removeAttribute("autoplay");
