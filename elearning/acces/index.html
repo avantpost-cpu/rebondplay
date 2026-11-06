@@ -18,7 +18,7 @@ form.onsubmit=async(e)=>{
  button.disabled=true;status.textContent='Demande en cours…';
  try{
  const {error}=await sb.auth.signInWithOtp({email,options:{shouldCreateUser:false,emailRedirectTo:'https://rebondplay.com/elearning/acces/'}});
- status.textContent=error?'Demande indisponible. Veuillez réessayer plus tard.':'Si un compte autorisé existe, vous recevrez un lien de connexion.';
+ status.textContent=error?((error.status===429||/rate limit/i.test(error.message||''))?'Limite temporaire d’envoi atteinte. Patientez avant de demander un nouveau lien.':'Demande indisponible. Veuillez réessayer plus tard.'):'Si un compte autorisé existe, vous recevrez un lien de connexion.';
  }catch{status.textContent='Service temporairement indisponible.'}
  finally{button.disabled=false}
 };
