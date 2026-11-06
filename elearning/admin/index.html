@@ -114,8 +114,9 @@ async function refreshParticipants(){
  const el=document.querySelector("#existingParticipants");
  el.replaceChildren();
  if(!campaignId){el.textContent="Enregistrez d’abord la session.";return}
- const {data,error}=await sb.from("el_participants").select("id,email,prenom,nom,langue,odoo_partner_id").eq("campagne_id",campaignId).order("created_at");
- if(error){el.textContent="Lecture des participants impossible : "+error.message;return}
+ const {data:result,error}=await sb.functions.invoke("elearning-odoo-participants",{body:{action:"list",campaign_id:campaignId}});
+ if(error||!result?.ok){el.textContent="Lecture des participants impossible : "+(result?.error||error?.message||"Erreur inconnue");return}
+ const data=result.participants||[];
  const title=document.createElement('h3');title.textContent=data.length+' participant(s) enregistrés dans cette session';el.append(title);
  if(!data.length)return;
  const table=document.createElement('table'),thead=document.createElement('thead'),tr=document.createElement('tr');
