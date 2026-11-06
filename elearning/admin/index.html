@@ -109,7 +109,33 @@ document.querySelector('#odooCreateProduct').onclick=async()=>{
  }finally{button.disabled=false}
 };
 let validatedParticipants=[];
-async function refreshParticipants(){const el=document.querySelector("#existingParticipants");if(!campaignId){el.textContent="Enregistrez d’abord la session.";return}const {data,error}=await sb.from("el_participants").select("id,email,prenom,nom,langue").eq("campagne_id",campaignId).order("created_at");el.textContent=error?"Lecture des participants impossible : "+error.message:(data.length+" participant(s) enregistrés dans cette session.");}
+async function refreshParticipants(){
+ const el=document.querySelector("#existingParticipants");
+ el.replaceChildren();
+ if(!campaignId){el.textContent="Enregistrez d’abord la session.";return}
+ const {data,error}=await sb.from("el_participants").select("id,email,prenom,nom,langue,odoo_partner_id").eq("campagne_id",campaignId).order("created_at");
+ if(error){el.textContent="Lecture des participants impossible : "+error.message;return}
+ const title=document.createElement('h3');title.textContent=data.length+' participant(s) enregistrés dans cette session';el.append(title);
+ if(!data.length)return;
+ const table=document.createElement('table'),thead=document.createElement('thead'),tr=document.createElement('tr');
+ for(const label of ['Participant','E-mail','Langue de formation','Référence Odoo']){const th=document.createElement('th');th.textContent=label;tr.append(th)}thead.append(tr);table.append(thead);
+ const body=document.createElement('tbody');
+ for(const p of data){
+ const row=document.createElement('tr');
+ for(const value of [p.prenom+' '+p.nom,p.email]){const td=document.createElement('td');td.textContent=value;row.append(td)}
+ const cell=document.createElement('td'),select=document.createElement('select');
+ for(const [value,label] of [['fr','Français'],['en','English']]){const option=document.createElement('option');option.value=value;option.textContent=label;select.append(option)}
+ select.value=p.langue||'fr';select.disabled=!p.odoo_partner_id;
+ const feedback=document.createElement('span');feedback.setAttribute('role','status');feedback.style.marginLeft='8px';
+ select.onchange=async()=>{const previous=p.langue||'fr';select.disabled=true;feedback.textContent='Enregistrement…';try{
+ const {data:result,error:err}=await sb.functions.invoke('elearning-odoo-participants',{body:{action:'set_language',campaign_id:campaignId,participant_id:p.id,langue:select.value}});
+ if(err||!result?.ok)throw Error(result?.error||err?.message||'Mise à jour impossible');
+ p.langue=select.value;feedback.textContent='Enregistré';
+ }catch(e){select.value=previous;feedback.textContent='Erreur : '+e.message}finally{select.disabled=false}};
+ cell.append(select,feedback);row.append(cell);
+ const ref=document.createElement('td');ref.textContent=p.odoo_partner_id?String(p.odoo_partner_id):'Non lié';row.append(ref);body.append(row);
+ }table.append(body);el.append(table);
+}
 let odooPreviewReady=false;
 async function odooParticipants(action){
  const status=document.querySelector('#odooStatus'),list=document.querySelector('#odooContacts'),preview=document.querySelector('#odooPreview'),sync=document.querySelector('#odooSync');
