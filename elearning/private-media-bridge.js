@@ -26,7 +26,7 @@ function activate(options){
  let disconnected=false;
  async function secure(video){
   if(disconnected||!video.isConnected)return;
-  const source=video.querySelector("source[src]")||video;
+  const source=video.querySelector("source")||video;
   const raw=source.getAttribute("src");
   const path=video.dataset.rebondOriginalPath||sourcePath(raw);
   if(!path||tracked.has(video))return;
