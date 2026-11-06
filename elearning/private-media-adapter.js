@@ -26,7 +26,7 @@ function pathFor(source){
 async function authorizedMediaUrl({sourcePath,participantId,accessToken,publicKey}){
  const path=pathFor(sourcePath);
  if(!participantId||!accessToken||!publicKey)throw new Error("Session ou participant manquant");
- const response=await fetch(ENDPOINT,{method:"POST",headers:{"Authorization":"Bearer "+accessToken,"apikey":publicKey,"Content-Type":"application/json"},body:JSON.stringify({participant_id:participantId,path:sourcePath}),cache:"no-store"});
+ const response=await fetch(ENDPOINT,{method:"POST",headers:{"Authorization":"Bearer "+accessToken,"apikey":publicKey,"Content-Type":"application/json"},body:JSON.stringify({participant_id:participantId,path}),cache:"no-store"});
  const data=await response.json().catch(()=>({}));
  if(!response.ok||!data.ok||!data.url)throw new Error("Média inaccessible ("+response.status+")");
  const url=new URL(data.url);
