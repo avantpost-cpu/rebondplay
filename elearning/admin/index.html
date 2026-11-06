@@ -42,6 +42,7 @@ function resetForm(){
  document.querySelector('#status').value='Projet';document.querySelector('#feedback').textContent='';
  document.querySelector('#detailTitle').textContent='Nouvelle session';refreshParticipants();
 }
+function activateTab(tab){document.querySelectorAll('#tabs button').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));document.querySelectorAll('.panel').forEach(x=>x.hidden=x.id!==tab);if(tab==='people')refreshParticipants();}
 function openCampaign(id){
  const x=campaigns.find(x=>x.id===id);if(!x)return;
  campaignId=x.id;clientId=x.organisme_id;odooPreviewReady=false;document.querySelector('#odooSync').disabled=true;document.querySelector('#odooContacts').replaceChildren();document.querySelector('#odooStatus').textContent='';
@@ -51,7 +52,7 @@ function openCampaign(id){
  document.querySelector('#start').value=x.debut?.slice(0,10)||'';document.querySelector('#end').value=x.fin?.slice(0,10)||'';
  document.querySelector('#status').value=stateLabels[x.statut]||'Projet';
  document.querySelector('#detailTitle').textContent=x.titre;
- document.querySelector('#feedback').textContent='';document.querySelector('#csvFile').value='';validatedParticipants=[];document.querySelector('#csvImport').disabled=true;refreshParticipants();show('detail');
+ document.querySelector('#feedback').textContent='';document.querySelector('#csvFile').value='';validatedParticipants=[];document.querySelector('#csvImport').disabled=true;show('detail');activateTab('people');
 }
 function renderCampaigns(){
  for(const [id,status] of [['count','projet'],['countPlanned','planifiee'],['countRunning','en_cours'],['countDone','terminee']])document.getElementById(id).textContent=campaigns.filter(x=>x.statut===status).length;
@@ -127,10 +128,10 @@ async function refreshParticipants(){
  for(const [value,label] of [['fr','Français'],['en','English']]){const option=document.createElement('option');option.value=value;option.textContent=label;select.append(option)}
  select.value=p.langue||'fr';select.disabled=!p.odoo_partner_id;
  const feedback=document.createElement('span');feedback.setAttribute('role','status');feedback.style.marginLeft='8px';
- select.onchange=async()=>{const previous=p.langue||'fr';select.disabled=true;feedback.textContent='Enregistrement…';try{
- const {data:result,error:err}=await sb.functions.invoke('elearning-odoo-participants',{body:{action:'set_language',campaign_id:campaignId,participant_id:p.id,langue:select.value}});
+ select.onchange=async()=>{const previous=p.langue||'fr';const next=select.value;select.disabled=true;feedback.textContent='Enregistrement…';try{
+ const {data:result,error:err}=await sb.functions.invoke('elearning-odoo-participants',{body:{action:'set_language',campaign_id:campaignId,participant_id:p.id,langue:next}});
  if(err||!result?.ok)throw Error(result?.error||err?.message||'Mise à jour impossible');
- p.langue=select.value;feedback.textContent='Enregistré';
+ p.langue=next;feedback.textContent='Enregistré';
  }catch(e){select.value=previous;feedback.textContent='Erreur : '+e.message}finally{select.disabled=false}};
  cell.append(select,feedback);row.append(cell);
  const ref=document.createElement('td');ref.textContent=p.odoo_partner_id?String(p.odoo_partner_id):'Non lié';row.append(ref);body.append(row);
@@ -200,7 +201,7 @@ const listing=document.querySelector('#listing'),detail=document.querySelector('
 function show(view){listing.hidden=view!=='listing';detail.hidden=view!=='detail';empty.hidden=view!=='empty'}
 document.querySelector('#back').onclick=()=>renderCampaigns();document.querySelector('#new').onclick=()=>{resetForm();show('detail')};
 document.querySelectorAll('#states button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#states button').forEach(x=>x.classList.toggle('active',x===b));currentState=({Projets:'projet',Planifiées:'planifiee','En cours':'en_cours',Terminées:'terminee'})[b.dataset.state];renderCampaigns()});
-document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#tabs button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(x=>x.hidden=x.id!==b.dataset.tab)});
+document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>activateTab(b.dataset.tab));
 document.querySelector('#save').onclick=async()=>{
  const s=document.querySelector('#start').value,e=document.querySelector('#end').value,msg=document.querySelector('#feedback');
  if((s&&!e)||(!s&&e)||(s&&e&&e<=s)){msg.textContent='Indiquez deux dates cohérentes, ou laissez les deux vides pour un projet.';return}
