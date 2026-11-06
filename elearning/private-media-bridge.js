@@ -8,7 +8,7 @@ function sourcePath(value){
  if(typeof value!=="string")return null;
  try{
   const url=new URL(value,global.location.href);
-  if(url.origin!==global.location.origin)return null;
+  if(url.origin!==global.location.origin&&url.origin!=="https://rebondplay.com"&&url.origin!=="https://avantpost-cpu.github.io")return null;
   const match=url.pathname.match(/(?:^|\/)pagevideo\/(.+)$/);
   if(!match)return null;
   const path="pagevideo/"+decodeURIComponent(match[1]);
