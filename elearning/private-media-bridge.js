@@ -27,8 +27,8 @@ function activate(options){
  async function secure(video){
   if(disconnected||!video.isConnected)return;
   const source=video.querySelector("source")||video;
-  const raw=source.getAttribute("src");
-  const path=video.dataset.rebondOriginalPath||sourcePath(raw)||sourcePath(video.getAttribute("src"));
+  const raw=source.getAttribute("data-private-src")||source.getAttribute("src");
+  const path=video.dataset.rebondOriginalPath||sourcePath(raw)||sourcePath(video.getAttribute("data-private-src")||video.getAttribute("src"));
   if(!path||tracked.has(video))return;
   tracked.set(video,{source,path});
   video.dataset.rebondOriginalPath=path;
