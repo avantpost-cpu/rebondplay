@@ -22,6 +22,7 @@ function activate(options){
  if(typeof participantId!=="string"||typeof accessToken!=="string"||typeof publicKey!=="string"||!participantId||!accessToken||!publicKey)throw new Error("Session participant obligatoire");
  if(current)current.disconnect();
  const tracked=new WeakMap();
+ const trackedImages=new WeakSet();
  const active=new Set();
  let disconnected=false;
  async function secure(video){
@@ -55,15 +56,32 @@ function activate(options){
    video.dispatchEvent(new CustomEvent("rebond:private-media-error",{detail:{path,message:error.message}}));
   }
  }
+ async function secureImage(img){
+  if(disconnected||!img.isConnected||trackedImages.has(img))return;
+  const raw=img.getAttribute("src");
+  const path=sourcePath(raw);
+  if(!path||!/\\.(png|jpe?g|gif|webp|svg)$/i.test(path))return;
+  trackedImages.add(img);
+  img.removeAttribute("src");
+  img.dataset.privateMedia="loading";
+  try{
+   const url=await global.RebondPrivateMedia.authorizedMediaUrl({sourcePath:path,participantId,accessToken,publicKey});
+   if(disconnected||!img.isConnected)return;
+   img.src=url;
+   img.dataset.privateMedia="ready";
+  }catch(error){img.dataset.privateMedia="denied";img.dispatchEvent(new CustomEvent("rebond:private-media-error",{detail:{path,message:error.message}}))}
+ }
  function scan(node){
   if(node.nodeType!==1)return;
   if(node.matches?.("video"))void secure(node);
+  if(node.matches?.("img"))void secureImage(node);
   node.querySelectorAll?.("video").forEach(v=>void secure(v));
+  node.querySelectorAll?.("img").forEach(img=>void secureImage(img));
  }
  const observer=new MutationObserver(changes=>{
   for(const change of changes){
    for(const node of change.addedNodes)scan(node);
-   if(change.type==="attributes"&&change.target.matches?.("video,source"))scan(change.target.closest("video")||change.target);
+   if(change.type==="attributes"&&change.target.matches?.("video,source,img"))scan(change.target.closest("video")||change.target);
   }
  });
  observer.observe(document.body,{childList:true,subtree:true,attributes:true,attributeFilter:["src"]});
