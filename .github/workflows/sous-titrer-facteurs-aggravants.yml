@@ -25,6 +25,11 @@ jobs:
           python -m pip install openai-whisper==20250625
           test -s "pagevideo/animations/Les facteurs aggravants.mp4"
           ffprobe -hide_banner -v error -show_entries format=duration -of default=noprint_wrappers=1 "pagevideo/animations/Les facteurs aggravants.mp4"
+          ffprobe -v error -show_entries stream=index,codec_type,codec_name -of compact "pagevideo/animations/Les facteurs aggravants.mp4"
+          if ! ffprobe -v error -select_streams a -show_entries stream=index -of csv=p=0 "pagevideo/animations/Les facteurs aggravants.mp4" | grep -q .; then
+            echo "::error::The video has no audio stream. Spoken English subtitles cannot be generated from it."
+            exit 1
+          fi
       - name: Transcribe French and translate to timed English captions
         run: |
           whisper "pagevideo/animations/Les facteurs aggravants.mp4" \
@@ -35,7 +40,10 @@ jobs:
             --output_dir /tmp/rebond-subtitles \
             --verbose False \
             --fp16 False
-          test -s "/tmp/rebond-subtitles/Les facteurs aggravants.vtt"
+          if ! grep -Eq "[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{3} --> " "/tmp/rebond-subtitles/Les facteurs aggravants.vtt"; then
+            echo "::error::Whisper produced no timed subtitles; refusing to commit an empty VTT."
+            exit 1
+          fi
           cp "/tmp/rebond-subtitles/Les facteurs aggravants.vtt" "pagevideo/animations/Les facteurs aggravants_en.vtt"
       - name: Commit the English subtitles without altering the French video
         run: |
