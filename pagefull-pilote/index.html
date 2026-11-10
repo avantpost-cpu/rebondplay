@@ -198,9 +198,11 @@
             if(userError||!user?.user)throw new Error("Connexion expirée. Reconnectez-vous.");
             const subscription=await check();
             if(subscription?.offre!=="full")throw new Error("Votre abonnement ne permet pas de lire cette vidéo.");
-            const {data,error}=await client.storage.from("rebondplay-prive").createSignedUrl(choice.dataset.privateVideo,900);
-            if(error||!data?.signedUrl)throw error||new Error("Lien de lecture indisponible.");
-            url=data.signedUrl;
+            let deviceToken=localStorage.getItem("rp-device-token-v1");
+            if(!deviceToken||!/^[a-f0-9]{64}$/.test(deviceToken)){deviceToken=Array.from(crypto.getRandomValues(new Uint8Array(32))).map(b=>b.toString(16).padStart(2,"0")).join("");localStorage.setItem("rp-device-token-v1",deviceToken)}
+            const {data,error}=await client.functions.invoke("rp-video-appareil",{body:{path:choice.dataset.privateVideo,device_token:deviceToken}});
+            if(error||!data?.url)throw new Error(data?.error||"Accès refusé : appareil non autorisé ou vidéo indisponible.");
+            url=data.url;
           }
           if(request!==videoRequest)return;
           popupVideo.querySelector("source").src=url;
