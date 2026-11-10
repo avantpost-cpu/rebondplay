@@ -154,12 +154,19 @@
       if(!window.supabase){message.textContent="Le service de connexion n'a pas chargé. Recharge la page.";return}
       const client=window.supabase.createClient("https://tdsrqmpfdvntybdlvejy.supabase.co","sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO",{auth:{storageKey:"rebondplay-full-pilot-auth",persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
       let activeSubscription=null;
-      async function check(){
+      async function rpVerifierAppareil(){
+ let token=localStorage.getItem('rp-device-token-v1');
+ if(!token||!/^[a-f0-9]{64}$/.test(token)){token=Array.from(crypto.getRandomValues(new Uint8Array(32))).map(b=>b.toString(16).padStart(2,'0')).join('');localStorage.setItem('rp-device-token-v1',token)}
+ const {data,error}=await client.functions.invoke('rp-appareil-verifier',{body:{device_token:token,nom_appareil:navigator.platform||'Navigateur'}});
+ if(error||!data?.autorise)throw new Error(data?.raison==='limite_trois_appareils'?'Limite de trois appareils atteinte. Contactez Rebond pour retirer un appareil.':'Vérification de votre appareil indisponible.');
+ return true;
+}
+async function check(){
         const {data:user,error:userError}=await client.auth.getUser();
         if(userError||!user?.user)return null;
         const {data,error}=await client.rpc("rp_mon_abonnement");
         if(error)throw error;
-        return data?.[0]||null;
+        const abonnement=data?.[0]||null;if(abonnement)await rpVerifierAppareil();return abonnement;
       }
       async function unlock(){
         gate.hidden=true;document.body.classList.add("plus-pilot-ready");
