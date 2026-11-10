@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Rebond — Analyse globale des satisfactions</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#065269;color:#173d48;font:15px Arial,sans-serif}.wrap{max-width:1180px;margin:auto;padding:30px 18px}h1{color:white;margin:16px 0 24px}h2{color:#065269;margin-top:0}.box{background:#fffaf4;padding:23px;border-radius:18px;margin:14px 0}.top{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between}.btn,button{border:0;border-radius:10px;background:#e65013;color:#fff;padding:11px 16px;font-weight:bold;text-decoration:none;cursor:pointer;font:700 14px Arial}.btn.alt{background:#065269}button:disabled{opacity:.5;cursor:wait}input,select{padding:11px;border:1px solid #b9c9cb;border-radius:9px;max-width:100%;font:inherit}.filters{display:flex;gap:14px;flex-wrap:wrap;align-items:end}.filters label{display:grid;gap:6px;font-weight:bold}.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:12px}.kpi{background:#e9f2f0;padding:18px;border-radius:12px}.kpi strong{font-size:30px;display:block;color:#065269}.muted{color:#5a737a;font-size:13px}.bars{display:grid;gap:10px}.bar{display:grid;grid-template-columns:minmax(120px,2fr) minmax(100px,4fr) 65px;gap:10px;align-items:center}.track{background:#e2e9e8;border-radius:12px;height:15px;overflow:hidden}.fill{background:#e65013;height:100%}table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:10px;border-bottom:1px solid #dae4e2}th{color:#065269}.scroll{overflow-x:auto}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px}.chip{display:inline-block;background:#e9f2f0;border-radius:8px;padding:7px 10px;margin:4px 5px 4px 0}.error{color:#b42318}#login{max-width:520px;margin:9vh auto}.note{font-size:13px;color:#61787d}details summary{cursor:pointer;font-weight:bold}body{min-height:100vh}@media(max-width:600px){.bar{grid-template-columns:1fr 2fr 52px}.wrap{padding:18px 10px}}
+</style></head><body><main class="wrap">
+<div class="top"><a class="btn alt" href="./">← Mes sessions</a><a class="btn alt" href="/administration-questionnaires/">Administration générale</a></div>
+<h1>Analyse globale · Satisfaction</h1>
+<section class="box" id="login"><h2>Accès administrateur</h2><p id="loginMessage" role="status">Vérification de l’accès…</p><form id="loginForm" hidden><label>E-mail <input id="email" type="email" required autocomplete="username"></label><p><label>Mot de passe <input id="password" type="password" required autocomplete="current-password"></label></p><button type="submit">Se connecter</button></form></section>
+<div id="app" hidden>
+<section class="box"><h2>Périmètre de l’analyse</h2><div class="filters"><label>Du <input id="from" type="date"></label><label>Au <input id="to" type="date"></label><label>Intervention <select id="session"><option value="">Toutes les interventions</option></select></label><button id="apply">Actualiser</button><button id="export" disabled>Exporter CSV agrégé</button></div><p class="note">La période correspond à la date de l’intervention. Les réponses restent conservées dans leur session d’origine.</p><p id="status" role="status"></p></section>
+<section class="box"><h2>Vue d’ensemble</h2><div class="kpis" id="kpis"></div></section>
+<div class="grid"><section class="box"><h2>Répartition des notes</h2><div class="bars" id="distribution"></div></section><section class="box"><h2>Évolution mensuelle</h2><div id="months" class="scroll"></div></section></div>
+<section class="box"><h2>Comparaison des interventions</h2><div id="sessionsTable" class="scroll"></div></section>
+<section class="box"><h2>Résultats par question</h2><div id="questions" class="grid"></div></section>
+<section class="box"><h2>Connaissances déclarées avant / après</h2><p class="note">Part des répondants ayant coché chaque thème, sur les réponses valides à cette question.</p><div id="topics" class="scroll"></div></section>
+<section class="box"><h2>Retours qualitatifs</h2><p class="note">Commentaires présentés sans nom ni adresse e-mail. Les réponses libres sont des verbatims, pas des tendances automatiquement interprétées.</p><div id="comments"></div></section>
+</div></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script><script>
+(async()=>{
+const $=id=>document.getElementById(id);
+const client=window.supabase?.createClient("https://tdsrqmpfdvntybdlvejy.supabase.co","sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO");
+const fields="id,session_id,created_at,satisfaction,before,after,deepen,learned,adapted,quality,equipped,changes,emotion,useful,improve,remarks";
+let sessions=[],rows=[],authorized=false,epoch=0;
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pct=(n,d)=>d?(100*n/d).toFixed(1):"0.0";
+const date=d=>d?new Date(d+"T12:00:00").toLocaleDateString("fr-FR"):"";
+const mean=a=>a.length?(a.reduce((s,n)=>s+n,0)/a.length).toFixed(2):"—";
+const valid=r=>Number.isInteger(r.satisfaction)&&r.satisfaction>=1&&r.satisfaction<=5;
+const bar=(label,n,total)=>'<div class="bar"><span>'+esc(label)+'</span><div class="track"><div class="fill" style="width:'+pct(n,total)+'%"></div></div><b>'+pct(n,total)+' %</b></div>';
+function close(message){authorized=false;epoch++;$("app").hidden=true;$("login").hidden=false;$("loginMessage").textContent=message;$("loginForm").hidden=false;rows=[];}
+async function auth(){
+ const {data,error}=await client.auth.getSession();if(error)throw error;
+ if(!data?.session)return false;
+ const check=await client.rpc("rebond_is_admin");if(check.error)throw check.error;
+ return check.data===true;
+}
+async function init(){
+ try{if(!client)throw Error("Bibliothèque de connexion indisponible");
+ if(!await auth()){close("Connectez-vous avec un compte administrateur.");return}
+ authorized=true;$("login").hidden=true;$("app").hidden=false;$("status").textContent="Chargement…";
+ const res=await client.from("satisfaction_sessions").select("id,event_name,event_date,event_place").order("event_date",{ascending:false});
+ if(res.error)throw res.error;sessions=res.data||[];
+ $("session").innerHTML='<option value="">Toutes les interventions</option>'+sessions.map(s=>'<option value="'+esc(s.id)+'">'+esc(s.event_name)+" — "+esc(date(s.event_date))+'</option>').join("");
+ if(sessions.length){$("from").value=sessions.reduce((a,s)=>s.event_date&&s.event_date<a?s.event_date:a,sessions[0].event_date);$("to").value=sessions.reduce((a,s)=>s.event_date&&s.event_date>a?s.event_date:a,sessions[0].event_date);}
+ await load();
+ }catch(e){close("Accès ou données indisponibles : "+e.message)}
+}
+async function load(){
+ if(!authorized)return;const v=++epoch;$("apply").disabled=true;$("export").disabled=true;$("status").textContent="Analyse en cours…";
+ try{
+ const from=$("from").value,to=$("to").value;if(from&&to&&from>to)throw Error("La date de début doit précéder la date de fin.");
+ const selected=sessions.filter(s=>(!from||s.event_date>=from)&&(!to||s.event_date<=to)&&(!$("session").value||s.id===$("session").value));
+ let all=[];const ids=selected.map(s=>s.id);
+ // Requêtes paginées : ne jamais tronquer silencieusement à 1 000 lignes.
+ for(let k=0;k<ids.length;k+=50){
+  const chunk=ids.slice(k,k+50);
+  for(let offset=0;;offset+=500){
+   const r=await client.from("satisfaction_responses").select(fields).in("session_id",chunk).order("id",{ascending:true}).range(offset,offset+499);
+   if(r.error)throw r.error;if(v!==epoch)return;all.push(...(r.data||[]));if((r.data||[]).length<500)break;
+  }
+ }
+ if(v!==epoch)return;rows=all;render(selected,all);$("export").disabled=false;$("status").textContent=selected.length+" intervention(s) sélectionnée(s), "+all.length+" réponse(s) analysée(s).";
+ }catch(e){$("status").textContent="Erreur : "+e.message;$("status").className="error";}finally{if(v===epoch)$("apply").disabled=false}
+}
+function render(ss,rr){
+ const scores=rr.filter(valid).map(r=>r.satisfaction),used=new Set(rr.map(r=>r.session_id));
+ $("kpis").innerHTML=[["Réponses",rr.length],["Interventions",ss.length],["Avec réponses",used.size],["Note moyenne",mean(scores)+" / 5"],["Notes renseignées",scores.length]].map(([a,b])=>'<div class="kpi"><strong>'+esc(b)+'</strong>'+esc(a)+'</div>').join("");
+ $("distribution").innerHTML=[5,4,3,2,1].map(n=>bar(n+" / 5",scores.filter(x=>x===n).length,scores.length)).join("");
+ const groups={};ss.forEach(s=>{const key=(s.event_date||"").slice(0,7);if(!groups[key])groups[key]=[]});rr.forEach(r=>{const s=ss.find(x=>x.id===r.session_id);if(s&&valid(r))(groups[(s.event_date||"").slice(0,7)]??=[]).push(r.satisfaction)});
+ $("months").innerHTML='<table><thead><tr><th>Mois</th><th>Réponses notées</th><th>Moyenne / 5</th></tr></thead><tbody>'+Object.entries(groups).sort().map(([k,a])=>'<tr><td>'+esc(k)+'</td><td>'+a.length+'</td><td>'+mean(a)+'</td></tr>').join("")+'</tbody></table>';
+ $("sessionsTable").innerHTML='<table><thead><tr><th>Intervention</th><th>Date</th><th>Réponses</th><th>Moyenne / 5</th></tr></thead><tbody>'+ss.map(s=>{const a=rr.filter(r=>r.session_id===s.id),n=a.filter(valid).map(r=>r.satisfaction);return '<tr><td>'+esc(s.event_name)+'</td><td>'+esc(date(s.event_date))+'</td><td>'+a.length+'</td><td>'+mean(n)+'</td></tr>'}).join("")+'</tbody></table>';
+ const questions=[["adapted","Contenu adapté"],["quality","Qualité de l’intervention"],["equipped","Mieux équipé pour agir"],["changes","Changements envisagés"],["emotion","Ressenti"],["useful","Utilité perçue"]];
+ $("questions").innerHTML=questions.map(([key,label])=>{const counts=new Map();rr.forEach(r=>{const a=String(r[key]??"").trim();if(a)counts.set(a,(counts.get(a)||0)+1)});const total=[...counts.values()].reduce((a,b)=>a+b,0);return '<div><h3>'+esc(label)+'</h3><p class="muted">'+total+' réponse(s) renseignée(s)</p><div class="bars">'+[...counts.entries()].sort((a,b)=>b[1]-a[1]).map(([a,n])=>bar(a,n,total)).join("")+'</div></div>'}).join("");
+ const labels=["Types de violences","Signaux d’alerte","Procédures de signalement","Obligations légales","Outils de prévention"];
+ const keys=[["types de violences"],["signaux"],["procédures","procedures"],["obligations"],["outils de prévention","outils de prevention"]];
+ const has=(a,i)=>Array.isArray(a)&&a.some(v=>keys[i].some(k=>String(v).toLowerCase().includes(k)));
+ const before=rr.filter(r=>Array.isArray(r.before)),after=rr.filter(r=>Array.isArray(r.after));
+ $("topics").innerHTML='<table><thead><tr><th>Thème</th><th>Avant (n='+before.length+')</th><th>Après (n='+after.length+')</th><th>Écart (points)</th></tr></thead><tbody>'+labels.map((l,i)=>{const b=before.filter(r=>has(r.before,i)).length,a=after.filter(r=>has(r.after,i)).length;const diff=before.length&&after.length?(100*a/after.length-100*b/before.length).toFixed(1):"—";return '<tr><td>'+esc(l)+'</td><td>'+pct(b,before.length)+' %</td><td>'+pct(a,after.length)+' %</td><td>'+diff+'</td></tr>'}).join("")+'</tbody></table>';
+ const texts=[["learned","Ce qui a été appris"],["deepen","Sujets à approfondir"],["improve","Améliorations proposées"],["remarks","Remarques"]];
+ $("comments").innerHTML=texts.map(([key,label])=>{const a=rr.flatMap(r=>{const v=r[key];return v==null||v===""?[]:[Array.isArray(v)?v.join(" • "):typeof v==="object"?JSON.stringify(v):String(v)]}).filter(Boolean);return '<details><summary>'+esc(label)+' ('+a.length+')</summary>'+a.map(t=>'<p class="chip">'+esc(t)+'</p>').join("")+'</details>'}).join("");
+}
+$("apply").onclick=load;
+$("export").onclick=()=>{
+ const ss=sessions.filter(s=>(!$("from").value||s.event_date>=$("from").value)&&(!$("to").value||s.event_date<=$("to").value)&&(!$("session").value||s.id===$("session").value));
+ const csv=[["Intervention","Date","Réponses","Notes renseignées","Satisfaction moyenne /5"],...ss.map(s=>{const a=rows.filter(r=>r.session_id===s.id);return [s.event_name,s.event_date,a.length,a.filter(valid).length,mean(a.filter(valid).map(r=>r.satisfaction))]})];
+ const safe=v=>'"'+String(v??"").replace(/^[=+@\-\t\r]/,"'$&").replace(/"/g,'""')+'"';
+ const blob=new Blob(["\uFEFF"+csv.map(row=>row.map(safe).join(";")).join("\r\n")],{type:"text/csv;charset=utf-8"});
+ const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="rebond-satisfaction-analyse-globale.csv";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+};
+$("loginForm").onsubmit=async e=>{e.preventDefault();$("loginMessage").textContent="Connexion…";const r=await client.auth.signInWithPassword({email:$("email").value,password:$("password").value});if(r.error){$("loginMessage").textContent="Connexion refusée.";return}await init()};
+if(client)client.auth.onAuthStateChange((event)=>{if(event==="SIGNED_OUT")close("Session terminée. Reconnectez-vous.")});
+await init();
+})();
+</script></body></html>
