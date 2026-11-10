@@ -17,7 +17,7 @@ $('#odoo-refresh').addEventListener('click',async()=>{
  $('#odoo-product-list').innerHTML=d.produits.map(p=>'<tr><td>'+esc(p.id)+'</td><td>'+esc(p.name)+'</td><td>'+esc(p.active?'Actif':'Inactif')+'</td></tr>').join('')||'<tr><td colspan="3">Aucun produit RebondPlay identifié.</td></tr>';
  $('#odoo-partner-list').innerHTML=d.organismes.map(p=>'<tr><td>'+esc(p.id)+'</td><td>'+esc(p.name)+'</td></tr>').join('')||'<tr><td colspan="2">Aucun organisme.</td></tr>';
  $('#odoo-diagnostic').textContent='Catalogue analysé : '+(d.diagnostic?.produits_vente_analyses??'—')+' produits de vente · '+(d.diagnostic?.organismes_analyses??'—')+' fiches organismes · '+(d.diagnostic?.doublons_potentiels?.length??'—')+' doublon(s) potentiel(s). Les offres détectées ne sont pas encore validées pour attribuer des droits.';const q=d.devis_test;
- $('#odoo-status').textContent='Connexion Odoo vérifiée · consultation uniquement. '+(q?.trouve===true?'Devis '+q.numero+' retrouvé : '+q.client+' · état '+q.etat+' · '+q.montant+' € · '+q.lignes+' ligne(s).':q?.trouve===false?'Devis S00046 non retrouvé dans Odoo.':q?.erreur?'Lecture du devis S00046 impossible : '+q.erreur:'');
+ $('#odoo-status').textContent='Connexion Odoo vérifiée · consultation uniquement. '+(q?.trouve===true?'Devis '+q.numero+' retrouvé : '+q.client+' · état '+q.etat+' · '+q.montant+' € · '+q.lignes+' ligne(s) · Offre : '+(q.offre||'non vérifiée')+' · Décision : '+(q.decision||'en attente')+' · Aucun accès activé.':q?.trouve===false?'Devis S00046 non retrouvé dans Odoo.':q?.erreur?'Lecture du devis S00046 impossible : '+q.erreur:'');
  }catch(e){$('#odoo-status').textContent='Erreur : '+e.message}finally{btn.disabled=false}
 });
 sb.auth.onAuthStateChange(()=>{setTimeout(refresh,0)});refresh();
