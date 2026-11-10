@@ -25,6 +25,15 @@ footer{margin:20px 0 0;font-size:12px;font-weight:900;color:#065269}
 const status=document.getElementById('status'),form=document.getElementById('login'),button=document.getElementById('submit');
 const client=window.supabase.createClient('https://tdsrqmpfdvntybdlvejy.supabase.co','sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO',{auth:{storageKey:'rebondplay-full-pilot-auth',persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
 const routes={full:'/pagefull/',essentielplus:'/RPessentielleplus/',essentiel:'/Essentiel/'};
+async function verifierAppareil(){
+ let deviceToken=localStorage.getItem('rp-device-token-v1');
+ if(!deviceToken||!/^[a-f0-9]{64}$/.test(deviceToken)){
+  deviceToken=Array.from(crypto.getRandomValues(new Uint8Array(32))).map(b=>b.toString(16).padStart(2,'0')).join('');
+  localStorage.setItem('rp-device-token-v1',deviceToken);
+ }
+ const {data,error}=await client.functions.invoke('rp-appareil-verifier',{body:{device_token:deviceToken,nom_appareil:navigator.platform||'Navigateur'}});
+ if(error||!data?.autorise)throw new Error(data?.raison==='limite_trois_appareils'?'Ce compte utilise déjà trois appareils. Contactez Rebond pour en retirer un.':'Vérification de cet appareil impossible. Réessayez.');
+}
 async function route(){
  const {data:user,error:userError}=await client.auth.getUser();
  if(userError||!user?.user)return false;
@@ -34,6 +43,7 @@ async function route(){
  if(!subscription){status.textContent='Aucun abonnement actif et valide associé à ce compte.';return false}
  
  if(!routes[subscription.offre]){status.textContent='Offre non reconnue. Contactez Rebond.';return false}
+ await verifierAppareil();
  location.replace(routes[subscription.offre]);return true;
 }
 form.addEventListener('submit',async e=>{e.preventDefault();button.disabled=true;status.textContent='Vérification des droits…';try{const {error}=await client.auth.signInWithPassword({email:document.getElementById('email').value.trim(),password:document.getElementById('password').value});document.getElementById('password').value='';if(error)throw error;await route()}catch(e){status.textContent='Connexion impossible : '+(e.message||'Erreur de connexion')}finally{button.disabled=false}});
