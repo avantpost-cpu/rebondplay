@@ -231,6 +231,23 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
       if(me)throw me;
       for(const item of mr||[])modelCounts[item.session_id]=(modelCounts[item.session_id]||0)+1;
     }
+    function questionnaireUrl(item) {
+      const model = item.model || "adultes";
+      const u = new URL(model === "adultes" ? "../" : "../" + model + "/", location.href);
+      u.search = "";
+      u.hash = "";
+      u.searchParams.set("session", item.code);
+      return u.href;
+    }
+    const matchingPair = item => data.filter(other =>
+      other.id !== item.id &&
+      other.event_name === item.event_name &&
+      other.event_date === item.event_date &&
+      (other.event_place || "") === (item.event_place || "") &&
+      ((item.model === "jeunes" && other.model === "encadrants") ||
+       (item.model === "encadrants" && other.model === "jeunes"))
+    );
+
     for (const session of data) {
       const responses = session.satisfaction_responses || [];
 
@@ -336,7 +353,27 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
         "&body=" + encodeURIComponent("Bonjour,\n\nVoici le lien du questionnaire de satisfaction pour " + (session.event_name || "notre session") + " :\n" + url.href + "\n\nMerci de le transmettre aux participants.\n\nBien cordialement,");
       share.setAttribute("aria-label", "Préparer un e-mail avec le lien du questionnaire");
 
-      actions.append(results, open, copy, share, remove);
+      if (model === "jeunes" || model === "encadrants") {
+        const matches = matchingPair(session);
+        const sendBoth = node("a", "Envoyer les 2 questionnaires à l’encadrant", "action-link");
+        if (matches.length === 1) {
+          const jeune = model === "jeunes" ? session : matches[0];
+          const encadrant = model === "encadrants" ? session : matches[0];
+          const subject = "Rebond — Questionnaires de satisfaction — " + (session.event_name || "Sensibilisation");
+          const body = "Bonjour,\n\nÀ la suite de la sensibilisation " + (session.event_name || "") +
+            ", voici les deux questionnaires de satisfaction :\n\n" +
+            "1. Questionnaire encadrant (à compléter par vos soins) :\n" + questionnaireUrl(encadrant) +
+            "\n\n2. Questionnaire jeunes (à transmettre aux jeunes participants) :\n" + questionnaireUrl(jeune) +
+            "\n\nLes réponses sont recueillies séparément. Merci pour votre participation.\n\nBien cordialement,\nL’équipe Rebond";
+          sendBoth.href = "mailto:?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+          sendBoth.title = "Préparer un e-mail unique avec les deux liens";
+          actions.append(sendBoth);
+        } else {
+          const note = node("span", matches.length ? "Plusieurs sessions correspondantes : vérifiez les doublons." : "Pour envoyer les deux liens, créez aussi la session " + (model === "jeunes" ? "Encadrants" : "Jeunes") + " avec le même nom, la même date et le même lieu.", "muted");
+          actions.append(note);
+        }
+      }
+      actions.append(results, open, copy, remove);
       article.append(details, actions);
       sessions.append(article);
     }
