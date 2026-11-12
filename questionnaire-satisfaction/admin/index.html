@@ -91,7 +91,7 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
 
       <form id="createForm">
         <div class="row">
-          <select id="model" aria-label="Modèle"><option value="adultes">Adultes</option><option value="jeunes">Jeunes</option><option value="encadrants">Encadrants</option></select><input id="event" placeholder="Nom de l’événement" required>
+          <select id="model" aria-label="Type de questionnaires"><option value="duo">Jeunes + Encadrants (2 questionnaires)</option><option value="adultes">Adultes (1 questionnaire)</option><option value="jeunes">Jeunes uniquement</option><option value="encadrants">Encadrants uniquement</option></select><input id="event" placeholder="Nom de l’événement" required>
           <input id="date" type="date" required>
           <input id="place" placeholder="Lieu">
           <button id="create" type="submit" disabled>Créer</button>
@@ -460,18 +460,19 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
       const current = version;
       createMessage.textContent = "Création en cours…";
 
-      const code =
-        "SAT-" + Math.random().toString(36).slice(2, 7).toUpperCase();
-
+      const selectedModel = $("model").value;
+      const models = selectedModel === "duo" ? ["encadrants", "jeunes"] : [selectedModel];
+      const payload = models.map(model => ({
+        code: "SAT-" + crypto.randomUUID().replace(/-/g, "").slice(0, 12).toUpperCase(),
+        event_name: name,
+        event_date: day,
+        event_place: place,
+        model
+      }));
+      // One database insert for the pair: no partial creation if it fails.
       const { error } = await c
         .from("satisfaction_sessions")
-        .insert({
-          code,
-          event_name: name,
-          event_date: day,
-          event_place: place,
-          model: $("model").value
-        });
+        .insert(payload);
 
       if (!authorized || current !== version) return;
 
@@ -483,7 +484,7 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
       }
 
       created = true;
-      createMessage.textContent = "Session créée.";
+      createMessage.textContent = selectedModel === "duo" ? "Deux questionnaires créés : Encadrants et Jeunes. Retrouvez le bouton d’envoi groupé dans Mes sessions." : "Session créée.";
       $("event").value = "";
       $("date").value = "";
       $("place").value = "";
