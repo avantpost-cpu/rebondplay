@@ -1,9 +1,16 @@
-<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Rebond — Résultats par modèle</title><style>body{background:#065269;font:16px Arial;color:#123;margin:0}main{max-width:1100px;margin:32px auto;padding:25px;background:white;border-radius:18px}h1,h2{color:#065269}.stat{background:#e8f3f1;padding:15px;border-radius:12px;margin:12px 0}.item{border-top:1px solid #ddd;padding:12px 0}button{background:#e65013;color:white;padding:12px;border:0;border-radius:8px;cursor:pointer}a{color:#065269}pre{white-space:pre-wrap;overflow-wrap:anywhere}</style><main><p><a href="./">← Administration des questionnaires</a></p><h1>Résultats du questionnaire</h1><div id="login"><p>Connexion administrateur requise.</p><input id="email" type="email" placeholder="Adresse e-mail"><input id="password" type="password" placeholder="Mot de passe"><button id="connect">Se connecter</button></div><div id="app" hidden><h2 id="event"></h2><p id="summary"></p><button id="export">Exporter CSV</button><div id="results"></div></div><p id="msg" role="status"></p></main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script><script>
+<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Rebond — Résultats par modèle</title><style>body{background:#065269;font:16px Arial;color:#123;margin:0}main{max-width:1100px;margin:32px auto;padding:25px;background:white;border-radius:18px}h1,h2{color:#065269}.stat{background:#e8f3f1;padding:15px;border-radius:12px;margin:12px 0}.item{border-top:1px solid #ddd;padding:12px 0}button{background:#e65013;color:white;padding:12px;border:0;border-radius:8px;cursor:pointer}a{color:#065269}pre{white-space:pre-wrap;overflow-wrap:anywhere}.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin:16px 0}.stat{background:#f4f6f4;border-left:4px solid #e65013}.response{padding:14px;margin:12px 0;border:1px solid #ddd;border-radius:10px}.response summary{cursor:pointer;font-weight:bold}.answer{margin:10px 0;padding:8px;border-bottom:1px solid #eee}.answer strong{display:block}.bar{height:10px;background:#e3e9e6;border-radius:8px;overflow:hidden}.bar i{display:block;height:100%;background:#e65013}.muted{color:#667}.secondary{background:#065269}#results h3{color:#065269}</style><main><p><a href="./">← Administration des questionnaires</a></p><h1>Résultats du questionnaire</h1><div id="login"><p>Connexion administrateur requise.</p><input id="email" type="email" placeholder="Adresse e-mail"><input id="password" type="password" placeholder="Mot de passe"><button id="connect">Se connecter</button></div><div id="app" hidden><h2 id="event"></h2><p id="summary"></p><div class="toolbar"><button id="overviewBtn">Synthèse par question</button><button id="individualBtn" class="secondary">Réponses individuelles</button><button id="export">Exporter CSV détaillé</button></div><div id="results"></div><div id="individual" hidden></div></div><p id="msg" role="status"></p></main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script><script>
 (async()=>{
 const $=id=>document.getElementById(id);
 const c=window.supabase.createClient("https://tdsrqmpfdvntybdlvejy.supabase.co","sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO");
 const id=new URLSearchParams(location.search).get("id");
-let data=[];
+let data=[],model="",labels={};
+const make=(tag,value,cls)=>{const n=document.createElement(tag);if(value!==undefined)n.textContent=value;if(cls)n.className=cls;return n};
+const val=x=>Array.isArray(x)?x.join(" ; "):typeof x==="object"?JSON.stringify(x):String(x??"");
+const allKeys=()=>[...new Set(data.flatMap(r=>Object.entries(r.answers||{}).filter(([k])=>k!=="respondent").flatMap(([s,v])=>Object.keys(v||{}).map(f=>s+"|"+f))))].sort((a,b)=>Number(a.split("|")[0].replace("section_",""))-Number(b.split("|")[0].replace("section_",""))||a.localeCompare(b));
+const label=k=>labels[k]||k.replace("|"," — ");
+async function getLabels(){try{const r=await fetch(model==="jeunes"?"../jeunes/":"../encadrants/");const doc=new DOMParser().parseFromString(await r.text(),"text/html");[...doc.querySelectorAll("main section")].forEach((s,i)=>{const heading=s.querySelector("h3,h2")?.textContent.trim()||"Question "+(i+1);s.querySelectorAll("input,textarea").forEach(field=>{const key="section_"+i+"|"+(field.name||field.getAttribute("aria-label")||"texte");if(!labels[key])labels[key]=heading})})}catch(e){console.warn(e)}}
+function showTab(which){$("results").hidden=which!=="summary";$("individual").hidden=which!=="individual"}
+$("overviewBtn").onclick=()=>showTab("summary");$("individualBtn").onclick=()=>showTab("individual");
 async function load(){
  const {data:isAdmin,error:roleError}=await c.rpc("rebond_is_admin");
  if(roleError||isAdmin!==true){$("msg").textContent="Accès réservé aux administrateurs.";return;}
@@ -11,15 +18,41 @@ async function load(){
  if(se||!s||s.model==="adultes"){$("msg").textContent="Session introuvable ou modèle incompatible.";return;}
  const {data:r,error:re}=await c.from("satisfaction_model_responses").select("id,created_at,answers").eq("session_id",id).order("created_at",{ascending:false});
  if(re){$("msg").textContent="Impossible de charger les réponses.";return;}
- data=r||[];$("login").hidden=true;$("app").hidden=false;
+ data=r||[];model=s.model;await getLabels();$("login").hidden=true;$("app").hidden=false;
  $("event").textContent=s.event_name+" — "+s.model;
  $("summary").textContent=data.length+" réponse(s) • "+(s.event_date||"")+" • "+(s.event_place||"");
  const root=$("results");root.replaceChildren();
- const counts={};for(const response of data)for(const [section,values] of Object.entries(response.answers||{}))for(const [field,value] of Object.entries(values||{})){const key=section+" / "+field;const items=Array.isArray(value)?value:[value];for(const item of items){if(typeof item!=="string")continue;(counts[key]??={})[item]=((counts[key]||{})[item]||0)+1;}}
- for(const [key,values] of Object.entries(counts)){const box=document.createElement("div");box.className="stat";const h=document.createElement("strong");h.textContent=key;box.append(h);for(const [label,count] of Object.entries(values)){const p=document.createElement("p");p.textContent=label+" : "+count;box.append(p)}root.append(box);}
+
+ const fields=allKeys();
+ for(const key of fields){
+  const [section,field]=key.split("|");
+  const values=data.map(r=>r.answers?.[section]?.[field]).filter(v=>v!==undefined&&val(v).trim());
+  if(!values.length)continue;
+  const box=make("article",undefined,"stat");box.append(make("h3",label(key)));
+  const counts=new Map();
+  for(const v of values)for(const item of (Array.isArray(v)?v:[v])){const s=val(item).trim();if(s)counts.set(s,(counts.get(s)||0)+1)}
+  const free=field==="texte"||field==="Réponse libre"||[...counts.keys()].some(x=>x.length>140)||counts.size>Math.max(6,data.length);
+  if(free){for(const v of values)box.append(make("p",val(v),"answer"))}
+  else for(const [answer,count] of [...counts].sort((a,b)=>b[1]-a[1])){
+    box.append(make("p",answer+" — "+count+" / "+data.length));
+    const bar=make("div",undefined,"bar"),fill=make("i");fill.style.width=100*count/data.length+"%";bar.append(fill);box.append(bar);
+  }
+  box.append(make("small",values.length+" réponse(s) renseignée(s)","muted"));root.append(box);
+ }
+ const individuals=$("individual");individuals.replaceChildren();
+ data.forEach((r,i)=>{
+  const details=make("details",undefined,"response");
+  const identity=r.answers?.respondent;
+  const name=model==="jeunes"?"Réponse anonyme n°"+(i+1):[identity?.first_name,identity?.last_name].filter(Boolean).join(" ")||"Réponse n°"+(i+1);
+  details.append(make("summary",name+" — "+new Date(r.created_at).toLocaleString("fr-FR")));
+  if(model!=="jeunes"&&identity?.email)details.append(make("p","E-mail : "+identity.email));
+  for(const key of fields){const [section,field]=key.split("|"),v=r.answers?.[section]?.[field];if(v===undefined||!val(v).trim())continue;const item=make("div",undefined,"answer");item.append(make("strong",label(key)),make("span",val(v)));details.append(item)}
+  individuals.append(details);
+ });
+
 }
 $("connect").onclick=async()=>{const {error}=await c.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});$("password").value="";if(error){$("msg").textContent="Connexion refusée.";return;}await load()};
-$("export").onclick=()=>{const lines=[["id","created_at","answers"],...data.map(x=>[x.id,x.created_at,JSON.stringify(x.answers)])];const csv="\uFEFF"+lines.map(row=>row.map(v=>'"'+String(v??"").replaceAll('"','""')+'"').join(";")).join("\r\n");const url=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));const a=document.createElement("a");a.href=url;a.download="rebond-satisfaction-"+id+".csv";a.click();URL.revokeObjectURL(url)};
+$("export").onclick=()=>{const fields=allKeys(),lines=[["id","date","prénom","nom","email",...fields.map(label)],...data.map(r=>[r.id,r.created_at,model==="jeunes"?"":r.answers?.respondent?.first_name||"",model==="jeunes"?"":r.answers?.respondent?.last_name||"",model==="jeunes"?"":r.answers?.respondent?.email||"",...fields.map(k=>{const [s,f]=k.split("|");return val(r.answers?.[s]?.[f])})])];const csv="\\uFEFF"+lines.map(row=>row.map(v=>{let s=String(v??"");if(["=","+","-","@"].includes(s.trimStart().charAt(0)))s="'"+s;return '"'+s.replaceAll('"','""')+'"'}).join(";")).join("\\r\\n");const url=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));const a=document.createElement("a");a.href=url;a.download="rebond-resultats-"+id+".csv";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
 const {data:session}=await c.auth.getSession();if(session?.session)await load();
 })().catch(()=>{document.getElementById("msg").textContent="Impossible de charger les résultats.";});
 </script></html>
