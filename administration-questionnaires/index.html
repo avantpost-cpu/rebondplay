@@ -14,7 +14,7 @@
     .head p{margin:8px auto;max-width:650px;color:#526b73}
     .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
     .card{background:#fffaf4;border-radius:20px;padding:24px;display:flex;flex-direction:column;min-height:0;align-self:start}
-.models{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:18px 0 28px}.model{background:#fffaf4;border-radius:18px;padding:20px;border-top:5px solid #e65013}.model h3{color:#065269}.model p{font-size:14px;color:#526b73;line-height:1.5}.model .btn{margin-top:12px}.model .status{font-size:12px;font-weight:bold;color:#a34d1c}@media(max-width:800px){.models{grid-template-columns:1fr}}
+.satisfaction-card{grid-column:1/-1}.models{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:18px 0 0}.model{background:#fffaf4;border-radius:18px;padding:20px;border-top:5px solid #e65013}.model h3{color:#065269}.model p{font-size:14px;color:#526b73;line-height:1.5}.model .btn{margin-top:12px}.model .status{font-size:12px;font-weight:bold;color:#a34d1c}@media(max-width:800px){.models{grid-template-columns:1fr}}
     .subcards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}
     .sub{background:#f4efe8;border-radius:14px;padding:15px;display:flex;flex-direction:column}
     .sub h3{margin:0 0 8px;color:#065269;font-size:18px}
@@ -89,12 +89,7 @@
       <p>Accès central aux questionnaires, aux sessions et aux résultats.</p>
     </header>
 
-<section aria-labelledby="modelsTitle"><h2 id="modelsTitle" style="color:#065269">Les 3 modèles de satisfaction</h2><p>Un modèle par public, réutilisable pour chaque sensibilisation.</p><div class="models">
-<article class="model"><span class="tag">01 · Adultes</span><h3>Satisfaction adultes</h3><p>Questionnaire existant, sessions et résultats conservés.</p><a class="btn admin" href="../questionnaire-satisfaction/admin/">Gérer les sessions adultes</a><a class="btn" href="../questionnaire-satisfaction/" target="_blank" rel="noopener">Voir le questionnaire</a></article>
-<article class="model"><span class="tag">02 · Jeunes</span><h3>Satisfaction jeunes</h3><p>À partir du questionnaire imprimé « Ton avis compte ! », sans modification des textes.</p><span class="status">Intégration interactive en préparation</span></article>
-<article class="model"><span class="tag">03 · Encadrants</span><h3>Satisfaction encadrants</h3><p>Pour enseignants, éducateurs et accompagnateurs, avec les textes originaux.</p><span class="status">Intégration interactive en préparation</span></article>
-</div></section><h2 style="color:#065269">Autres questionnaires et accès existants</h2>
-    <section class="grid">
+<section class="grid">
       <article class="card">
         <span class="tag">Fin de session</span>
         <h2>Quiz Sensibilisation</h2>
@@ -153,18 +148,32 @@
         </div>
       </article>
 
-      <article class="card">
-        <span class="tag">Fin de Session</span>
-        <h2>Questionnaire de satisfaction</h2>
-        <p>Création des sessions des questionnaires, consultation des résultats et envoi du bilan par e-mail.</p>
-
-        <div class="buttons">
-          <a class="btn" href="../questionnaire-satisfaction/" target="_blank" rel="noopener">
-            Ouvrir le questionnaire
-          </a>
-          <a class="btn admin" href="../questionnaire-satisfaction/admin/">
-            Ouvrir l’administration
-          </a>
+      <article class="card satisfaction-card">
+        <span class="tag">Fin de session</span>
+        <h2>Questionnaires de satisfaction</h2>
+        <p>Trois modèles selon le public sensibilisé, réunis dans cette rubrique.</p>
+        <div class="models">
+          <div class="model">
+            <span class="tag">01 · Adultes</span>
+            <h3>Satisfaction adultes</h3>
+            <p>Questionnaire existant : sessions et résultats conservés.</p>
+            <div class="buttons">
+              <a class="btn" href="../questionnaire-satisfaction/" target="_blank" rel="noopener">Ouvrir le questionnaire</a>
+              <a class="btn admin" href="../questionnaire-satisfaction/admin/">Ouvrir l’administration</a>
+            </div>
+          </div>
+          <div class="model">
+            <span class="tag">02 · Jeunes</span>
+            <h3>Satisfaction jeunes</h3>
+            <p>Modèle « Ton avis compte ! », à partir du questionnaire imprimé.</p>
+            <span class="status">Intégration interactive en préparation</span>
+          </div>
+          <div class="model">
+            <span class="tag">03 · Encadrants</span>
+            <h3>Satisfaction encadrants</h3>
+            <p>Modèle destiné aux enseignants, éducateurs et accompagnateurs.</p>
+            <span class="status">Intégration interactive en préparation</span>
+          </div>
         </div>
       </article>
     </section>
