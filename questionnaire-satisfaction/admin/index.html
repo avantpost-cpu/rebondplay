@@ -180,19 +180,70 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
     return button;
   }
 
-  function showSessionCodes(items) {
+  function showAccess(items) {
     const overlay = node("div", undefined, "qr-overlay");
     const panel = node("div", undefined, "qr-panel");
-    panel.append(node("h2", "Formation créée — liens et QR codes"), node("p", items[0].event_name));
+    panel.style.width = items.length > 1 ? "min(780px,100%)" : "min(440px,100%)";
+    panel.append(node("h2", "Accès à la formation"), node("p", items[0].event_name || "Sensibilisation Rebond"));
+    const grid = node("div");
+    grid.style.cssText = "display:grid;grid-template-columns:repeat(" + items.length + ",minmax(0,1fr));gap:18px";
     for (const item of items) {
-      const label = item.model === "jeunes" ? "Jeunes" : "Encadrants";
-      const group = node("div", undefined, "actions");
-      const qr = node("button", "QR code " + label, "action-link secondary");
-      qr.type = "button";
-      qr.onclick = () => { overlay.remove(); showQRCode(item); };
-      group.append(linkButton(item, "Copier le lien " + label), qr);
-      panel.append(group);
+      const part = node("div");
+      part.style.cssText = "min-width:0;padding:12px;border:1px solid #e3e9e8;border-radius:12px";
+      const label = item.model === "jeunes" ? "Jeunes" : item.model === "encadrants" ? "Encadrants" : "Adultes";
+      part.append(node("h3", label));
+      const url = questionnaireUrl(item);
+      const qrBox = node("div");
+      qrBox.style.cssText = "display:flex;justify-content:center;align-items:center;min-height:220px;margin:10px auto";
+      const link = node("p", url, "qr-url");
+      const controls = node("div", undefined, "actions");
+      controls.style.justifyContent = "center";
+      controls.append(linkButton(item, "Copier le lien"));
+      const download = node("button", "Télécharger le QR code", "action-link secondary");
+      download.type = "button";
+      download.disabled = true;
+      const print = node("button", "Imprimer", "action-link secondary");
+      print.type = "button";
+      print.disabled = true;
+      controls.append(download, print);
+      part.append(qrBox, link, controls);
+      grid.append(part);
+      if (typeof window.QRCode !== "function") {
+        qrBox.textContent = "Générateur indisponible. Le lien reste accessible.";
+        continue;
+      }
+      try {
+        new window.QRCode(qrBox, {text:url,width:210,height:210,colorDark:"#000000",colorLight:"#ffffff",correctLevel:window.QRCode.CorrectLevel.M});
+        const qrImage = () => qrBox.querySelector("canvas")?.toDataURL("image/png") || qrBox.querySelector("img")?.src || "";
+        if (!qrImage()) throw new Error("Image QR vide");
+        download.disabled = false;
+        print.disabled = false;
+        download.onclick = () => {
+          const img = qrImage();
+          if (!img) return alert("Image du QR code indisponible.");
+          const a = document.createElement("a");
+          a.href = img;
+          a.download = "QR-Rebond-" + item.model + "-" + item.code + ".png";
+          document.body.append(a);
+          a.click();
+          a.remove();
+        };
+        print.onclick = () => {
+          const img = qrImage();
+          if (!img) return alert("Image du QR code indisponible.");
+          const w = window.open("", "_blank");
+          if (!w) return alert("Autorisez les fenêtres pop-up pour imprimer.");
+          w.document.write("<!doctype html><html lang='fr'><head><meta charset='utf-8'><title>QR Rebond</title><style>body{font:20px Arial;text-align:center;padding:35px}img{width:360px;max-width:90%}p{font-size:13px;overflow-wrap:anywhere}</style></head><body><h1>Questionnaire Rebond</h1><h2></h2><img alt='QR code' src='" + img + "'><p></p></body></html>");
+          w.document.querySelector("h2").textContent = (item.event_name || "Sensibilisation") + " — " + label;
+          w.document.querySelector("p").textContent = url;
+          w.document.close();
+          setTimeout(() => w.print(), 300);
+        };
+      } catch (error) {
+        qrBox.textContent = "QR code non disponible : " + error.message;
+      }
     }
+    panel.append(grid);
     const close = node("button", "Fermer", "action-link secondary");
     close.type = "button";
     close.onclick = () => overlay.remove();
@@ -200,68 +251,6 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
     overlay.append(panel);
     overlay.onclick = e => { if (e.target === overlay) overlay.remove(); };
     document.body.append(overlay);
-  }
-
-  async function showQRCode(item) {
-    if (typeof window.QRCode !== "function") {
-      alert("Impossible de charger le générateur de QR code. Rechargez la page.");
-      return;
-    }
-    const url = questionnaireUrl(item);
-    const overlay = document.createElement("div");
-    overlay.className = "qr-overlay";
-    overlay.setAttribute("role", "dialog");
-    overlay.setAttribute("aria-modal", "true");
-    const panel = document.createElement("div");
-    panel.className = "qr-panel";
-    const title = document.createElement("h2");
-    title.textContent = "QR code — " + (item.model === "jeunes" ? "Jeunes" : item.model === "encadrants" ? "Encadrants" : "Adultes");
-    const name = document.createElement("p");
-    name.textContent = item.event_name || "Sensibilisation Rebond";
-    const qrContainer = document.createElement("div");
-    qrContainer.style.cssText = "display:flex;justify-content:center;margin:18px auto";
-    const getQRImage = () => qrContainer.querySelector("canvas")?.toDataURL("image/png") || qrContainer.querySelector("img")?.src || "";
-    const link = document.createElement("p");
-    link.className = "qr-url";
-    link.textContent = url;
-    const buttons = document.createElement("div");
-    buttons.className = "actions";
-    const download = document.createElement("button");
-    download.textContent = "Télécharger le QR code";
-    download.onclick = () => {
-      const a = document.createElement("a");
-      a.href = getQRImage();
-      a.download = "QR-Rebond-" + (item.model || "questionnaire") + "-" + (item.code || "session") + ".png";
-      a.click();
-    };
-    const print = document.createElement("button");
-    print.textContent = "Imprimer";
-    print.className = "action-link secondary";
-    print.onclick = () => {
-      const w = window.open("", "_blank");
-      if (!w) { alert("Autorisez les fenêtres pop-up pour imprimer."); return; }
-      const image = getQRImage();
-      w.document.write("<!doctype html><html lang='fr'><head><meta charset='utf-8'><title>QR code Rebond</title><style>body{font:20px Arial;text-align:center;padding:40px}img{width:360px;max-width:90%}p{overflow-wrap:anywhere;font-size:13px}</style></head><body><h1>Questionnaire de satisfaction Rebond</h1><h2></h2><img alt='QR code' src='" + image + "'><p></p></body></html>");
-      w.document.querySelector("h2").textContent = item.event_name || "Sensibilisation Rebond";
-      w.document.querySelector("p").textContent = url;
-      w.document.close();
-      w.addEventListener("load", () => w.print(), {once:true});
-    };
-    const close = document.createElement("button");
-    close.textContent = "Fermer";
-    close.className = "action-link secondary";
-    close.onclick = () => overlay.remove();
-    buttons.append(download, print, close);
-    panel.append(title, name, qrContainer, link, buttons);
-    overlay.append(panel);
-    overlay.onclick = e => { if (e.target === overlay) overlay.remove(); };
-    document.body.append(overlay);
-    try {
-      new QRCode(qrContainer, {text:url,width:320,height:320,colorDark:"#065269",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M});
-    } catch {
-      overlay.remove();
-      alert("La génération du QR code a échoué.");
-    }
   }
 
   async function checkAdmin() {
@@ -472,20 +461,24 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
         resultsYoung.href = "resultats-modeles.html?id=" + encodeURIComponent(jeune.id);
         const resultsAdult = node("a", "Résultats encadrants", "action-link secondary");
         resultsAdult.href = "resultats-modeles.html?id=" + encodeURIComponent(encadrant.id);
-        const qrYoung = node("button", "QR code Jeunes", "action-link secondary");
-        qrYoung.type = "button";
-        qrYoung.onclick = () => showQRCode(jeune);
-        const qrEnc = node("button", "QR code Encadrants", "action-link secondary");
-        qrEnc.type = "button";
-        qrEnc.onclick = () => showQRCode(encadrant);
-        actions.append(send, linkButton(jeune, "Lien Jeunes"), linkButton(encadrant, "Lien Encadrants"), qrYoung, qrEnc, printLink, resultsYoung, resultsAdult);
+        const access = node("button", "Liens et QR codes", "action-link secondary");
+        access.type = "button";
+        access.onclick = () => showAccess([jeune, encadrant]);
+        const results = node("button", "Résultats", "action-link secondary");
+        results.type = "button";
+        results.onclick = () => {
+          const choice = prompt("Résultats : tapez 1 pour Jeunes, 2 pour Encadrants");
+          if (choice === "1") window.open("resultats-modeles.html?id=" + encodeURIComponent(jeune.id), "_blank", "noopener");
+          if (choice === "2") window.open("resultats-modeles.html?id=" + encodeURIComponent(encadrant.id), "_blank", "noopener");
+        };
+        actions.append(send, access, results, printLink);
       } else if (model === "adultes") {
         const exportButton = node("button", "Télécharger les réponses", "action-link");
         exportButton.type = "button";
         exportButton.onclick = () => downloadAdultResponses(session, exportButton);
         const qrAdult = node("button", "QR code Adultes", "action-link secondary");
         qrAdult.type = "button";
-        qrAdult.onclick = () => showQRCode(session);
+        qrAdult.onclick = () => showAccess([session]);
         actions.append(linkButton(session, "Récupérer le lien"), qrAdult, exportButton);
       } else {
         const open = node("a", "Ouvrir le questionnaire", "action-link secondary");
@@ -496,7 +489,7 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
         results.href = "resultats-modeles.html?id=" + encodeURIComponent(session.id);
         const qr = node("button", "QR code " + (model === "jeunes" ? "Jeunes" : "Encadrants"), "action-link secondary");
         qr.type = "button";
-        qr.onclick = () => showQRCode(session);
+        qr.onclick = () => showAccess([session]);
         actions.append(linkButton(session), qr, results, open);
         if (matches.length > 1) actions.append(node("span", "Plusieurs sessions correspondantes : vérifier les doublons.", "muted"));
       }
@@ -628,8 +621,7 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
       await load();
       if (created) {
         createMessage.textContent += " Les liens et QR codes sont disponibles dans Mes sessions ci-dessous.";
-        if (payload.length === 1) showQRCode(payload[0]);
-        else showSessionCodes(payload);
+        showAccess(payload);
       }
     } catch {
       if (authorized) {
