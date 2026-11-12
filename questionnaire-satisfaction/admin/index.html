@@ -288,139 +288,73 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
        (item.model === "encadrants" && other.model === "jeunes"))
     );
 
+    const rendered = new Set();
     for (const session of data) {
-      const responses = session.satisfaction_responses || [];
-
-      const average = responses.length
-        ? (
-            responses.reduce(
-              (sum, response) =>
-                sum + Number(response.satisfaction || 0),
-              0
-            ) / responses.length
-          ).toFixed(1)
-        : "—";
-
-      const newsletter = responses.filter(
-        response => response.newsletter === "Oui"
-      ).length;
-
-      const model=session.model||"adultes";
-      const url = new URL(model==="adultes"?"../":"../"+model+"/", location.href);
-      url.search = "";
-      url.hash = "";
-      url.searchParams.set("session", session.code);
-
-      const resultsUrl = new URL(model==="adultes"?"resultats.html":"resultats-modeles.html", location.href);
-      resultsUrl.searchParams.set("id", session.id);
-
+      if (rendered.has(session.id)) continue;
+      const model = session.model || "adultes";
+      const matches = (model === "jeunes" || model === "encadrants") ? matchingPair(session) : [];
+      const pair = matches.length === 1 && matchingPair(matches[0]).length === 1 ? matches[0] : null;
+      rendered.add(session.id);
+      if (pair) rendered.add(pair.id);
+      const jeune = model === "jeunes" ? session : (pair && pair.model === "jeunes" ? pair : null);
+      const encadrant = model === "encadrants" ? session : (pair && pair.model === "encadrants" ? pair : null);
+      const grouped = !!(jeune && encadrant);
       const article = node("article", undefined, "session");
       const details = node("div");
-
-      const name = node("strong", (model==="adultes"?"Adultes":model==="jeunes"?"Jeunes":"Encadrants")+" — "+(session.event_name ?? ""));
-
-      const day = session.event_date
-        ? new Date(
-            session.event_date + "T12:00"
-          ).toLocaleDateString("fr-FR")
-        : "";
-
-      const info = node(
-        "span",
-        " • " + day +
-          (session.event_place ? " • " + session.event_place : ""),
-        "muted"
-      );
-
+      const name = node("strong", (grouped ? "Jeunes + Encadrants" : model === "adultes" ? "Adultes" : model === "jeunes" ? "Jeunes" : "Encadrants") + " — " + (session.event_name || ""));
+      const day = session.event_date ? new Date(session.event_date + "T12:00").toLocaleDateString("fr-FR") : "";
+      const info = node("span", " • " + day + (session.event_place ? " • " + session.event_place : ""), "muted");
       const stats = node("div", undefined, "stats");
-
-      if(model==="adultes"){
-        stats.append(node("span",responses.length+" réponse(s)","stat"),node("span","Satisfaction "+average+"/5","stat"),node("span",newsletter+" newsletter","stat"));
-      }else{
-        stats.append(node("span",(modelCounts[session.id]||0)+" réponse(s)","stat"));
+      if (grouped) {
+        stats.append(node("span", (modelCounts[jeune.id] || 0) + " réponse(s) jeunes", "stat"),
+                     node("span", (modelCounts[encadrant.id] || 0) + " réponse(s) encadrants", "stat"));
+      } else if (model === "adultes") {
+        const responses = session.satisfaction_responses || [];
+        const avg = responses.length ? (responses.reduce((s,r) => s + Number(r.satisfaction || 0),0)/responses.length).toFixed(1) : "—";
+        stats.append(node("span", responses.length + " réponse(s)", "stat"),
+                     node("span", "Satisfaction " + avg + "/5", "stat"));
+      } else {
+        stats.append(node("span", (modelCounts[session.id] || 0) + " réponse(s)", "stat"));
       }
-
-      const linkBox = node("div", undefined, "link");
-
-      const link = node(
-        "a",
-        session.event_name ?? "Ouvrir le questionnaire"
-      );
-
-      link.href = url.href;
-      link.target = "_blank";
-      link.rel = "noopener";
-      linkBox.append(link);
-
-      details.append(name, info, stats, linkBox);
-
+      details.append(name, info, stats);
       const actions = node("div", undefined, "actions");
-
-      const results = node(
-        "a",
-        "Voir les résultats",
-        "action-link"
-      );
-      results.href = resultsUrl.href;
-
-      const open = node(
-        "a",
-        "Ouvrir le questionnaire",
-        "action-link secondary"
-      );
-      open.href = url.href;
-      open.target = "_blank";
-      open.rel = "noopener";
-
-      const remove = node("button", "Supprimer", "danger");
-      remove.type = "button";
-      remove.onclick = () => deleteSession(session.id, remove);
-
-      const copy = node("button", "Copier le lien", "action-link secondary");
-      copy.type = "button";
-      copy.onclick = async () => {
-        try {
-          await navigator.clipboard.writeText(url.href);
-          copy.textContent = "Lien copié ✓";
-          setTimeout(() => { copy.textContent = "Copier le lien"; }, 2500);
-        } catch {
-          window.prompt("Copiez ce lien de diffusion :", url.href);
-        }
-      };
-
-      const share = node("a", "Envoyer par e-mail", "action-link secondary");
-      share.href = "mailto:?subject=" + encodeURIComponent("Questionnaire de satisfaction Rebond — " + (session.event_name || "Session")) +
-        "&body=" + encodeURIComponent("Bonjour,\n\nVoici le lien du questionnaire de satisfaction pour " + (session.event_name || "notre session") + " :\n" + url.href + "\n\nMerci de le transmettre aux participants.\n\nBien cordialement,");
-      share.setAttribute("aria-label", "Préparer un e-mail avec le lien du questionnaire");
-
-      if (model === "jeunes" || model === "encadrants") {
-        const matches = matchingPair(session);
-        const sendBoth = node("a", "Envoyer les 2 questionnaires à l’encadrant", "action-link");
-        if (matches.length === 1) {
-          const jeune = model === "jeunes" ? session : matches[0];
-          const encadrant = model === "encadrants" ? session : matches[0];
-          const subject = "Rebond — Questionnaires de satisfaction — " + (session.event_name || "Sensibilisation");
-          const body = "Bonjour,\n\nÀ la suite de la sensibilisation " + (session.event_name || "") +
-            ", voici les deux questionnaires de satisfaction :\n\n" +
-            "1. Questionnaire encadrant (à compléter par vos soins) :\n" + questionnaireUrl(encadrant) +
-            "\n\n2. Questionnaire jeunes (à transmettre aux jeunes participants) :\n" + questionnaireUrl(jeune) +
-            "\n\nLes réponses sont recueillies séparément. Merci pour votre participation.\n\nBien cordialement,\nL’équipe Rebond";
-          sendBoth.href = "mailto:?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
-          sendBoth.title = "Préparer un e-mail unique avec les deux liens";
-          actions.append(sendBoth);
-        } else {
-          const note = node("span", matches.length ? "Plusieurs sessions correspondantes : vérifiez les doublons." : "Pour envoyer les deux liens, créez aussi la session " + (model === "jeunes" ? "Encadrants" : "Jeunes") + " avec le même nom, la même date et le même lieu.", "muted");
-          actions.append(note);
-        }
-      }
-      if (model === "adultes") {
+      if (grouped) {
+        const subject = "Rebond — Questionnaires de satisfaction — " + (session.event_name || "Sensibilisation");
+        const body = "Bonjour,\\n\\nÀ la suite de la sensibilisation " + (session.event_name || "") +
+          ", voici les deux questionnaires de satisfaction :\\n\\n" +
+          "1. Questionnaire encadrant (à compléter par vos soins) :\\n" + questionnaireUrl(encadrant) +
+          "\\n\\n2. Questionnaire jeunes (à transmettre aux jeunes participants) :\\n" + questionnaireUrl(jeune) +
+          "\\n\\nLes réponses sont recueillies séparément. Merci pour votre participation.\\n\\nBien cordialement,\\nL’équipe Rebond";
+        const send = node("a", "Envoyer les 2 questionnaires à l’encadrant", "action-link");
+        send.href = "mailto:?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+        const resultsYoung = node("a", "Résultats jeunes", "action-link secondary");
+        resultsYoung.href = "resultats-modeles.html?id=" + encodeURIComponent(jeune.id);
+        const resultsAdult = node("a", "Résultats encadrants", "action-link secondary");
+        resultsAdult.href = "resultats-modeles.html?id=" + encodeURIComponent(encadrant.id);
+        actions.append(send, resultsYoung, resultsAdult);
+      } else if (model === "adultes") {
         const exportButton = node("button", "Télécharger les réponses", "action-link");
         exportButton.type = "button";
         exportButton.onclick = () => downloadAdultResponses(session, exportButton);
-        actions.append(exportButton, remove);
+        actions.append(exportButton);
       } else {
-        actions.append(results, open, copy, remove);
+        const open = node("a", "Ouvrir le questionnaire", "action-link secondary");
+        open.href = questionnaireUrl(session);
+        open.target = "_blank";
+        open.rel = "noopener";
+        const results = node("a", "Voir les résultats", "action-link");
+        results.href = "resultats-modeles.html?id=" + encodeURIComponent(session.id);
+        actions.append(results, open);
+        if (matches.length > 1) actions.append(node("span", "Plusieurs sessions correspondantes : vérifier les doublons.", "muted"));
       }
+      const remove = node("button", "Supprimer", "danger");
+      remove.type = "button";
+      if (grouped) {
+        remove.onclick = () => deleteSessionPair([jeune.id, encadrant.id], remove);
+      } else {
+        remove.onclick = () => deleteSession(session.id, remove);
+      }
+      actions.append(remove);
       article.append(details, actions);
       sessions.append(article);
     }
@@ -548,6 +482,22 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
       $("create").disabled = !authorized;
     }
   });
+
+  async function deleteSessionPair(ids, button) {
+    if (!authorized || button.disabled) return;
+    if (!confirm("Supprimer les deux questionnaires Jeunes et Encadrants ainsi que toutes leurs réponses ?")) return;
+    button.disabled = true;
+    try {
+      if (!(await checkAdmin())) return;
+      const { data, error } = await c.from("satisfaction_sessions").delete().in("id", ids).select("id");
+      if (error || data?.length !== ids.length) {
+        alert("Suppression non entièrement confirmée. Rechargez la liste avant de réessayer.");
+      }
+      await load();
+    } catch {
+      alert("Suppression impossible ou non confirmée. Rechargez la page.");
+    } finally { button.disabled = false; }
+  }
 
   async function deleteSession(id, button) {
     if (!authorized || button.disabled) return;
