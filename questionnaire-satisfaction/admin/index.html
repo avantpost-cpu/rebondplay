@@ -15,7 +15,7 @@ h1{color:#fff}
 input,button,select{padding:12px;border-radius:10px;border:1px solid #ccd;font:inherit}
 button{background:#e65013;color:#fff;font-weight:bold;cursor:pointer}
 button:disabled{opacity:.55;cursor:wait}
-.session{display:grid;grid-template-columns:1fr auto;gap:12px;border-top:1px solid #eee;padding:16px 0}
+.session-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:start}.session-column{min-width:0;border:1px solid #e3e9e8;border-radius:14px;padding:14px;background:#fafcfb}.session-column h3{margin:0 0 8px;color:#065269;font-size:19px}.session{display:flex;flex-direction:column;gap:8px;border-top:1px solid #e4e9e8;padding:13px 0}.session strong{font-size:14px;line-height:1.35}.session .muted{display:block;margin-top:4px}.session .stats{margin:3px 0}.session .stat{padding:6px 9px;font-size:12px}.session .actions{gap:6px}.session .action-link,.session .danger{padding:9px 10px;font-size:12px;line-height:1.3}
 .muted{color:#678;font-size:13px}
 .stats{display:flex;gap:12px;flex-wrap:wrap;margin:10px 0}
 .stat{background:#eef5f4;padding:10px 14px;border-radius:12px;font-weight:bold}
@@ -41,7 +41,7 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
 #globalAdminReturn:hover{background:#e65013}
 @media(max-width:700px){
   .row{grid-template-columns:1fr}
-  .session{grid-template-columns:1fr}
+  .session-columns{grid-template-columns:1fr}
 }
 @media(max-width:600px){
   #login.login{padding:30px 24px}
@@ -105,7 +105,7 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
 
     <section class="box">
       <h2>Mes sessions</h2>
-      <div id="sessions">Chargement…</div>
+      <div id="sessions" class="session-columns">Chargement…</div>
     </section>
   </div>
 </main>
@@ -288,6 +288,11 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
        (item.model === "encadrants" && other.model === "jeunes"))
     );
 
+    const adultColumn = node("section", undefined, "session-column");
+    const duoColumn = node("section", undefined, "session-column");
+    adultColumn.append(node("h3", "Satisfaction Adultes"));
+    duoColumn.append(node("h3", "Satisfaction Encadrants / Jeunes"));
+    sessions.append(adultColumn, duoColumn);
     const rendered = new Set();
     for (const session of data) {
       if (rendered.has(session.id)) continue;
@@ -356,8 +361,10 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
       }
       actions.append(remove);
       article.append(details, actions);
-      sessions.append(article);
+      (model === "adultes" ? adultColumn : duoColumn).append(article);
     }
+    if (adultColumn.children.length === 1) adultColumn.append(node("p", "Aucune session adulte.", "muted"));
+    if (duoColumn.children.length === 1) duoColumn.append(node("p", "Aucune session encadrants / jeunes.", "muted"));
   }
 
   async function boot() {
