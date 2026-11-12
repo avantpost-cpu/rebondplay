@@ -14,7 +14,7 @@
     .head p{margin:8px auto;max-width:650px;color:#526b73}
     .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
     .card{background:#fffaf4;border-radius:20px;padding:24px;display:flex;flex-direction:column;min-height:0;align-self:start}
-.satisfaction-card{grid-column:1/-1}.models{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:18px 0 0}.model{background:#fffaf4;border-radius:18px;padding:20px;border-top:5px solid #e65013}.model h3{color:#065269}.model p{font-size:14px;color:#526b73;line-height:1.5}.model .btn{margin-top:12px}.model .status{font-size:12px;font-weight:bold;color:#a34d1c}@media(max-width:800px){.models{grid-template-columns:1fr}}
+.satisfaction-card{grid-column:1/-1}.satisfaction-admin{display:flex;justify-content:center;margin-top:24px}.satisfaction-admin .btn{width:min(100%,450px)}.models{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:18px 0 0}.model{background:#fffaf4;border-radius:18px;padding:20px;border-top:5px solid #e65013}.model h3{color:#065269}.model p{font-size:14px;color:#526b73;line-height:1.5}.model .btn{margin-top:12px}.model .status{font-size:12px;font-weight:bold;color:#a34d1c}@media(max-width:800px){.models{grid-template-columns:1fr}}
     .subcards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:12px}
     .sub{background:#f4efe8;border-radius:14px;padding:15px;display:flex;flex-direction:column}
     .sub h3{margin:0 0 8px;color:#065269;font-size:18px}
@@ -159,7 +159,7 @@
             <p>Questionnaire existant : sessions et résultats conservés.</p>
             <div class="buttons">
               <a class="btn" href="../questionnaire-satisfaction/" target="_blank" rel="noopener">Ouvrir le questionnaire</a>
-              <a class="btn admin" href="../questionnaire-satisfaction/admin/">Ouvrir l’administration</a>
+              
             </div>
           </div>
           <div class="model">
@@ -174,6 +174,9 @@
             <p>Modèle destiné aux enseignants, éducateurs et accompagnateurs.</p>
             <a class="btn" href="../questionnaire-satisfaction/encadrants/" target="_blank" rel="noopener">Prévisualiser le questionnaire encadrants</a>
           </div>
+        </div>
+        <div class="satisfaction-admin">
+          <a class="btn admin" href="../questionnaire-satisfaction/admin/">Administrer les questionnaires de satisfaction</a>
         </div>
       </article>
     </section>
