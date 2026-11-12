@@ -347,7 +347,7 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
           "",
           "Bien cordialement,",
           "L’équipe Rebond"
-        ].join("\\n");
+        ].join("\n");
         const send = node("a", "Envoyer les 2 questionnaires à l’encadrant", "action-link");
         send.href = "mailto:?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
         send.title = "Préparer un e-mail contenant les deux questionnaires et le lien du PDF imprimable";
