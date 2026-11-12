@@ -156,6 +156,52 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
     "sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO"
   );
 
+  function questionnaireUrl(item) {
+    const model = item.model || "adultes";
+    const u = new URL(model === "adultes" ? "../" : "../" + model + "/", location.href);
+    u.search = "";
+    u.hash = "";
+    u.searchParams.set("session", item.code);
+    return u.href;
+  }
+
+  function linkButton(item, label = "Récupérer le lien") {
+    const button = node("button", label, "action-link secondary");
+    button.type = "button";
+    button.onclick = async () => {
+      const url = questionnaireUrl(item);
+      try {
+        await navigator.clipboard.writeText(url);
+        alert("Lien copié :\n" + url);
+      } catch {
+        prompt("Copiez le lien du questionnaire :", url);
+      }
+    };
+    return button;
+  }
+
+  function showSessionCodes(items) {
+    const overlay = node("div", undefined, "qr-overlay");
+    const panel = node("div", undefined, "qr-panel");
+    panel.append(node("h2", "Formation créée — liens et QR codes"), node("p", items[0].event_name));
+    for (const item of items) {
+      const label = item.model === "jeunes" ? "Jeunes" : "Encadrants";
+      const group = node("div", undefined, "actions");
+      const qr = node("button", "QR code " + label, "action-link secondary");
+      qr.type = "button";
+      qr.onclick = () => { overlay.remove(); showQRCode(item); };
+      group.append(linkButton(item, "Copier le lien " + label), qr);
+      panel.append(group);
+    }
+    const close = node("button", "Fermer", "action-link secondary");
+    close.type = "button";
+    close.onclick = () => overlay.remove();
+    panel.append(close);
+    overlay.append(panel);
+    overlay.onclick = e => { if (e.target === overlay) overlay.remove(); };
+    document.body.append(overlay);
+  }
+
   async function showQRCode(item) {
     if (typeof window.QRCode !== "function") {
       alert("Impossible de charger le générateur de QR code. Rechargez la page.");
@@ -174,7 +220,6 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
     name.textContent = item.event_name || "Sensibilisation Rebond";
     const qrContainer = document.createElement("div");
     qrContainer.style.cssText = "display:flex;justify-content:center;margin:18px auto";
-    let qrCanvas = null;
     const getQRImage = () => qrContainer.querySelector("canvas")?.toDataURL("image/png") || qrContainer.querySelector("img")?.src || "";
     const link = document.createElement("p");
     link.className = "qr-url";
@@ -341,14 +386,6 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
       if(me)throw me;
       for(const item of mr||[])modelCounts[item.session_id]=(modelCounts[item.session_id]||0)+1;
     }
-    function questionnaireUrl(item) {
-      const model = item.model || "adultes";
-      const u = new URL(model === "adultes" ? "../" : "../" + model + "/", location.href);
-      u.search = "";
-      u.hash = "";
-      u.searchParams.set("session", item.code);
-      return u.href;
-    }
     const matchingPair = item => data.filter(other =>
       other.id !== item.id &&
       other.event_name === item.event_name &&
@@ -441,7 +478,7 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
         const qrEnc = node("button", "QR code Encadrants", "action-link secondary");
         qrEnc.type = "button";
         qrEnc.onclick = () => showQRCode(encadrant);
-        actions.append(send, qrYoung, qrEnc, printLink, resultsYoung, resultsAdult);
+        actions.append(send, linkButton(jeune, "Lien Jeunes"), linkButton(encadrant, "Lien Encadrants"), qrYoung, qrEnc, printLink, resultsYoung, resultsAdult);
       } else if (model === "adultes") {
         const exportButton = node("button", "Télécharger les réponses", "action-link");
         exportButton.type = "button";
@@ -449,7 +486,7 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
         const qrAdult = node("button", "QR code Adultes", "action-link secondary");
         qrAdult.type = "button";
         qrAdult.onclick = () => showQRCode(session);
-        actions.append(exportButton, qrAdult);
+        actions.append(linkButton(session, "Récupérer le lien"), qrAdult, exportButton);
       } else {
         const open = node("a", "Ouvrir le questionnaire", "action-link secondary");
         open.href = questionnaireUrl(session);
@@ -460,7 +497,7 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
         const qr = node("button", "QR code " + (model === "jeunes" ? "Jeunes" : "Encadrants"), "action-link secondary");
         qr.type = "button";
         qr.onclick = () => showQRCode(session);
-        actions.append(results, open, qr);
+        actions.append(linkButton(session), qr, results, open);
         if (matches.length > 1) actions.append(node("span", "Plusieurs sessions correspondantes : vérifier les doublons.", "muted"));
       }
       const remove = node("button", "Supprimer", "danger");
@@ -589,6 +626,11 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
       $("place").value = "";
 
       await load();
+      if (created) {
+        createMessage.textContent += " Les liens et QR codes sont disponibles dans Mes sessions ci-dessous.";
+        if (payload.length === 1) showQRCode(payload[0]);
+        else showSessionCodes(payload);
+      }
     } catch {
       if (authorized) {
         createMessage.textContent = created
