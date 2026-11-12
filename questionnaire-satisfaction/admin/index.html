@@ -324,38 +324,43 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
       details.append(name, info, stats);
       const actions = node("div", undefined, "actions");
       if (grouped) {
-        const subject = "Rebond — Questionnaires de satisfaction — " + (session.event_name || "Sensibilisation");
-        const printablePDF = "https://avantpost-cpu.github.io/depot-quiz/Questionnaire%20sensibilisation%20UNSS_jeunes.pdf";
-        const body = [
-          "Bonjour,",
-          "",
-          "À la suite de la sensibilisation " + (session.event_name || "") + ", voici les questionnaires de satisfaction :",
-          "",
-          "1. Questionnaire encadrant (à compléter par vos soins) :",
-          questionnaireUrl(encadrant),
-          "",
-          "2. Questionnaire jeunes (à transmettre aux jeunes participants) :",
-          questionnaireUrl(jeune),
-          "",
-          "3. Version papier du questionnaire jeunes (PDF à imprimer) :",
-          printablePDF,
-          "",
-          "Vous pouvez utiliser le questionnaire en ligne ou imprimer le PDF pour les jeunes.",
-          "Les réponses aux questionnaires en ligne sont recueillies séparément. Les questionnaires papier remplis ne remontent pas automatiquement dans les résultats.",
-          "",
-          "Merci pour votre participation.",
-          "",
-          "Bien cordialement,",
-          "L’équipe Rebond"
-        ].join("\n");
-        const send = node("a", "Envoyer les 2 questionnaires à l’encadrant", "action-link");
-        send.href = "mailto:?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
-        send.title = "Préparer un e-mail contenant les deux questionnaires et le lien du PDF imprimable";
+        const send = node("button", "Envoyer les questionnaires", "action-link");
+        send.type = "button";
+        send.onclick = async () => {
+          const email = prompt("Adresse e-mail de l’encadrant destinataire :");
+          if (email === null) return;
+          const recipient = email.trim();
+          if (!recipient.includes("@") || !recipient.split("@")[1]?.includes(".") || recipient.includes(" ")) {
+            alert("Veuillez saisir une adresse e-mail valide.");
+            return;
+          }
+          if (!confirm("Envoyer directement les questionnaires et le lien PDF à " + recipient + " ?")) return;
+          send.disabled = true;
+          send.textContent = "Envoi en cours…";
+          try {
+            if (!(await checkAdmin())) throw new Error("Session administrateur expirée");
+            const { data, error } = await c.functions.invoke("send-satisfaction-invitations", {
+              body: { email: recipient, jeuneId: jeune.id, encadrantId: encadrant.id }
+            });
+            if (error || !data?.ok) {
+              let message = data?.error || error?.message || "Envoi non confirmé";
+              if (error?.context && typeof error.context.json === "function") {
+                try { const details = await error.context.json(); message = details.error || message; } catch {}
+              }
+              throw new Error(message);
+            }
+            alert("E-mail accepté par le service d’envoi pour " + recipient + ".");
+          } catch (e) {
+            alert("E-mail non confirmé : " + e.message);
+          } finally {
+            send.disabled = false;
+            send.textContent = "Envoyer les questionnaires";
+          }
+        };
         const printLink = node("a", "PDF jeunes à imprimer", "action-link secondary");
-        printLink.href = printablePDF;
+        printLink.href = "https://avantpost-cpu.github.io/depot-quiz/Questionnaire%20sensibilisation%20UNSS_jeunes.pdf";
         printLink.target = "_blank";
         printLink.rel = "noopener";
-        printLink.title = "Télécharger le questionnaire jeunes imprimable";
         const resultsYoung = node("a", "Résultats jeunes", "action-link secondary");
         resultsYoung.href = "resultats-modeles.html?id=" + encodeURIComponent(jeune.id);
         const resultsAdult = node("a", "Résultats encadrants", "action-link secondary");
