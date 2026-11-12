@@ -200,6 +200,46 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
     return element;
   }
 
+  function csvCell(value) {
+    let v = String(Array.isArray(value) ? value.join(" | ") : (value ?? ""));
+    if (/^[\\s\\u0000-\\u001f\\u007f-\\u009f]*[=+\\-@]/u.test(v)) v = "'" + v;
+    return '"' + v.replaceAll('"', '""') + '"';
+  }
+
+  async function downloadAdultResponses(session, button) {
+    if (!authorized || button.disabled) return;
+    button.disabled = true;
+    const original = button.textContent;
+    button.textContent = "Préparation…";
+    try {
+      if (!(await checkAdmin())) return;
+      const { data, error } = await c.from("satisfaction_responses")
+        .select("*").eq("session_id", session.id);
+      if (error) throw error;
+      if (!data?.length) {
+        alert("Aucune réponse à télécharger pour cette session.");
+        return;
+      }
+      const preferred = ["name","job","newsletter","email","before","after","deepen","learned","adapted","quality","equipped","changes","emotion","useful","improve","satisfaction","remarks","created_at"];
+      const columns = [...preferred.filter(k => data.some(row => Object.hasOwn(row,k))), ...Object.keys(data[0]).filter(k => !preferred.includes(k) && k !== "session_id" && k !== "id")];
+      const csv = "\\uFEFF" + [columns.map(csvCell).join(";"), ...data.map(row => columns.map(k => csvCell(row[k])).join(";"))].join("\\r\\n");
+      const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "satisfaction-" + (session.event_name || "adultes").normalize("NFD").replace(/[\\u0300-\\u036f]/g,"").replace(/[^a-zA-Z0-9_-]+/g,"-").slice(0,60) + ".csv";
+      document.body.append(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 3000);
+    } catch (e) {
+      alert("Téléchargement impossible. Réessayez après avoir rechargé la page.");
+    } finally {
+      button.disabled = false;
+      button.textContent = original;
+    }
+  }
+
   async function load() {
     if (!authorized) return;
 
@@ -373,7 +413,14 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
           actions.append(note);
         }
       }
-      actions.append(results, open, copy, remove);
+      if (model === "adultes") {
+        const exportButton = node("button", "Télécharger les réponses", "action-link");
+        exportButton.type = "button";
+        exportButton.onclick = () => downloadAdultResponses(session, exportButton);
+        actions.append(exportButton, remove);
+      } else {
+        actions.append(results, open, copy, remove);
+      }
       article.append(details, actions);
       sessions.append(article);
     }
