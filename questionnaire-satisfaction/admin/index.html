@@ -11,8 +11,8 @@ body{margin:0;background:#065269;font-family:Arial,sans-serif;color:#123}
 .w{max-width:1100px;margin:auto;padding:32px 16px}
 h1{color:#fff}
 .box{background:#fff;border-radius:20px;padding:22px;margin:14px 0}
-.row{display:grid;grid-template-columns:2fr 1fr 2fr auto;gap:10px}
-input,button{padding:12px;border-radius:10px;border:1px solid #ccd;font:inherit}
+.row{display:grid;grid-template-columns:1.2fr 2fr 1fr 1.5fr auto;gap:10px}
+input,button,select{padding:12px;border-radius:10px;border:1px solid #ccd;font:inherit}
 button{background:#e65013;color:#fff;font-weight:bold;cursor:pointer}
 button:disabled{opacity:.55;cursor:wait}
 .session{display:grid;grid-template-columns:1fr auto;gap:12px;border-top:1px solid #eee;padding:16px 0}
@@ -91,7 +91,7 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
 
       <form id="createForm">
         <div class="row">
-          <input id="event" placeholder="Nom de l’événement" required>
+          <select id="model" aria-label="Modèle"><option value="adultes">Adultes</option><option value="jeunes">Jeunes</option><option value="encadrants">Encadrants</option></select><input id="event" placeholder="Nom de l’événement" required>
           <input id="date" type="date" required>
           <input id="place" placeholder="Lieu">
           <button id="create" type="submit" disabled>Créer</button>
@@ -209,7 +209,7 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
     const { data, error } = await c
       .from("satisfaction_sessions")
       .select(
-        "id,code,event_name,event_date,event_place," +
+        "id,code,event_name,event_date,event_place,model," +
         "satisfaction_responses(id,satisfaction,newsletter)"
       )
       .order("event_date", { ascending: false });
@@ -224,6 +224,13 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
       return;
     }
 
+    const modelIds=data.filter(x=>x.model==="jeunes"||x.model==="encadrants").map(x=>x.id);
+    const modelCounts={};
+    if(modelIds.length){
+      const {data:mr,error:me}=await c.from("satisfaction_model_responses").select("session_id").in("session_id",modelIds);
+      if(me)throw me;
+      for(const item of mr||[])modelCounts[item.session_id]=(modelCounts[item.session_id]||0)+1;
+    }
     for (const session of data) {
       const responses = session.satisfaction_responses || [];
 
@@ -241,18 +248,19 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
         response => response.newsletter === "Oui"
       ).length;
 
-      const url = new URL("../", location.href);
+      const model=session.model||"adultes";
+      const url = new URL(model==="adultes"?"../":"../"+model+"/", location.href);
       url.search = "";
       url.hash = "";
       url.searchParams.set("session", session.code);
 
-      const resultsUrl = new URL("resultats.html", location.href);
+      const resultsUrl = new URL(model==="adultes"?"resultats.html":"resultats-modeles.html", location.href);
       resultsUrl.searchParams.set("id", session.id);
 
       const article = node("article", undefined, "session");
       const details = node("div");
 
-      const name = node("strong", session.event_name ?? "");
+      const name = node("strong", (model==="adultes"?"Adultes":model==="jeunes"?"Jeunes":"Encadrants")+" — "+(session.event_name ?? ""));
 
       const day = session.event_date
         ? new Date(
@@ -269,11 +277,11 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
 
       const stats = node("div", undefined, "stats");
 
-      stats.append(
-        node("span", responses.length + " réponse(s)", "stat"),
-        node("span", "Satisfaction " + average + "/5", "stat"),
-        node("span", newsletter + " newsletter", "stat")
-      );
+      if(model==="adultes"){
+        stats.append(node("span",responses.length+" réponse(s)","stat"),node("span","Satisfaction "+average+"/5","stat"),node("span",newsletter+" newsletter","stat"));
+      }else{
+        stats.append(node("span",(modelCounts[session.id]||0)+" réponse(s)","stat"));
+      }
 
       const linkBox = node("div", undefined, "link");
 
@@ -407,7 +415,8 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
           code,
           event_name: name,
           event_date: day,
-          event_place: place
+          event_place: place,
+          model: $("model").value
         });
 
       if (!authorized || current !== version) return;
