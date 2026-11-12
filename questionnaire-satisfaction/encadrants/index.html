@@ -24,7 +24,7 @@ send.onclick=async()=>{
    answers["section_"+index]=entry;
  });
  const {error:saveError}=await client.from("satisfaction_model_responses").insert({session_id:data.id,model,answers});
- if(saveError){status.textContent="Envoi impossible. Merci de réessayer.";send.disabled=false;return;}
+ if(saveError){console.error("Enregistrement questionnaire encadrants :",saveError);status.textContent="Envoi impossible ("+(saveError.code||"connexion")+"). Merci de réessayer.";send.disabled=false;return;}
  status.textContent="Merci pour votre participation ! Vos réponses ont bien été enregistrées.";send.hidden=true;
  document.querySelectorAll("main section").forEach(section=>section.hidden=true);
  window.scrollTo({top:0,behavior:"smooth"});
