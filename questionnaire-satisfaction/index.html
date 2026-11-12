@@ -5,7 +5,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script><script>window.REBOND_CONFIG={supabaseUrl:"https://tdsrqmpfdvntybdlvejy.supabase.co",supabaseKey:"sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO"};</script><script>
 const themes=["Des différents types de violences (physiques, psychologiques, sexuelles, négligences)","Du repérage des signaux d'alerte","Des procédures de signalement","Des obligations légales qui incombent aux établissements sportifs","Des outils de prévention à votre disposition"];
 const qs=[
-["name","Prénom Nom","text",1],["job","Fonction / Métier","text",1],["newsletter","Souhaitez-vous recevoir la newsletter Rebond ?","radio",1,["Oui","Non"]],["email","Adresse e-mail","email",0],
+["name","Prénom Nom","text",1],["job","Fonction / Métier","text",1],["newsletter","Souhaitez-vous recevoir la newsletter Rebond ?","radio",1,["Oui","Non"]],["email","Adresse e-mail","email",1],
 ["before","Avant cette sensibilisation, aviez-vous connaissance :","check",1,[...themes,"Je n'avais connaissance d'aucun de ces thèmes"]],
 ["after","Après cette sensibilisation, pensez-vous que vous maîtrisez :","check",1,[...themes.map(x=>x.replace(/^D[eu][s]? /,"")), "Je pense ne maîtriser aucun de ces thèmes"]],
 ["deepen","Après cette sensibilisation, pensez-vous que certains points doivent encore être approfondis ?","check",1,[...themes.map(x=>x.replace(/^D[eu][s]? /,"")), "Non, je maîtrise tous ces thèmes"]],
