@@ -319,7 +319,24 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
       remove.type = "button";
       remove.onclick = () => deleteSession(session.id, remove);
 
-      actions.append(results, open, remove);
+      const copy = node("button", "Copier le lien", "action-link secondary");
+      copy.type = "button";
+      copy.onclick = async () => {
+        try {
+          await navigator.clipboard.writeText(url.href);
+          copy.textContent = "Lien copié ✓";
+          setTimeout(() => { copy.textContent = "Copier le lien"; }, 2500);
+        } catch {
+          window.prompt("Copiez ce lien de diffusion :", url.href);
+        }
+      };
+
+      const share = node("a", "Envoyer par e-mail", "action-link secondary");
+      share.href = "mailto:?subject=" + encodeURIComponent("Questionnaire de satisfaction Rebond — " + (session.event_name || "Session")) +
+        "&body=" + encodeURIComponent("Bonjour,\n\nVoici le lien du questionnaire de satisfaction pour " + (session.event_name || "notre session") + " :\n" + url.href + "\n\nMerci de le transmettre aux participants.\n\nBien cordialement,");
+      share.setAttribute("aria-label", "Préparer un e-mail avec le lien du questionnaire");
+
+      actions.append(results, open, copy, share, remove);
       article.append(details, actions);
       sessions.append(article);
     }
