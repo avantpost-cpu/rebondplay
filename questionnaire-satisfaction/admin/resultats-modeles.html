@@ -1,0 +1,25 @@
+<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Rebond — Résultats par modèle</title><style>body{background:#065269;font:16px Arial;color:#123;margin:0}main{max-width:1100px;margin:32px auto;padding:25px;background:white;border-radius:18px}h1,h2{color:#065269}.stat{background:#e8f3f1;padding:15px;border-radius:12px;margin:12px 0}.item{border-top:1px solid #ddd;padding:12px 0}button{background:#e65013;color:white;padding:12px;border:0;border-radius:8px;cursor:pointer}a{color:#065269}pre{white-space:pre-wrap;overflow-wrap:anywhere}</style><main><p><a href="./">← Administration des questionnaires</a></p><h1>Résultats du questionnaire</h1><div id="login"><p>Connexion administrateur requise.</p><input id="email" type="email" placeholder="Adresse e-mail"><input id="password" type="password" placeholder="Mot de passe"><button id="connect">Se connecter</button></div><div id="app" hidden><h2 id="event"></h2><p id="summary"></p><button id="export">Exporter CSV</button><div id="results"></div></div><p id="msg" role="status"></p></main><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0"></script><script>
+(async()=>{
+const $=id=>document.getElementById(id);
+const c=window.supabase.createClient("https://tdsrqmpfdvntybdlvejy.supabase.co","sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO");
+const id=new URLSearchParams(location.search).get("id");
+let data=[];
+async function load(){
+ const {data:isAdmin,error:roleError}=await c.rpc("rebond_is_admin");
+ if(roleError||isAdmin!==true){$("msg").textContent="Accès réservé aux administrateurs.";return;}
+ const {data:s,error:se}=await c.from("satisfaction_sessions").select("id,event_name,event_date,event_place,model").eq("id",id).single();
+ if(se||!s||s.model==="adultes"){$("msg").textContent="Session introuvable ou modèle incompatible.";return;}
+ const {data:r,error:re}=await c.from("satisfaction_model_responses").select("id,created_at,answers").eq("session_id",id).order("created_at",{ascending:false});
+ if(re){$("msg").textContent="Impossible de charger les réponses.";return;}
+ data=r||[];$("login").hidden=true;$("app").hidden=false;
+ $("event").textContent=s.event_name+" — "+s.model;
+ $("summary").textContent=data.length+" réponse(s) • "+(s.event_date||"")+" • "+(s.event_place||"");
+ const root=$("results");root.replaceChildren();
+ const counts={};for(const response of data)for(const [section,values] of Object.entries(response.answers||{}))for(const [field,value] of Object.entries(values||{})){const key=section+" / "+field;const items=Array.isArray(value)?value:[value];for(const item of items){if(typeof item!=="string")continue;(counts[key]??={})[item]=((counts[key]||{})[item]||0)+1;}}
+ for(const [key,values] of Object.entries(counts)){const box=document.createElement("div");box.className="stat";const h=document.createElement("strong");h.textContent=key;box.append(h);for(const [label,count] of Object.entries(values)){const p=document.createElement("p");p.textContent=label+" : "+count;box.append(p)}root.append(box);}
+}
+$("connect").onclick=async()=>{const {error}=await c.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});$("password").value="";if(error){$("msg").textContent="Connexion refusée.";return;}await load()};
+$("export").onclick=()=>{const lines=[["id","created_at","answers"],...data.map(x=>[x.id,x.created_at,JSON.stringify(x.answers)])];const csv="\uFEFF"+lines.map(row=>row.map(v=>'"'+String(v??"").replaceAll('"','""')+'"').join(";")).join("\r\n");const url=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));const a=document.createElement("a");a.href=url;a.download="rebond-satisfaction-"+id+".csv";a.click();URL.revokeObjectURL(url)};
+const {data:session}=await c.auth.getSession();if(session?.session)await load();
+})().catch(()=>{document.getElementById("msg").textContent="Impossible de charger les résultats.";});
+</script></html>
