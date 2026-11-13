@@ -83,6 +83,7 @@ async function loadInvitations(){
  try{
  const d=await invitationsRequest({action:'list',abonnement_id:id});
  $('#invite-quota').textContent='Comptes actifs : '+d.comptes_actifs+' / '+d.quota+' · Invitations enregistrées : '+d.invitations.length;
+ if(d.email_contact && !$('#invite-email').value.trim())$('#invite-email').value=d.email_contact;
  $('#invite-list').innerHTML=d.invitations.map(i=>'<tr><td>'+esc(i.email)+'</td><td>'+esc(i.statut)+'</td><td>'+esc(i.cree_le?.slice(0,10)||'')+'</td></tr>').join('')||'<tr><td colspan="3">Aucune invitation préparée.</td></tr>';
  $('#invite-status').textContent='';
  }catch(e){$('#invite-status').textContent='Erreur : '+e.message}
