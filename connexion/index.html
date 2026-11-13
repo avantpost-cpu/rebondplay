@@ -32,7 +32,7 @@ async function verifierAppareil(){
   localStorage.setItem('rp-device-token-v1',deviceToken);
  }
  const {data,error}=await client.functions.invoke('rp-appareil-verifier',{body:{device_token:deviceToken,nom_appareil:navigator.platform||'Navigateur'}});
- if(error||!data?.autorise)throw new Error(data?.raison==='limite_trois_appareils'?'Ce compte utilise déjà trois appareils. Contactez Rebond pour en retirer un.':'Vérification de cet appareil impossible. Réessayez.');
+ if(error||!data?.autorise)throw new Error(data?.raison==='limite_trois_appareils'?'Ce compte utilise déjà trois appareils. Contactez Rebond pour en retirer un.':data?.raison==='appareil_revoque'?'Cet appareil a été révoqué. Contactez l’administration Rebond pour le réautoriser.':'Vérification de cet appareil impossible. Réessayez.');
 }
 async function route(){
  const {data:user,error:userError}=await client.auth.getUser();
@@ -47,7 +47,7 @@ async function route(){
  location.replace(routes[subscription.offre]);return true;
 }
 form.addEventListener('submit',async e=>{e.preventDefault();button.disabled=true;pendingEmail=document.getElementById('email').value.trim().toLowerCase();status.textContent='Envoi du code…';try{const {error}=await client.auth.signInWithOtp({email:pendingEmail,options:{shouldCreateUser:false,emailRedirectTo:'https://rebondplay.com/connexion/'}});if(error)throw error;verify.hidden=false;status.textContent='Demande enregistrée. Vérifiez votre boîte de réception et les indésirables de '+pendingEmail+'. Saisissez le code ci-dessous, ou cliquez sur le lien reçu. Un nouveau clic n’est pas nécessaire.';verify.scrollIntoView({behavior:'smooth',block:'center'});}catch(e){status.textContent=/after \d+ seconds?/i.test(e.message||'')?'Une demande a déjà été enregistrée. Patientez quelques secondes avant de redemander un code, ou saisissez celui déjà reçu ci-dessous.':'Envoi impossible : '+(e.message||'Réessayez dans quelques instants.')}finally{button.disabled=false}});
-verify.addEventListener('submit',async e=>{e.preventDefault();verifyButton.disabled=true;pendingEmail=document.getElementById('email').value.trim().toLowerCase();status.textContent='Connexion en cours…';try{const token=document.getElementById('otp').value.trim();const {error}=await client.auth.verifyOtp({email:pendingEmail,token,type:'email'});if(error)throw error;await route()}catch(e){status.textContent='Code invalide ou expiré : '+(e.message||'Veuillez demander un nouveau code.')}finally{verifyButton.disabled=false}});
+verify.addEventListener('submit',async e=>{e.preventDefault();verifyButton.disabled=true;pendingEmail=document.getElementById('email').value.trim().toLowerCase();status.textContent='Connexion en cours…';try{const token=document.getElementById('otp').value.trim();const {error}=await client.auth.verifyOtp({email:pendingEmail,token,type:'email'});if(error)throw error;await route()}catch(e){status.textContent=e.message||'Connexion impossible. Réessayez.'}finally{verifyButton.disabled=false}});
 try{const {data}=await client.auth.getSession();if(data?.session)await route()}catch(e){status.textContent='Vérification indisponible. Réessayez.'}
 })();
 </script></body></html>
