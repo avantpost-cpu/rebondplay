@@ -58,7 +58,7 @@ document.querySelector('#hide-odoo-demo').addEventListener('click',()=>{
 });
 document.querySelector('#show-odoo-demo').addEventListener('click',()=>{
  sessionStorage.removeItem('rp_hide_odoo_demo');
- document.querySelector('#odoo-check').click();
+ document.querySelector('#odoo-refresh').click();
 });
 document.querySelector('#odoo-simulation-list').addEventListener('click',async e=>{
  const b=e.target.closest('button.sync-contract,button.approve-contract');if(!b)return;
