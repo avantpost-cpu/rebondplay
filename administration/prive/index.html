@@ -67,8 +67,9 @@ document.querySelector('#odoo-simulation-list').addEventListener('click',async e
   const res=await fetch('https://tdsrqmpfdvntybdlvejy.supabase.co/functions/v1/rp-odoo-catalogue',{method:'POST',headers:{Authorization:'Bearer '+session.access_token,apikey:'sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO','Content-Type':'application/json'},body:JSON.stringify(body)});
   const result=await res.json();if(!res.ok)throw Error(result.error||'Opération impossible');
   $('#odoo-status').textContent=sync?'Contrat '+num+' synchronisé. Étape suivante : Valider GO.':'GO validé pour '+num+'. Aucun e-mail envoyé.';
+  alert(sync?'Synchronisation de '+num+' confirmée. Vous pouvez maintenant valider GO.':'GO validé pour '+num+'. Abonnement activé. Aucun e-mail envoyé.');
   await refresh();
- }catch(err){$('#odoo-status').textContent='Erreur : '+err.message}finally{b.disabled=false}
+ }catch(err){$('#odoo-status').textContent='Erreur : '+err.message;alert('Échec pour '+num+' : '+err.message)}finally{b.disabled=false}
 });
 sb.auth.onAuthStateChange(()=>{setTimeout(refresh,0)});refresh();
 </script></body></html>
