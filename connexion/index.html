@@ -23,7 +23,7 @@ footer{margin:20px 0 0;font-size:12px;font-weight:900;color:#065269}
 <script>
 (async()=>{
 const status=document.getElementById('status'),form=document.getElementById('login'),button=document.getElementById('submit'),verify=document.getElementById('verify'),verifyButton=document.getElementById('verify-submit');let pendingEmail='';
-const client=window.supabase.createClient('https://tdsrqmpfdvntybdlvejy.supabase.co','sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO',{auth:{storageKey:'rebondplay-auth',persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+const client=window.supabase.createClient('https://tdsrqmpfdvntybdlvejy.supabase.co','sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO',{auth:{storageKey:'rebondplay-full-pilot-auth',persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
 verify.hidden=false;
 const routes={full:'/pagefull/',essentielplus:'/RPessentielleplus/',essentiel:'/Essentiel/'};
 async function verifierAppareil(){
