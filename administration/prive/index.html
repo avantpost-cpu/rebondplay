@@ -84,11 +84,20 @@ async function loadInvitations(){
  const d=await invitationsRequest({action:'list',abonnement_id:id});
  $('#invite-quota').textContent='Comptes actifs : '+d.comptes_actifs+' / '+d.quota+' · Invitations enregistrées : '+d.invitations.length;
  $('#invite-email').value=d.email_contact||'';
- $('#invite-list').innerHTML=d.invitations.map(i=>'<tr><td>'+esc(i.email)+'</td><td>'+esc(i.statut)+'</td><td>'+esc(i.cree_le?.slice(0,10)||'')+'</td></tr>').join('')||'<tr><td colspan="3">Aucune invitation préparée.</td></tr>';
+ $('#invite-list').innerHTML=d.invitations.map(i=>'<tr><td>'+esc(i.email)+'</td><td>'+esc(i.statut)+(i.statut==='brouillon'||i.statut==='erreur'?' <button type="button" class="invite-send" data-id="'+esc(i.id)+'">Envoyer l’invitation</button>':'')+'</td><td>'+esc(i.cree_le?.slice(0,10)||'')+'</td></tr>').join('')||'<tr><td colspan="3">Aucune invitation préparée.</td></tr>';
  $('#invite-status').textContent='';
  }catch(e){$('#invite-status').textContent='Erreur : '+e.message}
 }
 $('#invite-org').addEventListener('change',()=>{$('#invite-email').value='';$('#invite-quota').textContent='';$('#invite-list').innerHTML='<tr><td colspan="3">Chargement…</td></tr>';void loadInvitations()});
+$('#invite-list').addEventListener('click',async(e)=>{
+ const btn=e.target.closest('.invite-send');if(!btn)return;
+ const id=$('#invite-org').value,invitation_id=btn.dataset.id;
+ if(!id||!invitation_id)return;
+ if(!confirm('Envoyer maintenant cette invitation par e-mail ?'))return;
+ btn.disabled=true;$('#invite-status').textContent='Envoi en cours…';
+ try{const result=await invitationsRequest({action:'send',abonnement_id:id,invitation_id});await loadInvitations();$('#invite-status').textContent=result.email_sent?'Invitation envoyée. Le participant peut activer son compte depuis le message reçu.':'Envoi non confirmé.'}
+ catch(err){$('#invite-status').textContent='Erreur : '+err.message;btn.disabled=false}
+});
 $('#invite-prepare').addEventListener('click',async()=>{
  const id=$('#invite-org').value,email=$('#invite-email').value.trim();
  if(!id||!email){$('#invite-status').textContent='Choisissez un organisme et indiquez un e-mail.';return}
