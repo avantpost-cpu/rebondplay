@@ -404,10 +404,19 @@
             }
           };
 
+          const qrButton = document.createElement("button");
+          qrButton.type = "button";
+          qrButton.textContent = "Afficher / télécharger le QR code";
+          qrButton.addEventListener("click", () => showQr(
+            url,
+            (session.event_name || "Session") + " · " + (session.event_date || ""),
+            category + "-" + session.code
+          ));
           actions.append(
             previewLink,
             resultsLink,
-            copyButton
+            copyButton,
+            qrButton
           );
 
           article.append(
