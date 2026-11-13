@@ -183,10 +183,19 @@ async function check(){
         finally{button.disabled=false}
       });
       try{
-        const {data}=await client.auth.getSession();
-        if(data?.session){activeSubscription=await check();if(activeSubscription?.offre==="full")resolveAccess();else location.replace("/connexion-test/")}
-        else location.replace("/connexion-test/");
-      }catch(error){location.replace("/connexion-test/")}
+        const {data,error:sessionError}=await client.auth.getSession();
+        if(sessionError)throw sessionError;
+        if(data?.session){
+          activeSubscription=await check();
+          if(activeSubscription?.offre==="full")resolveAccess();
+          else message.textContent="Connexion reconnue, mais aucun abonnement Full actif n’a été trouvé. Vérifiez votre abonnement auprès de Rebond.";
+        }else{
+          message.textContent="Aucune session de connexion trouvée. Utilisez la connexion officielle RebondPlay.";
+        }
+      }catch(error){message.textContent="Impossible de vérifier votre accès Full : "+(error?.message||"Erreur inconnue")}
+      if(!activeSubscription||activeSubscription.offre!=="full"){
+        const link=document.createElement("a");link.href="/connexion/";link.textContent="Revenir à la connexion officielle RebondPlay";link.style.cssText="display:block;margin:16px auto;color:#1b5f6e;font-weight:700;text-align:center";gate.appendChild(link);
+      }
       await access;
       await unlock();
       const slider=document.getElementById("slider"),track=document.getElementById("sliderTrack"),slides=[...track.children],dotsBox=document.getElementById("sliderDots"),reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;let current=0,timer=0,touchStart=0;const dots=slides.map((_,index)=>{const dot=document.createElement("button");dot.type="button";dot.className="slider-dot";dot.setAttribute("aria-label",`Afficher la slide ${index+1}`);dot.addEventListener("click",()=>{show(index);restart()});dotsBox.append(dot);return dot});function show(index){current=(index+slides.length)%slides.length;track.style.transform=`translateX(-${current*100}%)`;dots.forEach((dot,i)=>dot.classList.toggle("active",i===current))}function stop(){clearInterval(timer);timer=0}function start(){if(!reduced&&!timer)timer=setInterval(()=>show(current+1),3000)}function restart(){stop();start()}document.getElementById("prevSlide").addEventListener("click",()=>{show(current-1);restart()});document.getElementById("nextSlide").addEventListener("click",()=>{show(current+1);restart()});slider.addEventListener("mouseenter",stop);slider.addEventListener("mouseleave",start);slider.addEventListener("focusin",stop);slider.addEventListener("focusout",start);slider.addEventListener("touchstart",event=>{touchStart=event.changedTouches[0].clientX;stop()},{passive:true});slider.addEventListener("touchend",event=>{const distance=event.changedTouches[0].clientX-touchStart;if(Math.abs(distance)>45)show(current+(distance<0?1:-1));start()},{passive:true});document.addEventListener("visibilitychange",()=>document.hidden?stop():start());show(0);start();
