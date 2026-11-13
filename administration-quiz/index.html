@@ -33,6 +33,7 @@
     .qr-dialog .qr-url{overflow-wrap:anywhere;font-size:13px}
     .qr-dialog .qr-close{position:absolute;right:14px;top:12px;background:#065269}
     .actions button{background:#e65013}
+    .actions button.delete-session{background:#a63240;color:#fff}
     [hidden]{display:none!important}
     @media(max-width:750px){
       .row{grid-template-columns:1fr}
@@ -412,11 +413,45 @@
             (session.event_name || "Session") + " · " + (session.event_date || ""),
             category + "-" + session.code
           ));
+          const deleteButton = document.createElement("button");
+          deleteButton.type = "button";
+          deleteButton.className = "delete-session";
+          deleteButton.textContent = "Supprimer la session";
+          deleteButton.addEventListener("click", async () => {
+            if (!authorized) return;
+            const confirmation = confirm(
+              "Supprimer définitivement la session « " +
+              (session.event_name || session.code) +
+              " » (" + session.code + ") ?\\n\\n" +
+              "Son lien et son QR code ne devront plus être utilisés. Cette action est irréversible."
+            );
+            if (!confirmation) return;
+            deleteButton.disabled = true;
+            deleteButton.textContent = "Suppression…";
+            try {
+              if (!(await checkAdmin())) return;
+              const { data: deleted, error: deletionError } = await db
+                .from("rebond_quiz_sessions")
+                .delete()
+                .eq("code", session.code)
+                .eq("category", category)
+                .select("code");
+              if (deletionError) throw deletionError;
+              if (!deleted?.length) throw new Error("Session introuvable ou suppression non autorisée.");
+              $("message").textContent = "Session supprimée : " + session.code;
+              await loadSessions();
+            } catch (error) {
+              $("message").textContent = "Suppression impossible : " + (error.message || "réessayez.");
+              deleteButton.disabled = false;
+              deleteButton.textContent = "Supprimer la session";
+            }
+          });
           actions.append(
             previewLink,
             resultsLink,
             copyButton,
-            qrButton
+            qrButton,
+            deleteButton
           );
 
           article.append(
