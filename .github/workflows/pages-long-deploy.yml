@@ -38,6 +38,6 @@ jobs:
     steps:
       - name: Publier avec un délai de synchronisation étendu
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
         with:
           timeout: 1800000
