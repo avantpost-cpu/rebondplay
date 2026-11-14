@@ -24,7 +24,7 @@ jobs:
           source: ./
           destination: ./_site
       - name: Préparer les fichiers GitHub Pages
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: ./_site
 
