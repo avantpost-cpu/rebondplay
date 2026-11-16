@@ -187,7 +187,7 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
         <tbody id="questions"></tbody>
       </table>
 
-      <section style="background:#fff;color:#065269;border-radius:16px;padding:22px;margin:24px 0">
+      <section hidden style="background:#fff;color:#065269;border-radius:16px;padding:22px;margin:24px 0">
         <h2>Attestations de participation</h2>
         <p>Générer une attestation nominative avec l’intitulé exact de la session.</p>
         <p id="certificateInfo" role="status"></p>
@@ -200,11 +200,11 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
       </section>
 
       <section style="background:#fff;color:#065269;border-radius:16px;padding:22px;margin:24px 0">
-        <h2>Certificats de fin de formation — seuil 80 %</h2>
-        <p>Une personne par adresse e-mail et par session. En cas de plusieurs tentatives, seul le meilleur score est retenu.</p>
+        <h2>Documents de fin de formation — certificat ou attestation</h2>
+        <p>À partir de 80 % : certificat de formation illustré. En dessous de 80 % : attestation de participation existante. Une personne par adresse e-mail et par session ; meilleur score retenu.</p>
         <button id="certificateDispatchPreview" type="button" style="background:#e65013">Vérifier les destinataires</button>
         <p id="certificateDispatchStatus" role="status"></p>
-        <p style="font-size:13px">Aucun envoi ne sera effectué depuis cet aperçu. Le service d'envoi sécurisé doit être activé après vérification du modèle PDF et de Brevo.</p>
+        <p style="font-size:13px">Aucun envoi ne sera effectué depuis cet aperçu. L'envoi sécurisé des deux modèles reste à activer.</p>
       </section>
 
       <h2>Participants</h2>
@@ -566,9 +566,9 @@ $("certificateDispatchPreview").onclick = () => {
   const eligible = recipients.filter(person => person.percent >= 80);
   status.textContent =
     recipients.length + " participants uniques : " +
-    eligible.length + " certificats (score ≥ 80 %) et " +
+    eligible.length + " certificats de formation (score ≥ 80 %) et " +
     (recipients.length - eligible.length) +
-    " e-mails sans certificat (score < 80 %). Aucun e-mail envoyé.";
+    " attestations de participation (score < 80 %). Aucun e-mail envoyé.";
 };
 
 async function certificateSession() {
