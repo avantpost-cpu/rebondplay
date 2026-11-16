@@ -199,6 +199,14 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
         </p>
       </section>
 
+      <section style="background:#fff;color:#065269;border-radius:16px;padding:22px;margin:24px 0">
+        <h2>Certificats de fin de formation — seuil 80 %</h2>
+        <p>Une personne par adresse e-mail et par session. En cas de plusieurs tentatives, seul le meilleur score est retenu.</p>
+        <button id="certificateDispatchPreview" type="button" style="background:#e65013">Vérifier les destinataires</button>
+        <p id="certificateDispatchStatus" role="status"></p>
+        <p style="font-size:13px">Aucun envoi ne sera effectué depuis cet aperçu. Le service d'envoi sécurisé doit être activé après vérification du modèle PDF et de Brevo.</p>
+      </section>
+
       <h2>Participants</h2>
       <table>
         <thead>
@@ -533,6 +541,35 @@ async function deleteParticipant(id, name) {
     }
   }
 }
+
+function uniqueFormationRecipients(rows) {
+  const byEmail = new Map();
+  for (const row of rows) {
+    const email = String(row.email || "").trim().toLowerCase();
+    if (!email || row.score === null || !Number(row.total_questions)) continue;
+    const percent = 100 * Number(row.score) / Number(row.total_questions);
+    const previous = byEmail.get(email);
+    if (!previous || percent > previous.percent) {
+      byEmail.set(email, { email, percent, row });
+    }
+  }
+  return [...byEmail.values()];
+}
+
+$("certificateDispatchPreview").onclick = () => {
+  const status = $("certificateDispatchStatus");
+  if (!selectedSession) {
+    status.textContent = "Sélectionnez une session de formation.";
+    return;
+  }
+  const recipients = uniqueFormationRecipients(currentRows);
+  const eligible = recipients.filter(person => person.percent >= 80);
+  status.textContent =
+    recipients.length + " participants uniques : " +
+    eligible.length + " certificats (score ≥ 80 %) et " +
+    (recipients.length - eligible.length) +
+    " e-mails sans certificat (score < 80 %). Aucun e-mail envoyé.";
+};
 
 async function certificateSession() {
   if (!selectedSession) return null;
