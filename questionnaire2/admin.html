@@ -205,6 +205,7 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
         <button id="certificateDispatchPreview" type="button" style="background:#e65013">Vérifier les destinataires</button>
 
         <button id="formationCloseButton" type="button" style="background:#217a54">Préparer les documents du 14 novembre (exception)</button>
+        <button id="formationLegacySend" type="button" style="background:#065269">Envoyer les documents du 14 novembre (exception)</button>
 
         <p id="certificateDispatchStatus" role="status"></p>
         <p style="font-size:13px">Les prochaines formations sont traitées automatiquement après leur date. La formation du 14 novembre reste une exception manuelle.</p>
@@ -544,6 +545,30 @@ async function deleteParticipant(id, name) {
     }
   }
 }
+
+$("formationLegacySend").onclick=async()=>{
+ const button=$("formationLegacySend"),status=$("certificateDispatchStatus");
+ if(selectedSession!=="FOR-DA7628626473C51E"){status.textContent="Envoi manuel réservé à la formation du 14 novembre.";return;}
+ const {data:info,error:infoError}=await db.functions.invoke("close-formation-session",{body:{action:"status",session_code:selectedSession}});
+ if(infoError||!info?.closed){status.textContent="Préparez d'abord les documents de cette formation.";return;}
+ const pending=(info.deliveries||[]).filter(x=>x.status==="pending").length;
+ if(!pending){status.textContent="Aucun document en attente d'envoi.";return;}
+ if(!confirm("CONFIRMATION : envoyer maintenant "+pending+" documents NOMINATIFS aux participants du 14 novembre ? Cette action déclenche des e-mails réels."))return;
+ button.disabled=true;
+ let total=0,failed=0;
+ try{
+  for(let i=0;i<Math.ceil(pending/10);i++){
+   status.textContent="Envoi en cours : "+total+" / "+pending+" acceptés par Brevo…";
+   const {data,error}=await db.functions.invoke("dispatch-formation-documents",{body:{action:"send_legacy",session_code:selectedSession}});
+   if(error)throw error;
+   if(data?.error)throw Error(data.error);
+   total+=data?.sent||0;failed+=data?.failed||0;
+   if(!(data?.processed>0))break;
+  }
+  status.textContent="Envoi terminé : "+total+" e-mails acceptés par Brevo, "+failed+" échecs. Consulter l'historique avant toute relance.";
+ }catch(error){status.textContent="Envoi interrompu : "+(error.message||String(error))+". "+total+" e-mails déjà acceptés par Brevo.";}
+ finally{button.disabled=false;}
+};
 
 $("formationCloseButton").onclick = async () => {
  const button=$("formationCloseButton"),status=$("certificateDispatchStatus");
