@@ -479,7 +479,9 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
         const qrAdult = node("button", "QR code Adultes", "action-link secondary");
         qrAdult.type = "button";
         qrAdult.onclick = () => showAccess([session]);
-        actions.append(linkButton(session, "Récupérer le lien"), qrAdult, exportButton);
+        const resultsAdult = node("a", "Résultats", "action-link secondary");
+        resultsAdult.href = "resultats.html?id=" + encodeURIComponent(session.id);
+        actions.append(linkButton(session, "Récupérer le lien"), qrAdult, resultsAdult, exportButton);
       } else {
         const open = node("a", "Ouvrir le questionnaire", "action-link secondary");
         open.href = questionnaireUrl(session);
