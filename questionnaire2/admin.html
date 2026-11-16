@@ -204,6 +204,7 @@ body:has(#login:not([hidden])) .login-copyright{display:block}
         <p>À partir de 80 % : certificat de formation illustré. En dessous de 80 % : attestation de participation existante. Une personne par adresse e-mail et par session ; meilleur score retenu.</p>
         <button id="certificateDispatchPreview" type="button" style="background:#e65013">Vérifier les destinataires</button>
         <button id="formationTestCertificate" type="button" style="background:#065269">Tester l'envoi du certificat</button>
+        <button id="formationCloseButton" type="button" style="background:#217a54">Clôturer la session et préparer les envois</button>
         <p style="font-size:13px">Envoi de vérification réservé aux administrateurs. Aucun participant ne sera contacté.</p>
         <p id="certificateDispatchStatus" role="status"></p>
         <p style="font-size:13px">Aucun envoi ne sera effectué depuis cet aperçu. L'envoi sécurisé des deux modèles reste à activer.</p>
@@ -543,6 +544,21 @@ async function deleteParticipant(id, name) {
     }
   }
 }
+
+$("formationCloseButton").onclick = async () => {
+ const button=$("formationCloseButton"),status=$("certificateDispatchStatus");
+ if(!selectedSession||!selectedSession.startsWith("FOR-")){status.textContent="Sélectionnez une formation.";return;}
+ const recipients=uniqueFormationRecipients(currentRows);
+ if(!confirm("Clôturer cette formation et préparer "+recipients.length+" documents ? Aucun e-mail ne sera envoyé."))return;
+ button.disabled=true;
+ try{
+ const {data,error}=await db.functions.invoke("close-formation-session",{body:{action:"close",session_code:selectedSession}});
+ if(error)throw error;
+ if(!data?.closed)throw Error(data?.error||"Clôture non confirmée");
+ status.textContent="Session clôturée : "+data.prepared+" documents préparés ("+data.certificates+" certificats, "+data.attestations+" attestations). Aucun e-mail envoyé.";
+ }catch(error){status.textContent="Clôture impossible : "+(error.message||String(error));}
+ finally{button.disabled=false;}
+};
 
 $("formationTestCertificate").onclick = async () => {
   const button = $("formationTestCertificate");
