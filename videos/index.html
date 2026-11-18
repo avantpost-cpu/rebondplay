@@ -41,20 +41,30 @@
 .resource-image,.resource-inner{transition:none!important;transform:none!important;filter:none!important}
 .resource:hover{transform:none!important}
 <style id="video-close-size-fix">.video-modal-hotspot{width:clamp(28px,4vw,58px)!important;height:clamp(28px,4vw,58px)!important}.video-modal-hotspot img{width:50%!important;height:50%!important;display:block;margin:auto}</style></style><style>.rp-footer{width:min(90vw,1540px);margin:clamp(18px,2vw,32px) auto 0;padding:22px 0 28px;display:flex;justify-content:space-between;align-items:center;gap:16px;color:inherit;font-size:clamp(11px,.8vw,15px)}.rp-footer strong{font-weight:900}.rp-footer a{text-decoration:none;font-weight:800;color:inherit}.rp-footer a:hover{text-decoration:underline}@media(max-width:600px){.rp-footer{flex-direction:column;text-align:center}}</style><style>.rp-footer,.rp-footer a{color:#fff}</style><style id="rp-hide-secondary-login">#fullPilotGate form{display:none!important}#fullPilotGate::after{content:"Vérification de votre accès…";font:800 18px Nunito,Arial,sans-serif;color:#065269}</style><style id="rp-resources-click-fix">#ressources-link{position:relative!important;z-index:50!important;pointer-events:auto!important;cursor:pointer!important}#ressources-link img{pointer-events:none!important}</style><style id="rp-videos-page">
-/* La fenêtre d'origine devient un contenu de page, sans changer sa charte. */
+/* Page Vidéos calquée sur la structure des pages RebondPlay, sans fenêtre modale. */
+body{min-height:100vh;background-color:#0c7892!important;background-image:var(--rp-video-pattern,none)!important;background-repeat:repeat!important;background-position:center top!important;background-size:auto!important;background-attachment:fixed!important}
+.topbar{min-height:clamp(92px,8.2vw,158px)!important;padding:16px 3.4% 10px!important;background:rgba(8,105,130,.83)!important;box-shadow:none!important}
+.topbar .brand{display:none!important}
+.video-page-title{display:flex;align-items:center;justify-content:flex-start;min-width:0}
+.video-page-title img{display:block;width:auto;max-width:min(44vw,400px);max-height:115px;object-fit:contain}
 #slider,main.content{display:none!important}
-.video-modal{position:relative!important;inset:auto!important;display:block!important;z-index:auto!important;padding:36px clamp(12px,4vw,70px) 60px!important;background:transparent!important;backdrop-filter:none!important}
-.video-modal-panel{width:min(100%,1280px)!important;min-height:720px!important;max-height:none!important;margin:0 auto;overflow:visible!important;box-shadow:0 10px 25px rgba(0,0,0,.17)!important}
-.video-modal-hotspot{display:none!important}
-.video-layout{padding:clamp(180px,17vw,245px) 5% 6%!important}
-.video-menu{max-height:none!important;overflow:visible!important}
-.video-column{position:sticky;top:20px}
-@media(max-width:750px){.video-layout{grid-template-columns:1fr!important;padding:155px 5% 7%!important}.video-column{grid-column:1!important;grid-row:auto!important;position:static}.video-modal-panel{min-height:0!important}.video-modal-head{width:75%!important}.video-modal{padding:18px 10px 40px!important}}
+.video-modal{position:relative!important;inset:auto!important;display:block!important;z-index:auto!important;padding:clamp(30px,5vw,80px) 4% 65px!important;background:transparent!important;backdrop-filter:none!important}
+.video-modal-panel{position:relative;width:min(100%,1250px)!important;min-height:0!important;max-height:none!important;margin:0 auto;overflow:visible!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
+.video-modal-head,.video-modal-hotspot{display:none!important}
+.video-layout{display:grid!important;grid-template-columns:minmax(245px,29%) minmax(0,1fr)!important;gap:clamp(22px,3.5vw,55px)!important;align-items:start!important;padding:0!important}
+.video-menu{max-height:none!important;overflow:visible!important;padding:0 12px 0 0!important}
+.video-column{position:sticky;top:24px;grid-column:2;grid-row:1}
+.video-stage{background:#132e38;box-shadow:0 8px 16px rgba(0,0,0,.24);border-radius:12px;overflow:hidden}
+.video-description{margin-top:12px!important;color:#073e55!important;line-height:1.2!important}
+.video-theme,.video-subtheme{color:#073e55!important}
+.video-choice{box-shadow:0 3px 9px rgba(0,0,0,.10)}
+.rp-video-back{display:inline-block;margin:0 0 0 2.5%;padding:10px 16px;border-radius:28px;background:#fff;color:#073e55;font-weight:900;text-decoration:none}
+@media(max-width:750px){.video-layout{grid-template-columns:1fr!important}.video-column{position:static;grid-column:1!important;grid-row:1!important}.video-menu{grid-row:2!important;padding:0!important}.video-page-title img{max-width:55vw;max-height:90px}.topbar{gap:12px!important}.account-meta{white-space:normal!important}.video-modal{padding:25px 5% 45px!important}}
 </style></head>
 <body>
 <div id="fullPilotGate"><form id="fullPilotForm"><h1>RebondPlay Full — accès sécurisé</h1><p>Connexion individuelle nécessaire pour consulter cette plateforme.</p><label for="fullPilotEmail">E-mail</label><input id="fullPilotEmail" type="email" autocomplete="username" required><label for="fullPilotPassword">Mot de passe</label><input id="fullPilotPassword" type="password" autocomplete="current-password" required><button type="submit">Accéder à Full</button><p id="fullPilotMessage" role="status"></p><p><a href="/index.html">Retour à l’accueil</a></p></form></div>
   <header class="topbar">
-    <a class="brand" href="#accueil" aria-label="RebondPlay Full — accueil"><img src="Logo_RebondPlay_full2.png" alt="RebondPlay Full"></a>
+    <div class="video-page-title"><img id="videoPageTitle" src="../pagevideo/titrevideo.png" alt="Vidéos"></div>
     <div class="account" aria-label="Compte connecté"><span class="avatar" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0z"/></svg></span><div class="account-copy"><div class="account-name" id="accountName">Bonjour</div><div class="account-meta" id="accountMeta"></div></div><button class="logout" id="logoutButton" type="button">Se déconnecter</button></div>
   </header>
   <section class="slider" id="slider" aria-label="Outils à la une">
@@ -85,8 +95,8 @@
   </main>
   <div class="video-modal" id="videoModal" role="region" aria-label="Catalogue des vidéos RebondPlay">
     <div class="video-modal-panel">
-      <img class="video-modal-head" src="../pagevideo/titrevideo.png" alt="">
-      <button class="video-modal-hotspot" id="videoModalClose" type="button" aria-label="Retour à RebondPlay"><img src="../pagevideo/croixblanche.png" alt=""></button>
+      
+      
       <div class="video-layout">
         <nav class="video-menu" aria-label="Liste des vidéos">
           <h3 class="video-theme">Exposition (é)preuves</h3>
@@ -149,6 +159,7 @@
       </div>
     </div>
   </div>
+  <a class="rp-video-back" href="/pagefull/">← Accueil</a>
   <script>
     (async()=>{
       const gate=document.getElementById("fullPilotGate"),form=document.getElementById("fullPilotForm"),message=document.getElementById("fullPilotMessage");
@@ -208,6 +219,16 @@ async function check(){
       }
       await access;
       await unlock();
+      // Habillage fourni dans le stockage privé : aucune image protégée n'est rendue publique.
+      try{
+        const bucket=client.storage.from("rebond-elearning-prive");
+        const [motif,titre]=await Promise.all([
+          bucket.createSignedUrl("pagevideo/motifbleu.jpg",3600),
+          bucket.createSignedUrl("pagevideo/titrevideo.png",3600)
+        ]);
+        if(motif.data?.signedUrl)document.body.style.setProperty("--rp-video-pattern",'url("'+motif.data.signedUrl+'")');
+        if(titre.data?.signedUrl)document.getElementById("videoPageTitle").src=titre.data.signedUrl;
+      }catch(error){console.warn("Habillage Vidéos indisponible",error)}
       const popupVideo=document.getElementById("popupVideo");popupVideo.addEventListener("contextmenu",event=>event.preventDefault());const videoChoices=[...document.querySelectorAll(".video-choice")];let videoRequest=0;
       videoChoices.forEach(choice=>choice.addEventListener("click",async()=>{
         const request=++videoRequest;
