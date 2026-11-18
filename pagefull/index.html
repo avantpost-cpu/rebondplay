@@ -50,9 +50,8 @@
 @media(max-width:850px){.resources.rp-four-resources{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
 @media(max-width:480px){.resources.rp-four-resources{grid-template-columns:1fr!important}}
 
-/* Lisibilité des descriptions sous les quatre visuels sur fond illustré. */
-.resources.rp-four-resources .rp-resource-caption{background:#fff8ec!important;color:#073e55!important;border-radius:12px!important;padding:12px 14px!important;margin:0!important;font-size:clamp(14px,1.1vw,18px)!important;font-weight:800!important;line-height:1.45!important;box-shadow:0 3px 10px rgba(3,42,56,.18)!important;min-height:82px;display:flex!important;align-items:center;justify-content:center}
-@media(max-width:850px){.resources.rp-four-resources .rp-resource-caption{min-height:0}}
+/* Descriptions blanches, sans cartouche, directement sur le fond. */
+.resources.rp-four-resources .rp-resource-caption{background:transparent!important;color:#fff!important;border-radius:0!important;padding:0 5px!important;margin:0!important;font-size:clamp(14px,1.1vw,18px)!important;font-weight:800!important;line-height:1.45!important;box-shadow:none!important;min-height:0!important;display:block!important;text-shadow:0 1px 3px rgba(3,42,56,.45)!important}
 </style></head>
 <body>
 <div id="fullPilotGate"><form id="fullPilotForm"><h1>RebondPlay Full — accès sécurisé</h1><p>Connexion individuelle nécessaire pour consulter cette plateforme.</p><label for="fullPilotEmail">E-mail</label><input id="fullPilotEmail" type="email" autocomplete="username" required><label for="fullPilotPassword">Mot de passe</label><input id="fullPilotPassword" type="password" autocomplete="current-password" required><button type="submit">Accéder à Full</button><p id="fullPilotMessage" role="status"></p><p><a href="/index.html">Retour à l’accueil</a></p></form></div>
