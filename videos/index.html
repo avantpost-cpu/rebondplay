@@ -149,6 +149,10 @@ body.rp-player-open{overflow:hidden}
 .rp-catalog-art-loaded img{display:block}
 .rp-catalog-art-loaded .rp-catalog-art-fallback{display:none}
 .rp-catalog-art-fallback{color:#fff;font-weight:800;text-align:center}
+
+/* Onglets de navigation entre les animations Comprendre de la même question. */
+.rp-player-parts{flex-wrap:wrap;justify-content:flex-start;gap:7px;margin-top:12px}
+.rp-player-parts button{font-family:inherit;font-size:13px;line-height:1.2;max-width:100%;white-space:normal;text-align:center}
 </style></head>
 <body>
 <div id="fullPilotGate"><form id="fullPilotForm"><h1>RebondPlay Full — accès sécurisé</h1><p>Connexion individuelle nécessaire pour consulter cette plateforme.</p><label for="fullPilotEmail">E-mail</label><input id="fullPilotEmail" type="email" autocomplete="username" required><label for="fullPilotPassword">Mot de passe</label><input id="fullPilotPassword" type="password" autocomplete="current-password" required><button type="submit">Accéder à Full</button><p id="fullPilotMessage" role="status"></p><p><a href="/index.html">Retour à l’accueil</a></p></form></div>
@@ -389,6 +393,23 @@ async function check(){
         popupVideo.pause();popupVideo.removeAttribute("src");popupVideo.querySelector("source").removeAttribute("src");popupVideo.load();
         const description=document.getElementById("videoDescription");
         const isTestimony=updateTestimonyPlayer(choice);
+        if(!isTestimony){
+          const understandCell=choice.closest(".rp-understand");
+          const related=understandCell?[...understandCell.querySelectorAll(".video-choice")]:[];
+          playerTitle.hidden=related.length===0;
+          playerTitle.textContent="Comprendre — "+(choice.closest(".rp-topic")?.querySelector(".rp-question-art")?.alt||"Vidéos");
+          playerParts.replaceChildren();
+          playerParts.hidden=related.length<2;
+          related.forEach((button)=>{
+            const tab=document.createElement("button");
+            tab.type="button";
+            tab.textContent=button.textContent.trim();
+            tab.classList.toggle("is-active",button===choice);
+            tab.setAttribute("aria-pressed",String(button===choice));
+            tab.addEventListener("click",()=>button.click());
+            playerParts.append(tab);
+          });
+        }
         description.textContent=isTestimony?"":(choice.dataset.description||"");
         videoChoices.forEach(item=>item.classList.toggle("is-active",item===choice));
         try{
