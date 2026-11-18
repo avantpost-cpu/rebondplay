@@ -121,6 +121,20 @@ body.rp-player-open{overflow:hidden}
 .rp-video-thumb:hover .rp-thumb-play{background:#f80}
 @media(max-width:1100px){.rp-topic-cell{padding-right:100px!important}.rp-video-thumb{width:85px}}
 @media(max-width:700px){.rp-topic-cell{padding-right:10px!important;padding-bottom:68px!important}.rp-video-thumb{top:auto;bottom:7px;right:10px;transform:none;width:86px}}
+
+/* Témoignages : titre unique et sélecteur horizontal des parties */
+.rp-hear .rp-testimony-series{margin:0 0 6px;min-width:0}
+.rp-hear .rp-testimony-title{display:block;color:#073e55;font-size:clamp(12px,1vw,15px);font-weight:900;line-height:1.15;margin:0 0 4px}
+.rp-hear .rp-testimony-parts{display:flex;flex-wrap:nowrap;align-items:center;gap:6px}
+.rp-hear .rp-testimony-parts .video-choice{display:inline-flex!important;justify-content:center!important;align-items:center!important;width:30px!important;min-width:30px!important;height:25px!important;padding:2px!important;border-radius:6px!important;background:#fff9!important}
+.rp-hear .rp-testimony-parts .video-choice::before{display:none!important}
+.rp-hear .rp-testimony-parts .video-choice.is-active{background:#ff7900!important;color:#fff!important}
+.rp-hear .rp-testimony-single .video-choice{width:auto!important}
+.rp-player-title{color:#073e55;font-weight:900;font-size:20px;margin:12px 0 5px}
+.rp-player-parts{display:flex;align-items:center;justify-content:center;gap:9px;margin:8px 0 3px}
+.rp-player-parts[hidden],.rp-player-title[hidden]{display:none!important}
+.rp-player-parts button{border:0;border-radius:8px;background:#dceef2;color:#073e55;font-weight:900;min-width:43px;padding:9px 13px;cursor:pointer}
+.rp-player-parts button.is-active{background:#ff7900;color:#fff}
 </style></head>
 <body>
 <div id="fullPilotGate"><form id="fullPilotForm"><h1>RebondPlay Full — accès sécurisé</h1><p>Connexion individuelle nécessaire pour consulter cette plateforme.</p><label for="fullPilotEmail">E-mail</label><input id="fullPilotEmail" type="email" autocomplete="username" required><label for="fullPilotPassword">Mot de passe</label><input id="fullPilotPassword" type="password" autocomplete="current-password" required><button type="submit">Accéder à Full</button><p id="fullPilotMessage" role="status"></p><p><a href="/index.html">Retour à l’accueil</a></p></form></div>
@@ -181,7 +195,7 @@ body.rp-player-open{overflow:hidden}
 <div class="video-entry"><span class="video-entry-label">Libération de la parole</span><button class="video-choice" type="button" data-private-video="videos/Angie_liberation3.mp4" data-description="Angélique Cauchy témoigne de la libération de la parole.">Partie 3</button></div><button type="button" class="rp-video-thumb" data-target-video="videos/Angie_liberation1.mp4" aria-label="Ouvrir cette vidéo"><video muted playsinline preload="none" aria-hidden="true"></video><span class="rp-thumb-play">▶</span></button></div></section><section class="rp-topic"><h2 class="rp-topic-heading"><span class="rp-topic-number">5</span>Quelles conséquences, quelle reconstruction ?</h2><div class="rp-topic-cell rp-understand"><p class="video-group-empty">Aucune animation</p></div><div class="rp-topic-cell rp-hear"><div class="video-entry"><span class="video-entry-label">Les conséquences</span><button class="video-choice" type="button" data-private-video="videos/Angie_consequence1.mp4" data-description="À partir de son propre vécu de jeune joueuse de tennis, Angélique Cauchy décrypte la manière dont une relation de confiance et d’autorité peut progressivement se transformer en emprise. Elle met en lumière les états vécus avant, pendant et après l’emprise : l’installation progressive de la relation, la confusion et la sidération, puis les conséquences durables et le long chemin de reconstruction. Ces témoignages, en lien avec son livre Si un jour quelqu’un te fait du mal, contribuent à mieux comprendre les mécanismes de domination et à prévenir les violences dans le sport.">Partie 1</button></div>
 <div class="video-entry"><span class="video-entry-label">Les conséquences</span><button class="video-choice" type="button" data-private-video="videos/Angie_consequence2.mp4" data-description="À partir de son propre vécu de jeune joueuse de tennis, Angélique Cauchy décrypte la manière dont une relation de confiance et d’autorité peut progressivement se transformer en emprise. Elle met en lumière les états vécus avant, pendant et après l’emprise : l’installation progressive de la relation, la confusion et la sidération, puis les conséquences durables et le long chemin de reconstruction. Ces témoignages, en lien avec son livre Si un jour quelqu’un te fait du mal, contribuent à mieux comprendre les mécanismes de domination et à prévenir les violences dans le sport.">Partie 2</button></div>
 <div class="video-entry"><span class="video-entry-label">Les conséquences</span><button class="video-choice" type="button" data-private-video="videos/Angie_consequence3.mp4" data-description="À partir de son propre vécu de jeune joueuse de tennis, Angélique Cauchy décrypte la manière dont une relation de confiance et d’autorité peut progressivement se transformer en emprise. Elle met en lumière les états vécus avant, pendant et après l’emprise : l’installation progressive de la relation, la confusion et la sidération, puis les conséquences durables et le long chemin de reconstruction. Ces témoignages, en lien avec son livre Si un jour quelqu’un te fait du mal, contribuent à mieux comprendre les mécanismes de domination et à prévenir les violences dans le sport.">Partie 3</button></div><button type="button" class="rp-video-thumb" data-target-video="videos/Angie_consequence1.mp4" aria-label="Ouvrir cette vidéo"><video muted playsinline preload="none" aria-hidden="true"></video><span class="rp-thumb-play">▶</span></button></div></section><div class="rp-extras"><details class="video-expo-extra"><summary>Exposition (é)preuves — vidéos complémentaires</summary><button class="video-choice" type="button" data-private-video="videos/Film_Expo-e-preuves_bdf2.mp4" data-description="(é)preuves est une exposition à la croisée de l’intime et du politique, du témoignage et de la création. Elle s’appuie sur des extraits du livre d’Angélique Cauchy, Si un jour quelqu’un te fait du mal, dans lequel l’autrice témoigne des violences sexuelles subies dans l’enfance et raconte son long chemin de reconstruction.">Exposition</button><button class="video-choice" type="button" data-private-video="videos/teaserexpo.mp4" data-description="(é)preuves est une exposition à la croisée de l’intime et du politique, du témoignage et de la création. Elle s’appuie sur des extraits du livre d’Angélique Cauchy, Si un jour quelqu’un te fait du mal, dans lequel l’autrice témoigne des violences sexuelles subies dans l’enfance et raconte son long chemin de reconstruction.">Teaser</button></details></nav></div></div>
-        <div class="video-column" id="rpVideoOverlay" role="dialog" aria-modal="true" aria-label="Lecture vidéo" hidden><div class="rp-player-panel"><button type="button" class="rp-player-close" id="rpVideoClose" aria-label="Fermer la vidéo">×</button><div class="video-stage"><video id="popupVideo" controls controlsList="nodownload noremoteplayback" disablePictureInPicture disableRemotePlayback playsinline preload="metadata"><source type="video/mp4">Votre navigateur ne peut pas lire cette vidéo.</video></div><p class="video-description" id="videoDescription">(é)preuves est une exposition à la croisée de l’intime et du politique, du témoignage et de la création. Elle s’appuie sur des extraits du livre d’Angélique Cauchy, Si un jour quelqu’un te fait du mal, dans lequel l’autrice témoigne des violences sexuelles subies dans l’enfance et raconte son long chemin de reconstruction.</p></div></div>
+        <div class="video-column" id="rpVideoOverlay" role="dialog" aria-modal="true" aria-label="Lecture vidéo" hidden><div class="rp-player-panel"><button type="button" class="rp-player-close" id="rpVideoClose" aria-label="Fermer la vidéo">×</button><div class="video-stage"><video id="popupVideo" controls controlsList="nodownload noremoteplayback" disablePictureInPicture disableRemotePlayback playsinline preload="metadata"><source type="video/mp4">Votre navigateur ne peut pas lire cette vidéo.</video></div><div class="rp-player-title" id="rpPlayerTitle" hidden></div><div class="rp-player-parts" id="rpPlayerParts" hidden aria-label="Choisir une partie du témoignage"></div><p class="video-description" id="videoDescription"></p></div></div>
       </div>
     </div>
   </div>
@@ -279,18 +293,73 @@ async function check(){
         }
       },{rootMargin:"150px"});
       document.querySelectorAll(".rp-video-thumb").forEach(thumb=>previewObserver.observe(thumb));
+      // Réunir les épisodes d'un même témoignage sans dupliquer son titre.
+      const testimonyGroups=new Map();
+      document.querySelectorAll(".rp-hear").forEach(cell=>{
+        const entries=[...cell.querySelectorAll(".video-entry")];
+        const groups=new Map();
+        entries.forEach(entry=>{
+          const title=entry.querySelector(".video-entry-label")?.textContent.trim();
+          const button=entry.querySelector(".video-choice");
+          if(!title||!button)return;
+          if(!groups.has(title))groups.set(title,[]);
+          groups.get(title).push(button);
+        });
+        groups.forEach((buttons,title)=>{
+          const series=document.createElement("div");
+          series.className="rp-testimony-series"+(buttons.length===1?" rp-testimony-single":"");
+          const heading=document.createElement("span");
+          heading.className="rp-testimony-title";
+          heading.textContent=title;
+          series.append(heading);
+          const line=document.createElement("div");
+          line.className="rp-testimony-parts";
+          buttons.forEach((button,index)=>{
+            button.textContent=buttons.length===1?"Voir la vidéo":String(index+1);
+            button.setAttribute("aria-label",title+(buttons.length===1?"":", partie "+(index+1)));
+            line.append(button);
+          });
+          series.append(line);
+          const first=entries.find(e=>e.querySelector(".video-entry-label")?.textContent.trim()===title);
+          first?.before(series);
+          testimonyGroups.set(title,buttons);
+        });
+        entries.forEach(entry=>entry.remove());
+      });
+      const playerTitle=document.getElementById("rpPlayerTitle");
+      const playerParts=document.getElementById("rpPlayerParts");
+      function updateTestimonyPlayer(choice){
+        const series=choice.closest(".rp-testimony-series");
+        const title=series?.querySelector(".rp-testimony-title")?.textContent.trim();
+        const buttons=title?testimonyGroups.get(title):null;
+        playerTitle.hidden=!title;
+        playerTitle.textContent=title||"";
+        playerParts.replaceChildren();
+        playerParts.hidden=!buttons||buttons.length<2;
+        if(buttons?.length>1)buttons.forEach((button,index)=>{
+          const number=document.createElement("button");
+          number.type="button";
+          number.textContent=String(index+1);
+          number.classList.toggle("is-active",button===choice);
+          number.setAttribute("aria-label","Partie "+(index+1));
+          number.addEventListener("click",()=>button.click());
+          playerParts.append(number);
+        });
+        return Boolean(title);
+      }
       const popupVideo=document.getElementById("popupVideo");popupVideo.addEventListener("contextmenu",event=>event.preventDefault());const videoChoices=[...document.querySelectorAll(".video-choice")];let videoRequest=0;
       videoChoices.forEach(choice=>choice.addEventListener("click",async()=>{
         const request=++videoRequest;
         overlay.hidden=false;document.body.classList.add("rp-player-open");
         popupVideo.pause();popupVideo.removeAttribute("src");popupVideo.querySelector("source").removeAttribute("src");popupVideo.load();
         const description=document.getElementById("videoDescription");
-        description.textContent=choice.dataset.description||"";
+        const isTestimony=updateTestimonyPlayer(choice);
+        description.textContent=isTestimony?"":(choice.dataset.description||"");
         videoChoices.forEach(item=>item.classList.toggle("is-active",item===choice));
         try{
           let url=choice.dataset.video;
           if(choice.dataset.privateVideo){
-            description.textContent="Chargement de la vidéo protégée…";
+            if(!isTestimony)description.textContent="Chargement de la vidéo protégée…";
             const {data:user,error:userError}=await client.auth.getUser();
             if(userError||!user?.user)throw new Error("Connexion expirée. Reconnectez-vous.");
             const subscription=await check();
@@ -303,7 +372,7 @@ async function check(){
           if(request!==videoRequest)return;
           popupVideo.querySelector("source").src=url;
           popupVideo.load();
-          description.textContent=choice.dataset.description||"";
+          description.textContent=isTestimony?"":(choice.dataset.description||"");
           await popupVideo.play().catch(()=>{});
         }catch(error){
           if(request===videoRequest)description.textContent="Lecture impossible : "+(error?.message||"Erreur inconnue");
