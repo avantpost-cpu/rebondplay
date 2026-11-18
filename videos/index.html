@@ -142,6 +142,13 @@ body.rp-player-open{overflow:hidden}
 .rp-question-art-loaded .rp-question-art{display:block}
 .rp-question-art-loaded .rp-question-fallback{display:none}
 .rp-question-fallback{display:block;padding:12px;border-radius:12px;background:#07536a;color:white}
+
+/* Titres Comprendre et Entendre fournis comme images, sans cartouches colorés. */
+.rp-catalog-label.rp-catalog-art{background:transparent!important;border:0!important;box-shadow:none!important;border-radius:0!important;padding:0!important;display:flex;align-items:center;justify-content:center;min-height:55px}
+.rp-catalog-art img{display:none;width:100%;height:auto;max-height:115px;object-fit:contain;object-position:center}
+.rp-catalog-art-loaded img{display:block}
+.rp-catalog-art-loaded .rp-catalog-art-fallback{display:none}
+.rp-catalog-art-fallback{color:#fff;font-weight:800;text-align:center}
 </style></head>
 <body>
 <div id="fullPilotGate"><form id="fullPilotForm"><h1>RebondPlay Full — accès sécurisé</h1><p>Connexion individuelle nécessaire pour consulter cette plateforme.</p><label for="fullPilotEmail">E-mail</label><input id="fullPilotEmail" type="email" autocomplete="username" required><label for="fullPilotPassword">Mot de passe</label><input id="fullPilotPassword" type="password" autocomplete="current-password" required><button type="submit">Accéder à Full</button><p id="fullPilotMessage" role="status"></p><p><a href="/index.html">Retour à l’accueil</a></p></form></div>
@@ -180,7 +187,7 @@ body.rp-player-open{overflow:hidden}
       
       
       <p class="video-intro">Retrouvez les moments clés de la formation pour revenir sur une thématique, préparer une séance ou ouvrir la discussion.</p><div class="video-layout">
-        <div class="rp-catalog"><div class="rp-catalog-head"><div></div><div class="rp-catalog-label rp-catalog-understand"><strong>Comprendre</strong><span>Regroupe les animations de sensibilisation</span></div><div class="rp-catalog-label rp-catalog-hear"><strong>Entendre</strong><span>Regroupe le témoignage d’Angélique Cauchy</span></div></div><section class="rp-topic"><h2 class="rp-topic-heading rp-topic-heading-image"><img class="rp-question-art" data-question-art="1" alt="De quoi parle-t-on ?" loading="eager"><span class="rp-question-fallback">De quoi parle-t-on ?</span></h2><div class="rp-topic-cell rp-understand"><button class="video-choice" type="button" data-private-video="videos/1_enfant_sur_7.mp4" data-description="Animation de sensibilisation : 1 enfant sur 7.">1 enfant sur 7</button>
+        <div class="rp-catalog"><div class="rp-catalog-head"><div></div><div class="rp-catalog-label rp-catalog-understand rp-catalog-art"><img id="rpComprendreArt" alt="Comprendre — Regroupe les animations de sensibilisation"><span class="rp-catalog-art-fallback">Comprendre — Regroupe les animations de sensibilisation</span></div><div class="rp-catalog-label rp-catalog-hear rp-catalog-art"><img id="rpEntendreArt" alt="Entendre — Regroupe le témoignage d’Angélique Cauchy"><span class="rp-catalog-art-fallback">Entendre — Regroupe le témoignage d’Angélique Cauchy</span></div></div><section class="rp-topic"><h2 class="rp-topic-heading rp-topic-heading-image"><img class="rp-question-art" data-question-art="1" alt="De quoi parle-t-on ?" loading="eager"><span class="rp-question-fallback">De quoi parle-t-on ?</span></h2><div class="rp-topic-cell rp-understand"><button class="video-choice" type="button" data-private-video="videos/1_enfant_sur_7.mp4" data-description="Animation de sensibilisation : 1 enfant sur 7.">1 enfant sur 7</button>
 <button class="video-choice" type="button" data-private-video="videos/La_France_en_2023.mp4" data-description="Animation de sensibilisation : La France en 2023….">La France en 2023…</button>
 <button class="video-choice" type="button" data-private-video="videos/Resultat_enquete.mp4" data-description="Animation de sensibilisation : Résultat enquête.">Résultat enquête</button>
 <button class="video-choice" type="button" data-private-video="videos/Le_consentement.mp4" data-description="Animation de sensibilisation : Le consentement.">Le consentement</button><button type="button" class="rp-video-thumb" data-target-video="videos/1_enfant_sur_7.mp4" aria-label="Ouvrir cette vidéo"><video muted playsinline preload="none" aria-hidden="true"></video><span class="rp-thumb-play">▶</span></button></div><div class="rp-topic-cell rp-hear"><div class="video-entry"><span class="video-entry-label">Les violences dans le sport</span><button class="video-choice" type="button" data-private-video="videos/Angie_Les violences dans le sport.mp4" data-description="Angélique Cauchy témoigne des violences dans le sport.">Voir la vidéo</button></div><button type="button" class="rp-video-thumb" data-target-video="videos/Angie_Les violences dans le sport.mp4" aria-label="Ouvrir cette vidéo"><video muted playsinline preload="none" aria-hidden="true"></video><span class="rp-thumb-play">▶</span></button></div></section><section class="rp-topic"><h2 class="rp-topic-heading rp-topic-heading-image"><img class="rp-question-art" data-question-art="2" alt="Comment ça s’installe ?" loading="eager"><span class="rp-question-fallback">Comment ça s’installe ?</span></h2><div class="rp-topic-cell rp-understand"><button class="video-choice" type="button" data-private-video="videos/strategie_demprise.mp4" data-description="Animation de sensibilisation : stratégie d’emprise.">Stratégie d’emprise</button>
@@ -269,15 +276,26 @@ async function check(){
       // Habillage fourni dans le stockage privé : aucune image protégée n'est rendue publique.
       try{
         const bucket=client.storage.from("rebond-elearning-prive");
-        const [motif,titre,...questionArts]=await Promise.all([
+        const [motif,titre,comprendre,entendre,...questionArts]=await Promise.all([
           bucket.createSignedUrl("pagevideo/motifbleu.jpg",3600),
           bucket.createSignedUrl("pagevideo/titrevideo.png",3600),
+          bucket.createSignedUrl("pagevideo/comprendre.png",3600),
+          bucket.createSignedUrl("pagevideo/entendre.png",3600),
           ...[1,2,3,4,5].map(n=>bucket.createSignedUrl("pagevideo/"+n+".png",3600))
         ]);
         if(motif.error)console.warn("Motif Vidéos :",motif.error.message);
         if(titre.error)console.warn("Titre Vidéos :",titre.error.message);
         if(motif.data?.signedUrl)document.body.style.setProperty("--rp-video-pattern",'url("'+motif.data.signedUrl+'")');
         if(titre.data?.signedUrl)document.getElementById("videoPageTitle").src=titre.data.signedUrl;
+        [[comprendre,"rpComprendreArt"],[entendre,"rpEntendreArt"]].forEach(([result,id])=>{
+          const img=document.getElementById(id);
+          if(!img)return;
+          if(result.data?.signedUrl){
+            img.onload=()=>img.parentElement.classList.add("rp-catalog-art-loaded");
+            img.onerror=()=>img.parentElement.classList.remove("rp-catalog-art-loaded");
+            img.src=result.data.signedUrl;
+          }else if(result.error)console.warn("Image "+id+" :",result.error.message);
+        });
         questionArts.forEach((result,index)=>{
           const img=document.querySelector('[data-question-art="'+(index+1)+'"]');
           if(!img)return;
