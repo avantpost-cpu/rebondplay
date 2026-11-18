@@ -56,7 +56,12 @@ body{min-height:100vh;background-color:#0c7892!important;background-image:var(--
 .video-column{position:sticky;top:24px;grid-column:2;grid-row:1}
 .video-stage{background:#132e38;box-shadow:0 8px 16px rgba(0,0,0,.24);border-radius:12px;overflow:hidden}
 .video-description{margin-top:12px!important;color:#073e55!important;line-height:1.2!important}
-.video-theme,.video-subtheme{color:#073e55!important}
+.video-theme,.video-subtheme{color:#fff!important;text-shadow:0 1px 2px rgba(0,0,0,.22)}
+.video-description{color:#fff!important;text-shadow:0 1px 2px rgba(0,0,0,.20)}
+.account,.account-name,.account-meta,.logout{color:#fff!important}
+.avatar{background:#07485d!important;color:#fff!important}
+.topbar{background:rgba(8,83,106,.88)!important}
+.rp-footer{color:#fff!important;text-shadow:0 1px 2px rgba(0,0,0,.2)}
 .video-choice{box-shadow:0 3px 9px rgba(0,0,0,.10)}
 .rp-video-back{display:inline-block;margin:0 0 0 2.5%;padding:10px 16px;border-radius:28px;background:#fff;color:#073e55;font-weight:900;text-decoration:none}
 @media(max-width:750px){.video-layout{grid-template-columns:1fr!important}.video-column{position:static;grid-column:1!important;grid-row:1!important}.video-menu{grid-row:2!important;padding:0!important}.video-page-title img{max-width:55vw;max-height:90px}.topbar{gap:12px!important}.account-meta{white-space:normal!important}.video-modal{padding:25px 5% 45px!important}}
@@ -226,6 +231,8 @@ async function check(){
           bucket.createSignedUrl("pagevideo/motifbleu.jpg",3600),
           bucket.createSignedUrl("pagevideo/titrevideo.png",3600)
         ]);
+        if(motif.error)console.warn("Motif Vidéos :",motif.error.message);
+        if(titre.error)console.warn("Titre Vidéos :",titre.error.message);
         if(motif.data?.signedUrl)document.body.style.setProperty("--rp-video-pattern",'url("'+motif.data.signedUrl+'")');
         if(titre.data?.signedUrl)document.getElementById("videoPageTitle").src=titre.data.signedUrl;
       }catch(error){console.warn("Habillage Vidéos indisponible",error)}
