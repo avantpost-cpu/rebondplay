@@ -6,7 +6,8 @@ const code=(new URLSearchParams(location.search).get("session")||"").trim().toUp
 const info=document.getElementById("sessionInfo"),send=document.getElementById("submitResponses"),status=document.getElementById("sendStatus");
 if(!code){info.textContent="Ce questionnaire doit être ouvert depuis le lien ou le QR code transmis pour votre sensibilisation. Si vous ne l’avez pas, demandez-le à votre enseignant ou à l’association Rebond.";return;}
 const {data,error}=await client.from("satisfaction_sessions").select("id,event_name,event_date,event_place,model,active").eq("code",code).maybeSingle();
-if(error||!data||!data.active||data.model!==model){info.textContent="Ce lien ne permet pas d’envoyer vos réponses : il est peut-être expiré ou ne correspond pas à ce questionnaire. Demandez à votre enseignant ou à l’association Rebond un nouveau lien ou QR code.";return;}
+if(error){console.error("Vérification session questionnaire :",error);info.textContent="Nous ne parvenons pas à vérifier votre questionnaire pour le moment. Vérifiez votre connexion, puis actualisez cette page et réessayez. Si le problème persiste, contactez l’association Rebond.";return;}
+if(!data||!data.active||data.model!==model){info.textContent="Ce lien ne correspond pas à un questionnaire actif. Vérifiez que vous utilisez le lien ou QR code de votre groupe. Si le problème persiste, contactez l’association Rebond.";return;}
 info.textContent=[data.event_name,data.event_date,data.event_place].filter(Boolean).join(" · ");send.disabled=false;
 send.onclick=async()=>{
  send.disabled=true;status.textContent="Envoi en cours…";
