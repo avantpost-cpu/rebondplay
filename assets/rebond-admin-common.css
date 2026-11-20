@@ -18,3 +18,40 @@ html body .rebond-admin-tetiere .rebond-admin-tetiere-actions a{justify-self:aut
 html body .rebond-admin-tetiere .rebond-admin-tetiere-actions a.rebond-admin-root{background:#e65013!important}
 html body .rebond-admin-tetiere .rebond-admin-tetiere-actions a.rebond-admin-root:hover{background:#bd410d!important}
 @media(max-width:700px){html body .rebond-admin-tetiere{min-height:168px!important}html body .rebond-admin-tetiere .rebond-admin-tetiere-actions{grid-column:2!important;grid-row:1!important;max-width:200px!important;gap:6px!important}html body .rebond-admin-tetiere .rebond-admin-tetiere-actions a{font-size:10px!important;padding:8px!important}}
+
+/* Rebond admin mastheads — color-coded, white signature, accessible contrast */
+html body .rebond-admin-tetiere{
+ --admin-header:#065269;
+ background-color:var(--admin-header)!important;
+ background-image:linear-gradient(110deg,rgba(0,0,0,.12),rgba(0,0,0,.03)),url('/ressources/fond.jpg')!important;
+ background-blend-mode:normal,soft-light!important;
+ background-size:cover!important;
+ min-height:140px!important;
+}
+html body .rebond-admin-tetiere img[src*="logorebondsignature"]{
+ filter:brightness(0) invert(1)!important;
+ max-height:94px!important;
+ max-width:220px!important;
+}
+html body .rebond-admin-tetiere h1,
+html body .rebond-admin-tetiere .rebond-admin-tetiere-center p{color:#fff!important}
+html body .rebond-admin-tetiere .rebond-admin-tetiere-actions a{
+ background:rgba(255,255,255,.96)!important;
+ color:#064357!important;
+ border:1px solid rgba(255,255,255,.8)!important;
+ box-shadow:0 2px 8px #0002!important
+}
+html body .rebond-admin-tetiere .rebond-admin-tetiere-actions a.rebond-admin-root{
+ background:rgba(255,255,255,.18)!important;color:white!important
+}
+html body .rebond-admin-tetiere .rebond-admin-tetiere-actions a:hover,
+html body .rebond-admin-tetiere .rebond-admin-tetiere-actions a:focus-visible{
+ background:white!important;color:#d94717!important
+}
+html body:has(a[href*="/administration-questionnaires/"]) .rebond-admin-tetiere{--admin-header:#75844a}
+html body:has(a[href*="/elearning/admin/"]) .rebond-admin-tetiere{--admin-header:#e65013}
+html body:has(a[href*="/administration-quiz/"]) .rebond-admin-tetiere{--admin-header:#35788b}
+html body:has(a[href*="/administration-incidents/"]) .rebond-admin-tetiere{--admin-header:#bd5760}
+html body:has(a[href*="/administration/prive/"]) .rebond-admin-tetiere{--admin-header:#b96d86}
+html body:has(a[href*="/questionnaire2/admin.html"]) .rebond-admin-tetiere{--admin-header:#35788b}
+html body:has(a[href*="/questionnaire-satisfaction/admin/"]) .rebond-admin-tetiere{--admin-header:#75844a}
