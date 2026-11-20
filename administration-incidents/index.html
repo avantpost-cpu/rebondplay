@@ -23,7 +23,7 @@ async function refresh(){
   rows.replaceChildren();total.textContent="("+payload.total+")";
   if(!payload.incidents.length){const tr=document.createElement("tr");cell(tr,"Aucune opération nécessitant une vérification");rows.append(tr);}
   for(const item of payload.incidents){
-   const tr=document.createElement("tr");cell(tr,{rebondplay:"RebondPlay",elearning:"E-learning",questionnaires:"Questionnaires"}[item.service]||item.service);
+   const tr=document.createElement("tr");cell(tr,{rebondplay:"RebondPlay",elearning:"E-learning",questionnaires:"Questionnaires",formations:"Formations — documents"}[item.service]||item.service);
    cell(tr,item.email);const state=cell(tr,item.statut);state.className="tag";cell(tr,item.date?new Date(item.date).toLocaleDateString("fr-FR"):"");cell(tr,item.action_recommandee);rows.append(tr);
   }
   status.textContent="Liste actualisée.";
