@@ -558,13 +558,12 @@ $("formationLegacySend").onclick=async()=>{
   for(const item of deliveries)if(Object.prototype.hasOwnProperty.call(counts,item.status))counts[item.status]++;
   status.textContent="État réel : "+counts.sent+" acceptés par Brevo, "+counts.sending+" à vérifier, "+counts.pending+" en attente, "+counts.failed+" en échec.";
   if(counts.sending||counts.failed){
-   status.textContent+=" Envoi suspendu pour éviter les doublons : vérifiez les opérations incertaines avant toute reprise.";
-   return;
+   status.textContent+=" Les "+counts.sending+" opérations incertaines et "+counts.failed+" échecs restent isolés : aucun de ces documents ne sera réexpédié.";
   }
   if(!counts.pending){status.textContent+=" Aucun document restant à envoyer.";return;}
-  if(!confirm("Envoyer uniquement les "+counts.pending+" documents en attente ? "+counts.sent+" déjà acceptés par Brevo ne seront pas renvoyés."))return;
+  if(!confirm("Envoyer uniquement les "+counts.pending+" documents en attente ? Les "+counts.sent+" déjà acceptés et les "+counts.sending+" incertains ne seront PAS renvoyés. Chaque lot est limité à 2 documents."))return;
   let sentNow=0;
-  for(let i=0;i<Math.ceil(counts.pending/10);i++){
+  for(let i=0;i<Math.ceil(counts.pending/2);i++){
    const {data:result,error:dispatchError}=await db.functions.invoke("dispatch-formation-documents",{body:{action:"send_legacy",session_code:selectedSession}});
    if(dispatchError||result?.error)throw dispatchError||Error(result.error);
    sentNow+=result?.sent||0;
