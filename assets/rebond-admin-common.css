@@ -48,10 +48,5 @@ html body .rebond-admin-tetiere .rebond-admin-tetiere-actions a:hover,
 html body .rebond-admin-tetiere .rebond-admin-tetiere-actions a:focus-visible{
  background:white!important;color:#d94717!important
 }
-html body:has(a[href*="/administration-questionnaires/"]) .rebond-admin-tetiere{--admin-header:#75844a}
-html body:has(a[href*="/elearning/admin/"]) .rebond-admin-tetiere{--admin-header:#e65013}
-html body:has(a[href*="/administration-quiz/"]) .rebond-admin-tetiere{--admin-header:#35788b}
-html body:has(a[href*="/administration-incidents/"]) .rebond-admin-tetiere{--admin-header:#bd5760}
-html body:has(a[href*="/administration/prive/"]) .rebond-admin-tetiere{--admin-header:#b96d86}
-html body:has(a[href*="/questionnaire2/admin.html"]) .rebond-admin-tetiere{--admin-header:#35788b}
-html body:has(a[href*="/questionnaire-satisfaction/admin/"]) .rebond-admin-tetiere{--admin-header:#75844a}
+
+/* Category colors are assigned explicitly in each administration page. */
