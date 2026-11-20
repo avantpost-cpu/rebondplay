@@ -549,27 +549,37 @@ async function deleteParticipant(id, name) {
 $("formationLegacySend").onclick=async()=>{
  const button=$("formationLegacySend"),status=$("certificateDispatchStatus");
  if(selectedSession!=="FOR-DA7628626473C51E"){status.textContent="Envoi manuel réservé à la formation du 14 novembre.";return;}
- const {data:info,error:infoError}=await db.functions.invoke("close-formation-session",{body:{action:"status",session_code:selectedSession}});
- if(infoError||!info?.closed){status.textContent="Préparez d'abord les documents de cette formation.";return;}
- const pending=(info.deliveries||[]).filter(x=>x.status==="pending").length;
- if(!pending){status.textContent="Aucun document en attente d'envoi.";return;}
- if(!confirm("CONFIRMATION : envoyer maintenant "+pending+" documents NOMINATIFS aux participants du 14 novembre ? Cette action déclenche des e-mails réels."))return;
  button.disabled=true;
- let total=0,failed=0;
  try{
-  for(let i=0;i<Math.ceil(pending/10);i++){
-   status.textContent="Envoi en cours : "+total+" / "+pending+" acceptés par Brevo…";
-   const {data,error}=await db.functions.invoke("dispatch-formation-documents",{body:{action:"send_legacy",session_code:selectedSession}});
-   if(error)throw error;
-   if(data?.error)throw Error(data.error);
-   total+=data?.sent||0;failed+=data?.failed||0;
-   if(!(data?.processed>0))break;
+  const {data:info,error}=await db.functions.invoke("close-formation-session",{body:{action:"status",session_code:selectedSession}});
+  if(error||!info?.closed)throw Error("Impossible de vérifier l'état des documents. Aucun envoi lancé.");
+  const deliveries=info.deliveries||[];
+  const counts={pending:0,sending:0,sent:0,failed:0};
+  for(const item of deliveries)if(Object.prototype.hasOwnProperty.call(counts,item.status))counts[item.status]++;
+  status.textContent="État réel : "+counts.sent+" acceptés par Brevo, "+counts.sending+" à vérifier, "+counts.pending+" en attente, "+counts.failed+" en échec.";
+  if(counts.sending||counts.failed){
+   status.textContent+=" Envoi suspendu pour éviter les doublons : vérifiez les opérations incertaines avant toute reprise.";
+   return;
   }
-  status.textContent="Envoi terminé : "+total+" e-mails acceptés par Brevo, "+failed+" échecs. Consulter l'historique avant toute relance.";
- }catch(error){status.textContent="Envoi interrompu : "+(error.message||String(error))+". "+total+" e-mails déjà acceptés par Brevo.";}
+  if(!counts.pending){status.textContent+=" Aucun document restant à envoyer.";return;}
+  if(!confirm("Envoyer uniquement les "+counts.pending+" documents en attente ? "+counts.sent+" déjà acceptés par Brevo ne seront pas renvoyés."))return;
+  let sentNow=0;
+  for(let i=0;i<Math.ceil(counts.pending/10);i++){
+   const {data:result,error:dispatchError}=await db.functions.invoke("dispatch-formation-documents",{body:{action:"send_legacy",session_code:selectedSession}});
+   if(dispatchError||result?.error)throw dispatchError||Error(result.error);
+   sentNow+=result?.sent||0;
+   status.textContent="Cette tentative : "+sentNow+" acceptés par Brevo. Relecture de l'état réel nécessaire après chaque interruption.";
+   if(result?.failed||!(result?.processed>0))break;
+  }
+  const {data:finalInfo,error:finalError}=await db.functions.invoke("close-formation-session",{body:{action:"status",session_code:selectedSession}});
+  if(!finalError&&finalInfo?.deliveries){
+   const c={pending:0,sending:0,sent:0,failed:0};
+   for(const item of finalInfo.deliveries)if(Object.prototype.hasOwnProperty.call(c,item.status))c[item.status]++;
+   status.textContent="État enregistré : "+c.sent+" acceptés par Brevo, "+c.sending+" à vérifier, "+c.pending+" en attente, "+c.failed+" en échec.";
+  }
+ }catch(error){status.textContent="Envoi interrompu. Vérifiez l'historique avant toute reprise : "+(error.message||String(error));}
  finally{button.disabled=false;}
 };
-
 $("formationCloseButton").onclick = async () => {
  const button=$("formationCloseButton"),status=$("certificateDispatchStatus");
  if(selectedSession!=="FOR-DA7628626473C51E"){status.textContent="Les prochaines formations sont traitées automatiquement. Cette action est réservée au 14 novembre.";return;}
