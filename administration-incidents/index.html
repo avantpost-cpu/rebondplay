@@ -30,5 +30,5 @@ async function refresh(){
  }catch(e){rows.replaceChildren();const tr=document.createElement("tr");cell(tr,e.message);rows.append(tr);status.textContent="Accès ou chargement indisponible.";}
  finally{btn.disabled=false;}
 }
-document.getElementById("refresh").addEventListener("click",refresh);refresh();
+document.getElementById("refresh").addEventListener("click",refresh);refresh();setInterval(()=>{if(!document.hidden)refresh();},60000);
 </script></body></html>
