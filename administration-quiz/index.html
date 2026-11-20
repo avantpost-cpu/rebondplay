@@ -79,7 +79,7 @@
     <div id="app" hidden>
       
 
-      <h1 id="heading"></h1>
+      
 
       <section class="box">
         <h2>Créer une session</h2>
@@ -238,7 +238,7 @@
       $("historicSensibilisation").hidden =
         category !== "sensibilisation";
 
-      $("heading").textContent = title;
+      document.querySelector(".rebond-admin-tetiere h1").textContent = title;
       $("loginCategory").textContent = "Administration — " + title;
 
       closeAccess("Vérification de l’accès…");
