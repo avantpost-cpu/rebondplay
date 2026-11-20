@@ -10,3 +10,11 @@ body :is(main,.wrap,.container,.content) :is(button,.btn,.button,[type=submit]):
 body :is(main,.wrap,.container,.content) :is(table){border-collapse:collapse}
 body :is(main,.wrap,.container,.content) :is(th){font-family:Poppins,Arial,sans-serif;font-weight:700}
 @media(prefers-reduced-motion:reduce){body :is(main,.wrap,.container,.content) *{transition:none!important}}
+
+/* Rebond unified admin masthead v2 */
+html body .rebond-admin-tetiere{min-height:140px!important;padding-top:26px!important;padding-bottom:26px!important;background-color:#f8f3ea!important;background-image:linear-gradient(90deg,rgba(248,243,234,.83),rgba(248,243,234,.88)),url('/ressources/fond.jpg')!important;background-size:cover!important;background-position:center!important}
+html body .rebond-admin-tetiere .rebond-admin-tetiere-actions{justify-self:end;display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:9px;min-width:0}
+html body .rebond-admin-tetiere .rebond-admin-tetiere-actions a{justify-self:auto!important;font-size:12px!important;white-space:normal!important;text-align:center!important;padding:11px 13px!important}
+html body .rebond-admin-tetiere .rebond-admin-tetiere-actions a.rebond-admin-root{background:#e65013!important}
+html body .rebond-admin-tetiere .rebond-admin-tetiere-actions a.rebond-admin-root:hover{background:#bd410d!important}
+@media(max-width:700px){html body .rebond-admin-tetiere{min-height:168px!important}html body .rebond-admin-tetiere .rebond-admin-tetiere-actions{grid-column:2!important;grid-row:1!important;max-width:200px!important;gap:6px!important}html body .rebond-admin-tetiere .rebond-admin-tetiere-actions a{font-size:10px!important;padding:8px!important}}
