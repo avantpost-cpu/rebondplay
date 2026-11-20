@@ -561,9 +561,9 @@ $("formationLegacySend").onclick=async()=>{
    status.textContent+=" Les "+counts.sending+" opérations incertaines et "+counts.failed+" échecs restent isolés : aucun de ces documents ne sera réexpédié.";
   }
   if(!counts.pending){status.textContent+=" Aucun document restant à envoyer.";return;}
-  if(!confirm("Envoyer uniquement les "+counts.pending+" documents en attente ? Les "+counts.sent+" déjà acceptés et les "+counts.sending+" incertains ne seront PAS renvoyés. Chaque lot est limité à 2 documents."))return;
+  if(!confirm("Envoyer uniquement les "+counts.pending+" documents en attente ? Les "+counts.sent+" déjà acceptés et les "+counts.sending+" incertains ne seront PAS renvoyés. Chaque appel traite un seul document."))return;
   let sentNow=0;
-  for(let i=0;i<Math.ceil(counts.pending/2);i++){
+  for(let i=0;i<counts.pending;i++){
    const {data:result,error:dispatchError}=await db.functions.invoke("dispatch-formation-documents",{body:{action:"send_legacy",session_code:selectedSession}});
    if(dispatchError||result?.error)throw dispatchError||Error(result.error);
    sentNow+=result?.sent||0;
